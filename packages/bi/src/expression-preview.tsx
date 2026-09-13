@@ -5,7 +5,7 @@ import "./crystra-theme.css";
 import "./primitives.css";
 import "./shared.css";
 createRoot(document.getElementById("root")!).render(
-  <div className="wsr-bi" data-crystra-theme="dark">
+  <div className="crystra-bi" data-crystra-theme="dark">
     <WidgetExpressionStudy />
   </div>,
 );

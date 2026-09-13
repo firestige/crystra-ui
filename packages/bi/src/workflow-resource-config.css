@@ -43,7 +43,7 @@
   color: var(--color-text-muted);
   margin-left: 8px;
 }
-.resource-filter .wsr-field {
+.resource-filter .crystra-field {
   width: 100%;
 }
 .resource-list-items {
@@ -140,7 +140,7 @@
 .resource-editor-actions {
   gap: 4px;
 }
-.resource-editor-actions > .wsr-button:last-child {
+.resource-editor-actions > .crystra-button:last-child {
   margin-left: 12px;
 }
 .resource-save-state {
@@ -242,7 +242,7 @@
   font-size: 12px;
   margin: 6px 0 0;
 }
-.resource-row .wsr-field {
+.resource-row .crystra-field {
   width: 128px;
   flex: none;
 }
@@ -350,7 +350,7 @@
 .resource-dialog-head {
   margin-bottom: 22px;
 }
-.resource-dialog > .wsr-field {
+.resource-dialog > .crystra-field {
   margin-top: 18px;
 }
 .resource-dialog-actions {
@@ -531,7 +531,7 @@
   padding: 18px;
   font: 14px/1.8 var(--font-family-mono, monospace);
 }
-.resource-content-dialog > .wsr-typography {
+.resource-content-dialog > .crystra-typography {
   display: block;
   margin-top: 18px;
 }

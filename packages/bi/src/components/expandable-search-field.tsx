@@ -72,16 +72,16 @@ export function ExpandableSearchField({
   return (
     <div
       ref={root}
-      className="wsr-expandable-search"
+      className="crystra-expandable-search"
       data-open={open}
       data-disabled={disabled || undefined}
     >
-      <span className="wsr-expandable-search-title" aria-hidden={open}>
+      <span className="crystra-expandable-search-title" aria-hidden={open}>
         {title}
       </span>
       <div
         id={id}
-        className="wsr-expandable-search-content"
+        className="crystra-expandable-search-content"
         inert={!open}
         aria-hidden={!open}
       >
@@ -92,7 +92,7 @@ export function ExpandableSearchField({
           size={size}
           label={label}
           leading={
-            <span className="wsr-expandable-search-spacer">{leading}</span>
+            <span className="crystra-expandable-search-spacer">{leading}</span>
           }
           value={value ?? query}
           onChange={(e) => {
@@ -110,7 +110,7 @@ export function ExpandableSearchField({
               <button
                 {...cancelProps}
                 type="button"
-                className="wsr-search-dismiss"
+                className="crystra-search-dismiss"
                 aria-label={cancelLabel}
                 onClick={close}
               >
@@ -125,7 +125,7 @@ export function ExpandableSearchField({
         ref={trigger}
         type="button"
         disabled={disabled}
-        className="wsr-expandable-search-trigger"
+        className="crystra-expandable-search-trigger"
         aria-label={label}
         aria-expanded={open}
         aria-controls={id}

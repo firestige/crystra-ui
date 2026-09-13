@@ -10,7 +10,7 @@ const execFile = promisify(execFileCallback);
 const repositoryRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 
 export function assertReact18Markup(markup) {
-  if (!markup.includes('class="wsr-bi"')) {
+  if (!markup.includes('class="crystra-bi"')) {
     throw new Error("React 18 consumer did not render the scoped BI surface");
   }
   if (!markup.includes('aria-label="Ratio bar"')) {
@@ -36,7 +36,7 @@ export function assertReact18Markup(markup) {
 const renderSource = `
 import React from "react";
 import { renderToStaticMarkup } from "react-dom/server";
-import { BiSurface, MetricPanel } from "wsr-ui-core";
+import { BiSurface, MetricPanel } from "crystra-ui-core";
 
 const base = {
   slice_key: {},
@@ -67,7 +67,7 @@ process.stdout.write(renderToStaticMarkup(
 `;
 
 export async function qualifyReact18Consumer() {
-  const workspace = await mkdtemp(join(tmpdir(), "wsr-bi-react18-"));
+  const workspace = await mkdtemp(join(tmpdir(), "crystra-bi-react18-"));
   try {
     const packed = await execFile(
       "npm",
@@ -77,17 +77,17 @@ export async function qualifyReact18Consumer() {
         "--pack-destination",
         workspace,
         "--workspace",
-        "wsr-ui-core",
+        "crystra-ui-core",
       ],
       { cwd: repositoryRoot },
     );
     const tarball = resolve(workspace, packed.stdout.trim().split("\n").at(-1));
     const metadata = {
-      name: "wsr-bi-react18-clean-consumer",
+      name: "crystra-bi-react18-clean-consumer",
       private: true,
       type: "module",
       dependencies: {
-        "wsr-ui-core": `file:./${basename(tarball)}`,
+        "crystra-ui-core": `file:./${basename(tarball)}`,
         react: "18.3.1",
         "react-dom": "18.3.1",
       },
@@ -108,7 +108,7 @@ export async function qualifyReact18Consumer() {
       await readFile(join(workspace, "package-lock.json"), "utf8"),
     );
     const result = {
-      package: lock.packages["node_modules/wsr-ui-core"].version,
+      package: lock.packages["node_modules/crystra-ui-core"].version,
       react: lock.packages["node_modules/react"].version,
       reactDom: lock.packages["node_modules/react-dom"].version,
       hasAvailableSvg: rendered.stdout.includes('aria-label="Ratio bar"'),

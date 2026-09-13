@@ -25,16 +25,16 @@ export function BiSurface({
   let style: CSSProperties | undefined;
   if (typeof theme !== "string") {
     const themeStyle: Record<string, string> = {
-      "--wsr-container-border-style": theme.containerBorderStyle,
+      "--crystra-container-border-style": theme.containerBorderStyle,
     };
     const setToken = (name: string, value: string | undefined) => {
       if (value !== undefined) themeStyle[name] = value;
     };
     const palette = theme.palette;
-    setToken("--wsr-surface-section", palette?.surface?.section);
-    setToken("--wsr-surface-panel", palette?.surface?.panel);
-    setToken("--wsr-surface-raised", palette?.surface?.raised);
-    setToken("--wsr-surface-inset", palette?.surface?.inset);
+    setToken("--crystra-surface-section", palette?.surface?.section);
+    setToken("--crystra-surface-panel", palette?.surface?.panel);
+    setToken("--crystra-surface-raised", palette?.surface?.raised);
+    setToken("--crystra-surface-inset", palette?.surface?.inset);
     setToken("--content-primary", palette?.content?.primary);
     setToken("--content-secondary", palette?.content?.secondary);
     setToken("--content-muted", palette?.content?.muted);
@@ -59,21 +59,21 @@ export function BiSurface({
           palette.data?.[index % palette.data.length],
         ),
       );
-    setToken("--wsr-font-family", theme.typography?.fontFamily);
-    setToken("--wsr-code-font-family", theme.typography?.codeFontFamily);
-    setToken("--wsr-type-h1", theme.typography?.h1);
-    setToken("--wsr-type-h2", theme.typography?.h2);
-    setToken("--wsr-type-subtitle1", theme.typography?.subtitle1);
-    setToken("--wsr-type-body1", theme.typography?.body1);
-    setToken("--wsr-type-body2", theme.typography?.body2);
-    setToken("--wsr-type-caption", theme.typography?.caption);
-    setToken("--wsr-type-overline", theme.typography?.overline);
+    setToken("--crystra-font-family", theme.typography?.fontFamily);
+    setToken("--crystra-code-font-family", theme.typography?.codeFontFamily);
+    setToken("--crystra-type-h1", theme.typography?.h1);
+    setToken("--crystra-type-h2", theme.typography?.h2);
+    setToken("--crystra-type-subtitle1", theme.typography?.subtitle1);
+    setToken("--crystra-type-body1", theme.typography?.body1);
+    setToken("--crystra-type-body2", theme.typography?.body2);
+    setToken("--crystra-type-caption", theme.typography?.caption);
+    setToken("--crystra-type-overline", theme.typography?.overline);
     style = themeStyle as CSSProperties;
   }
   return (
     <div
       {...props}
-      className={["wsr-bi", className].filter(Boolean).join(" ")}
+      className={["crystra-bi", className].filter(Boolean).join(" ")}
       data-density={resolvedDensity}
       data-theme={resolvedTheme}
       style={style}

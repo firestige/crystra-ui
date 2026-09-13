@@ -16,27 +16,30 @@ const sha256 = (bytes) =>
 test("candidate metadata binds a stable package to an rc tag and exact commit", () => {
   const archive = Buffer.from("exact npm tarball");
   const metadata = buildReleaseMetadata({
-    packageManifest: { name: "wsr-ui-core", version: "0.1.0" },
-    archiveName: "wsr-ui-core-0.1.0.tgz",
+    packageManifest: { name: "crystra-ui-core", version: "0.1.0" },
+    archiveName: "crystra-ui-core-0.1.0.tgz",
     archiveBytes: archive,
     commit: "a".repeat(40),
-    candidateTag: "0.1.0-rc.2",
+    candidateTag: "crystra-ui-v0.1.0-rc.2",
   });
 
   assert.equal(metadata.package.sha256, sha256(archive));
   assert.equal(metadata.commit, "a".repeat(40));
-  assert.equal(metadata.candidateTag, "0.1.0-rc.2");
+  assert.equal(metadata.candidateTag, "crystra-ui-v0.1.0-rc.2");
 });
 
 test("candidate metadata rejects prerelease package bytes that cannot become a stable npm coordinate", () => {
   assert.throws(
     () =>
       buildReleaseMetadata({
-        packageManifest: { name: "wsr-ui-core", version: "0.1.0-rc.1" },
-        archiveName: "wsr-ui-core-0.1.0-rc.1.tgz",
+        packageManifest: {
+          name: "crystra-ui-core",
+          version: "crystra-ui-v0.1.0-rc.1",
+        },
+        archiveName: "crystra-ui-core-0.1.0-rc.1.tgz",
         archiveBytes: Buffer.from("prerelease"),
         commit: "a".repeat(40),
-        candidateTag: "0.1.0-rc.2",
+        candidateTag: "crystra-ui-v0.1.0-rc.2",
       }),
     /stable package version/,
   );
@@ -45,15 +48,15 @@ test("candidate metadata rejects prerelease package bytes that cannot become a s
 test("qualified evidence fails closed when candidate artifact bytes drift", () => {
   const archive = Buffer.from("qualified bytes");
   const metadata = buildReleaseMetadata({
-    packageManifest: { name: "wsr-ui-core", version: "0.1.0" },
-    archiveName: "wsr-ui-core-0.1.0.tgz",
+    packageManifest: { name: "crystra-ui-core", version: "0.1.0" },
+    archiveName: "crystra-ui-core-0.1.0.tgz",
     archiveBytes: archive,
     commit: "b".repeat(40),
-    candidateTag: "0.1.0-rc.3",
+    candidateTag: "crystra-ui-v0.1.0-rc.3",
   });
   const metadataBytes = Buffer.from(`${JSON.stringify(metadata, null, 2)}\n`);
   const qualification = {
-    schemaVersion: "wsr-ui.release-qualification@1.0.0",
+    schemaVersion: "crystra-ui.release-qualification@1.0.0",
     candidateTag: metadata.candidateTag,
     commit: metadata.commit,
     releaseMetadataSha256: sha256(metadataBytes),
@@ -94,21 +97,16 @@ test("candidate and promotion workflows preserve the rc/GA authority boundary", 
 
   assert.match(candidate, /branches:\s*\n\s*- release\/next/);
   assert.doesNotMatch(candidate, /workflow_dispatch:|workflow_call:/);
-  assert.match(candidate, /authority_ref/);
-  assert.match(candidate, /ls-tree HEAD wsr-ui/);
+  assert.doesNotMatch(candidate, /authority_ref/);
+  assert.doesNotMatch(candidate, /ls-tree HEAD crystra-ui/);
   assert.match(candidate, /RELEASE_TARGET/);
   assert.match(candidate, /--prerelease/);
   assert.doesNotMatch(candidate, /npm publish/);
   assert.match(promote, /^on:\s*\n\s*workflow_dispatch:/m);
   assert.doesNotMatch(promote, /^\s+push:/m);
   assert.match(promote, /release\.mjs verify .*--qualified/);
-  assert.match(
-    promote,
-    /npm publish "\$PACKAGE_ARCHIVE" --provenance --access public/,
-  );
-  assert.ok(
-    promote.indexOf("npm publish") < promote.lastIndexOf("gh release create"),
-  );
+  assert.doesNotMatch(promote, /npm publish/);
+  assert.match(promote, /gh release create/);
 });
 
 test("promotion resolves its candidate before checkout with explicit repository context", async () => {
@@ -138,7 +136,7 @@ test("release workflows mint App tokens with the Node 24 action", async () => {
     assert.doesNotMatch(workflow, /actions\/create-github-app-token@v2/);
     assert.match(
       workflow,
-      /client-id: \$\{\{ vars\.WSR_RELEASE_CLIENT_ID \}\}/,
+      /client-id: \$\{\{ vars\.CRYSTRA_RELEASE_CLIENT_ID \}\}/,
     );
     assert.doesNotMatch(workflow, /app-id:/);
   }

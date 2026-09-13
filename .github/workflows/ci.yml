@@ -4,11 +4,11 @@ on:
   pull_request:
   push:
     branches:
-      - iter5/implementation
+      - main
   workflow_dispatch:
 
 concurrency:
-  group: wsr-ui-${{ github.workflow }}-${{ github.ref }}
+  group: crystra-ui-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 permissions:

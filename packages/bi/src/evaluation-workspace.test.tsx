@@ -202,9 +202,9 @@ describe("Evaluation workspace", () => {
       await screen.findByRole("button", { name: "Edit dashboard" }),
     );
     await user.click(screen.getByRole("button", { name: "Save dashboard" }));
-    expect(window.localStorage.getItem("wsr.bi.dashboard-layout@1")).toContain(
-      '"layout_version":1',
-    );
+    expect(
+      window.localStorage.getItem("crystra.bi.dashboard-layout@1"),
+    ).toContain('"layout_version":1');
     expect(screen.getByLabelText("Layout preset")).toHaveValue("local@1");
     expect(computeSingle).toHaveBeenCalledTimes(1);
   });

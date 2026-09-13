@@ -20,7 +20,7 @@
   padding: 0 0 16px;
   border-bottom: 1px solid var(--color-border-subtle);
 }
-.intent-toolbar .wsr-field {
+.intent-toolbar .crystra-field {
   width: 176px;
 }
 .intent-canvas-toolbar {
@@ -47,13 +47,13 @@
   border-radius: var(--shape-panel);
   box-shadow: var(--card-surface-shadow);
 }
-.intent-search-results > .wsr-button {
+.intent-search-results > .crystra-button {
   justify-content: space-between;
 }
 .intent-analysis-strip {
   padding: 0 0 16px;
 }
-.intent-analysis-strip > .wsr-button {
+.intent-analysis-strip > .crystra-button {
   margin-left: auto;
 }
 .intent-body {
@@ -173,7 +173,7 @@
   gap: 16px;
   animation: intent-panel-in 200ms ease-out;
 }
-.intent-panel > .wsr-card {
+.intent-panel > .crystra-card {
   flex: none;
 }
 .intent-panel-heading {
@@ -228,7 +228,7 @@
   flex-direction: column;
   gap: 12px;
 }
-.intent-release-result > .wsr-button {
+.intent-release-result > .crystra-button {
   justify-content: space-between;
   text-align: left;
 }
@@ -297,12 +297,12 @@
 .intent-node {
   height: 136px;
 }
-.intent-panel .wsr-card-content {
+.intent-panel .crystra-card-content {
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
-.intent-node .wsr-typography[data-variant="item-title"] {
+.intent-node .crystra-typography[data-variant="item-title"] {
   font-size: 16px;
   line-height: 22px;
 }

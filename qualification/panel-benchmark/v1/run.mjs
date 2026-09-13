@@ -49,7 +49,7 @@ if (
 }
 
 if (isFull) {
-  if (process.env.WSR_BENCHMARK_FIXED_RUNNER !== "1") {
+  if (process.env.CRYSTRA_BENCHMARK_FIXED_RUNNER !== "1") {
     throw new Error(
       "Full panel-benchmark@1 must run through the fixed-runner container",
     );
@@ -118,7 +118,7 @@ async function measureSample(browser, target, interactionMs = 0) {
       `http://127.0.0.1:4174/benchmark.html?panel=${encodeURIComponent(target.panel)}&fixture=${encodeURIComponent(target.fixture)}`,
       { waitUntil: "networkidle" },
     );
-    await page.waitForFunction(() => window.__wsrBenchmark?.ready === true);
+    await page.waitForFunction(() => window.__crystraBenchmark?.ready === true);
     if (target.panel === "unavailable@1") {
       if ((await page.locator('[data-state="UNAVAILABLE"]').count()) !== 1) {
         throw new Error("UNAVAILABLE semantic state is missing");
@@ -135,14 +135,14 @@ async function measureSample(browser, target, interactionMs = 0) {
     const frameDurations =
       interactionMs > 0
         ? await page.evaluate(
-            (duration) => window.__wsrBenchmark.runInteraction(duration),
+            (duration) => window.__crystraBenchmark.runInteraction(duration),
             interactionMs,
           )
         : [];
     const raw = await page.evaluate(() => ({
-      dataReady: window.__wsrBenchmark.dataReady,
-      firstPaintMs: window.__wsrBenchmark.firstPaintMs,
-      longTasks: [...window.__wsrBenchmark.longTasks],
+      dataReady: window.__crystraBenchmark.dataReady,
+      firstPaintMs: window.__crystraBenchmark.firstPaintMs,
+      longTasks: [...window.__crystraBenchmark.longTasks],
       measurementEnd: performance.now(),
     }));
     if (typeof raw.firstPaintMs !== "number") {
@@ -264,7 +264,7 @@ try {
           viewport: manifest.runner.viewport,
           deviceScaleFactor: manifest.runner.deviceScaleFactor,
           runnerImageDigest:
-            process.env.WSR_BENCHMARK_RUNNER_IMAGE ?? "native-smoke",
+            process.env.CRYSTRA_BENCHMARK_RUNNER_IMAGE ?? "native-smoke",
         },
         evaluation,
       });
@@ -289,8 +289,8 @@ const result = {
   benchmark: manifest.schemaVersion,
   manifestSha256: createHash("sha256").update(manifestBytes).digest("hex"),
   providerCommit:
-    process.env.WSR_BENCHMARK_PROVIDER_COMMIT ?? "working-tree-smoke",
-  packageCoordinate: "wsr-ui-core",
+    process.env.CRYSTRA_BENCHMARK_PROVIDER_COMMIT ?? "working-tree-smoke",
+  packageCoordinate: "crystra-ui-core",
   packageVersion: "0.1.0",
   createdAt: new Date().toISOString(),
   results,

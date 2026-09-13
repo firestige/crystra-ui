@@ -8,16 +8,16 @@ import { inspectPackageArtifact } from "./package-contract.mjs";
 
 const expectedRepository = {
   type: "git",
-  url: "https://github.com/firestige/wsr-ui",
+  url: "https://github.com/firestige/crystra-ui",
 };
 
 async function artifactFixture(indexSource, repository = expectedRepository) {
-  const root = await mkdtemp(join(tmpdir(), "wsr-bi-package-contract-"));
+  const root = await mkdtemp(join(tmpdir(), "crystra-bi-package-contract-"));
   await mkdir(join(root, "dist"));
   await writeFile(
     join(root, "package.json"),
     JSON.stringify({
-      name: "wsr-ui-core",
+      name: "crystra-ui-core",
       version: "0.1.0-rc.0",
       ...(repository === null ? {} : { repository }),
       exports: {
@@ -32,7 +32,10 @@ async function artifactFixture(indexSource, repository = expectedRepository) {
     join(root, "dist/index.d.ts"),
     "export declare const MetricPanel: unknown;\n",
   );
-  await writeFile(join(root, "dist/styles.css"), ".wsr-bi { color: black; }\n");
+  await writeFile(
+    join(root, "dist/styles.css"),
+    ".crystra-bi { color: black; }\n",
+  );
   return root;
 }
 
@@ -44,7 +47,7 @@ test("accepts an external-React artifact with complete public files", async (t) 
 
   const result = await inspectPackageArtifact(root);
 
-  assert.equal(result.coordinate, "wsr-ui-core@0.1.0-rc.0");
+  assert.equal(result.coordinate, "crystra-ui-core@0.1.0-rc.0");
   assert.deepEqual(result.files, [
     "dist/index.d.ts",
     "dist/index.js",
@@ -66,7 +69,7 @@ test("fails closed when npm provenance cannot bind the package to this repositor
 test("fails closed when npm provenance names a different repository", async (t) => {
   const root = await artifactFixture(
     'import { createElement } from "react";\nexport { createElement };\n',
-    { type: "git", url: "https://github.com/firestige/not-wsr-ui" },
+    { type: "git", url: "https://github.com/firestige/not-crystra-ui" },
   );
   t.after(() => rm(root, { force: true, recursive: true }));
 

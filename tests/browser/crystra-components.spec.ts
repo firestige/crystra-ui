@@ -30,7 +30,7 @@ test("Crystra recipes compose dimensions and colors and keep pointer/focus state
   await page.emulateMedia({ reducedMotion: "reduce" });
   await expect(copy).toHaveCSS("transition-duration", "0s");
   await expect(
-    page.locator('.wsr-chip[data-tone="success"]').first(),
+    page.locator('.crystra-chip[data-tone="success"]').first(),
   ).toHaveCSS("color", "rgb(34, 197, 94)");
 });
 
@@ -81,7 +81,7 @@ test("state samples filter locally, expand within the bench, and show explicit p
   page,
 }) => {
   await page.goto("/components.html");
-  const searchSample = page.locator(".wsr-card").filter({
+  const searchSample = page.locator(".crystra-card").filter({
     has: page.getByRole("heading", { name: "搜索、筛选与选择", exact: true }),
   });
   await searchSample
@@ -94,10 +94,10 @@ test("state samples filter locally, expand within the bench, and show explicit p
   const bench = page.locator(".preview-bench");
   const before = await bench.boundingBox();
   await page.getByRole("button", { name: "展开条目列表" }).click();
-  const viewer = page.locator(".wsr-bench-viewer");
+  const viewer = page.locator(".crystra-bench-viewer");
   const box = await viewer.boundingBox();
   expect(box!.height).toBeLessThanOrEqual(before!.height);
-  const scroll = page.locator(".wsr-viewer-scroll");
+  const scroll = page.locator(".crystra-viewer-scroll");
   expect(await scroll.evaluate((e) => e.scrollHeight > e.clientHeight)).toBe(
     true,
   );
@@ -119,7 +119,7 @@ test("state samples filter locally, expand within the bench, and show explicit p
     "aria-valuenow",
     "25",
   );
-  const notice = await page.locator(".wsr-progress-notice").boundingBox();
+  const notice = await page.locator(".crystra-progress-notice").boundingBox();
   expect(notice!.y + notice!.height).toBeLessThanOrEqual(
     page.viewportSize()!.height,
   );

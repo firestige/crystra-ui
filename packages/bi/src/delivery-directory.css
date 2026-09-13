@@ -30,7 +30,9 @@
   overflow-anchor: none;
   padding: 0 8px 12px;
 }
-.delivery-directory .wsr-list-copy .wsr-typography[data-variant="description"] {
+.delivery-directory
+  .crystra-list-copy
+  .crystra-typography[data-variant="description"] {
   display: flex;
   flex-direction: column;
   gap: 3px;
@@ -65,7 +67,7 @@
 .delivery-condition-chip > span {
   overflow-wrap: anywhere;
 }
-.delivery-condition-chip .wsr-button {
+.delivery-condition-chip .crystra-button {
   flex-shrink: 0;
 }
 .delivery-filter-toggle {
@@ -147,10 +149,10 @@
 }
 
 /* Caller-owned width; SearchField only caps the prefix slot. */
-.wsr-bi
+.crystra-bi
   .delivery-directory
-  .wsr-search-leading
-  .wsr-field[data-appearance="embedded"]
+  .crystra-search-leading
+  .crystra-field[data-appearance="embedded"]
   .delivery-directory-field-selector {
   width: 96px;
   max-width: 100%;

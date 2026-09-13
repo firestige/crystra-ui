@@ -9,11 +9,11 @@ const traceViews = readFileSync(
 
 describe("frozen Trace Tree visual grammar", () => {
   it("consumes the shared semantic type, shape, and surface tokens", () => {
-    expect(css).toMatch(/--type-heading-size:\s*var\(--wsr-type-h2,/);
-    expect(css).toMatch(/--type-body-size:\s*var\(--wsr-type-body1,/);
-    expect(css).toMatch(/--type-caption-size:\s*var\(--wsr-type-caption,/);
-    expect(css).toMatch(/--shape-panel:\s*var\(--wsr-shape-panel,/);
-    expect(css).toMatch(/--surface-panel:\s*var\(--wsr-surface-panel,/);
+    expect(css).toMatch(/--type-heading-size:\s*var\(--crystra-type-h2,/);
+    expect(css).toMatch(/--type-body-size:\s*var\(--crystra-type-body1,/);
+    expect(css).toMatch(/--type-caption-size:\s*var\(--crystra-type-caption,/);
+    expect(css).toMatch(/--shape-panel:\s*var\(--crystra-shape-panel,/);
+    expect(css).toMatch(/--surface-panel:\s*var\(--crystra-surface-panel,/);
     expect(css).not.toMatch(/--trace-type-|--trace-surface-/);
   });
 
@@ -29,7 +29,7 @@ describe("frozen Trace Tree visual grammar", () => {
 
   it("highlights waterfall action icons on hover and keyboard focus", () => {
     expect(css).toMatch(
-      /\.trace-waterfall-actions\s+\.wsr-button\[data-icon-button="true"\]:is\(:hover,\s*:focus-visible\)\s*\{[^}]*background:\s*var\(--interaction-selection\);[^}]*color:\s*var\(--interaction-accent\)/s,
+      /\.trace-waterfall-actions\s+\.crystra-button\[data-icon-button="true"\]:is\(:hover,\s*:focus-visible\)\s*\{[^}]*background:\s*var\(--interaction-selection\);[^}]*color:\s*var\(--interaction-accent\)/s,
     );
   });
 
@@ -42,8 +42,8 @@ describe("frozen Trace Tree visual grammar", () => {
   });
 
   it("uses shared semantic palette tokens for tree and Passport accents", () => {
-    expect(css).not.toMatch(/--wsr-tree-/);
-    expect(traceViews).not.toMatch(/--wsr-tree-/);
+    expect(css).not.toMatch(/--crystra-tree-/);
+    expect(traceViews).not.toMatch(/--crystra-tree-/);
     for (const token of [
       "--surface-raised",
       "--border-strong",
@@ -67,7 +67,7 @@ describe("frozen Trace Tree visual grammar", () => {
 
   it("uses one typography and spacing contract for link and focus receipts", () => {
     expect(css).toMatch(
-      /\.trace-link-receipt,\s*\.wsr-bi \.trace-focus-receipt\s*\{[^}]*margin-block:\s*var\(--space-grid\);[^}]*color:\s*var\(--content-secondary\);[^}]*font-family:\s*var\(--type-code-family\);[^}]*font-size:\s*var\(--type-caption-size\);[^}]*line-height:\s*1\.5;[^}]*text-align:\s*start/s,
+      /\.trace-link-receipt,\s*\.crystra-bi \.trace-focus-receipt\s*\{[^}]*margin-block:\s*var\(--space-grid\);[^}]*color:\s*var\(--content-secondary\);[^}]*font-family:\s*var\(--type-code-family\);[^}]*font-size:\s*var\(--type-caption-size\);[^}]*line-height:\s*1\.5;[^}]*text-align:\s*start/s,
     );
   });
 
@@ -101,7 +101,7 @@ describe("frozen Trace Tree visual grammar", () => {
   });
 
   it("uses the shared six-color data palette for waterfall marks and indents", () => {
-    expect(css).not.toMatch(/--wsr-(?:waterfall-color|trace-indent)-/);
+    expect(css).not.toMatch(/--crystra-(?:waterfall-color|trace-indent)-/);
     expect(css).toMatch(/--data-series-1:/);
     expect(css).toMatch(/--data-series-6:/);
     expect(css).toMatch(

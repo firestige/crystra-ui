@@ -1,8 +1,8 @@
-# wsr-ui-core
+# crystra-ui-core
 
-Host-neutral React components and domain projections for WSR business-intelligence results.
+Host-neutral React components and domain projections for Crystra business-intelligence results.
 
-Install the package beside a host-provided React 18 or React 19 runtime. Import `wsr-ui-core/styles.css`, then wrap shared components in `BiSurface`; the stylesheet is scoped to that root and does not install a global reset or theme.
+Install the package beside a host-provided React 18 or React 19 runtime. Import `crystra-ui-core/styles.css`, then wrap shared components in `BiSurface`; the stylesheet is scoped to that root and does not install a global reset or theme.
 
 The package does not own network access, routing, history, authentication, notifications, or application startup. Hosts supply data and action/navigation callbacks through component props and ports.
 
@@ -43,4 +43,4 @@ SOFTWARE.
 
 ### MonitoringWidget
 
-`MonitoringWidget` and `WIDGET_CATALOG` provide the accepted eight monitoring categories, optional content slots and 160px grid units with 16px internal gaps in spanning border boxes. Import `wsr-ui-core/styles.css`; no gallery wrapper is required. `Widget` is a deprecated compatibility API. MonitoringMetricPanel provides the four existing result projections; the monitoring Dashboard uses semantic size choices and animated reflow.
+`MonitoringWidget` and `WIDGET_CATALOG` provide the accepted eight monitoring categories, optional content slots and 160px grid units with 16px internal gaps in spanning border boxes. Import `crystra-ui-core/styles.css`; no gallery wrapper is required. `Widget` is a deprecated compatibility API. MonitoringMetricPanel provides the four existing result projections; the monitoring Dashboard uses semantic size choices and animated reflow.

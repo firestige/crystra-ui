@@ -2,7 +2,7 @@
 
 本文记录已有 MonitoringWidget / 指标适配 API。当前视觉及后续组件化以 [表达设计](../../docs/design/crystra-ui/components/widget-expression-design.md)和 [Widget / 展示组件 / Dashboard 契约](../../docs/design/crystra-ui/components/widget-component-contract.md)为准。下文旧分类与样本不替代最新表达规则；稳定实例内部状态、公开消费定义和独立 Chart API 尚未实现。
 
-状态：已接受，底座已落入 wsr-ui-core。监控语义是 Widget 的设计入口；旧文字基座不再作为设计方案。React + TypeScript 实现，沿用现有 Tailwind/CSS 资产管线，不引入 MUI 或 Vuetify 实现。
+状态：已接受，底座已落入 crystra-ui-core。监控语义是 Widget 的设计入口；旧文字基座不再作为设计方案。React + TypeScript 实现，沿用现有 Tailwind/CSS 资产管线，不引入 MUI 或 Vuetify 实现。
 
 ## 分类与容量
 
@@ -36,8 +36,8 @@
 原生 article 的 `id`、ARIA、data 属性、事件和 `className` 可传入；`title` 用作内容槽位。宽高由 size 管理，不开放 style 尺寸覆盖；自定义 class 不得改写固定尺寸契约。底座不会自动给整张卡添加点击行为，补充操作由 actions 中的语义按钮提供。
 
 ```tsx
-import { MonitoringWidget, Button } from "wsr-ui-core";
-import "wsr-ui-core/styles.css";
+import { MonitoringWidget, Button } from "crystra-ui-core";
+import "crystra-ui-core/styles.css";
 
 <MonitoringWidget
   category="value"

@@ -1,7 +1,8 @@
-# WSR UI
+# Crystra UI
 
-Source-built UI deliverables for Workflow Self Recursive. Iteration 5 instantiates only the BI
-deliverable; `workflow-builder` and `intake-sidebar` are intentionally absent.
+Shared React components and domain projections for Crystra. `crystra-ui-core` is an ordinary
+dependency of the single `dsh-crystra` plugin, not a separately registered DSH plugin. Development
+and CI run on this repository’s `main`; the combination repository pins verified releases.
 
 ## BI development
 
@@ -42,7 +43,7 @@ computes metrics or connects to PostgreSQL. Its `/healthz` reports Nginx/static-
 Build locally without publishing:
 
 ```sh
-docker build --tag wsr-ui-bi:local .
+docker build --tag crystra-ui-bi:local .
 ```
 
 See [implementation baseline](docs/implementation-baseline.md) for exact versions, ownership and

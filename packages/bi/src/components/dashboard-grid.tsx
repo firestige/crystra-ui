@@ -31,7 +31,7 @@ import {
 import { IconButton } from "./design-system";
 
 const approvedWidgetSizes: LayoutConstraint = {
-  name: "wsr-approved-widget-sizes",
+  name: "crystra-approved-widget-sizes",
 };
 
 function visualizerSizeConstraint(

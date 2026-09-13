@@ -1,4 +1,4 @@
-{"schema":"wsr-ui.dependency-inventory@0.1.0","packageLockSha256":"c7fe95eb1a7586d67a73430b110a7329112ac7b3fbf2342926aeed3c608cd183","dependencyCount":534}
+{"schema":"crystra-ui.dependency-inventory@0.1.0","packageLockSha256":"f54e2e37832731e57b74ae409db80c493a01df0cae995ed8031f33a345c5ff5b","dependencyCount":534}
 {"path":"node_modules/@adobe/css-tools","version":"4.5.0","license":"MIT","development":true,"optional":false}
 {"path":"node_modules/@antfu/install-pkg","version":"1.1.0","license":"MIT","development":true,"optional":false}
 {"path":"node_modules/@asamuzakjp/css-color","version":"5.1.11","license":"MIT","development":true,"optional":false}

@@ -36,8 +36,8 @@ css.walkRules((rule: { selectors: string[] }) => {
   rule.selectors = rule.selectors.map(
     (selector) =>
       (selector === "body"
-        ? ".wsr-monitoring"
-        : `.wsr-monitoring ${selector}`) +
+        ? ".crystra-monitoring"
+        : `.crystra-monitoring ${selector}`) +
       ":not([data-host-owned], [data-host-owned] *)",
   );
 });
@@ -46,8 +46,8 @@ writeFileSync(
   await format(
     css.toString() +
       `
-.wsr-monitoring .monitoring-fixture-content:not([data-host-owned], [data-host-owned] *) { display: contents; }
-.wsr-monitoring .widget > header > div:not([data-host-owned], [data-host-owned] *) { min-width:0; }`,
+.crystra-monitoring .monitoring-fixture-content:not([data-host-owned], [data-host-owned] *) { display: contents; }
+.crystra-monitoring .widget > header > div:not([data-host-owned], [data-host-owned] *) { min-width:0; }`,
     { parser: "css" },
   ),
 );

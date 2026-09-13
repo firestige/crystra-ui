@@ -1,4 +1,4 @@
-.wsr-bi[data-crystra-theme="dark"] .wsr-toggle-switch {
+.crystra-bi[data-crystra-theme="dark"] .crystra-toggle-switch {
   --switch-width: 48px;
   --switch-height: 26px;
   --switch-inset: 3px;
@@ -16,24 +16,25 @@
   border-radius: var(--switch-radius);
   color: var(--color-text-primary);
 }
-.wsr-bi .wsr-toggle-switch[data-size="regular"] {
+.crystra-bi .crystra-toggle-switch[data-size="regular"] {
   --switch-width: 56px;
   --switch-height: 32px;
   min-height: 40px;
 }
-.wsr-bi .wsr-toggle-switch[data-shape="square"] {
+.crystra-bi .crystra-toggle-switch[data-shape="square"] {
   --switch-radius: 6px;
   --switch-thumb-radius: 3px;
 }
-.wsr-bi .wsr-toggle-switch[data-icon-placement="track"] {
+.crystra-bi .crystra-toggle-switch[data-icon-placement="track"] {
   --switch-width: 64px;
   --switch-height: 32px;
 }
-.wsr-bi .wsr-toggle-switch[data-icon-placement="track"][data-size="regular"] {
+.crystra-bi
+  .crystra-toggle-switch[data-icon-placement="track"][data-size="regular"] {
   --switch-width: 76px;
   --switch-height: 36px;
 }
-.wsr-switch-track {
+.crystra-switch-track {
   position: relative;
   display: block;
   width: var(--switch-width);
@@ -43,7 +44,7 @@
   box-shadow: inset 0 0 0 1px var(--color-border-strong);
   transition: background-color 180ms ease;
 }
-.wsr-switch-thumb {
+.crystra-switch-thumb {
   position: absolute;
   z-index: 1;
   left: var(--switch-inset);
@@ -60,47 +61,47 @@
     transform 180ms cubic-bezier(0.22, 0.68, 0.2, 1),
     background-color 180ms ease;
 }
-.wsr-toggle-switch[data-checked="true"] .wsr-switch-track {
+.crystra-toggle-switch[data-checked="true"] .crystra-switch-track {
   background: var(--color-interaction-primary);
   box-shadow: none;
 }
-.wsr-toggle-switch[data-checked="true"] .wsr-switch-thumb {
+.crystra-toggle-switch[data-checked="true"] .crystra-switch-thumb {
   transform: translateX(calc(var(--switch-width) - var(--switch-height)));
 }
-.wsr-toggle-switch:focus-visible {
+.crystra-toggle-switch:focus-visible {
   outline: 2px solid var(--color-interaction-primary);
   outline-offset: 3px;
 }
-.wsr-toggle-switch:disabled {
+.crystra-toggle-switch:disabled {
   opacity: 0.4;
   cursor: not-allowed;
 }
-.wsr-toggle-switch:not(:disabled):hover .wsr-switch-track {
+.crystra-toggle-switch:not(:disabled):hover .crystra-switch-track {
   filter: brightness(1.12);
 }
-.wsr-switch-thumb svg {
+.crystra-switch-thumb svg {
   width: 14px;
   height: 14px;
 }
-.wsr-toggle-switch[data-size="regular"] .wsr-switch-thumb svg {
+.crystra-toggle-switch[data-size="regular"] .crystra-switch-thumb svg {
   width: 18px;
   height: 18px;
 }
-.wsr-toggle-switch[data-icon-placement="track"] .wsr-switch-thumb {
+.crystra-toggle-switch[data-icon-placement="track"] .crystra-switch-thumb {
   width: calc((var(--switch-width) - var(--switch-inset) * 2) / 2);
 }
-.wsr-toggle-switch[data-icon-placement="track"][data-checked="true"]
-  .wsr-switch-thumb {
+.crystra-toggle-switch[data-icon-placement="track"][data-checked="true"]
+  .crystra-switch-thumb {
   transform: translateX(100%);
 }
-.wsr-toggle-switch[data-mode="choice"] .wsr-switch-track {
+.crystra-toggle-switch[data-mode="choice"] .crystra-switch-track {
   background: var(--color-background-neutral-action);
   box-shadow: inset 0 0 0 1px var(--color-border-strong);
 }
-.wsr-toggle-switch[data-mode="choice"] .wsr-switch-thumb {
+.crystra-toggle-switch[data-mode="choice"] .crystra-switch-thumb {
   background: var(--color-interaction-primary);
 }
-.wsr-switch-symbols {
+.crystra-switch-symbols {
   position: absolute;
   inset: var(--switch-inset);
   z-index: 2;
@@ -108,22 +109,26 @@
   grid-template-columns: 1fr 1fr;
   pointer-events: none;
 }
-.wsr-switch-symbols > span {
+.crystra-switch-symbols > span {
   display: grid;
   place-items: center;
   color: var(--color-text-secondary);
 }
-.wsr-switch-symbols svg {
+.crystra-switch-symbols svg {
   width: 16px;
   height: 16px;
 }
-.wsr-toggle-switch[data-checked="false"] .wsr-switch-symbols > span:first-child,
-.wsr-toggle-switch[data-checked="true"] .wsr-switch-symbols > span:last-child {
+.crystra-toggle-switch[data-checked="false"]
+  .crystra-switch-symbols
+  > span:first-child,
+.crystra-toggle-switch[data-checked="true"]
+  .crystra-switch-symbols
+  > span:last-child {
   color: var(--color-text-on-primary);
 }
 @media (prefers-reduced-motion: reduce) {
-  .wsr-switch-track,
-  .wsr-switch-thumb {
+  .crystra-switch-track,
+  .crystra-switch-thumb {
     transition: none;
   }
 }

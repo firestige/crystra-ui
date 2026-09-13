@@ -6,7 +6,7 @@ import type { TraceView } from "../domain/trace/trace-view";
 import { TraceStatistics, TraceTree, TraceWaterfall } from "../public";
 
 const trace: TraceView = {
-  schemaVersion: "wsr.trace-view@1",
+  schemaVersion: "crystra.trace-view@1",
   status: "READY",
   traceId: "trace-1",
   startTimeUnixNano: "1000",
@@ -26,7 +26,7 @@ const trace: TraceView = {
       startOffsetNano: "0",
       flags: 1,
       traceState: null,
-      fields: [{ field: "wsr.role", value: "orchestrator" }],
+      fields: [{ field: "crystra.role", value: "orchestrator" }],
       truth: {
         availability: "AVAILABLE",
         completeness: "FINAL",
@@ -842,7 +842,7 @@ describe("recorded Trace business panels", () => {
         {
           ...trace.nodes[1]!,
           durationNano: "40",
-          fields: [{ field: "wsr.statistics.topic", value: "Execution" }],
+          fields: [{ field: "crystra.statistics.topic", value: "Execution" }],
           status: "ERROR",
         },
         {
@@ -851,7 +851,7 @@ describe("recorded Trace business panels", () => {
           endpoint: { trace_id: "trace-1", span_id: "unset-child" },
           label: "category.unset",
           durationNano: "60",
-          fields: [{ field: "wsr.statistics.topic", value: "Cleanup" }],
+          fields: [{ field: "crystra.statistics.topic", value: "Cleanup" }],
           status: "UNSET",
         },
       ],
@@ -984,7 +984,7 @@ describe("recorded Trace business panels", () => {
                 ? []
                 : [
                     {
-                      field: "wsr.statistics.topic",
+                      field: "crystra.statistics.topic",
                       value: `Topic ${index}`,
                     },
                   ],

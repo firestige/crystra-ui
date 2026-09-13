@@ -5,7 +5,7 @@ import { describe, expect, it } from "vitest";
 import { ActiveScenario } from "./scenario";
 import { TestHarness } from "./test-harness";
 
-describe("WSR UI test SPA", () => {
+describe("Crystra UI test SPA", () => {
   it("mounts the dashboard inspection scenario in the reusable shell", async () => {
     const user = userEvent.setup();
     render(
@@ -15,7 +15,7 @@ describe("WSR UI test SPA", () => {
     );
 
     expect(
-      screen.getByRole("main", { name: "WSR UI component test harness" }),
+      screen.getByRole("main", { name: "Crystra UI component test harness" }),
     ).toBeVisible();
     const dashboard = screen.getByRole("region", {
       name: "Dashboard inspection",

@@ -1,7 +1,7 @@
 /* Static shell adapter only: visual states live in search-field.css. */
-.wsr-bi
+.crystra-bi
   [data-section-id$="-section-header"]
-  .wsr-search-bridge-sidebar[data-open] {
+  .crystra-search-bridge-sidebar[data-open] {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -12,26 +12,30 @@
   background: transparent !important;
   pointer-events: none;
 }
-.wsr-search-bridge-sidebar .wsr-expandable-search {
+.crystra-search-bridge-sidebar .crystra-expandable-search {
   height: 36px;
 }
-.wsr-search-bridge-sidebar .wsr-expandable-search-title {
+.crystra-search-bridge-sidebar .crystra-expandable-search-title {
   display: none;
 }
-.wsr-search-bridge-sidebar .wsr-expandable-search-trigger {
+.crystra-search-bridge-sidebar .crystra-expandable-search-trigger {
   pointer-events: auto;
 }
-.wsr-search-bridge-sidebar [data-open="false"] .wsr-expandable-search-trigger {
+.crystra-search-bridge-sidebar
+  [data-open="false"]
+  .crystra-expandable-search-trigger {
   left: calc(100% - 58px);
 }
-.wsr-search-bridge-sidebar [data-open="true"] .wsr-expandable-search-content {
+.crystra-search-bridge-sidebar
+  [data-open="true"]
+  .crystra-expandable-search-content {
   pointer-events: auto;
 }
-.wsr-search-bridge-seat {
+.crystra-search-bridge-seat {
   min-width: 0;
   width: 100%;
 }
-[data-section-id="plan-dag-toolbar"] .wsr-search-bridge-seat {
+[data-section-id="plan-dag-toolbar"] .crystra-search-bridge-seat {
   width: 240px;
   margin-left: auto;
 }

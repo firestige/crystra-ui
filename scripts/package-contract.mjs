@@ -5,7 +5,7 @@ import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const requiredFiles = ["dist/index.d.ts", "dist/index.js", "dist/styles.css"];
-const expectedRepositoryUrl = "https://github.com/firestige/wsr-ui";
+const expectedRepositoryUrl = "https://github.com/firestige/crystra-ui";
 
 async function listFiles(root, relative = "") {
   const entries = await readdir(resolve(root, relative), {
@@ -59,8 +59,8 @@ export async function inspectPackageArtifact(packageRoot) {
   }
 
   const styles = await readFile(resolve(root, "dist/styles.css"), "utf8");
-  if (!styles.includes(".wsr-bi")) {
-    throw new Error("Package stylesheet is not scoped to .wsr-bi");
+  if (!styles.includes(".crystra-bi")) {
+    throw new Error("Package stylesheet is not scoped to .crystra-bi");
   }
 
   const digest = createHash("sha512");

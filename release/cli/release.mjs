@@ -12,8 +12,8 @@ import path from "node:path";
 import process from "node:process";
 import { fileURLToPath } from "node:url";
 
-const METADATA_SCHEMA = "wsr-ui.release-metadata@1.0.0";
-const QUALIFICATION_SCHEMA = "wsr-ui.release-qualification@1.0.0";
+const METADATA_SCHEMA = "crystra-ui.release-metadata@1.0.0";
+const QUALIFICATION_SCHEMA = "crystra-ui.release-qualification@1.0.0";
 const SHA256 = /^sha256:[a-f0-9]{64}$/;
 const COMMIT = /^[a-f0-9]{40}$/;
 const STABLE_VERSION = /^\d+\.\d+\.\d+$/;
@@ -32,19 +32,19 @@ export function buildReleaseMetadata({
   candidateTag,
 }) {
   invariant(
-    packageManifest?.name === "wsr-ui-core",
-    "release package must be wsr-ui-core",
+    packageManifest?.name === "crystra-ui-core",
+    "release package must be crystra-ui-core",
   );
   invariant(
     STABLE_VERSION.test(packageManifest?.version ?? ""),
     "candidate must contain a stable package version",
   );
   const candidateMatch = candidateTag?.match(
-    /^(\d+\.\d+\.\d+)-rc\.([1-9]\d*)$/,
+    /^crystra-ui-v(\d+\.\d+\.\d+)-rc\.([1-9]\d*)$/,
   );
   invariant(
     candidateMatch?.[1] === packageManifest.version,
-    "candidate tag must be <package version>-rc.<positive ordinal>",
+    "candidate tag must be crystra-ui-v<package version>-rc.<positive ordinal>",
   );
   invariant(
     COMMIT.test(commit ?? ""),
@@ -80,7 +80,7 @@ export function verifyReleaseEvidence({
     "release metadata schema is invalid",
   );
   invariant(
-    metadata.package?.name === "wsr-ui-core",
+    metadata.package?.name === "crystra-ui-core",
     "release metadata package is invalid",
   );
   invariant(
@@ -92,7 +92,9 @@ export function verifyReleaseEvidence({
     "release metadata candidate tag is invalid",
   );
   invariant(
-    metadata.candidateTag.startsWith(`${metadata.package.version}-rc.`),
+    metadata.candidateTag.startsWith(
+      `crystra-ui-v${metadata.package.version}-rc.`,
+    ),
     "candidate tag does not match package version",
   );
   invariant(
@@ -212,7 +214,7 @@ async function build(directory, commit, candidateTag, sourceArchive) {
   );
   await writeFile(
     path.join(directory, "release-notes.md"),
-    `# wsr-ui-core ${packageManifest.version}\n\nQualified as candidate \`${candidateTag}\` from commit \`${commit}\`.\n`,
+    `# crystra-ui-core ${packageManifest.version}\n\nQualified as candidate \`${candidateTag}\` from commit \`${commit}\`.\n`,
   );
   await loadDirectory(directory);
 }
@@ -245,7 +247,7 @@ async function main([command, ...args]) {
     await loadDirectory(args[0], args[1] === "--qualified");
     const files = await readdir(args[0]);
     process.stdout.write(
-      `verified wsr-ui release evidence (${files.length} assets)\n`,
+      `verified crystra-ui release evidence (${files.length} assets)\n`,
     );
     return;
   }

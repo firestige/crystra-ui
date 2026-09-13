@@ -34,7 +34,7 @@ export function ToggleSwitch({
   return (
     <button
       type="button"
-      className="wsr-toggle-switch"
+      className="crystra-toggle-switch"
       role={mode === "switch" ? "switch" : undefined}
       aria-checked={mode === "switch" ? checked : undefined}
       aria-label={name}
@@ -47,12 +47,12 @@ export function ToggleSwitch({
       disabled={disabled}
       onClick={() => onCheckedChange(!checked)}
     >
-      <span className="wsr-switch-track" aria-hidden="true">
-        <span className="wsr-switch-thumb">
+      <span className="crystra-switch-track" aria-hidden="true">
+        <span className="crystra-switch-thumb">
           {icons && iconPlacement === "thumb" ? icons[checked ? 1 : 0] : null}
         </span>
         {icons && iconPlacement === "track" ? (
-          <span className="wsr-switch-symbols">
+          <span className="crystra-switch-symbols">
             <span>{icons[0]}</span>
             <span>{icons[1]}</span>
           </span>

@@ -1,5 +1,5 @@
 {
-  "name": "wsr-ui",
+  "name": "crystra-ui",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -11,7 +11,7 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "npm run build --workspace wsr-ui-core",
+    "build": "npm run build --workspace crystra-ui-core",
     "browser": "playwright test",
     "benchmark:full": "node qualification/panel-benchmark/v1/run-fixed.mjs",
     "benchmark:smoke": "node qualification/panel-benchmark/v1/run.mjs --mode=smoke",
@@ -19,13 +19,13 @@
     "deps:write": "node scripts/dependency-inventory.mjs --write",
     "dev": "vite packages/bi",
     "dev:test": "vite packages/bi --open /test.html",
-    "docker:build": "docker build --tag wsr-ui-bi:local .",
+    "docker:build": "docker build --tag crystra-ui-bi:local .",
     "docker:smoke": "./scripts/docker-smoke.sh",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "lint": "eslint .",
-    "package:verify": "npm run build --workspace wsr-ui-core && node scripts/package-contract.mjs packages/bi && npm pack --dry-run --json --workspace wsr-ui-core",
-    "react18:verify": "npm run build --workspace wsr-ui-core && node scripts/qualify-react18-consumer.mjs",
+    "package:verify": "npm run build --workspace crystra-ui-core && node scripts/package-contract.mjs packages/bi && npm pack --dry-run --json --workspace crystra-ui-core",
+    "react18:verify": "npm run build --workspace crystra-ui-core && node scripts/qualify-react18-consumer.mjs",
     "test": "vitest run && node --test scripts/*.test.mjs qualification/panel-benchmark/v1/*.test.mjs",
     "typecheck": "tsc -b --pretty false",
     "preview:workflow-layout": "node scripts/generate-workflow-activity-layouts.mjs"

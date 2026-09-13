@@ -706,7 +706,7 @@ export function WorkflowMapWorkbench({
         mode !== "crystallization" &&
         createPortal(
           <div
-            className="map-header-actions wsr-bi"
+            className="map-header-actions crystra-bi"
             data-crystra-theme="dark"
             data-ui-owner="components"
           >

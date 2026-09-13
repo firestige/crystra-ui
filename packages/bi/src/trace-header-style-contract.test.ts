@@ -21,16 +21,16 @@ describe("shared Trace view header grammar", () => {
 
   it("keeps overline compact while caption follows the readable text scale", () => {
     expect(css).toMatch(
-      /\.trace-view-header-copy\s*>\s*\.wsr-typography\[data-variant="overline"\]\s*\{[^}]*font-size:\s*var\(--type-overline-size\)/s,
+      /\.trace-view-header-copy\s*>\s*\.crystra-typography\[data-variant="overline"\]\s*\{[^}]*font-size:\s*var\(--type-overline-size\)/s,
     );
     expect(css).toMatch(
-      /\.trace-view-header-copy\s*>\s*\.wsr-typography\[data-variant="caption"\]\s*\{[^}]*font-size:\s*var\(--type-caption-size\)/s,
+      /\.trace-view-header-copy\s*>\s*\.crystra-typography\[data-variant="caption"\]\s*\{[^}]*font-size:\s*var\(--type-caption-size\)/s,
     );
     expect(css).toMatch(
-      /\.trace-view-header-copy\s*>\s*\.wsr-typography\[data-variant="overline"\]\s*\{[^}]*color:\s*var\(--content-secondary\);[^}]*font-weight:\s*700/s,
+      /\.trace-view-header-copy\s*>\s*\.crystra-typography\[data-variant="overline"\]\s*\{[^}]*color:\s*var\(--content-secondary\);[^}]*font-weight:\s*700/s,
     );
     expect(css).toMatch(
-      /\.trace-view-header-copy\s*>\s*\.wsr-typography\[data-variant="caption"\]\s*\{[^}]*color:\s*var\(--content-muted\)/s,
+      /\.trace-view-header-copy\s*>\s*\.crystra-typography\[data-variant="caption"\]\s*\{[^}]*color:\s*var\(--content-muted\)/s,
     );
   });
 });

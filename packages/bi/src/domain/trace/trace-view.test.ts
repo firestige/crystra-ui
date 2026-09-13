@@ -33,7 +33,7 @@ function node(
       span_status: "OK",
       span_flags: id === "root" ? 1 : 257,
       trace_state: id === "root" ? null : "vendor=value",
-      fields: [{ field: "wsr.role", value: id }],
+      fields: [{ field: "crystra.role", value: id }],
     },
   };
 }
@@ -89,7 +89,7 @@ describe("recorded Trace view compiler", () => {
 
     const view = compileTraceView(items);
 
-    expect(view.schemaVersion).toBe("wsr.trace-view@1");
+    expect(view.schemaVersion).toBe("crystra.trace-view@1");
     expect(view.status).toBe("READY");
     expect(view.traceId).toBe("trace-1");
     expect(view.durationNano).toBe("100");
@@ -104,7 +104,7 @@ describe("recorded Trace view compiler", () => {
       startOffsetNano: "10",
       flags: 257,
       traceState: "vendor=value",
-      fields: [{ field: "wsr.role", value: "child" }],
+      fields: [{ field: "crystra.role", value: "child" }],
       truth,
       parentId: "root",
     });

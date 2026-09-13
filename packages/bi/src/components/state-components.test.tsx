@@ -97,7 +97,7 @@ it("surface search keeps one accessible input with optional prefix", async () =>
     />,
   );
   const input = screen.getByRole("searchbox", { name: "搜索调用" });
-  expect(input.closest(".wsr-search-surface")).not.toBeNull();
+  expect(input.closest(".crystra-search-surface")).not.toBeNull();
   await user.type(input, "delivery");
   expect(input).toHaveValue("delivery");
 });

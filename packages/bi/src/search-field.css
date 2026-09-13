@@ -1,12 +1,12 @@
 /* Accepted search surface: shared by component samples and v8 callers. */
-.wsr-bi .wsr-search-field {
+.crystra-bi .crystra-search-field {
   width: 100%;
   min-width: 0;
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
-.wsr-bi .wsr-search-surface {
+.crystra-bi .crystra-search-surface {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -25,23 +25,25 @@
     color 160ms ease;
   cursor: text;
 }
-.wsr-bi .wsr-search-field[data-size="compact"] .wsr-search-surface {
+.crystra-bi .crystra-search-field[data-size="compact"] .crystra-search-surface {
   min-height: 36px;
 }
-.wsr-bi .wsr-search-field:not([data-disabled]) .wsr-search-surface:hover {
+.crystra-bi
+  .crystra-search-field:not([data-disabled])
+  .crystra-search-surface:hover {
   background: #303034;
 }
-.wsr-bi
-  .wsr-search-field:not([data-disabled])
-  .wsr-search-surface:focus-within {
+.crystra-bi
+  .crystra-search-field:not([data-disabled])
+  .crystra-search-surface:focus-within {
   background: #3b3b40;
   color: #f0f0f3;
   box-shadow:
     0 4px 12px #00000014,
     0 2px 8px #00000014;
 }
-.wsr-bi .wsr-search-surface > input,
-.wsr-bi .wsr-search-surface > input:is(:focus, :focus-visible) {
+.crystra-bi .crystra-search-surface > input,
+.crystra-bi .crystra-search-surface > input:is(:focus, :focus-visible) {
   appearance: none;
   flex: 1;
   min-width: 0;
@@ -59,11 +61,11 @@
   line-height: 20px;
   caret-color: #f4f4f5;
 }
-.wsr-bi .wsr-search-surface input::placeholder {
+.crystra-bi .crystra-search-surface input::placeholder {
   color: #a4a4ab;
   opacity: 1;
 }
-.wsr-bi .wsr-search-leading {
+.crystra-bi .crystra-search-leading {
   display: flex;
   align-items: center;
   font-size: 12px;
@@ -72,24 +74,24 @@
   max-width: 45%;
   overflow: hidden;
 }
-.wsr-bi .wsr-search-field[data-disabled] {
+.crystra-bi .crystra-search-field[data-disabled] {
   opacity: 0.45;
 }
-.wsr-bi .wsr-search-field[data-disabled] .wsr-search-surface {
+.crystra-bi .crystra-search-field[data-disabled] .crystra-search-surface {
   cursor: not-allowed;
 }
 @media (prefers-reduced-motion: reduce) {
-  .wsr-bi .wsr-search-surface {
+  .crystra-bi .crystra-search-surface {
     transition: none;
   }
 }
-.wsr-bi .wsr-expandable-search {
+.crystra-bi .crystra-expandable-search {
   position: relative;
   width: 100%;
   height: 38px;
   --search-motion: 340ms cubic-bezier(0.22, 1, 0.36, 1);
 }
-.wsr-bi .wsr-expandable-search-title {
+.crystra-bi .crystra-expandable-search-title {
   position: absolute;
   inset: 0;
   display: flex;
@@ -105,32 +107,34 @@
     opacity var(--search-motion),
     transform var(--search-motion);
 }
-.wsr-bi .wsr-expandable-search-content {
+.crystra-bi .crystra-expandable-search-content {
   clip-path: inset(0 0 0 calc(100% - 36px) round 12px);
   opacity: 0;
   transition:
     clip-path var(--search-motion),
     opacity var(--search-motion);
 }
-.wsr-bi
-  .wsr-expandable-search[data-open="true"]
-  .wsr-expandable-search-content {
+.crystra-bi
+  .crystra-expandable-search[data-open="true"]
+  .crystra-expandable-search-content {
   clip-path: inset(-12px round 12px);
   opacity: 1;
 }
-.wsr-bi .wsr-expandable-search[data-open="true"] .wsr-expandable-search-title {
+.crystra-bi
+  .crystra-expandable-search[data-open="true"]
+  .crystra-expandable-search-title {
   opacity: 0;
   transform: translateX(-8px);
   pointer-events: none;
 }
-.wsr-bi .wsr-expandable-search-spacer {
+.crystra-bi .crystra-expandable-search-spacer {
   visibility: hidden;
   display: flex;
   align-items: center;
   min-width: 14px;
   min-height: 14px;
 }
-.wsr-bi .wsr-expandable-search-trigger {
+.crystra-bi .crystra-expandable-search-trigger {
   position: absolute;
   top: 5px;
   left: calc(100% - 4px);
@@ -140,14 +144,14 @@
     transform var(--search-motion),
     color 160ms ease;
 }
-.wsr-bi
-  .wsr-expandable-search[data-open="true"]
-  .wsr-expandable-search-trigger {
+.crystra-bi
+  .crystra-expandable-search[data-open="true"]
+  .crystra-expandable-search-trigger {
   left: 6px;
   transform: translateX(0);
 }
-.wsr-bi .wsr-search-dismiss,
-.wsr-bi .wsr-expandable-search-trigger {
+.crystra-bi .crystra-search-dismiss,
+.crystra-bi .crystra-expandable-search-trigger {
   display: grid;
   place-items: center;
   width: 28px;
@@ -161,41 +165,43 @@
   color: #a4a4ab;
   cursor: pointer;
 }
-.wsr-bi .wsr-search-dismiss:is(:hover, :focus-visible),
-.wsr-bi .wsr-expandable-search-trigger:is(:hover, :focus-visible) {
+.crystra-bi .crystra-search-dismiss:is(:hover, :focus-visible),
+.crystra-bi .crystra-expandable-search-trigger:is(:hover, :focus-visible) {
   border: 0;
   outline: none;
   box-shadow: none;
   background: transparent;
   color: #fff;
 }
-.wsr-bi .wsr-search-dismiss:focus-visible svg,
-.wsr-bi .wsr-expandable-search-trigger:focus-visible svg {
+.crystra-bi .crystra-search-dismiss:focus-visible svg,
+.crystra-bi .crystra-expandable-search-trigger:focus-visible svg {
   stroke-width: 2.5;
 }
-.wsr-bi
-  .wsr-expandable-search[data-open="true"]:focus-within
-  .wsr-expandable-search-trigger {
+.crystra-bi
+  .crystra-expandable-search[data-open="true"]:focus-within
+  .crystra-expandable-search-trigger {
   color: #f0f0f3;
 }
 @media (prefers-reduced-motion: reduce) {
-  .wsr-bi .wsr-expandable-search {
+  .crystra-bi .crystra-expandable-search {
     --search-motion: 0ms;
   }
 }
 
-.wsr-bi .wsr-expandable-search[data-disabled] .wsr-expandable-search-trigger {
+.crystra-bi
+  .crystra-expandable-search[data-disabled]
+  .crystra-expandable-search-trigger {
   opacity: 0.45;
   cursor: not-allowed;
 }
-:root.wsr-bi[data-palette] .wsr-search-surface {
+:root.crystra-bi[data-palette] .crystra-search-surface {
   border-color: #ffffff0f !important;
 }
-:root.wsr-bi[data-palette] .wsr-search-surface > input {
+:root.crystra-bi[data-palette] .crystra-search-surface > input {
   border: 0 !important;
 }
 
-.wsr-bi .wsr-expandable-search-trigger {
+.crystra-bi .crystra-expandable-search-trigger {
   width: max-content;
   min-width: 28px;
   padding-inline: 7px;
@@ -204,15 +210,15 @@
 }
 
 /* Embedded field selector shares the parent search surface and focus treatment. */
-.wsr-bi .wsr-search-leading .wsr-field[data-appearance="embedded"] {
+.crystra-bi .crystra-search-leading .crystra-field[data-appearance="embedded"] {
   display: flex;
   width: auto;
   margin: 0;
   gap: 0;
 }
-.wsr-bi .wsr-field[data-appearance="embedded"] select,
-.wsr-bi
-  .wsr-field[data-appearance="embedded"]
+.crystra-bi .crystra-field[data-appearance="embedded"] select,
+.crystra-bi
+  .crystra-field[data-appearance="embedded"]
   select:is(:hover, :focus, :focus-visible) {
   width: auto;
   min-width: 0;
@@ -228,13 +234,13 @@
   font-size: 12px;
   cursor: pointer;
 }
-.wsr-bi .wsr-field[data-appearance="embedded"] select:focus-visible {
+.crystra-bi .crystra-field[data-appearance="embedded"] select:focus-visible {
   color: var(--color-text-primary, #fff);
 }
 
 /* Fine chevron replaces the native filled triangle for embedded selectors. */
-.wsr-bi[data-crystra-theme="dark"]
-  .wsr-field[data-appearance="embedded"]
+.crystra-bi[data-crystra-theme="dark"]
+  .crystra-field[data-appearance="embedded"]
   select::picker-icon {
   content: "";
   width: 7px;
@@ -251,45 +257,52 @@
     transform 220ms ease,
     color 160ms ease;
 }
-.wsr-bi[data-crystra-theme="dark"]
-  .wsr-field[data-appearance="embedded"]
+.crystra-bi[data-crystra-theme="dark"]
+  .crystra-field[data-appearance="embedded"]
   select:is(:hover, :focus-visible)::picker-icon {
   color: #f0f0f3;
 }
-.wsr-bi[data-crystra-theme="dark"]
-  .wsr-field[data-appearance="embedded"]
+.crystra-bi[data-crystra-theme="dark"]
+  .crystra-field[data-appearance="embedded"]
   select:open::picker-icon {
   transform: translateY(2px) rotate(225deg);
 }
 @media (prefers-reduced-motion: reduce) {
-  .wsr-bi .wsr-field[data-appearance="embedded"] select::picker-icon {
+  .crystra-bi .crystra-field[data-appearance="embedded"] select::picker-icon {
     transition: none;
   }
 }
 
 /* The slot follows caller content up to its cap; callers size their own controls. */
-.wsr-bi .wsr-search-leading:has(.wsr-field[data-appearance="embedded"]) {
+.crystra-bi
+  .crystra-search-leading:has(.crystra-field[data-appearance="embedded"]) {
   gap: 8px;
 }
-.wsr-bi .wsr-search-leading:has(.wsr-field[data-appearance="embedded"])::after {
+.crystra-bi
+  .crystra-search-leading:has(
+    .crystra-field[data-appearance="embedded"]
+  )::after {
   content: "";
   width: 1px;
   height: 16px;
   flex-shrink: 0;
   background: #ffffff18;
 }
-.wsr-bi .wsr-search-leading .wsr-field[data-appearance="embedded"] {
+.crystra-bi .crystra-search-leading .crystra-field[data-appearance="embedded"] {
   flex: 1;
   min-width: 0;
 }
-.wsr-bi .wsr-search-leading .wsr-field[data-appearance="embedded"] select {
+.crystra-bi
+  .crystra-search-leading
+  .crystra-field[data-appearance="embedded"]
+  select {
   width: 100%;
   padding-inline: 0 !important;
   white-space: nowrap;
   gap: 4px;
 }
 
-.wsr-bi .wsr-search-leading > * {
+.crystra-bi .crystra-search-leading > * {
   min-width: 0;
   max-width: 100%;
 }

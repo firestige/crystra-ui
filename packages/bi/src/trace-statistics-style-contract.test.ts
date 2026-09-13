@@ -5,7 +5,7 @@ const css = readFileSync("packages/bi/src/shared.css", "utf8");
 
 describe("Trace Statistics visual grammar", () => {
   it("cycles the shared six-color data palette without private theme tokens", () => {
-    expect(css).not.toContain("--wsr-statistics-color-");
+    expect(css).not.toContain("--crystra-statistics-color-");
     for (let index = 0; index < 6; index += 1) {
       expect(css).toMatch(
         new RegExp(
@@ -18,7 +18,7 @@ describe("Trace Statistics visual grammar", () => {
 
   it("uses the selected theme color for chart marks and values", () => {
     expect(css).toMatch(
-      /\.wsr-typography\.trace-statistics-value\.trace-statistics-color\s*\{[^}]*color:\s*var\(--trace-statistics-color\)/s,
+      /\.crystra-typography\.trace-statistics-value\.trace-statistics-color\s*\{[^}]*color:\s*var\(--trace-statistics-color\)/s,
     );
     expect(css).toMatch(
       /\.trace-statistics-donut-segment\s*\{[^}]*stroke:\s*var\(--trace-statistics-color\)/s,
@@ -66,7 +66,7 @@ describe("Trace Statistics visual grammar", () => {
       /\.trace-duration-breakdowns\s*\{[^}]*border-inline-start:\s*1px solid var\(--border-default\)/s,
     );
     const breakdownRule = css.match(
-      /\.wsr-bi \.trace-duration-breakdown\s*\{([^}]*)\}/s,
+      /\.crystra-bi \.trace-duration-breakdown\s*\{([^}]*)\}/s,
     );
     expect(breakdownRule?.[1]).not.toMatch(/border(?:-|:)/);
   });

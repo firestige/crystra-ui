@@ -3,8 +3,8 @@
 Crystra extends the existing React / TypeScript / Tailwind primitives. It does not depend on MUI. The current opt-in dark theme uses the reviewed Task v8 font, color and icon definitions in `design/crystra.tokens.json`. Existing BI theme defaults remain available.
 
 ```tsx
-import { Card, Button, Icon, IconButton, Typography } from "wsr-ui-core";
-import "wsr-ui-core/styles.css";
+import { Card, Button, Icon, IconButton, Typography } from "crystra-ui-core";
+import "crystra-ui-core/styles.css";
 
 <div className="wsr-bi" data-crystra-theme="dark">
   <Card
@@ -42,7 +42,7 @@ Open `/components.html` with the existing Vite development server. The sample us
 ```sh
 node scripts/sync-crystra-design.ts
 node scripts/export-crystra-recipes.ts /absolute/output/component-recipes.css
-npm exec --workspace wsr-ui-core vite -- build --config vite.components.config.ts
+npm exec --workspace crystra-ui-core vite -- build --config vite.components.config.ts
 node scripts/export-component-preview.ts /absolute/output/component-preview.html
 ```
 

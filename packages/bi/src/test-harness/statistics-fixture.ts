@@ -73,12 +73,12 @@ const nodes: TraceViewNode[] = specifications.map(
       flags: 1,
       traceState: "fixture=statistics-inspection",
       fields: [
-        { field: "wsr.fixture", value: "statistics-inspection" },
+        { field: "crystra.fixture", value: "statistics-inspection" },
         ...(statisticsTopics[id] === undefined
           ? []
           : [
               {
-                field: "wsr.statistics.topic",
+                field: "crystra.statistics.topic",
                 value: statisticsTopics[id],
               },
             ]),
@@ -91,7 +91,7 @@ const nodes: TraceViewNode[] = specifications.map(
 );
 
 export const statisticsTrace: TraceView = {
-  schemaVersion: "wsr.trace-view@1",
+  schemaVersion: "crystra.trace-view@1",
   status: "READY",
   traceId,
   startTimeUnixNano: String(base),

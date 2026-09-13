@@ -47,7 +47,7 @@ type WorkspaceState =
     }
   | { tag: "ERROR"; detail: string; retryable: boolean };
 
-const LOCAL_LAYOUT_KEY = "wsr.bi.dashboard-layout@1";
+const LOCAL_LAYOUT_KEY = "crystra.bi.dashboard-layout@1";
 type LayoutChoice = keyof typeof PRESET_LAYOUTS | "local@1";
 
 function useDesktopInspector(): boolean {

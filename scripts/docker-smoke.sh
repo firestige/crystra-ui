@@ -1,14 +1,14 @@
 #!/bin/sh
 set -eu
 
-image_tag="wsr-ui-bi:wave9-smoke-$$"
-container_name="wsr-ui-bi-smoke-$$"
-evidence_name="wsr-ui-evidence-stub-$$"
-evolution_name="wsr-ui-evolution-stub-$$"
-network_name="wsr-ui-wave9-smoke-$$"
+image_tag="crystra-ui-bi:wave9-smoke-$$"
+container_name="crystra-ui-bi-smoke-$$"
+evidence_name="crystra-ui-evidence-stub-$$"
+evolution_name="crystra-ui-evolution-stub-$$"
+network_name="crystra-ui-wave9-smoke-$$"
 
 cleanup() {
-  rm -f "/tmp/wsr-ui-smoke-response-$$"
+  rm -f "/tmp/crystra-ui-smoke-response-$$"
   docker container rm --force "$container_name" >/dev/null 2>&1 || true
   docker container rm --force "$evidence_name" >/dev/null 2>&1 || true
   docker container rm --force "$evolution_name" >/dev/null 2>&1 || true
@@ -63,9 +63,9 @@ for route in \
   /v1/evidence/manifests/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa \
   /v1/evidence/unknown \
   /api/evolution/v1/unknown; do
-  status="$(curl --silent --output /tmp/wsr-ui-smoke-response-$$ --write-out '%{http_code}' "${base_url}${route}")"
+  status="$(curl --silent --output /tmp/crystra-ui-smoke-response-$$ --write-out '%{http_code}' "${base_url}${route}")"
   test "$status" = 404
-  ! grep -q '<div id="root"></div>' /tmp/wsr-ui-smoke-response-$$
+  ! grep -q '<div id="root"></div>' /tmp/crystra-ui-smoke-response-$$
 done
 
 for route in /v1/evidence/tasks /v1/evidence/facts /v1/evidence/traces; do

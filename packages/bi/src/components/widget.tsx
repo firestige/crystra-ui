@@ -27,24 +27,28 @@ export function Widget({
   return (
     <article
       {...props}
-      className={["wsr-widget", className].filter(Boolean).join(" ")}
+      className={["crystra-widget", className].filter(Boolean).join(" ")}
       data-size={size}
     >
-      <header className="wsr-widget-header">
-        <h3 className="wsr-widget-title">{title}</h3>
-        {status != null && <div className="wsr-widget-status">{status}</div>}
+      <header className="crystra-widget-header">
+        <h3 className="crystra-widget-title">{title}</h3>
+        {status != null && (
+          <div className="crystra-widget-status">{status}</div>
+        )}
       </header>
-      <div className="wsr-widget-body">
-        <div className="wsr-widget-primary">{primary}</div>
+      <div className="crystra-widget-body">
+        <div className="crystra-widget-primary">{primary}</div>
         {size !== "1x1" && secondary != null && (
-          <div className="wsr-widget-secondary">{secondary}</div>
+          <div className="crystra-widget-secondary">{secondary}</div>
         )}
       </div>
       {(footer != null || actions != null) && (
-        <footer className="wsr-widget-footer">
-          {footer != null && <div className="wsr-widget-marker">{footer}</div>}
+        <footer className="crystra-widget-footer">
+          {footer != null && (
+            <div className="crystra-widget-marker">{footer}</div>
+          )}
           {actions != null && (
-            <div className="wsr-widget-actions">{actions}</div>
+            <div className="crystra-widget-actions">{actions}</div>
           )}
         </footer>
       )}

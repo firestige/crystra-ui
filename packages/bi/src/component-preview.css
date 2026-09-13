@@ -47,7 +47,7 @@ body {
 .preview-separated {
   margin-top: 12px;
 }
-.preview-row > .wsr-divider[data-orientation="vertical"] {
+.preview-row > .crystra-divider[data-orientation="vertical"] {
   min-height: 28px;
 }
 button {

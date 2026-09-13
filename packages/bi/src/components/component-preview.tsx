@@ -39,7 +39,7 @@ export function ComponentPreview() {
   const [selected, setSelected] = useState("release");
   const [lastAction, setLastAction] = useState("尚未操作");
   return (
-    <main className="wsr-bi component-preview" data-crystra-theme="dark">
+    <main className="crystra-bi component-preview" data-crystra-theme="dark">
       <Typography as="h1" variant="page-title">
         Crystra · 基础组件
       </Typography>

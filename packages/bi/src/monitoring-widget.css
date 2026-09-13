@@ -1,7 +1,7 @@
-.wsr-monitoring *:not([data-host-owned], [data-host-owned] *) {
+.crystra-monitoring *:not([data-host-owned], [data-host-owned] *) {
   box-sizing: border-box;
 }
-.wsr-monitoring:not([data-host-owned], [data-host-owned] *) {
+.crystra-monitoring:not([data-host-owned], [data-host-owned] *) {
   margin: 0;
   background: #141414;
   color: #eee;
@@ -9,55 +9,55 @@
     14px/1.5 system-ui,
     sans-serif;
 }
-.wsr-monitoring main:not([data-host-owned], [data-host-owned] *) {
+.crystra-monitoring main:not([data-host-owned], [data-host-owned] *) {
   max-width: 1800px;
   margin: auto;
   padding: 28px;
 }
-.wsr-monitoring h1:not([data-host-owned], [data-host-owned] *) {
+.crystra-monitoring h1:not([data-host-owned], [data-host-owned] *) {
   font-size: 26px;
 }
-.wsr-monitoring h2:not([data-host-owned], [data-host-owned] *) {
+.crystra-monitoring h2:not([data-host-owned], [data-host-owned] *) {
   font-size: 20px;
   margin: 0 0 8px;
 }
-.wsr-monitoring p:not([data-host-owned], [data-host-owned] *) {
+.crystra-monitoring p:not([data-host-owned], [data-host-owned] *) {
   margin: 8px 0;
 }
-.wsr-monitoring a:not([data-host-owned], [data-host-owned] *) {
+.crystra-monitoring a:not([data-host-owned], [data-host-owned] *) {
   color: #7ca8ff;
 }
-.wsr-monitoring table.matrix:not([data-host-owned], [data-host-owned] *) {
+.crystra-monitoring table.matrix:not([data-host-owned], [data-host-owned] *) {
   width: 100%;
   border-collapse: collapse;
   margin: 24px 0;
 }
-.wsr-monitoring .matrix th:not([data-host-owned], [data-host-owned] *),
-.wsr-monitoring .matrix td:not([data-host-owned], [data-host-owned] *) {
+.crystra-monitoring .matrix th:not([data-host-owned], [data-host-owned] *),
+.crystra-monitoring .matrix td:not([data-host-owned], [data-host-owned] *) {
   padding: 12px;
   border: 1px solid #373737;
   text-align: left;
 }
-.wsr-monitoring .matrix th:not([data-host-owned], [data-host-owned] *) {
+.crystra-monitoring .matrix th:not([data-host-owned], [data-host-owned] *) {
   background: #262626;
 }
-.wsr-monitoring .group:not([data-host-owned], [data-host-owned] *) {
+.crystra-monitoring .group:not([data-host-owned], [data-host-owned] *) {
   display: grid;
   grid-template-columns: 330px 1fr;
   gap: 24px;
   padding: 28px 0;
   border-top: 1px solid #363636;
 }
-.wsr-monitoring .group p:not([data-host-owned], [data-host-owned] *) {
+.crystra-monitoring .group p:not([data-host-owned], [data-host-owned] *) {
   color: #b5b5b5;
 }
-.wsr-monitoring .examples:not([data-host-owned], [data-host-owned] *) {
+.crystra-monitoring .examples:not([data-host-owned], [data-host-owned] *) {
   display: flex;
   gap: 20px;
   flex-wrap: wrap;
   align-items: flex-start;
 }
-.wsr-monitoring .widget:not([data-host-owned], [data-host-owned] *) {
+.crystra-monitoring .widget:not([data-host-owned], [data-host-owned] *) {
   flex-shrink: 0;
   background: #232323;
   border: 1px solid #424242;
@@ -68,19 +68,19 @@
   gap: 12px;
   overflow: hidden;
 }
-.wsr-monitoring .widget header:not([data-host-owned], [data-host-owned] *),
-.wsr-monitoring .widget footer:not([data-host-owned], [data-host-owned] *) {
+.crystra-monitoring .widget header:not([data-host-owned], [data-host-owned] *),
+.crystra-monitoring .widget footer:not([data-host-owned], [data-host-owned] *) {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 8px;
   flex-shrink: 0;
 }
-.wsr-monitoring .title:not([data-host-owned], [data-host-owned] *) {
+.crystra-monitoring .title:not([data-host-owned], [data-host-owned] *) {
   font-size: 14px;
   font-weight: 500;
 }
-.wsr-monitoring .marker:not([data-host-owned], [data-host-owned] *) {
+.crystra-monitoring .marker:not([data-host-owned], [data-host-owned] *) {
   display: inline-block;
   width: 8px;
   height: 8px;
@@ -88,13 +88,13 @@
   flex-shrink: 0;
   background: #aaa;
 }
-.wsr-monitoring .green:not([data-host-owned], [data-host-owned] *) {
+.crystra-monitoring .green:not([data-host-owned], [data-host-owned] *) {
   background: #22c55e;
 }
-.wsr-monitoring .amber:not([data-host-owned], [data-host-owned] *) {
+.crystra-monitoring .amber:not([data-host-owned], [data-host-owned] *) {
   background: #ffb300;
 }
-.wsr-monitoring .content:not([data-host-owned], [data-host-owned] *) {
+.crystra-monitoring .content:not([data-host-owned], [data-host-owned] *) {
   min-height: 0;
   flex: 1;
   display: flex;
@@ -102,63 +102,68 @@
   justify-content: center;
   gap: 12px;
 }
-.wsr-monitoring .widget footer:not([data-host-owned], [data-host-owned] *) {
+.crystra-monitoring .widget footer:not([data-host-owned], [data-host-owned] *) {
   font-size: 12px;
   color: #888;
 }
-.wsr-monitoring .widget footer svg:not([data-host-owned], [data-host-owned] *) {
+.crystra-monitoring
+  .widget
+  footer
+  svg:not([data-host-owned], [data-host-owned] *) {
   color: #6698ff;
 }
-.wsr-monitoring .number:not([data-host-owned], [data-host-owned] *) {
+.crystra-monitoring .number:not([data-host-owned], [data-host-owned] *) {
   font-size: 32px;
   line-height: 1.2;
   font-weight: 600;
   white-space: nowrap;
 }
-.wsr-monitoring .number small:not([data-host-owned], [data-host-owned] *) {
+.crystra-monitoring .number small:not([data-host-owned], [data-host-owned] *) {
   font-size: 14px;
   font-weight: 400;
   margin-left: 5px;
   color: #aaa;
 }
-.wsr-monitoring .muted:not([data-host-owned], [data-host-owned] *) {
+.crystra-monitoring .muted:not([data-host-owned], [data-host-owned] *) {
   color: #aaa;
   font-size: 12px;
 }
-.wsr-monitoring .blue:not([data-host-owned], [data-host-owned] *) {
+.crystra-monitoring .blue:not([data-host-owned], [data-host-owned] *) {
   color: #7ca8ff;
 }
-.wsr-monitoring .horizontal:not([data-host-owned], [data-host-owned] *) {
+.crystra-monitoring .horizontal:not([data-host-owned], [data-host-owned] *) {
   display: flex;
   align-items: center;
   gap: 20px;
 }
-.wsr-monitoring .grow:not([data-host-owned], [data-host-owned] *) {
+.crystra-monitoring .grow:not([data-host-owned], [data-host-owned] *) {
   flex: 1;
 }
-.wsr-monitoring .bar:not([data-host-owned], [data-host-owned] *) {
+.crystra-monitoring .bar:not([data-host-owned], [data-host-owned] *) {
   height: 6px;
   background: #414141;
   border-radius: 4px;
   overflow: hidden;
   margin: 5px 0;
 }
-.wsr-monitoring .bar i:not([data-host-owned], [data-host-owned] *) {
+.crystra-monitoring .bar i:not([data-host-owned], [data-host-owned] *) {
   height: 100%;
   display: block;
   background: #6698ff;
 }
-.wsr-monitoring .signal:not([data-host-owned], [data-host-owned] *) {
+.crystra-monitoring .signal:not([data-host-owned], [data-host-owned] *) {
   display: flex;
   align-items: center;
   gap: 12px;
   font-size: 26px;
 }
-.wsr-monitoring .signal .marker:not([data-host-owned], [data-host-owned] *) {
+.crystra-monitoring
+  .signal
+  .marker:not([data-host-owned], [data-host-owned] *) {
   width: 14px;
   height: 14px;
 }
-.wsr-monitoring .ring:not([data-host-owned], [data-host-owned] *) {
+.crystra-monitoring .ring:not([data-host-owned], [data-host-owned] *) {
   width: 154px;
   height: 154px;
   margin: 0 auto;
@@ -166,59 +171,61 @@
   border-radius: 50%;
   padding: 13px;
 }
-.wsr-monitoring .ring > div:not([data-host-owned], [data-host-owned] *) {
+.crystra-monitoring .ring > div:not([data-host-owned], [data-host-owned] *) {
   height: 100%;
   background: #232323;
   border-radius: 50%;
   display: grid;
   place-items: center;
 }
-.wsr-monitoring .breakdown p:not([data-host-owned], [data-host-owned] *) {
+.crystra-monitoring .breakdown p:not([data-host-owned], [data-host-owned] *) {
   font-size: 12px;
   display: flex;
   justify-content: space-between;
   margin: 7px 0 0;
 }
-.wsr-monitoring .breakdown .bar:not([data-host-owned], [data-host-owned] *) {
+.crystra-monitoring
+  .breakdown
+  .bar:not([data-host-owned], [data-host-owned] *) {
   height: 5px;
 }
-.wsr-monitoring .history > div:not([data-host-owned], [data-host-owned] *) {
+.crystra-monitoring .history > div:not([data-host-owned], [data-host-owned] *) {
   display: flex;
   gap: 3px;
   margin: 14px 0;
 }
-.wsr-monitoring .history span:not([data-host-owned], [data-host-owned] *) {
+.crystra-monitoring .history span:not([data-host-owned], [data-host-owned] *) {
   width: 60px;
 }
-.wsr-monitoring .history i:not([data-host-owned], [data-host-owned] *) {
+.crystra-monitoring .history i:not([data-host-owned], [data-host-owned] *) {
   flex: 1;
   height: 24px;
 }
-.wsr-monitoring .g:not([data-host-owned], [data-host-owned] *) {
+.crystra-monitoring .g:not([data-host-owned], [data-host-owned] *) {
   background: #22c55e66;
 }
-.wsr-monitoring .a:not([data-host-owned], [data-host-owned] *) {
+.crystra-monitoring .a:not([data-host-owned], [data-host-owned] *) {
   background: #ffb30088;
 }
-.wsr-monitoring .axis:not([data-host-owned], [data-host-owned] *) {
+.crystra-monitoring .axis:not([data-host-owned], [data-host-owned] *) {
   display: flex;
   justify-content: space-between;
   padding-left: 60px;
   color: #999;
   font-size: 12px;
 }
-.wsr-monitoring .records:not([data-host-owned], [data-host-owned] *) {
+.crystra-monitoring .records:not([data-host-owned], [data-host-owned] *) {
   border-collapse: collapse;
   width: 100%;
   font-size: 12px;
 }
-.wsr-monitoring .records th:not([data-host-owned], [data-host-owned] *),
-.wsr-monitoring .records td:not([data-host-owned], [data-host-owned] *) {
+.crystra-monitoring .records th:not([data-host-owned], [data-host-owned] *),
+.crystra-monitoring .records td:not([data-host-owned], [data-host-owned] *) {
   text-align: left;
   padding: 8px;
   border-bottom: 1px solid #414141;
 }
-.wsr-monitoring .anatomy:not([data-host-owned], [data-host-owned] *) {
+.crystra-monitoring .anatomy:not([data-host-owned], [data-host-owned] *) {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 24px;
@@ -226,31 +233,31 @@
   padding: 20px;
   border-radius: 12px;
 }
-.wsr-monitoring .anatomy pre:not([data-host-owned], [data-host-owned] *) {
+.crystra-monitoring .anatomy pre:not([data-host-owned], [data-host-owned] *) {
   margin: 0;
   line-height: 2;
   color: #baccdf;
 }
-.wsr-monitoring .note:not([data-host-owned], [data-host-owned] *) {
+.crystra-monitoring .note:not([data-host-owned], [data-host-owned] *) {
   padding: 16px;
   border-left: 3px solid #6698ff;
   background: #202634;
 }
-.wsr-monitoring .size:not([data-host-owned], [data-host-owned] *) {
+.crystra-monitoring .size:not([data-host-owned], [data-host-owned] *) {
   font-size: 12px;
   color: #999;
   margin-bottom: 8px;
 }
 @media (max-width: 1100px) {
-  .wsr-monitoring .group:not([data-host-owned], [data-host-owned] *) {
+  .crystra-monitoring .group:not([data-host-owned], [data-host-owned] *) {
     grid-template-columns: 1fr;
   }
 }
-.wsr-monitoring
+.crystra-monitoring
   .monitoring-fixture-content:not([data-host-owned], [data-host-owned] *) {
   display: contents;
 }
-.wsr-monitoring
+.crystra-monitoring
   .widget
   > header
   > div:not([data-host-owned], [data-host-owned] *) {

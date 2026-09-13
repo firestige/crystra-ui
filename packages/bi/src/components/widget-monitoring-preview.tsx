@@ -9,7 +9,7 @@ import { MonitoringWidget } from "./monitoring-widget";
 /** Only trusted, checked-in illustration fixtures use raw SVG/HTML. No remote content. */
 export function WidgetMonitoringPreview() {
   return (
-    <div className="wsr-monitoring">
+    <div className="crystra-monitoring">
       <main>
         <h1>Widget 监控语义</h1>
         <p>

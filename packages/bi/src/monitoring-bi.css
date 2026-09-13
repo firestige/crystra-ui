@@ -117,14 +117,14 @@
   max-width: 100%;
   overflow-x: auto;
 }
-.monitoring-bi.wsr-bi[data-crystra-theme="dark"]:not(
+.monitoring-bi.crystra-bi[data-crystra-theme="dark"]:not(
     [data-host-owned],
     [data-host-owned] *
   ) {
-  --wsr-surface-section: var(--color-background-workspace);
-  --wsr-surface-panel: var(--color-background-card);
-  --wsr-surface-raised: var(--color-background-floating);
-  --wsr-surface-inset: var(--color-background-inset);
+  --crystra-surface-section: var(--color-background-workspace);
+  --crystra-surface-panel: var(--color-background-card);
+  --crystra-surface-raised: var(--color-background-floating);
+  --crystra-surface-inset: var(--color-background-inset);
   --surface-canvas: var(--color-background-workspace);
   --status-expired: var(--color-text-muted);
   --status-incompatible: var(--color-status-error-solid);
@@ -325,7 +325,7 @@
   display: inline-flex;
   width: 14px;
 }
-.dashboard-size-menu .wsr-menu-item {
+.dashboard-size-menu .crystra-menu-item {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -372,17 +372,18 @@
   cursor: default;
 }
 /* The dragged card follows the pointer above a separate snapped landing ghost. */
-.wsr-bi .dashboard-grid-shell[data-exact-widgets="true"][data-editing="true"] {
+.crystra-bi
+  .dashboard-grid-shell[data-exact-widgets="true"][data-editing="true"] {
   background-image: none;
   background-color: transparent;
 }
-.wsr-bi
+.crystra-bi
   .dashboard-grid-shell[data-exact-widgets="true"][data-editing="true"]
   .dashboard-grid
   > .react-grid-item:not(.react-grid-placeholder) {
   outline: none;
 }
-.wsr-bi
+.crystra-bi
   .dashboard-grid-shell[data-exact-widgets="true"]
   .dashboard-grid
   > .react-grid-placeholder {
@@ -394,14 +395,14 @@
   outline: none;
   pointer-events: none;
 }
-.wsr-bi
+.crystra-bi
   .dashboard-grid-shell[data-exact-widgets="true"]
   .dashboard-panel.react-draggable-dragging {
   z-index: 3;
   opacity: 1;
   transition: none;
 }
-.wsr-bi
+.crystra-bi
   .dashboard-grid-shell[data-exact-widgets="true"]
   .dashboard-grid
   > .react-grid-placeholder {

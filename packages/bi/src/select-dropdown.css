@@ -1,11 +1,11 @@
 /* Desktop Chromium: native select semantics, consistently bottom-anchored picker. */
-.wsr-bi[data-crystra-theme="dark"]
+.crystra-bi[data-crystra-theme="dark"]
   select:not([multiple]):not([data-host-owned] *),
-.wsr-bi[data-crystra-theme="dark"]
+.crystra-bi[data-crystra-theme="dark"]
   select:not([multiple]):not([data-host-owned] *)::picker(select) {
   appearance: base-select;
 }
-.wsr-bi[data-crystra-theme="dark"]
+.crystra-bi[data-crystra-theme="dark"]
   select:not([multiple]):not([data-host-owned] *)::picker(select) {
   inset: auto;
   position-area: block-end span-inline-end;
@@ -24,7 +24,7 @@
   color: var(--color-text-primary, #f9fafb);
   box-shadow: 0 8px 24px #0006;
 }
-.wsr-bi[data-crystra-theme="dark"]
+.crystra-bi[data-crystra-theme="dark"]
   select:not([multiple]):not([data-host-owned] *)
   option {
   min-height: 32px;
@@ -32,7 +32,7 @@
   border-radius: 4px;
   font: inherit;
 }
-.wsr-bi[data-crystra-theme="dark"]
+.crystra-bi[data-crystra-theme="dark"]
   select:not([multiple]):not([data-host-owned] *)
   option:checked {
   color: var(--color-interaction-primary, #679efe);
@@ -40,7 +40,7 @@
 }
 
 /* Page-selected opening direction. Flip only if the preferred side cannot fit. */
-.wsr-bi[data-crystra-theme="dark"]
+.crystra-bi[data-crystra-theme="dark"]
   select[data-menu-placement="top"]:not([multiple]):not(
     [data-host-owned] *
   )::picker(select) {

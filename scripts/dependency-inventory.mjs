@@ -55,7 +55,7 @@ if (unsupported.length > 0) {
 }
 
 const header = {
-  schema: "wsr-ui.dependency-inventory@0.1.0",
+  schema: "crystra-ui.dependency-inventory@0.1.0",
   packageLockSha256: createHash("sha256").update(lockBytes).digest("hex"),
   dependencyCount: dependencies.length,
 };

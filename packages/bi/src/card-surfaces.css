@@ -1,13 +1,13 @@
 /* D17: accepted dark-theme card surfaces. State-specific styling stays authoritative. */
-.wsr-bi {
+.crystra-bi {
   --card-surface-border: var(--color-border-subtle, #ffffff0f);
 }
-.wsr-bi
+.crystra-bi
   :is(
     .browser-task-card,
     [data-section-id][class*="bg-panel"][class*="rounded"],
-    .wsr-card,
-    .wsr-widget,
+    .crystra-card,
+    .crystra-widget,
     .crystra-monitoring-widget,
     .trace-waterfall-canvas,
     .trace-tree-canvas-shell,
@@ -19,16 +19,16 @@
   box-shadow: var(--card-surface-shadow);
 }
 /* The prototype palette has a blanket strong-border rule; preserve the card's semantic border. */
-:root.wsr-bi[data-palette],
-.wsr-bi[data-crystra-theme="dark"] {
+:root.crystra-bi[data-palette],
+.crystra-bi[data-crystra-theme="dark"] {
   --card-surface-border: var(--color-border-subtle, #ffffff0f);
 }
-:is(:root.wsr-bi[data-palette], .wsr-bi[data-crystra-theme="dark"])
+:is(:root.crystra-bi[data-palette], .crystra-bi[data-crystra-theme="dark"])
   :is(
     .browser-task-card,
     [data-section-id][class*="bg-panel"][class*="rounded"],
-    .wsr-card,
-    .wsr-widget,
+    .crystra-card,
+    .crystra-widget,
     .crystra-monitoring-widget,
     .trace-waterfall-canvas,
     .trace-tree-canvas-shell,

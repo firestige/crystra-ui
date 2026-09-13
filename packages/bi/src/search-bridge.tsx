@@ -24,7 +24,7 @@ for (const kind of ["task", "workflow"]) {
   )!;
   // Existing handlers keep their references; React owns the visible controls.
   control.replaceChildren();
-  control.classList.add("wsr-search-bridge-sidebar");
+  control.classList.add("crystra-search-bridge-sidebar");
   function SidebarAdapter() {
     const [open, setOpen] = useState(control!.dataset.open === "true");
     useEffect(() => {
@@ -75,7 +75,7 @@ for (const selector of [
   if (!input) continue;
   const label = input.parentElement!;
   const seat = document.createElement("div");
-  seat.className = "wsr-search-bridge-seat";
+  seat.className = "crystra-search-bridge-seat";
   label.replaceWith(seat);
   const dag = selector.includes("dag");
   if (dag) seat.dataset.sectionId = "plan-dag-search";

@@ -72,12 +72,12 @@ export function WidgetSizeMenu({
     anchor.trigger.focus({ preventScroll: true });
   };
   return createPortal(
-    <div className="wsr-bi" data-crystra-theme="dark">
+    <div className="crystra-bi" data-crystra-theme="dark">
       <div
         ref={root}
         role="menu"
         aria-label={`Widget size ${panel.panel_id}`}
-        className="wsr-menu-panel dashboard-size-menu"
+        className="crystra-menu-panel dashboard-size-menu"
         onContextMenu={(e) => e.preventDefault()}
         onKeyDown={(e) => {
           if (e.key === "Escape" || e.key === "Tab") {
@@ -115,7 +115,7 @@ export function WidgetSizeMenu({
                 type="button"
                 role="menuitemradio"
                 aria-checked={view.selected}
-                className="wsr-menu-item"
+                className="crystra-menu-item"
                 onClick={() => {
                   view.onChoose();
                   closeWithFocus();
@@ -136,7 +136,7 @@ export function WidgetSizeMenu({
             role="menuitemradio"
             aria-checked={size === `${panel.grid.h}x${panel.grid.w}`}
             key={size}
-            className="wsr-menu-item"
+            className="crystra-menu-item"
             onClick={() => {
               onChoose(size);
               closeWithFocus();
@@ -155,7 +155,7 @@ export function WidgetSizeMenu({
             <button
               type="button"
               role="menuitem"
-              className="wsr-menu-item"
+              className="crystra-menu-item"
               aria-expanded={custom}
               onClick={() => setCustom((value) => !value)}
             >
@@ -218,7 +218,7 @@ export function WidgetSizeMenu({
             <button
               type="button"
               role="menuitem"
-              className="wsr-menu-item"
+              className="crystra-menu-item"
               onClick={() => {
                 onConfigureRange();
                 onClose();

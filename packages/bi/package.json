@@ -1,11 +1,11 @@
 {
-  "name": "wsr-ui-core",
+  "name": "crystra-ui-core",
   "version": "0.1.0",
-  "description": "Host-neutral WSR business-intelligence panels and domain projections",
+  "description": "Host-neutral Crystra business-intelligence panels and domain projections",
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/firestige/wsr-ui"
+    "url": "https://github.com/firestige/crystra-ui"
   },
   "type": "module",
   "exports": {

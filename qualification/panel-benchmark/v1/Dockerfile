@@ -8,5 +8,5 @@ RUN npm ci --ignore-scripts --no-audit --no-fund \
 
 COPY . .
 
-ENV WSR_BENCHMARK_FIXED_RUNNER=1
+ENV CRYSTRA_BENCHMARK_FIXED_RUNNER=1
 CMD ["node", "qualification/panel-benchmark/v1/run.mjs", "--mode=full"]

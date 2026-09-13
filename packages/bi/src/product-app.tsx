@@ -348,15 +348,15 @@ export function ProductApp({
         focus: { metric: next.metric, side: next.side },
       };
       window.history.replaceState(
-        { wsrBi: true },
+        { crystraBi: true },
         "",
         serializeEvaluationRoute(parent),
       );
-      window.history.pushState({ wsrBiParent: true }, "", relativeUrl);
+      window.history.pushState({ crystraBiParent: true }, "", relativeUrl);
     } else if (next.tag === "EVIDENCE" && route.tag === "EVIDENCE") {
-      window.history.replaceState({ wsrBiParent: true }, "", relativeUrl);
+      window.history.replaceState({ crystraBiParent: true }, "", relativeUrl);
     } else {
-      window.history.pushState({ wsrBi: true }, "", relativeUrl);
+      window.history.pushState({ crystraBi: true }, "", relativeUrl);
     }
     setRoute(next);
   };
@@ -401,7 +401,7 @@ export function ProductApp({
           evidence={evidence}
           evolution={evolution}
           onBack={() => {
-            if (window.history.state?.wsrBiParent === true)
+            if (window.history.state?.crystraBiParent === true)
               window.history.back();
             else {
               const parent: EvaluationRoute = {

@@ -24,10 +24,10 @@
   grid-area: context;
   justify-self: end;
 }
-.wb-page-header .wsr-tabs {
+.wb-page-header .crystra-tabs {
   height: 100%;
 }
-.wb-page-header .wsr-tab-list {
+.wb-page-header .crystra-tab-list {
   height: 100%;
   gap: 16px;
   border: 0;
@@ -35,7 +35,7 @@
   padding: 0;
   background: transparent;
 }
-.wb-page-header .wsr-tab {
+.wb-page-header .crystra-tab {
   height: 40px;
   padding: 8px 4px;
   min-width: 64px;

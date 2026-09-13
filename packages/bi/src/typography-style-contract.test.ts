@@ -6,15 +6,15 @@ const shared = readFileSync("packages/bi/src/shared.css", "utf8");
 
 describe("shared Typography scale", () => {
   it("uses seven familiar variants on one deliberate default scale", () => {
-    expect(shared).toMatch(/--wsr-type-h1:\s*2\.25rem/);
-    expect(shared).toMatch(/--wsr-type-h2:\s*1\.25rem/);
-    expect(shared).toMatch(/--wsr-type-subtitle1:\s*1\.125rem/);
-    expect(shared).toMatch(/--wsr-type-body1:\s*1rem/);
-    expect(shared).toMatch(/--wsr-type-body2:\s*0\.875rem/);
-    expect(shared).toMatch(/--wsr-type-caption:\s*0\.75rem/);
-    expect(shared).toMatch(/--wsr-type-overline:\s*0\.5625rem/);
+    expect(shared).toMatch(/--crystra-type-h1:\s*2\.25rem/);
+    expect(shared).toMatch(/--crystra-type-h2:\s*1\.25rem/);
+    expect(shared).toMatch(/--crystra-type-subtitle1:\s*1\.125rem/);
+    expect(shared).toMatch(/--crystra-type-body1:\s*1rem/);
+    expect(shared).toMatch(/--crystra-type-body2:\s*0\.875rem/);
+    expect(shared).toMatch(/--crystra-type-caption:\s*0\.75rem/);
+    expect(shared).toMatch(/--crystra-type-overline:\s*0\.5625rem/);
     expect(shared).not.toMatch(
-      /--wsr-type-(?:page-title|section-title|body|label|micro|code|value):/,
+      /--crystra-type-(?:page-title|section-title|body|label|micro|code|value):/,
     );
 
     expect(

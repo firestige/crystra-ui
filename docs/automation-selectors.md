@@ -1,6 +1,6 @@
 # Automation selectors
 
-`wsr-ui-core` exposes stable automation selectors only where Playwright, test
+`crystra-ui-core` exposes stable automation selectors only where Playwright, test
 code, or development agents repeatedly need to locate an element.
 
 ## Rules

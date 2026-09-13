@@ -31,7 +31,7 @@ export function List({
   return (
     <ul
       {...props}
-      className={["wsr-list", className].filter(Boolean).join(" ")}
+      className={["crystra-list", className].filter(Boolean).join(" ")}
       data-selection-appearance={selectionAppearance}
       data-size={size}
       data-divided={divided || undefined}
@@ -66,11 +66,11 @@ export function ListItem({
   const content = (
     <>
       {leading && (
-        <span className="wsr-list-leading" aria-hidden="true">
+        <span className="crystra-list-leading" aria-hidden="true">
           {leading}
         </span>
       )}
-      <span className="wsr-list-copy">
+      <span className="crystra-list-copy">
         <Typography variant="item-title">{primary}</Typography>
         {description && (
           <Typography variant="description" tone="secondary">
@@ -78,18 +78,18 @@ export function ListItem({
           </Typography>
         )}
       </span>
-      {metadata && <span className="wsr-list-meta">{metadata}</span>}
+      {metadata && <span className="crystra-list-meta">{metadata}</span>}
     </>
   );
   return (
     <li
       {...props}
-      className={["wsr-list-item", className].filter(Boolean).join(" ")}
+      className={["crystra-list-item", className].filter(Boolean).join(" ")}
       data-selected={selected || undefined}
     >
       {href !== undefined ? (
         <a
-          className="wsr-list-main"
+          className="crystra-list-main"
           href={href}
           aria-current={selected ? "page" : undefined}
         >
@@ -98,7 +98,7 @@ export function ListItem({
       ) : onActivate ? (
         <button
           type="button"
-          className="wsr-list-main"
+          className="crystra-list-main"
           disabled={disabled}
           onClick={onActivate}
           aria-current={selected ? "true" : undefined}
@@ -106,9 +106,9 @@ export function ListItem({
           {content}
         </button>
       ) : (
-        <div className="wsr-list-main">{content}</div>
+        <div className="crystra-list-main">{content}</div>
       )}
-      {actions && <div className="wsr-list-actions">{actions}</div>}
+      {actions && <div className="crystra-list-actions">{actions}</div>}
     </li>
   );
 }
@@ -165,11 +165,11 @@ export function Tabs({
   };
   return (
     <div
-      className={["wsr-tabs", className].filter(Boolean).join(" ")}
+      className={["crystra-tabs", className].filter(Boolean).join(" ")}
       data-appearance={appearance}
       data-size={size}
     >
-      <div role="tablist" aria-label={label} className="wsr-tab-list">
+      <div role="tablist" aria-label={label} className="crystra-tab-list">
         {items.map((item, index) => (
           <button
             type="button"
@@ -185,7 +185,7 @@ export function Tabs({
             disabled={item.disabled}
             onKeyDown={(e) => move(e, index)}
             onClick={() => onValueChange(item.value)}
-            className="wsr-tab"
+            className="crystra-tab"
           >
             {item.label}
           </button>
@@ -199,7 +199,7 @@ export function Tabs({
           aria-labelledby={`${id}-tab-${index}`}
           hidden={item.value !== value}
           tabIndex={0}
-          className="wsr-tab-panel"
+          className="crystra-tab-panel"
         >
           {item.panel}
         </div>
@@ -309,7 +309,7 @@ export function Menu({
   return (
     <div
       ref={root}
-      className="wsr-menu"
+      className="crystra-menu"
       data-align={align}
       onBlur={(e) => {
         if (!e.currentTarget.contains(e.relatedTarget as Node | null))
@@ -345,7 +345,7 @@ export function Menu({
           role="menu"
           aria-label={label}
           tabIndex={-1}
-          className="wsr-menu-panel"
+          className="crystra-menu-panel"
           onKeyDown={keydown}
         >
           {items.map((item) => (
@@ -356,7 +356,7 @@ export function Menu({
               key={item.id}
               disabled={item.disabled}
               data-tone={item.tone ?? "neutral"}
-              className="wsr-menu-item"
+              className="crystra-menu-item"
               onClick={() => {
                 close(true);
                 item.onSelect();

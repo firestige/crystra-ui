@@ -20,7 +20,7 @@ interface BenchmarkApi {
 
 declare global {
   interface Window {
-    __wsrBenchmark: BenchmarkApi;
+    __crystraBenchmark: BenchmarkApi;
   }
 }
 
@@ -36,7 +36,7 @@ const observer = new PerformanceObserver((list) => {
 });
 observer.observe({ type: "longtask", buffered: true });
 
-window.__wsrBenchmark = {
+window.__crystraBenchmark = {
   dataReady,
   longTasks,
   ready: false,
@@ -116,7 +116,7 @@ function traceModel(): TraceView {
       : { parentId: `node-${(index - 1).toString().padStart(3, "0")}` }),
   }));
   return {
-    schemaVersion: "wsr.trace-view@1",
+    schemaVersion: "crystra.trace-view@1",
     status: "READY",
     traceId: "benchmark-trace",
     startTimeUnixNano: "0",
@@ -150,7 +150,7 @@ function BenchmarkHarness() {
 
   useEffect(() => {
     let interactionFrame = 0;
-    window.__wsrBenchmark.runInteraction = async (durationMs) => {
+    window.__crystraBenchmark.runInteraction = async (durationMs) => {
       const frames: number[] = [];
       const started = performance.now();
       let previous = started;
@@ -179,8 +179,9 @@ function BenchmarkHarness() {
     void document.fonts.ready.then(() => {
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
-          window.__wsrBenchmark.firstPaintMs = performance.now() - dataReady;
-          window.__wsrBenchmark.ready = true;
+          window.__crystraBenchmark.firstPaintMs =
+            performance.now() - dataReady;
+          window.__crystraBenchmark.ready = true;
           document.documentElement.dataset.benchmarkReady = "true";
         });
       });

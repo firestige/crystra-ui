@@ -584,7 +584,7 @@ export function StudioIntentReview({
               >
                 <div className="intent-node-wrap">
                   <button
-                    className="wsr-card intent-node"
+                    className="crystra-card intent-node"
                     data-selected={selected === n.id}
                     data-changed={
                       (proposal === "return-path" && n.id === "accept") ||

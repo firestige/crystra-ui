@@ -501,7 +501,7 @@ export function WorkflowResourceConfig({
     .filter((n) => !!n);
   return (
     <section
-      className="resource-config wsr-bi"
+      className="resource-config crystra-bi"
       data-crystra-theme="dark"
       data-ui-owner="components"
       data-section-id="workflow-resource-config"

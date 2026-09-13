@@ -2,7 +2,7 @@
   "schemaVersion": "panel-benchmark@1",
   "authority": {
     "issue": "https://github.com/firestige/workflow-self-recursive/issues/172",
-    "providerRepository": "https://github.com/firestige/wsr-ui",
+    "providerRepository": "https://github.com/firestige/crystra-ui",
     "baselineCommit": "19148027762b6b951ca0e977f6aeae50aa0f746e",
     "cardinalitySources": [
       "packages/bi/src/domain/visualization/registry.ts",
@@ -72,7 +72,7 @@
       "rendererReadySelector": "[data-testid=\"trace-waterfall\"] [data-testid=\"trace-waterfall-row\"]",
       "source": "packages/bi/src/components/trace-views.tsx",
       "initialRenderer": "semantic HTML and CSS shared timeline",
-      "dataContract": "lossless wsr.trace-view@1 IR compiled from one traces/read page",
+      "dataContract": "lossless crystra.trace-view@1 IR compiled from one traces/read page",
       "typicalFixture": {
         "id": "recorded-trace-waterfall.typical@1",
         "source": "recorded product fixture",
@@ -92,7 +92,7 @@
       "rendererReadySelector": "[data-testid=\"trace-tree\"] [data-testid=\"trace-tree-node\"]",
       "source": "packages/bi/src/components/trace-views.tsx",
       "initialRenderer": "semantic HTML call tree",
-      "dataContract": "lossless wsr.trace-view@1 IR compiled from one traces/read page",
+      "dataContract": "lossless crystra.trace-view@1 IR compiled from one traces/read page",
       "typicalFixture": {
         "id": "recorded-trace-tree.typical@1",
         "source": "recorded product fixture",

@@ -348,7 +348,7 @@ export function WorkflowResourceBrowser({
     showPreview = tab === "content" && effectiveMode !== "edit";
   return (
     <section
-      className="wrb wsr-bi"
+      className="wrb crystra-bi"
       data-crystra-theme="dark"
       data-ui-owner="components"
       data-section-id="workflow-resource-browser"

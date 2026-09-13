@@ -42,7 +42,7 @@ export interface TraceViewLink extends TraceViewParentEdge {
 }
 
 export interface TraceView {
-  schemaVersion: "wsr.trace-view@1";
+  schemaVersion: "crystra.trace-view@1";
   status: "READY" | "INVALID";
   traceId?: string;
   startTimeUnixNano?: string;
@@ -61,7 +61,7 @@ const compareText = (left: string, right: string) =>
 
 function invalid(errors: string[]): TraceView {
   return {
-    schemaVersion: "wsr.trace-view@1",
+    schemaVersion: "crystra.trace-view@1",
     status: "INVALID",
     nodes: [],
     parentEdges: [],
@@ -183,7 +183,7 @@ export function compileTraceView(items: readonly TraceItem[]): TraceView {
   );
 
   return {
-    schemaVersion: "wsr.trace-view@1",
+    schemaVersion: "crystra.trace-view@1",
     status: "READY",
     traceId: [...traceIds][0],
     startTimeUnixNano: traceStart.toString(),

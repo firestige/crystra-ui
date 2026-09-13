@@ -30,7 +30,7 @@ function productionSources(directory: string): string {
 
 describe("host-neutral shared package boundary", () => {
   it("declares a publishable package with an explicit public surface", () => {
-    expect(packageJson.name).toBe("wsr-ui-core");
+    expect(packageJson.name).toBe("crystra-ui-core");
     expect(packageJson.private).not.toBe(true);
     expect(packageJson.version).toBe("0.1.0");
     expect(packageJson.license).toBe("Apache-2.0");
@@ -76,7 +76,7 @@ describe("host-neutral shared package boundary", () => {
     const source = existsSync(sharedStyles)
       ? readFileSync(sharedStyles, "utf8")
       : "";
-    expect(source).toContain(".wsr-bi {");
+    expect(source).toContain(".crystra-bi {");
     expect(source).not.toMatch(/(^|[},]\s*)(?::root|html|body|\*)\s*[{,]/m);
     expect(source).not.toContain('@import "tailwindcss"');
   });
@@ -98,7 +98,7 @@ describe("host-neutral shared package boundary", () => {
   it("contains trace renderer intrinsic width on narrow host canvases", () => {
     const source = readFileSync(resolve(sourceRoot, "shared.css"), "utf8");
 
-    expect(source).toContain(".wsr-bi .trace-view > *");
+    expect(source).toContain(".crystra-bi .trace-view > *");
     expect(source).toContain("max-inline-size: 100%");
     expect(source).toContain("min-inline-size: 0");
   });

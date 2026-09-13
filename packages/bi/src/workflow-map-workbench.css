@@ -28,14 +28,14 @@
   justify-content: space-between;
   padding: 12px 0;
 }
-.map-viewbar > .wsr-search-field {
+.map-viewbar > .crystra-search-field {
   width: 240px;
   flex: none;
 }
 .map-viewbar > div:first-child {
   min-width: 0;
 }
-.map-viewbar .wsr-typography {
+.map-viewbar .crystra-typography {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -58,7 +58,7 @@
   align-items: stretch;
   gap: 4px;
 }
-.map-search-results .wsr-button {
+.map-search-results .crystra-button {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -188,7 +188,7 @@
   padding-top: 8px;
   margin-top: 8px;
 }
-.map-controls .wsr-field {
+.map-controls .crystra-field {
   width: 100px;
 }
 .map-layout-status {
@@ -220,10 +220,10 @@
   display: grid;
   gap: 8px;
 }
-.map-inspector .wsr-card {
+.map-inspector .crystra-card {
   flex: none;
 }
-.map-inspector .wsr-card-content {
+.map-inspector .crystra-card-content {
   display: grid;
   gap: 10px;
 }
@@ -327,7 +327,7 @@
 .map-viewbar > div:first-child {
   flex: 1;
 }
-.map-viewbar > div:first-child > .wsr-button {
+.map-viewbar > div:first-child > .crystra-button {
   flex: none;
   white-space: nowrap;
 }
@@ -437,7 +437,7 @@
   width: 24px;
   flex: none;
 }
-.map-outline-rail li > div > .wsr-button {
+.map-outline-rail li > div > .crystra-button {
   min-width: 0;
   flex: 1;
   justify-content: flex-start;
@@ -497,11 +497,11 @@
   }
 }
 
-.map-outline-rail .wsr-button-label {
+.map-outline-rail .crystra-button-label {
   width: 100%;
   text-align: left;
 }
-.map-outline-rail li > div > .wsr-button {
+.map-outline-rail li > div > .crystra-button {
   display: flex;
   justify-content: flex-start;
 }
@@ -525,7 +525,7 @@
   gap: 4px;
   flex-wrap: nowrap;
 }
-.map-header-actions .map-controls .wsr-field {
+.map-header-actions .map-controls .crystra-field {
   width: auto;
   min-width: 84px;
 }

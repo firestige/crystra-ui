@@ -71,7 +71,7 @@ export function Typography({
 }) {
   return (
     <Tag
-      className={["wsr-typography", className].filter(Boolean).join(" ")}
+      className={["crystra-typography", className].filter(Boolean).join(" ")}
       data-family={family}
       data-italic={italic || undefined}
       data-tone={tone}
@@ -117,19 +117,19 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         aria-pressed={
           appearance === "segment" ? selected : props["aria-pressed"]
         }
-        className={["wsr-button", className].filter(Boolean).join(" ")}
+        className={["crystra-button", className].filter(Boolean).join(" ")}
         data-appearance={appearance}
         data-size={size}
         data-tone={tone}
       >
         {startIcon && (
-          <span className="wsr-button-icon" aria-hidden="true">
+          <span className="crystra-button-icon" aria-hidden="true">
             {startIcon}
           </span>
         )}
         {children}
         {endIcon && (
-          <span className="wsr-button-icon" aria-hidden="true">
+          <span className="crystra-button-icon" aria-hidden="true">
             {endIcon}
           </span>
         )}
@@ -164,7 +164,7 @@ export function ButtonGroup({
 }: HTMLAttributes<HTMLDivElement> & { segmented?: boolean }) {
   return (
     <div
-      className={["wsr-button-group", className].filter(Boolean).join(" ")}
+      className={["crystra-button-group", className].filter(Boolean).join(" ")}
       data-segmented={segmented || undefined}
       role={segmented ? "group" : props.role}
       {...props}
@@ -187,7 +187,7 @@ export function Surface({
 }) {
   return (
     <Tag
-      className={["wsr-surface", className].filter(Boolean).join(" ")}
+      className={["crystra-surface", className].filter(Boolean).join(" ")}
       data-border={border}
       data-level={level}
       {...props}
@@ -208,7 +208,7 @@ export function Divider({
   return (
     <hr
       {...props}
-      className={["wsr-divider", className].filter(Boolean).join(" ")}
+      className={["crystra-divider", className].filter(Boolean).join(" ")}
       aria-orientation={orientation}
       data-orientation={orientation}
     />
@@ -223,7 +223,7 @@ export function TextInput({
 }: InputHTMLAttributes<HTMLInputElement> & { inputKind?: "search" }) {
   return (
     <input
-      className={["wsr-input", className].filter(Boolean).join(" ")}
+      className={["crystra-input", className].filter(Boolean).join(" ")}
       data-input-kind={inputKind}
       type={type ?? inputKind}
       {...props}
@@ -248,7 +248,7 @@ export function StatusBadge({
     <Chip
       {...props}
       tone={tone}
-      className={["wsr-status-badge", className].filter(Boolean).join(" ")}
+      className={["crystra-status-badge", className].filter(Boolean).join(" ")}
       data-status={status}
     />
   );
@@ -282,13 +282,13 @@ export function Card({
       {...props}
       level={level}
       border={border}
-      className={["wsr-card", className].filter(Boolean).join(" ")}
+      className={["crystra-card", className].filter(Boolean).join(" ")}
       data-tone={tone}
       data-padding={padding}
     >
       {(heading || description || actions) && (
-        <div className="wsr-card-header">
-          <div className="wsr-card-copy">
+        <div className="crystra-card-header">
+          <div className="crystra-card-copy">
             {heading && (
               <Typography as="h3" variant="card-title">
                 {heading}
@@ -300,11 +300,11 @@ export function Card({
               </Typography>
             )}
           </div>
-          {actions && <div className="wsr-card-actions">{actions}</div>}
+          {actions && <div className="crystra-card-actions">{actions}</div>}
         </div>
       )}
-      <div className="wsr-card-content">{children}</div>
-      {footer && <div className="wsr-card-footer">{footer}</div>}
+      <div className="crystra-card-content">{children}</div>
+      {footer && <div className="crystra-card-footer">{footer}</div>}
     </Surface>
   );
 }
@@ -324,7 +324,7 @@ export function Chip({
   return (
     <span
       {...props}
-      className={["wsr-chip", className].filter(Boolean).join(" ")}
+      className={["crystra-chip", className].filter(Boolean).join(" ")}
       data-tone={tone}
       data-appearance={appearance}
       data-size={size}

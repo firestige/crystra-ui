@@ -42,7 +42,7 @@ export function SearchField({
   if (appearance === "surface")
     return (
       <div
-        className="wsr-search-field"
+        className="crystra-search-field"
         data-size={size}
         data-disabled={props.disabled || undefined}
       >
@@ -52,13 +52,13 @@ export function SearchField({
           </label>
         )}
         <div
-          className="wsr-search-surface"
+          className="crystra-search-surface"
           onClick={(event) => {
             if (event.target === event.currentTarget)
               event.currentTarget.querySelector("input")?.focus();
           }}
         >
-          {leading && <span className="wsr-search-leading">{leading}</span>}
+          {leading && <span className="crystra-search-leading">{leading}</span>}
           <input
             aria-label={hideLabel ? label : undefined}
             {...props}
@@ -70,7 +70,7 @@ export function SearchField({
       </div>
     );
   return (
-    <label className="wsr-field" data-size={size} htmlFor={id ?? generated}>
+    <label className="crystra-field" data-size={size} htmlFor={id ?? generated}>
       <Typography variant="label">{label}</Typography>
       <input {...props} id={id ?? generated} type="search" />
     </label>
@@ -100,7 +100,7 @@ export function SelectField({
   const generated = useId();
   return (
     <label
-      className="wsr-field"
+      className="crystra-field"
       data-size={size}
       data-appearance={appearance}
       htmlFor={id ?? generated}
@@ -131,7 +131,7 @@ export function SelectionControl({
   ...props
 }: SelectionControlProps) {
   return (
-    <label className="wsr-selection">
+    <label className="crystra-selection">
       <input {...props} type={type} />
       <Typography variant="control">{label}</Typography>
     </label>
@@ -181,7 +181,7 @@ export function Popover({ label, children, size = "compact" }: PopoverProps) {
   }, [open]);
   return (
     <div
-      className="wsr-popover"
+      className="crystra-popover"
       ref={root}
       onBlur={(e) => {
         if (!e.currentTarget.contains(e.relatedTarget as Node | null))
@@ -213,7 +213,7 @@ export function Popover({ label, children, size = "compact" }: PopoverProps) {
           role="dialog"
           aria-label={label}
           tabIndex={-1}
-          className="wsr-popover-panel"
+          className="crystra-popover-panel"
         >
           {children}
         </div>
@@ -223,8 +223,8 @@ export function Popover({ label, children, size = "compact" }: PopoverProps) {
 }
 export function EmptyState({ label = "没有内容" }: { label?: string }) {
   return (
-    <div className="wsr-empty">
-      <div aria-hidden="true" className="wsr-empty-skeleton">
+    <div className="crystra-empty">
+      <div aria-hidden="true" className="crystra-empty-skeleton">
         <Icon name="file" size="brand-slot" />
         <span />
         <span />
@@ -259,8 +259,8 @@ export function FullBenchViewer({
     wasExpanded.current = expanded;
   }, [expanded]);
   return (
-    <section className="wsr-bench-viewer" data-expanded={expanded}>
-      <header className="wsr-viewer-header">
+    <section className="crystra-bench-viewer" data-expanded={expanded}>
+      <header className="crystra-viewer-header">
         <Typography as="h3" variant="card-title">
           {title}
         </Typography>
@@ -284,12 +284,12 @@ export function FullBenchViewer({
           </Button>
         )}
       </header>
-      <div hidden={expanded} className="wsr-viewer-preview">
+      <div hidden={expanded} className="crystra-viewer-preview">
         {preview}
       </div>
       {expanded && (
         <div
-          className="wsr-viewer-scroll"
+          className="crystra-viewer-scroll"
           tabIndex={0}
           aria-label={`${title}完整内容`}
         >
@@ -314,8 +314,8 @@ export function ProgressNotice({
     Math.min(100, Number.isFinite(value) ? value : 0),
   );
   return (
-    <aside className="wsr-progress-notice">
-      <div className="wsr-viewer-header">
+    <aside className="crystra-progress-notice">
+      <div className="crystra-viewer-header">
         <Typography variant="item-title" role="status">
           {label}
         </Typography>

@@ -1,5 +1,5 @@
 export const STUDIO_DESIGN_IR = Object.freeze({
-  schemaVersion: "wsr.studio-design@1",
+  schemaVersion: "crystra.studio-design@1",
   typography: Object.freeze({
     h1: Object.freeze({
       size: "4xl",

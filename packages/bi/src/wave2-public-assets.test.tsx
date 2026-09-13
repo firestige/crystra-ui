@@ -95,14 +95,16 @@ describe("Wave 2 public reusable BI assets", () => {
       </BiSurface>,
     );
 
-    const surface = screen.getByText("Metric content").closest(".wsr-bi");
+    const surface = screen.getByText("Metric content").closest(".crystra-bi");
     expect(surface).toHaveAttribute("data-theme", "dark");
     expect(surface).toHaveAttribute("data-density", "compact");
-    expect(surface).toHaveStyle("--wsr-container-border-style: dashed");
-    expect(surface).toHaveStyle("--wsr-surface-section: var(--host-section)");
-    expect(surface).toHaveStyle("--wsr-surface-panel: var(--host-panel)");
-    expect(surface).toHaveStyle("--wsr-surface-raised: var(--host-raised)");
-    expect(surface).toHaveStyle("--wsr-surface-inset: var(--host-inset)");
+    expect(surface).toHaveStyle("--crystra-container-border-style: dashed");
+    expect(surface).toHaveStyle(
+      "--crystra-surface-section: var(--host-section)",
+    );
+    expect(surface).toHaveStyle("--crystra-surface-panel: var(--host-panel)");
+    expect(surface).toHaveStyle("--crystra-surface-raised: var(--host-raised)");
+    expect(surface).toHaveStyle("--crystra-surface-inset: var(--host-inset)");
     expect(surface).toHaveStyle(
       "--content-primary: var(--host-content-primary)",
     );
@@ -114,20 +116,20 @@ describe("Wave 2 public reusable BI assets", () => {
     expect(surface).toHaveStyle("--data-series-1: var(--host-data-1)");
     expect(surface).toHaveStyle("--data-series-4: var(--host-data-1)");
     expect(surface).toHaveStyle("--data-series-6: var(--host-data-3)");
-    expect(surface).toHaveStyle("--wsr-type-h1: 1.5rem");
-    expect(surface).toHaveStyle("--wsr-font-family: Host Sans");
-    expect(surface).toHaveStyle("--wsr-code-font-family: Host Mono");
-    expect(surface).toHaveStyle("--wsr-type-h2: 1rem");
-    expect(surface).toHaveStyle("--wsr-type-subtitle1: 0.875rem");
-    expect(surface).toHaveStyle("--wsr-type-body1: 0.875rem");
-    expect(surface).toHaveStyle("--wsr-type-body2: 0.75rem");
-    expect(surface).toHaveStyle("--wsr-type-caption: 0.6875rem");
-    expect(surface).toHaveStyle("--wsr-type-overline: 0.6875rem");
+    expect(surface).toHaveStyle("--crystra-type-h1: 1.5rem");
+    expect(surface).toHaveStyle("--crystra-font-family: Host Sans");
+    expect(surface).toHaveStyle("--crystra-code-font-family: Host Mono");
+    expect(surface).toHaveStyle("--crystra-type-h2: 1rem");
+    expect(surface).toHaveStyle("--crystra-type-subtitle1: 0.875rem");
+    expect(surface).toHaveStyle("--crystra-type-body1: 0.875rem");
+    expect(surface).toHaveStyle("--crystra-type-body2: 0.75rem");
+    expect(surface).toHaveStyle("--crystra-type-caption: 0.6875rem");
+    expect(surface).toHaveStyle("--crystra-type-overline: 0.6875rem");
     expect(surface?.getAttribute("style")).not.toMatch(
-      /--wsr-type-(?:page-title|section-title|body|label|micro|code|value):/,
+      /--crystra-type-(?:page-title|section-title|body|label|micro|code|value):/,
     );
     expect(surface?.getAttribute("style")).not.toMatch(
-      /--wsr-(?:tree|waterfall|statistics|trace-indent)-/,
+      /--crystra-(?:tree|waterfall|statistics|trace-indent)-/,
     );
     expect(
       screen.getByRole("region", { name: "Evaluation metrics" }),

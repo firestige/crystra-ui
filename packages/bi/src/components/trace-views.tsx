@@ -1754,7 +1754,7 @@ export const TraceTree = memo(function TraceTree({
         refreshPalette();
         if (reducedMotion) draw(performance.now());
       });
-      themeObserver.observe(canvas.closest(".wsr-bi") ?? canvas, {
+      themeObserver.observe(canvas.closest(".crystra-bi") ?? canvas, {
         attributeFilter: ["class", "data-theme", "style"],
         attributes: true,
         subtree: true,
@@ -1857,7 +1857,7 @@ export const TraceTree = memo(function TraceTree({
             refreshPalette();
             draw();
           });
-    themeObserver?.observe(canvas.closest(".wsr-bi") ?? canvas, {
+    themeObserver?.observe(canvas.closest(".crystra-bi") ?? canvas, {
       attributeFilter: ["class", "data-theme", "style"],
       attributes: true,
       subtree: true,
@@ -2471,7 +2471,7 @@ export function TraceStatistics({
   const topicForNode = (node: TraceViewNode) => {
     const explicit = node.fields.find(
       ({ field, value }) =>
-        field === "wsr.statistics.topic" &&
+        field === "crystra.statistics.topic" &&
         typeof value === "string" &&
         value.trim().length > 0,
     )?.value;

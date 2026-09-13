@@ -5,7 +5,7 @@
 :root[data-theme="light"] {
   color-scheme: light;
   --surface-canvas: oklch(0.975 0.006 250);
-  --surface-section: var(--wsr-surface-section, var(--surface-panel));
+  --surface-section: var(--crystra-surface-section, var(--surface-panel));
   --surface-panel: oklch(1 0 0);
   --surface-raised: oklch(0.99 0.004 250);
   --surface-overlay: oklch(1 0 0);

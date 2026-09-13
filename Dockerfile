@@ -6,13 +6,13 @@ COPY packages/bi/package.json packages/bi/package.json
 RUN npm ci --ignore-scripts --no-audit --no-fund
 
 COPY . .
-RUN npm run typecheck && npm run build:harness --workspace wsr-ui-core
+RUN npm run typecheck && npm run build:harness --workspace crystra-ui-core
 
 FROM nginx:1.29.5-alpine3.23
 
-ARG WSR_UI_REVISION=unbound
-LABEL org.opencontainers.image.source="https://github.com/firestige/wsr-ui" \
-      org.opencontainers.image.revision=$WSR_UI_REVISION
+ARG CRYSTRA_UI_REVISION=unbound
+LABEL org.opencontainers.image.source="https://github.com/firestige/crystra-ui" \
+      org.opencontainers.image.revision=$CRYSTRA_UI_REVISION
 
 ENV EVIDENCE_UPSTREAM=evidence:4318 \
     EVOLUTION_UPSTREAM=evolution:8000
