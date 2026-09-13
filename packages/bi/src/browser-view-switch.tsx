@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
-import { ToggleSwitch } from "./components/toggle-switch";
 import { Icon } from "./components/icon";
+import { ToggleSwitch } from "./components/toggle-switch";
 import "./crystra-theme.css";
 import "./select-dropdown.css";
 

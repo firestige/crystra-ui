@@ -31,15 +31,9 @@
       "title": "头脑风暴",
       "description": "头脑风暴的目标与工作规则可继续在对话中细化。",
       "parent": "explore",
-      "inputs": [
-        "当前工作材料"
-      ],
-      "outputs": [
-        "阶段成果"
-      ],
-      "resources": [
-        "工作指南"
-      ]
+      "inputs": ["当前工作材料"],
+      "outputs": ["阶段成果"],
+      "resources": ["工作指南"]
     },
     {
       "id": "scope",
@@ -47,15 +41,9 @@
       "title": "明确目标与约束",
       "description": "明确目标与约束的目标与工作规则可继续在对话中细化。",
       "parent": "explore",
-      "inputs": [
-        "当前工作材料"
-      ],
-      "outputs": [
-        "阶段成果"
-      ],
-      "resources": [
-        "工作指南"
-      ]
+      "inputs": ["当前工作材料"],
+      "outputs": ["阶段成果"],
+      "resources": ["工作指南"]
     },
     {
       "id": "options",
@@ -63,15 +51,9 @@
       "title": "比较架构方案",
       "description": "比较架构方案的目标与工作规则可继续在对话中细化。",
       "parent": "architecture",
-      "inputs": [
-        "当前工作材料"
-      ],
-      "outputs": [
-        "阶段成果"
-      ],
-      "resources": [
-        "工作指南"
-      ]
+      "inputs": ["当前工作材料"],
+      "outputs": ["阶段成果"],
+      "resources": ["工作指南"]
     },
     {
       "id": "fork",
@@ -86,15 +68,9 @@
       "title": "检查非功能需求",
       "description": "检查非功能需求的目标与工作规则可继续在对话中细化。",
       "parent": "reviewing",
-      "inputs": [
-        "当前工作材料"
-      ],
-      "outputs": [
-        "阶段成果"
-      ],
-      "resources": [
-        "工作指南"
-      ]
+      "inputs": ["当前工作材料"],
+      "outputs": ["阶段成果"],
+      "resources": ["工作指南"]
     },
     {
       "id": "boundaries",
@@ -102,15 +78,9 @@
       "title": "检查职责与边界",
       "description": "检查职责与边界的目标与工作规则可继续在对话中细化。",
       "parent": "reviewing",
-      "inputs": [
-        "当前工作材料"
-      ],
-      "outputs": [
-        "阶段成果"
-      ],
-      "resources": [
-        "工作指南"
-      ]
+      "inputs": ["当前工作材料"],
+      "outputs": ["阶段成果"],
+      "resources": ["工作指南"]
     },
     {
       "id": "join",
@@ -133,30 +103,18 @@
       "title": "调整方案",
       "description": "调整方案的目标与工作规则可继续在对话中细化。",
       "parent": "architecture",
-      "inputs": [
-        "当前工作材料"
-      ],
-      "outputs": [
-        "阶段成果"
-      ],
-      "resources": [
-        "工作指南"
-      ]
+      "inputs": ["当前工作材料"],
+      "outputs": ["阶段成果"],
+      "resources": ["工作指南"]
     },
     {
       "id": "write",
       "kind": "activity",
       "title": "按模板形成设计文档",
       "description": "按模板形成设计文档的目标与工作规则可继续在对话中细化。",
-      "inputs": [
-        "当前工作材料"
-      ],
-      "outputs": [
-        "阶段成果"
-      ],
-      "resources": [
-        "工作指南"
-      ]
+      "inputs": ["当前工作材料"],
+      "outputs": ["阶段成果"],
+      "resources": ["工作指南"]
     },
     {
       "id": "e",

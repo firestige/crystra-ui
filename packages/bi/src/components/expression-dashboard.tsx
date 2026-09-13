@@ -1,25 +1,25 @@
-import { SemanticWidget } from "./semantic-widget";
-import {
-  FAMILY_FIXTURES,
-  familyViews,
-  type View,
-} from "../domain/widget-families";
 import { useState } from "react";
-import { DashboardGrid } from "./dashboard-grid";
-import { ExpressionWidget } from "./widget-expression-study";
+import {
+  panelSizeForGrid,
+  type DashboardLayout,
+} from "../domain/layout/layout";
+import type { MonitoringWidgetSize } from "../domain/widget-catalog";
 import {
   EXPRESSIONS,
   expressionSizes,
   type Kind,
 } from "../domain/widget-expressions";
-import type { MonitoringWidgetSize } from "../domain/widget-catalog";
 import {
-  panelSizeForGrid,
-  type DashboardLayout,
-} from "../domain/layout/layout";
-import { dashboardLayout } from "../test-harness/dashboard-fixture";
-import { Button } from "./design-system";
+  FAMILY_FIXTURES,
+  familyViews,
+  type View,
+} from "../domain/widget-families";
 import "../monitoring-bi.css";
+import { dashboardLayout } from "../test-harness/dashboard-fixture";
+import { DashboardGrid } from "./dashboard-grid";
+import { Button } from "./design-system";
+import { SemanticWidget } from "./semantic-widget";
+import { ExpressionWidget } from "./widget-expression-study";
 
 // Layout-only fixture adapter. These expressions do not claim metric service bindings.
 function initialLayout(): DashboardLayout {

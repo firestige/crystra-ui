@@ -1,69 +1,73 @@
-import {ResultAnalysisPreview} from "./result-analysis-preview";
-import { DeliveryDirectory } from "./delivery-directory";
-import { deliveryDirectoryRecords, deliveryDirectorySearchFields } from "../test-harness/delivery-directory-fixture";
-import type { DeliverySearchRecord } from "../domain/delivery-search";
-import { createObservationQueryCatalog } from "../test-harness/observation-query-fixture";
 import {
-  useEffect,
   useCallback,
+  useEffect,
   useLayoutEffect,
   useMemo,
   useState,
   type ReactNode,
 } from "react";
-import { Button, ButtonGroup, Card, Chip, Typography } from "./design-system";
-import {
-  ObservationTimeControls,
-  observationRangeLabel,
-  observationRange,
-  observationTimeZone,
-  inObservationRange,
-} from "./observation-time-controls";
-import {
-  ObservationLayoutEditor,
-  ObservationRangeDialog,
-  resolveObservationSource,
-  resolveObservationWidget,
-  ObservationWidget,
-} from "./observation-layout-editor";
-import { Tabs } from "./collection-components";
-import { Icon } from "./icon";
-import { DashboardGrid } from "./dashboard-grid";
-import { TraceWaterfall, TraceTree } from "./trace-views";
-import {
-  chartMinimumSize,
-  familyViews,
-  isWidgetSizeAllowed,
-  type MatrixData,
-  type View,
-} from "../domain/widget-families";
+import "../analysis-observation-study.css";
 import {
   defaultChartRange,
   supportsChartRange,
   type ChartRange,
 } from "../domain/chart-range";
-import { type MonitoringWidgetSize } from "../domain/widget-catalog";
-import {
-  overviewSources,
-  type OverviewFilters,
-} from "../test-harness/observation-overview-fixture";
-import { dashboardLayout } from "../test-harness/dashboard-fixture";
+import type { DeliverySearchRecord } from "../domain/delivery-search";
 import {
   panelSizeForGrid,
   type DashboardLayout,
 } from "../domain/layout/layout";
+import { type MonitoringWidgetSize } from "../domain/widget-catalog";
+import {
+  chartMinimumSize,
+  familyViews,
+  isWidgetSizeAllowed,
+  type View,
+} from "../domain/widget-families";
+import "../monitoring-bi.css";
+import "../monitoring-widget-base.css";
+import "../monitoring-widget.css";
+import { dashboardLayout } from "../test-harness/dashboard-fixture";
+import {
+  deliveryDirectoryRecords,
+  deliveryDirectorySearchFields,
+} from "../test-harness/delivery-directory-fixture";
 import {
   observationSamples,
   observationTasks,
   observationTrace,
   roles,
 } from "../test-harness/observation-fixture";
-import "../monitoring-widget-base.css";
-import "../monitoring-widget.css";
+import {
+  overviewSources,
+  type OverviewFilters,
+} from "../test-harness/observation-overview-fixture";
+import { createObservationQueryCatalog } from "../test-harness/observation-query-fixture";
 import "../widget-expression-study.css";
 import "../widget-tooltip.css";
-import "../monitoring-bi.css";
-import "../analysis-observation-study.css";
+import { Tabs } from "./collection-components";
+import { DashboardGrid } from "./dashboard-grid";
+import { DeliveryDirectory } from "./delivery-directory";
+import { Button, ButtonGroup, Card, Typography } from "./design-system";
+import { Icon } from "./icon";
+import {
+  resolveObservationSource,
+  resolveObservationWidget,
+} from "./observation-layout-codec";
+import {
+  ObservationLayoutEditor,
+  ObservationRangeDialog,
+  ObservationWidget,
+} from "./observation-layout-editor";
+import {
+  inObservationRange,
+  observationRange,
+  observationRangeLabel,
+  observationTimeZone,
+} from "./observation-time";
+import { ObservationTimeControls } from "./observation-time-controls";
+import { ResultAnalysisPreview } from "./result-analysis-preview";
+import { TraceTree, TraceWaterfall } from "./trace-views";
 
 type Page = "dashboard" | "traces" | "reports";
 const headings: Record<Page, string> = {
@@ -159,7 +163,8 @@ export function AnalysisObservationStudy() {
   const scope = page === "traces" ? selectedScope : "all";
   const [notice, setNotice] = useState("");
   const [traceView, setTraceView] = useState("waterfall");
-  const [selectedDelivery, setSelectedDelivery] = useState<DeliverySearchRecord|null>(null);
+  const [selectedDelivery, setSelectedDelivery] =
+    useState<DeliverySearchRecord | null>(null);
   const [runDirectoryOpen, setRunDirectoryOpen] = useState(false);
   const [editing, setEditing] = useState(false);
   const [rangePanelId, setRangePanelId] = useState<string | null>(null);
@@ -170,9 +175,8 @@ export function AnalysisObservationStudy() {
           (scope === "all" || r.task === scope) &&
           inObservationRange(r.date, period),
       ),
-    [scope, period, refreshCount],
+    [scope, period],
   );
-  const days = [...new Set(records.map((r) => r.day))];
   const go = (next: Page) => {
     setPage(next);
     setNotice("");
@@ -280,12 +284,28 @@ export function AnalysisObservationStudy() {
   };
   const [layout, setLayout] = useState(initialLayout);
   const [savedLayout, setSavedLayout] = useState(layout);
-  const deliveryRange = useMemo<readonly [string,string]>(() => {
-    const [start,end] = observationRange(period);
-    return [start+observationTimeZone,end+observationTimeZone];
-  },[period]);
-  const deliveryRecords = useMemo(() => deliveryDirectoryRecords.filter(record => scope === "all" || record.taskId === scope),[scope]);
-  const trace = useMemo(() => selectedDelivery ? observationTrace(selectedDelivery.taskId, selectedDelivery.workflowVersion, selectedDelivery) : null,[selectedDelivery]);
+  const deliveryRange = useMemo<readonly [string, string]>(() => {
+    const [start, end] = observationRange(period);
+    return [start + observationTimeZone, end + observationTimeZone];
+  }, [period]);
+  const deliveryRecords = useMemo(
+    () =>
+      deliveryDirectoryRecords.filter(
+        (record) => scope === "all" || record.taskId === scope,
+      ),
+    [scope],
+  );
+  const trace = useMemo(
+    () =>
+      selectedDelivery
+        ? observationTrace(
+            selectedDelivery.taskId,
+            selectedDelivery.workflowVersion,
+            selectedDelivery,
+          )
+        : null,
+    [selectedDelivery],
+  );
   const traceNavigation = (
     <ButtonGroup aria-label="Trace 表达方式">
       {[
@@ -645,7 +665,6 @@ export function AnalysisObservationStudy() {
                     />
                   </section>
                 ))}
-
               </div>
             )
           )}
@@ -661,7 +680,13 @@ export function AnalysisObservationStudy() {
                 aria-hidden={!runDirectoryOpen}
                 inert={!runDirectoryOpen}
               >
-                <DeliveryDirectory records={deliveryRecords} searchFields={deliveryDirectorySearchFields} range={deliveryRange} selectedId={selectedDelivery?.deliveryId??null} onSelectionChange={setSelectedDelivery} />
+                <DeliveryDirectory
+                  records={deliveryRecords}
+                  searchFields={deliveryDirectorySearchFields}
+                  range={deliveryRange}
+                  selectedId={selectedDelivery?.deliveryId ?? null}
+                  onSelectionChange={setSelectedDelivery}
+                />
               </aside>
               <div className="obs-scroll obs-trace-main">
                 <div className="obs-trace-toolbar">
@@ -681,10 +706,17 @@ export function AnalysisObservationStudy() {
                     />
                   </Button>
                   {traceNavigation}
-
                 </div>
-                <div data-section-id="trace-reconstruction" data-delivery-id={selectedDelivery?.deliveryId} data-trace-id={trace?.traceId}>
-                  {!trace ? <Placeholder title="没有匹配的调用记录">请调整检索、筛选或时间范围。</Placeholder> : traceView === "waterfall" ? (
+                <div
+                  data-section-id="trace-reconstruction"
+                  data-delivery-id={selectedDelivery?.deliveryId}
+                  data-trace-id={trace?.traceId}
+                >
+                  {!trace ? (
+                    <Placeholder title="没有匹配的调用记录">
+                      请调整检索、筛选或时间范围。
+                    </Placeholder>
+                  ) : traceView === "waterfall" ? (
                     <TraceWaterfall
                       fillHeight
                       key={trace.traceId}
@@ -702,8 +734,16 @@ export function AnalysisObservationStudy() {
               </div>
             </div>
           )}
-          <div hidden={page!=="reports"} className="obs-comparison-workspace" data-section-id="comparison-analysis">
-            <ResultAnalysisPreview embedded timeRange={deliveryRange} rangeLabel={observationRangeLabel(period)}/>
+          <div
+            hidden={page !== "reports"}
+            className="obs-comparison-workspace"
+            data-section-id="comparison-analysis"
+          >
+            <ResultAnalysisPreview
+              embedded
+              timeRange={deliveryRange}
+              rangeLabel={observationRangeLabel(period)}
+            />
           </div>
         </div>
       )}

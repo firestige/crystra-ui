@@ -1,6 +1,6 @@
-import { inObservationRange } from "../components/observation-time-controls";
-import type { ObservationSources } from "../components/observation-layout-editor";
-import type { MatrixData, WidgetData, View } from "../domain/widget-families";
+import { ObservationSources } from "../components/observation-layout-codec";
+import { inObservationRange } from "../components/observation-time";
+import type { MatrixData, View, WidgetData } from "../domain/widget-families";
 
 // Illustrative usage and pricing only; no provider tariffs or billing claims.
 export const overviewModels = [

@@ -1,17 +1,17 @@
-import { ExpressionDashboard } from "./expression-dashboard";
-import { WidgetExpressionStudy } from "./widget-expression-study";
 import { useState } from "react";
-import { statisticsTrace } from "../test-harness/statistics-fixture";
 import { previewReceipt } from "../preview-fixtures";
 import {
-  BiSurface,
   BiCard,
+  BiSurface,
   ReceiptView,
   SpanPassport,
-  TraceWaterfall,
-  TraceTree,
   TraceStatistics,
+  TraceTree,
+  TraceWaterfall,
 } from "../public";
+import { statisticsTrace } from "../test-harness/statistics-fixture";
+import { ExpressionDashboard } from "./expression-dashboard";
+import { WidgetExpressionStudy } from "./widget-expression-study";
 const sections = [
   {
     id: "expressions",

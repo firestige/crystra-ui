@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
-import { createObservationQueryCatalog } from "./observation-query-fixture";
-import { overviewRecords } from "./observation-overview-fixture";
 import { familyViews } from "../domain/widget-families";
+import { overviewRecords } from "./observation-overview-fixture";
+import { createObservationQueryCatalog } from "./observation-query-fixture";
 const base = {
   metric: "cache",
   providers: "all",

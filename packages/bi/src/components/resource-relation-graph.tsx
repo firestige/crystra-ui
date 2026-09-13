@@ -1,49 +1,469 @@
-import {wrapResourceLabel} from './resource-label-wrap';
-import relationTypes from '../domain/resource-relation-types.json';
-import {resourceCatalog,type CatalogFile} from './resource-catalog';
-import {useEffect,useMemo,useRef,useState} from 'react';
-import {forceSimulation,forceManyBody,forceLink,forceCollide,forceX,forceY,type SimulationNodeDatum,type Simulation} from 'd3';
-import {IconButton,Typography} from './design-system';
-import {Icon} from './icon';
-import {WidgetTooltip} from './widget-tooltip';
-type Node={id:string;label:string;kind:string;file?:string;typeLabel?:string};
-type Edge={from:string;to:string;label:string;kind?:'call'|'reference'};
-type Source={nodes:Node[];edges:Edge[];files?:CatalogFile[]};
-const kinds:Record<string,string>={activity:'活动',role:'职责',file:'资源文件',artifact:'产出',external:'外部资源'};
-type VisualType=keyof typeof relationTypes;
-function visualType(node:Node):VisualType{return node.kind==='activity'?'activity':node.kind==='role'?'role':node.kind==='artifact'?'artifact':({'角色':'role','技能':'skill','脚本／工具':'script','模板':'template','活动指令':'prompt'} as Record<string,VisualType>)[node.typeLabel||'']||'reference';}
-function NodeShape(){return <circle className="wrb-node-shape" r={24}/>;}
-// Collapse package implementation layers, retaining the declared relationship as evidence.
-export function projectRelations(source:Source,root:string,expanded:string[]=[]){
- const catalog=resourceCatalog(source.files||[],source.nodes,source.edges);
- const aliases=new Map<string,string>(),visible=new Map<string,Node>();
- for(const resource of catalog){for(const alias of resource.aliases)aliases.set(alias,resource.id);visible.set(resource.id,{id:resource.id,label:resource.name,kind:resource.group==='角色（Role）'?'role':'file',file:resource.path,typeLabel:resource.group.replace(/（.*）/,'')});}
- for(const node of source.nodes){if(aliases.has(node.id)||!kinds[node.kind])continue;if(node.kind==='file'&&(source.files?.find(f=>f.path===node.file)?.internal||node.file?.startsWith('definition/')))continue;visible.set(node.id,node);aliases.set(node.id,node.id);}
- const projected:Edge[]=[];
- for(const node of visible.values()){
-  const visit=(id:string,trail:Edge[],seen:Set<string>)=>{for(const edge of source.edges.filter(e=>e.from===id)){if(seen.has(edge.to))continue;const next=[...trail,edge],target=aliases.get(edge.to);if(target&&target!==node.id&&visible.has(target)){const call=node.kind==='activity'&&visible.get(target)?.kind==='role'&&next.some(e=>e.label==='可用执行配置');projected.push({from:node.id,to:target,kind:call?'call':'reference',label:call?'调用（配置允许）':next.map(e=>e.label).filter(l=>!['活动定义','资源定义','职责指令'].includes(l)).join(' · ')||'引用'});}else visit(edge.to,next,new Set([...seen,edge.to]));}};
-  for(const [alias,id] of aliases)if(id===node.id)visit(alias,[],new Set([alias]));
- }
- const rootId=aliases.get(root)||root;
- const edges=projected.filter((e,i,a)=>a.findIndex(x=>x.from===e.from&&x.to===e.to&&x.label===e.label)===i);
- const ids=new Set([rootId,...expanded]);let frontier=[...ids];for(let depth=0;depth<2;depth++){const next:string[]=[];for(const id of frontier)for(const e of edges){const other=e.from===id?e.to:e.to===id?e.from:null;if(other&&!ids.has(other)){ids.add(other);next.push(other);}}frontier=next;}
- return {rootId,nodes:[...visible.values()].filter(n=>ids.has(n.id)),edges:edges.filter(e=>ids.has(e.from)&&ids.has(e.to))};
+import {
+  forceCollide,
+  forceLink,
+  forceManyBody,
+  forceSimulation,
+  forceX,
+  forceY,
+  type Simulation,
+  type SimulationNodeDatum,
+} from "d3";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import relationTypes from "../domain/resource-relation-types.json";
+import { IconButton, Typography } from "./design-system";
+import { Icon } from "./icon";
+import { wrapResourceLabel } from "./resource-label-wrap";
+import { Node, Source, kinds, projectRelations } from "./resource-relations";
+import { WidgetTooltip } from "./widget-tooltip";
+type VisualType = keyof typeof relationTypes;
+function visualType(node: Node): VisualType {
+  return node.kind === "activity"
+    ? "activity"
+    : node.kind === "role"
+      ? "role"
+      : node.kind === "artifact"
+        ? "artifact"
+        : (
+            {
+              角色: "role",
+              技能: "skill",
+              "脚本／工具": "script",
+              模板: "template",
+              活动指令: "prompt",
+            } as Record<string, VisualType>
+          )[node.typeLabel || ""] || "reference";
 }
-export function ResourceRelationGraph({source,file,onOpenFile}:{source:Source;file:string;onOpenFile:(file:string)=>void}){
- const [expanded,setExpanded]=useState<string[]>([]);
- const graph=useMemo(()=>projectRelations(source,'file:'+file,expanded),[source,file,expanded]);
- type Point=SimulationNodeDatum&{id:string};
- const [positions,setPositions]=useState<Point[]>([]),[selected,setSelected]=useState<string|null>(null),[camera,setCamera]=useState({x:20,y:60,k:1});
- const simulation=useRef<Simulation<Point,undefined>|null>(null),points=useRef<Point[]>([]),viewport=useRef<HTMLDivElement>(null),cameraRef=useRef(camera),drag=useRef<{id?:string;x:number;y:number;cx:number;cy:number}|null>(null);cameraRef.current=camera;
- const fit=()=>{const box=viewport.current?.getBoundingClientRect(),nodes=points.current;if(!box||!nodes.length)return;const minX=Math.min(...nodes.map(n=>n.x!))-100,maxX=Math.max(...nodes.map(n=>n.x!))+100,minY=Math.min(...nodes.map(n=>n.y!))-75,maxY=Math.max(...nodes.map(n=>n.y!))+75;const k=Math.min(1,(box.width-40)/(maxX-minX),(box.height-90)/(maxY-minY));setCamera({k,x:box.width/2-(minX+maxX)*k/2,y:45+box.height/2-(minY+maxY)*k/2});};
- useEffect(()=>{setExpanded([]);setSelected(null);points.current=[];},[file]);
- useEffect(()=>{const old=new Map(points.current.map(n=>[n.id,n]));const nodes:Point[]=graph.nodes.map(n=>old.get(n.id)||{id:n.id});points.current=nodes;
- const sim=forceSimulation(nodes).force('charge',forceManyBody().strength(-950)).force('link',forceLink<Point, {source:string;target:string}>(graph.edges.map(e=>({source:e.from,target:e.to}))).id(n=>n.id).distance(150).strength(.35)).force('collision',forceCollide<Point>(82).iterations(3)).force('x',forceX(0).strength(.035)).force('y',forceY(0).strength(.035)).stop();
- sim.tick(160);setPositions(nodes.map(n=>({...n})));simulation.current=sim;fit();sim.on('tick',()=>setPositions(nodes.map(n=>({...n}))));return()=>{sim.stop();};},[graph]);
- useEffect(()=>{const observer=new ResizeObserver(fit);if(viewport.current)observer.observe(viewport.current);return()=>observer.disconnect();},[]);
- const finishDrag=()=>{if(drag.current?.id){const n=points.current.find(n=>n.id===drag.current?.id);if(n){n.fx=null;n.fy=null;}simulation.current?.alphaTarget(0);}drag.current=null;};
- const highlighted=useMemo(()=>{const ids=new Set<string>();if(!selected)return ids;for(const direction of ['in','out']){const visited=new Set([selected]),queue=[selected];while(queue.length){const id=queue.shift()!;graph.edges.forEach((e,i)=>{const next=direction==='in'?(e.to===id?e.from:null):(e.from===id?e.to:null);if(next){ids.add(String(i));if(!visited.has(next)){visited.add(next);queue.push(next);}}});}}return ids;},[selected,graph]);
- const wrappedLabels=useMemo(()=>{const context=document.createElement('canvas').getContext('2d');if(context)context.font='12px '+(viewport.current?getComputedStyle(viewport.current).fontFamily:'system-ui');return new Map(graph.nodes.map(node=>[node.id,wrapResourceLabel(node.label,144,text=>context?.measureText(text).width??Array.from(text).length*7)]));},[graph]);
- const activeNodes=new Set([selected,...graph.edges.filter((_,i)=>highlighted.has(String(i))).flatMap(e=>[e.from,e.to])]);const node=graph.nodes.find(n=>n.id===selected);
- return <section className="wrb-graph" data-layout-engine="d3-force" ref={viewport} aria-label="资源关联图"><div className="wrb-graph-legend"><span data-edge-kind="call">调用（配置允许）</span><span data-edge-kind="reference">引用</span><span className="wrb-current-legend">双环 · 当前资源</span></div><div className="wrb-type-legend" aria-label="节点类型图例"><div>{Object.entries(relationTypes).map(([type,visual])=><span key={type} style={{'--node-type-color':visual.color} as React.CSSProperties}><svg viewBox="-44 -44 88 88" width="28" height="28"><NodeShape/></svg>{visual.label}</span>)}</div></div><div className="wrb-graph-tools"><WidgetTooltip text="适应视图"><IconButton appearance="ghost" aria-label="适应视图" onClick={fit}><Icon name="maximize"/></IconButton></WidgetTooltip></div><svg width="100%" height="100%" aria-label="关联路径" onWheel={e=>{const box=e.currentTarget.getBoundingClientRect(),x=e.clientX-box.left,y=e.clientY-box.top;setCamera(c=>{const k=Math.max(.15,Math.min(2.5,c.k*Math.exp(-e.deltaY*.002)));return {k,x:x-(x-c.x)*k/c.k,y:y-(y-c.y)*k/c.k};});}} onPointerDown={e=>{const target=(e.target as Element).closest('[data-graph-node]'),id=target?.getAttribute('data-graph-node')||undefined;drag.current={id,x:e.clientX,y:e.clientY,cx:camera.x,cy:camera.y};if(id){setSelected(id);const n=points.current.find(n=>n.id===id)!;n.fx=n.x;n.fy=n.y;simulation.current?.alphaTarget(.18).restart();}e.currentTarget.setPointerCapture(e.pointerId);}} onPointerMove={e=>{const d=drag.current;if(!d)return;if(d.id){const box=e.currentTarget.getBoundingClientRect(),c=cameraRef.current,n=points.current.find(n=>n.id===d.id)!;n.fx=(e.clientX-box.left-c.x)/c.k;n.fy=(e.clientY-box.top-c.y)/c.k;}else setCamera(c=>({...c,x:d.cx+e.clientX-d.x,y:d.cy+e.clientY-d.y}));}} onPointerUp={finishDrag} onPointerCancel={finishDrag}><defs>{['call','reference'].map(kind=><marker key={kind} id={'relation-arrow-'+kind} markerWidth="7" markerHeight="7" refX="7" refY="3.5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0 0 L7 3.5 L0 7 Z" className={'wrb-arrow-'+kind}/></marker>)}</defs><g transform={`translate(${camera.x},${camera.y}) scale(${camera.k})`}>{graph.edges.map((e,i)=>{const from=positions.find(n=>n.id===e.from),to=positions.find(n=>n.id===e.to);if(!from||!to)return null;const dx=to.x!-from.x!,dy=to.y!-from.y!,distance=Math.hypot(dx,dy)||1,ux=dx/distance,uy=dy/distance;return <path key={i} data-edge-kind={e.kind} data-highlighted={highlighted.has(String(i))} opacity={selected&&!highlighted.has(String(i))?.18:1} fill="none" strokeWidth={highlighted.has(String(i))?2.5:1.5} markerEnd={`url(#relation-arrow-${e.kind})`} d={`M${from.x!+ux*25},${from.y!+uy*25} L${to.x!-ux*28},${to.y!-uy*28}`}><title>{e.label}</title></path>;})}{positions.map(n=>{const data=graph.nodes.find(x=>x.id===n.id)!,visual=relationTypes[visualType(data)];return <g style={{'--node-type-color':visual.color} as React.CSSProperties} data-visual-type={visualType(data)} key={n.id} transform={`translate(${n.x},${n.y})`} opacity={selected&&n.id!==graph.rootId&&!activeNodes.has(n.id)?.3:1} data-graph-node={n.id} data-current-resource={n.id===graph.rootId} data-node-kind={data.kind} role="button" tabIndex={0} aria-label={data.label+(n.id===graph.rootId?' · 当前资源':'')} aria-pressed={selected===n.id} onKeyDown={e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();setSelected(n.id);}}} className="wrb-force-node"><rect x={-72} y={-42} width={144} height={110} fill="transparent" stroke="none"/>{n.id===graph.rootId&&<><circle r={37} className="wrb-current-ring"/><circle r={41} className="wrb-current-ring"/><text textAnchor="middle" y={-51} className="wrb-current-label">当前资源</text></>}<NodeShape/><text textAnchor="middle" y="46" className="wrb-force-label">{(wrappedLabels.get(data.id)||[data.label]).map((line,i)=><tspan key={i} x={0} dy={i?15:0}>{line}</tspan>)}</text><title>{data.typeLabel||kinds[data.kind]} · {data.label}</title></g>;})}</g></svg>{node&&<aside className="wrb-graph-detail" role="dialog" aria-label="关联方详情"><header><Typography variant="item-title">{node.typeLabel||kinds[node.kind]}</Typography><WidgetTooltip text="关闭详情"><IconButton appearance="ghost" aria-label="关闭详情" onClick={()=>setSelected(null)}><Icon name="x"/></IconButton></WidgetTooltip></header><h3>{node.label}</h3>{node.file&&<details className="wrb-muted"><summary>存储信息</summary><p>{node.file}</p></details>}<button className="wrb-ref-link" disabled={expanded.includes(node.id)} onClick={()=>setExpanded(ids=>[...ids,node.id])}>展开连带关系</button><ul>{graph.edges.filter(e=>e.from===node.id||e.to===node.id).map((e,i)=><li key={i}>{e.from===node.id?'→':'←'} {graph.nodes.find(n=>n.id===(e.from===node.id?e.to:e.from))?.label}<small>{e.label}</small></li>)}</ul>{node.file&&(node.kind==='file'||node.kind==='role')&&<button className="wrb-ref-link" onClick={()=>onOpenFile(node.file!)}>查看资源</button>}</aside>}</section>;
+function NodeShape() {
+  return <circle className="wrb-node-shape" r={24} />;
+}
+export function ResourceRelationGraph({
+  source,
+  file,
+  onOpenFile,
+}: {
+  source: Source;
+  file: string;
+  onOpenFile: (file: string) => void;
+}) {
+  const [expanded, setExpanded] = useState<string[]>([]);
+  const graph = useMemo(
+    () => projectRelations(source, "file:" + file, expanded),
+    [source, file, expanded],
+  );
+  type Point = SimulationNodeDatum & { id: string };
+  const [positions, setPositions] = useState<Point[]>([]),
+    [selected, setSelected] = useState<string | null>(null),
+    [camera, setCamera] = useState({ x: 20, y: 60, k: 1 });
+  const [previousFile, setPreviousFile] = useState(file);
+  if (previousFile !== file) {
+    setPreviousFile(file);
+    setExpanded([]);
+    setSelected(null);
+  }
+  const simulation = useRef<Simulation<Point, undefined> | null>(null),
+    points = useRef<Point[]>([]),
+    viewport = useRef<HTMLDivElement>(null),
+    cameraRef = useRef(camera),
+    drag = useRef<{
+      id?: string;
+      x: number;
+      y: number;
+      cx: number;
+      cy: number;
+    } | null>(null);
+  useLayoutEffect(() => {
+    cameraRef.current = camera;
+  });
+  const fit = () => {
+    const box = viewport.current?.getBoundingClientRect(),
+      nodes = points.current;
+    if (!box || !nodes.length) return;
+    const minX = Math.min(...nodes.map((n) => n.x!)) - 100,
+      maxX = Math.max(...nodes.map((n) => n.x!)) + 100,
+      minY = Math.min(...nodes.map((n) => n.y!)) - 75,
+      maxY = Math.max(...nodes.map((n) => n.y!)) + 75;
+    const k = Math.min(
+      1,
+      (box.width - 40) / (maxX - minX),
+      (box.height - 90) / (maxY - minY),
+    );
+    setCamera({
+      k,
+      x: box.width / 2 - ((minX + maxX) * k) / 2,
+      y: 45 + box.height / 2 - ((minY + maxY) * k) / 2,
+    });
+  };
+  useEffect(() => {
+    points.current = [];
+  }, [file]);
+  useEffect(() => {
+    const old = new Map(points.current.map((n) => [n.id, n]));
+    const nodes: Point[] = graph.nodes.map(
+      (n) => old.get(n.id) || { id: n.id },
+    );
+    points.current = nodes;
+    const sim = forceSimulation(nodes)
+      .force("charge", forceManyBody().strength(-950))
+      .force(
+        "link",
+        forceLink<Point, { source: string; target: string }>(
+          graph.edges.map((e) => ({ source: e.from, target: e.to })),
+        )
+          .id((n) => n.id)
+          .distance(150)
+          .strength(0.35),
+      )
+      .force("collision", forceCollide<Point>(82).iterations(3))
+      .force("x", forceX(0).strength(0.035))
+      .force("y", forceY(0).strength(0.035))
+      .stop();
+    sim.tick(160);
+    setPositions(nodes.map((n) => ({ ...n })));
+    simulation.current = sim;
+    fit();
+    sim.on("tick", () => setPositions(nodes.map((n) => ({ ...n }))));
+    return () => {
+      sim.stop();
+    };
+  }, [graph]);
+  useEffect(() => {
+    const observer = new ResizeObserver(fit);
+    if (viewport.current) observer.observe(viewport.current);
+    return () => observer.disconnect();
+  }, []);
+  const finishDrag = () => {
+    if (drag.current?.id) {
+      const n = points.current.find((n) => n.id === drag.current?.id);
+      if (n) {
+        n.fx = null;
+        n.fy = null;
+      }
+      simulation.current?.alphaTarget(0);
+    }
+    drag.current = null;
+  };
+  const highlighted = useMemo(() => {
+    const ids = new Set<string>();
+    if (!selected) return ids;
+    for (const direction of ["in", "out"]) {
+      const visited = new Set([selected]),
+        queue = [selected];
+      while (queue.length) {
+        const id = queue.shift()!;
+        graph.edges.forEach((e, i) => {
+          const next =
+            direction === "in"
+              ? e.to === id
+                ? e.from
+                : null
+              : e.from === id
+                ? e.to
+                : null;
+          if (next) {
+            ids.add(String(i));
+            if (!visited.has(next)) {
+              visited.add(next);
+              queue.push(next);
+            }
+          }
+        });
+      }
+    }
+    return ids;
+  }, [selected, graph]);
+  const [labelFont, setLabelFont] = useState("system-ui");
+  useLayoutEffect(() => {
+    if (viewport.current)
+      setLabelFont(getComputedStyle(viewport.current).fontFamily);
+  }, []);
+  const wrappedLabels = useMemo(() => {
+    const context = document.createElement("canvas").getContext("2d");
+    if (context) context.font = "12px " + labelFont;
+    return new Map(
+      graph.nodes.map((node) => [
+        node.id,
+        wrapResourceLabel(
+          node.label,
+          144,
+          (text) =>
+            context?.measureText(text).width ?? Array.from(text).length * 7,
+        ),
+      ]),
+    );
+  }, [graph, labelFont]);
+  const activeNodes = new Set([
+    selected,
+    ...graph.edges
+      .filter((_, i) => highlighted.has(String(i)))
+      .flatMap((e) => [e.from, e.to]),
+  ]);
+  const node = graph.nodes.find((n) => n.id === selected);
+  return (
+    <section
+      className="wrb-graph"
+      data-layout-engine="d3-force"
+      ref={viewport}
+      aria-label="资源关联图"
+    >
+      <div className="wrb-graph-legend">
+        <span data-edge-kind="call">调用（配置允许）</span>
+        <span data-edge-kind="reference">引用</span>
+        <span className="wrb-current-legend">双环 · 当前资源</span>
+      </div>
+      <div className="wrb-type-legend" aria-label="节点类型图例">
+        <div>
+          {Object.entries(relationTypes).map(([type, visual]) => (
+            <span
+              key={type}
+              style={
+                { "--node-type-color": visual.color } as React.CSSProperties
+              }
+            >
+              <svg viewBox="-44 -44 88 88" width="28" height="28">
+                <NodeShape />
+              </svg>
+              {visual.label}
+            </span>
+          ))}
+        </div>
+      </div>
+      <div className="wrb-graph-tools">
+        <WidgetTooltip text="适应视图">
+          <IconButton appearance="ghost" aria-label="适应视图" onClick={fit}>
+            <Icon name="maximize" />
+          </IconButton>
+        </WidgetTooltip>
+      </div>
+      <svg
+        width="100%"
+        height="100%"
+        aria-label="关联路径"
+        onWheel={(e) => {
+          const box = e.currentTarget.getBoundingClientRect(),
+            x = e.clientX - box.left,
+            y = e.clientY - box.top;
+          setCamera((c) => {
+            const k = Math.max(
+              0.15,
+              Math.min(2.5, c.k * Math.exp(-e.deltaY * 0.002)),
+            );
+            return {
+              k,
+              x: x - ((x - c.x) * k) / c.k,
+              y: y - ((y - c.y) * k) / c.k,
+            };
+          });
+        }}
+        onPointerDown={(e) => {
+          const target = (e.target as Element).closest("[data-graph-node]"),
+            id = target?.getAttribute("data-graph-node") || undefined;
+          drag.current = {
+            id,
+            x: e.clientX,
+            y: e.clientY,
+            cx: camera.x,
+            cy: camera.y,
+          };
+          if (id) {
+            setSelected(id);
+            const n = points.current.find((n) => n.id === id)!;
+            n.fx = n.x;
+            n.fy = n.y;
+            simulation.current?.alphaTarget(0.18).restart();
+          }
+          e.currentTarget.setPointerCapture(e.pointerId);
+        }}
+        onPointerMove={(e) => {
+          const d = drag.current;
+          if (!d) return;
+          if (d.id) {
+            const box = e.currentTarget.getBoundingClientRect(),
+              c = cameraRef.current,
+              n = points.current.find((n) => n.id === d.id)!;
+            n.fx = (e.clientX - box.left - c.x) / c.k;
+            n.fy = (e.clientY - box.top - c.y) / c.k;
+          } else
+            setCamera((c) => ({
+              ...c,
+              x: d.cx + e.clientX - d.x,
+              y: d.cy + e.clientY - d.y,
+            }));
+        }}
+        onPointerUp={finishDrag}
+        onPointerCancel={finishDrag}
+      >
+        <defs>
+          {["call", "reference"].map((kind) => (
+            <marker
+              key={kind}
+              id={"relation-arrow-" + kind}
+              markerWidth="7"
+              markerHeight="7"
+              refX="7"
+              refY="3.5"
+              orient="auto"
+              markerUnits="userSpaceOnUse"
+            >
+              <path d="M0 0 L7 3.5 L0 7 Z" className={"wrb-arrow-" + kind} />
+            </marker>
+          ))}
+        </defs>
+        <g transform={`translate(${camera.x},${camera.y}) scale(${camera.k})`}>
+          {graph.edges.map((e, i) => {
+            const from = positions.find((n) => n.id === e.from),
+              to = positions.find((n) => n.id === e.to);
+            if (!from || !to) return null;
+            const dx = to.x! - from.x!,
+              dy = to.y! - from.y!,
+              distance = Math.hypot(dx, dy) || 1,
+              ux = dx / distance,
+              uy = dy / distance;
+            return (
+              <path
+                key={i}
+                data-edge-kind={e.kind}
+                data-highlighted={highlighted.has(String(i))}
+                opacity={selected && !highlighted.has(String(i)) ? 0.18 : 1}
+                fill="none"
+                strokeWidth={highlighted.has(String(i)) ? 2.5 : 1.5}
+                markerEnd={`url(#relation-arrow-${e.kind})`}
+                d={`M${from.x! + ux * 25},${from.y! + uy * 25} L${to.x! - ux * 28},${to.y! - uy * 28}`}
+              >
+                <title>{e.label}</title>
+              </path>
+            );
+          })}
+          {positions.map((n) => {
+            const data = graph.nodes.find((x) => x.id === n.id)!,
+              visual = relationTypes[visualType(data)];
+            return (
+              <g
+                style={
+                  { "--node-type-color": visual.color } as React.CSSProperties
+                }
+                data-visual-type={visualType(data)}
+                key={n.id}
+                transform={`translate(${n.x},${n.y})`}
+                opacity={
+                  selected && n.id !== graph.rootId && !activeNodes.has(n.id)
+                    ? 0.3
+                    : 1
+                }
+                data-graph-node={n.id}
+                data-current-resource={n.id === graph.rootId}
+                data-node-kind={data.kind}
+                role="button"
+                tabIndex={0}
+                aria-label={
+                  data.label + (n.id === graph.rootId ? " · 当前资源" : "")
+                }
+                aria-pressed={selected === n.id}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    setSelected(n.id);
+                  }
+                }}
+                className="wrb-force-node"
+              >
+                <rect
+                  x={-72}
+                  y={-42}
+                  width={144}
+                  height={110}
+                  fill="transparent"
+                  stroke="none"
+                />
+                {n.id === graph.rootId && (
+                  <>
+                    <circle r={37} className="wrb-current-ring" />
+                    <circle r={41} className="wrb-current-ring" />
+                    <text
+                      textAnchor="middle"
+                      y={-51}
+                      className="wrb-current-label"
+                    >
+                      当前资源
+                    </text>
+                  </>
+                )}
+                <NodeShape />
+                <text textAnchor="middle" y="46" className="wrb-force-label">
+                  {(wrappedLabels.get(data.id) || [data.label]).map(
+                    (line, i) => (
+                      <tspan key={i} x={0} dy={i ? 15 : 0}>
+                        {line}
+                      </tspan>
+                    ),
+                  )}
+                </text>
+                <title>
+                  {data.typeLabel || kinds[data.kind]} · {data.label}
+                </title>
+              </g>
+            );
+          })}
+        </g>
+      </svg>
+      {node && (
+        <aside
+          className="wrb-graph-detail"
+          role="dialog"
+          aria-label="关联方详情"
+        >
+          <header>
+            <Typography variant="item-title">
+              {node.typeLabel || kinds[node.kind]}
+            </Typography>
+            <WidgetTooltip text="关闭详情">
+              <IconButton
+                appearance="ghost"
+                aria-label="关闭详情"
+                onClick={() => setSelected(null)}
+              >
+                <Icon name="x" />
+              </IconButton>
+            </WidgetTooltip>
+          </header>
+          <h3>{node.label}</h3>
+          {node.file && (
+            <details className="wrb-muted">
+              <summary>存储信息</summary>
+              <p>{node.file}</p>
+            </details>
+          )}
+          <button
+            className="wrb-ref-link"
+            disabled={expanded.includes(node.id)}
+            onClick={() => setExpanded((ids) => [...ids, node.id])}
+          >
+            展开连带关系
+          </button>
+          <ul>
+            {graph.edges
+              .filter((e) => e.from === node.id || e.to === node.id)
+              .map((e, i) => (
+                <li key={i}>
+                  {e.from === node.id ? "→" : "←"}{" "}
+                  {
+                    graph.nodes.find(
+                      (n) => n.id === (e.from === node.id ? e.to : e.from),
+                    )?.label
+                  }
+                  <small>{e.label}</small>
+                </li>
+              ))}
+          </ul>
+          {node.file && (node.kind === "file" || node.kind === "role") && (
+            <button
+              className="wrb-ref-link"
+              onClick={() => onOpenFile(node.file!)}
+            >
+              查看资源
+            </button>
+          )}
+        </aside>
+      )}
+    </section>
+  );
 }

@@ -1,28 +1,28 @@
-import { MetricTruthMark } from "./status";
-import {
-  metricTruthMessages,
-  type MetricTruthLocale,
-} from "../i18n/metric-truth";
-import { WidgetTooltip } from "./widget-tooltip";
 import { useRef, useState } from "react";
 import type { MetricResult } from "../domain/evolution/types";
 import { isMetricResult } from "../domain/evolution/validation";
+import { presentExactValue } from "../domain/visualization/presentation";
 import {
   compatibleVisualizerIds,
   selectDefaultVisualizer,
   type VisualizerId,
 } from "../domain/visualization/registry";
-import { presentExactValue } from "../domain/visualization/presentation";
 import {
   MONITORING_RENDERERS,
   type MonitoringWidgetSize,
 } from "../domain/widget-catalog";
-import { MonitoringWidget } from "./monitoring-widget";
-import { MetricPanel } from "./result-visualizer";
+import {
+  metricTruthMessages,
+  type MetricTruthLocale,
+} from "../i18n/metric-truth";
+import "../monitoring-bi.css";
 import { Chip, IconButton } from "./design-system";
 import { Icon, type IconName } from "./icon";
 import { OwnedInspector } from "./inspector";
-import "../monitoring-bi.css";
+import { MonitoringWidget } from "./monitoring-widget";
+import { MetricPanel } from "./result-visualizer";
+import { MetricTruthMark } from "./status";
+import { WidgetTooltip } from "./widget-tooltip";
 
 function AvailableMark({ compact = false }: { compact?: boolean }) {
   return compact ? (

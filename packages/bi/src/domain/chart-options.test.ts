@@ -1,7 +1,7 @@
 import { expect, it } from "vitest";
-import { chartMinimumSize, isWidgetSizeAllowed } from "./widget-families";
 import { applyChartRange } from "./chart-range";
 import type { MatrixData } from "./widget-families";
+import { chartMinimumSize, isWidgetSizeAllowed } from "./widget-families";
 const data: MatrixData = {
   family: "matrix",
   title: "命中率",

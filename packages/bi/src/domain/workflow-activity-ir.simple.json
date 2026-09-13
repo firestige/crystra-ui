@@ -47,9 +47,7 @@
       "kind": "main",
       "title": "主流程",
       "entryNodeId": "simple-input",
-      "exitNodeIds": [
-        "simple-done"
-      ],
+      "exitNodeIds": ["simple-done"],
       "nodeIds": [
         "simple-input",
         "simple-write",

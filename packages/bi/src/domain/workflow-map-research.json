@@ -32,15 +32,9 @@
       "title": "读取项目进展",
       "description": "读取项目进展的目标与工作规则可继续在对话中细化。",
       "parent": "collect",
-      "inputs": [
-        "当前工作材料"
-      ],
-      "outputs": [
-        "阶段成果"
-      ],
-      "resources": [
-        "工作指南"
-      ]
+      "inputs": ["当前工作材料"],
+      "outputs": ["阶段成果"],
+      "resources": ["工作指南"]
     },
     {
       "id": "actions",
@@ -48,15 +42,9 @@
       "title": "读取关键动作记录",
       "description": "读取关键动作记录的目标与工作规则可继续在对话中细化。",
       "parent": "collect",
-      "inputs": [
-        "当前工作材料"
-      ],
-      "outputs": [
-        "阶段成果"
-      ],
-      "resources": [
-        "工作指南"
-      ]
+      "inputs": ["当前工作材料"],
+      "outputs": ["阶段成果"],
+      "resources": ["工作指南"]
     },
     {
       "id": "join",
@@ -79,15 +67,9 @@
       "title": "请求补充材料",
       "description": "请求补充材料的目标与工作规则可继续在对话中细化。",
       "parent": "collect",
-      "inputs": [
-        "当前工作材料"
-      ],
-      "outputs": [
-        "阶段成果"
-      ],
-      "resources": [
-        "工作指南"
-      ]
+      "inputs": ["当前工作材料"],
+      "outputs": ["阶段成果"],
+      "resources": ["工作指南"]
     },
     {
       "id": "calc",
@@ -95,15 +77,9 @@
       "title": "计算进展指标",
       "description": "计算进展指标的目标与工作规则可继续在对话中细化。",
       "parent": "compute",
-      "inputs": [
-        "当前工作材料"
-      ],
-      "outputs": [
-        "阶段成果"
-      ],
-      "resources": [
-        "工作指南"
-      ]
+      "inputs": ["当前工作材料"],
+      "outputs": ["阶段成果"],
+      "resources": ["工作指南"]
     },
     {
       "id": "check",
@@ -111,15 +87,9 @@
       "title": "核对关键动作",
       "description": "核对关键动作的目标与工作规则可继续在对话中细化。",
       "parent": "compute",
-      "inputs": [
-        "当前工作材料"
-      ],
-      "outputs": [
-        "阶段成果"
-      ],
-      "resources": [
-        "工作指南"
-      ]
+      "inputs": ["当前工作材料"],
+      "outputs": ["阶段成果"],
+      "resources": ["工作指南"]
     },
     {
       "id": "abnormal",
@@ -134,30 +104,18 @@
       "title": "核实并修正记录",
       "description": "核实并修正记录的目标与工作规则可继续在对话中细化。",
       "parent": "compute",
-      "inputs": [
-        "当前工作材料"
-      ],
-      "outputs": [
-        "阶段成果"
-      ],
-      "resources": [
-        "工作指南"
-      ]
+      "inputs": ["当前工作材料"],
+      "outputs": ["阶段成果"],
+      "resources": ["工作指南"]
     },
     {
       "id": "report",
       "kind": "activity",
       "title": "生成进展表格",
       "description": "生成进展表格的目标与工作规则可继续在对话中细化。",
-      "inputs": [
-        "当前工作材料"
-      ],
-      "outputs": [
-        "阶段成果"
-      ],
-      "resources": [
-        "工作指南"
-      ]
+      "inputs": ["当前工作材料"],
+      "outputs": ["阶段成果"],
+      "resources": ["工作指南"]
     },
     {
       "id": "e",

@@ -1,11 +1,11 @@
-import "../monitoring-widget-base.css";
 import type { HTMLAttributes, ReactNode } from "react";
 import {
   WIDGET_CATALOG,
   widgetSpan,
-  type WidgetCategory,
   type MonitoringWidgetSize,
+  type WidgetCategory,
 } from "../domain/widget-catalog";
+import "../monitoring-widget-base.css";
 export interface MonitoringWidgetProps extends Omit<
   HTMLAttributes<HTMLElement>,
   "title" | "children" | "style"

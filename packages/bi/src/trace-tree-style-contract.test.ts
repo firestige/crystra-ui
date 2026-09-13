@@ -24,9 +24,7 @@ describe("frozen Trace Tree visual grammar", () => {
     expect(css).toMatch(
       /\.trace-passport-body\s*\{[^}]*padding:\s*0\.8125rem/s,
     );
-    expect(css).toMatch(
-      /\.trace-passport-title\s*\{[^}]*margin:\s*0/s,
-    );
+    expect(css).toMatch(/\.trace-passport-title\s*\{[^}]*margin:\s*0/s);
   });
 
   it("highlights waterfall action icons on hover and keyboard focus", () => {

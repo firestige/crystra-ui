@@ -1,12 +1,12 @@
-import { ComparisonWidget } from "./comparison-widget";
 import type {
   DeltaEntry,
   MetricResult,
   MetricSlice,
   SideError,
 } from "../domain/evolution/types";
-import type { VisualizerId } from "../domain/visualization/registry";
 import { presentExactValue } from "../domain/visualization/presentation";
+import type { VisualizerId } from "../domain/visualization/registry";
+import { ComparisonWidget } from "./comparison-widget";
 import { MetricPanel } from "./result-visualizer";
 import { ScopedError } from "./status";
 

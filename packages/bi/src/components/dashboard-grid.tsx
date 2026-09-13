@@ -1,22 +1,22 @@
-import {
-  type MonitoringWidgetSize,
-  monitoringSizes,
-  widgetSpan,
-  WIDGET_UNIT,
-  WIDGET_GAP,
-} from "../domain/widget-catalog";
 import { useState, type CSSProperties, type ReactNode } from "react";
-import {
-  WidgetSizeMenu,
-  type WidgetViewOption,
-  type WidgetMenuAnchor,
-} from "./widget-size-menu";
 import ReactGridLayout, {
   useContainerWidth,
   verticalCompactor,
   type Layout,
 } from "react-grid-layout";
 import { gridBounds, type LayoutConstraint } from "react-grid-layout/core";
+import {
+  monitoringSizes,
+  WIDGET_GAP,
+  WIDGET_UNIT,
+  widgetSpan,
+  type MonitoringWidgetSize,
+} from "../domain/widget-catalog";
+import {
+  WidgetSizeMenu,
+  type WidgetMenuAnchor,
+  type WidgetViewOption,
+} from "./widget-size-menu";
 
 import {
   panelSizeForGrid,

@@ -1,16 +1,16 @@
-import { SemanticWidget } from "./semantic-widget";
-import { FAMILY_FIXTURES } from "../domain/widget-families";
-import { MonitoringWidget } from "./monitoring-widget";
-import { Icon } from "./icon";
-import { WidgetTooltip } from "./widget-tooltip";
 import type { MonitoringWidgetSize } from "../domain/widget-catalog";
+import { FAMILY_FIXTURES } from "../domain/widget-families";
 import "../widget-expression-study.css";
+import { Icon } from "./icon";
+import { MonitoringWidget } from "./monitoring-widget";
+import { SemanticWidget } from "./semantic-widget";
+import { WidgetTooltip } from "./widget-tooltip";
 
 import {
   EXPRESSIONS,
   expressionSizes,
-  type Kind,
   type Expression,
+  type Kind,
 } from "../domain/widget-expressions";
 const Stat = ({ value, unit }: { value: string; unit?: string }) => (
   <span className="expression-number">

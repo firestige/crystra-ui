@@ -56,15 +56,9 @@
       "kind": "activity",
       "title": "汇总测试结果",
       "description": "汇总设计符合性复核与整体验证的证据，交给顶层判断。",
-      "inputs": [
-        "当前工作材料"
-      ],
-      "outputs": [
-        "阶段成果"
-      ],
-      "resources": [
-        "工作指南"
-      ],
+      "inputs": ["当前工作材料"],
+      "outputs": ["阶段成果"],
+      "resources": ["工作指南"],
       "parent": "delivery"
     },
     {
@@ -79,15 +73,9 @@
       "title": "理解需求与系统设计",
       "description": "理解需求与系统设计的目标与工作规则可继续在对话中细化。",
       "parent": "plan",
-      "inputs": [
-        "当前工作材料"
-      ],
-      "outputs": [
-        "阶段成果"
-      ],
-      "resources": [
-        "工作指南"
-      ]
+      "inputs": ["当前工作材料"],
+      "outputs": ["阶段成果"],
+      "resources": ["工作指南"]
     },
     {
       "id": "clear",
@@ -102,15 +90,9 @@
       "title": "澄清缺口",
       "description": "澄清缺口的目标与工作规则可继续在对话中细化。",
       "parent": "plan",
-      "inputs": [
-        "当前工作材料"
-      ],
-      "outputs": [
-        "阶段成果"
-      ],
-      "resources": [
-        "工作指南"
-      ]
+      "inputs": ["当前工作材料"],
+      "outputs": ["阶段成果"],
+      "resources": ["工作指南"]
     },
     {
       "id": "design",
@@ -118,15 +100,9 @@
       "title": "完成详细设计与测试目标",
       "description": "完成详细设计与测试目标的目标与工作规则可继续在对话中细化。",
       "parent": "plan",
-      "inputs": [
-        "当前工作材料"
-      ],
-      "outputs": [
-        "阶段成果"
-      ],
-      "resources": [
-        "工作指南"
-      ]
+      "inputs": ["当前工作材料"],
+      "outputs": ["阶段成果"],
+      "resources": ["工作指南"]
     },
     {
       "id": "choose",
@@ -134,15 +110,9 @@
       "title": "选择待实现单元",
       "description": "选择待实现单元的目标与工作规则可继续在对话中细化。",
       "parent": "work",
-      "inputs": [
-        "当前工作材料"
-      ],
-      "outputs": [
-        "阶段成果"
-      ],
-      "resources": [
-        "工作指南"
-      ]
+      "inputs": ["当前工作材料"],
+      "outputs": ["阶段成果"],
+      "resources": ["工作指南"]
     },
     {
       "id": "red",
@@ -150,15 +120,9 @@
       "title": "编写并校准测试",
       "description": "编写并校准测试的目标与工作规则可继续在对话中细化。",
       "parent": "tdd",
-      "inputs": [
-        "当前工作材料"
-      ],
-      "outputs": [
-        "阶段成果"
-      ],
-      "resources": [
-        "工作指南"
-      ]
+      "inputs": ["当前工作材料"],
+      "outputs": ["阶段成果"],
+      "resources": ["工作指南"]
     },
     {
       "id": "green",
@@ -166,15 +130,9 @@
       "title": "完成最小实现",
       "description": "完成最小实现的目标与工作规则可继续在对话中细化。",
       "parent": "tdd",
-      "inputs": [
-        "当前工作材料"
-      ],
-      "outputs": [
-        "阶段成果"
-      ],
-      "resources": [
-        "工作指南"
-      ]
+      "inputs": ["当前工作材料"],
+      "outputs": ["阶段成果"],
+      "resources": ["工作指南"]
     },
     {
       "id": "pass",
@@ -189,15 +147,9 @@
       "title": "重构并运行回归",
       "description": "重构并运行回归的目标与工作规则可继续在对话中细化。",
       "parent": "tdd",
-      "inputs": [
-        "当前工作材料"
-      ],
-      "outputs": [
-        "阶段成果"
-      ],
-      "resources": [
-        "工作指南"
-      ]
+      "inputs": ["当前工作材料"],
+      "outputs": ["阶段成果"],
+      "resources": ["工作指南"]
     },
     {
       "id": "stable",
@@ -219,15 +171,9 @@
       "title": "检查设计符合性",
       "description": "检查设计符合性的目标与工作规则可继续在对话中细化。",
       "parent": "delivery",
-      "inputs": [
-        "当前工作材料"
-      ],
-      "outputs": [
-        "阶段成果"
-      ],
-      "resources": [
-        "工作指南"
-      ]
+      "inputs": ["当前工作材料"],
+      "outputs": ["阶段成果"],
+      "resources": ["工作指南"]
     },
     {
       "id": "verify",
@@ -235,15 +181,9 @@
       "title": "执行整体验证",
       "description": "执行整体验证的目标与工作规则可继续在对话中细化。",
       "parent": "delivery",
-      "inputs": [
-        "当前工作材料"
-      ],
-      "outputs": [
-        "阶段成果"
-      ],
-      "resources": [
-        "工作指南"
-      ]
+      "inputs": ["当前工作材料"],
+      "outputs": ["阶段成果"],
+      "resources": ["工作指南"]
     },
     {
       "id": "join",

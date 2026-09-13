@@ -1,15 +1,15 @@
-import { useState } from "react";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { useState } from "react";
 import { expect, it, vi } from "vitest";
 import {
+  EmptyState,
+  FullBenchViewer,
+  Popover,
+  ProgressNotice,
   SearchField,
   SelectField,
   SelectionControl,
-  Popover,
-  FullBenchViewer,
-  EmptyState,
-  ProgressNotice,
 } from "./state-components";
 it("labels native search, select and selection controls and reports user changes", async () => {
   const user = userEvent.setup();
@@ -88,13 +88,36 @@ it("does not describe empty local data as loading and clamps real progress", () 
 });
 it("surface search keeps one accessible input with optional prefix", async () => {
   const user = userEvent.setup();
-  render(<SearchField label="搜索调用" appearance="surface" hideLabel leading={<span>搜索</span>} />);
+  render(
+    <SearchField
+      label="搜索调用"
+      appearance="surface"
+      hideLabel
+      leading={<span>搜索</span>}
+    />,
+  );
   const input = screen.getByRole("searchbox", { name: "搜索调用" });
-  expect(input.closest('.wsr-search-surface')).not.toBeNull();
+  expect(input.closest(".wsr-search-surface")).not.toBeNull();
   await user.type(input, "delivery");
   expect(input).toHaveValue("delivery");
 });
-it('allows pages to request a top anchored select without changing other selects',()=>{
- render(<><SelectField label="上方菜单" menuPlacement="top" options={[{value:'a',label:'A'}]}/><SelectField label="默认菜单" options={[{value:'b',label:'B'}]}/></>);
- expect(screen.getByLabelText('上方菜单')).toHaveAttribute('data-menu-placement','top');expect(screen.getByLabelText('默认菜单')).toHaveAttribute('data-menu-placement','bottom');
+it("allows pages to request a top anchored select without changing other selects", () => {
+  render(
+    <>
+      <SelectField
+        label="上方菜单"
+        menuPlacement="top"
+        options={[{ value: "a", label: "A" }]}
+      />
+      <SelectField label="默认菜单" options={[{ value: "b", label: "B" }]} />
+    </>,
+  );
+  expect(screen.getByLabelText("上方菜单")).toHaveAttribute(
+    "data-menu-placement",
+    "top",
+  );
+  expect(screen.getByLabelText("默认菜单")).toHaveAttribute(
+    "data-menu-placement",
+    "bottom",
+  );
 });

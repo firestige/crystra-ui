@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
-import { describe, it, expect } from "vitest";
-import { SemanticWidget } from "./semantic-widget";
+import { describe, expect, it } from "vitest";
 import { familyViews, type WidgetData } from "../domain/widget-families";
+import { SemanticWidget } from "./semantic-widget";
 describe("semantic widget content identity", () => {
   it("retains the independently supplied state when activity details change", () => {
     const data: WidgetData = {

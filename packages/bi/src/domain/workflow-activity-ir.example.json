@@ -213,9 +213,7 @@
       "kind": "main",
       "title": "主流程",
       "entryNodeId": "intake",
-      "exitNodeIds": [
-        "done"
-      ],
+      "exitNodeIds": ["done"],
       "nodeIds": [
         "intake",
         "select-goal",
@@ -314,11 +312,7 @@
       "kind": "subflow",
       "title": "测试阶梯",
       "entryNodeId": "calibrate",
-      "exitNodeIds": [
-        "review-handoff",
-        "refine-handoff",
-        "recorded-return"
-      ],
+      "exitNodeIds": ["review-handoff", "refine-handoff", "recorded-return"],
       "nodeIds": [
         "calibrate",
         "implement",
@@ -458,15 +452,8 @@
       "kind": "triggered",
       "title": "按需外查",
       "entryNodeId": "request",
-      "exitNodeIds": [
-        "return-source"
-      ],
-      "nodeIds": [
-        "request",
-        "scouter",
-        "return-source",
-        "research-note"
-      ],
+      "exitNodeIds": ["return-source"],
+      "nodeIds": ["request", "scouter", "return-source", "research-note"],
       "edges": [
         {
           "id": "research-start",
@@ -525,13 +512,8 @@
         "flowId": "main",
         "nodeId": "review"
       },
-      "inputs": [
-        "选定的 Goal / rung",
-        "权威设计与 Oracle"
-      ],
-      "outputs": [
-        "已验证的 Goal 候选"
-      ],
+      "inputs": ["选定的 Goal / rung", "权威设计与 Oracle"],
+      "outputs": ["已验证的 Goal 候选"],
       "sourceRef": "workflow-package/implementation/workflow.md §3 / IM-07–11"
     },
     {
@@ -550,13 +532,8 @@
       "resume": {
         "kind": "origin"
       },
-      "inputs": [
-        "事实缺口",
-        "记录的 requesting Action"
-      ],
-      "outputs": [
-        "研究事实与来源"
-      ],
+      "inputs": ["事实缺口", "记录的 requesting Action"],
+      "outputs": ["研究事实与来源"],
       "sourceRef": "workflow-package/implementation/workflow.md §3 / IM-01R"
     },
     {
@@ -575,13 +552,8 @@
       "resume": {
         "kind": "origin"
       },
-      "inputs": [
-        "事实缺口",
-        "记录的 requesting Action"
-      ],
-      "outputs": [
-        "研究事实与来源"
-      ],
+      "inputs": ["事实缺口", "记录的 requesting Action"],
+      "outputs": ["研究事实与来源"],
       "sourceRef": "workflow-package/implementation/workflow.md §3 / IM-01R"
     }
   ]

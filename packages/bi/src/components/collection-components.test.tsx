@@ -1,8 +1,8 @@
-import { useState } from "react";
 import { fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { useState } from "react";
 import { describe, expect, it, vi } from "vitest";
-import { List, ListItem, Tabs, Menu } from "./collection-components";
+import { List, ListItem, Menu, Tabs } from "./collection-components";
 import { IconButton } from "./design-system";
 
 describe("collection components", () => {

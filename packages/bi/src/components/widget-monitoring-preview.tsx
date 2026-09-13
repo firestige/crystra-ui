@@ -2,8 +2,8 @@ import fixture from "../../../../design/widget-monitoring-preview.json";
 import {
   WIDGET_CATALOG,
   widgetSpan,
-  type WidgetCategory,
   type MonitoringWidgetSize,
+  type WidgetCategory,
 } from "../domain/widget-catalog";
 import { MonitoringWidget } from "./monitoring-widget";
 /** Only trusted, checked-in illustration fixtures use raw SVG/HTML. No remote content. */

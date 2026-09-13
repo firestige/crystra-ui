@@ -1,1 +1,346 @@
-{"before":{"ir":{"version":"0.2","title":"报告处理","nodes":[{"id":"start","kind":"start","title":"报告就绪"},{"id":"review","kind":"activity","title":"阅读报告并决定后续操作","resources":["Role · Reviewer"]},{"id":"end","kind":"end","title":"交付判断","outcome":"completed"}],"edges":[{"id":"a","from":"start","to":"review","intent":"expected"},{"id":"b","from":"review","to":"end","intent":"expected"}]},"layout":{"width":504,"height":208,"ports":[],"nodes":[{"id":"end","x":400,"y":84,"width":48,"height":48,"expanded":false},{"id":"review","x":144,"y":64,"width":216,"height":88,"expanded":false},{"id":"start","x":56,"y":84,"width":48,"height":48,"expanded":false}],"edges":[{"originalId":"a","points":[{"x":104,"y":108},{"x":144,"y":108}],"id":"a","segmentKey":"a:0","path":"M104 108 L144 108","arrow":true},{"originalId":"b","points":[{"x":360,"y":108},{"x":400,"y":108}],"id":"b","segmentKey":"b:1","path":"M360 108 L400 108","arrow":true}],"boundaries":[],"interfaces":[],"branchBlocks":[]}},"after":{"ir":{"version":"0.2","title":"报告处理","nodes":[{"id":"start","kind":"start","title":"报告就绪"},{"id":"extract","kind":"activity","title":"提取并校验报告数据","resources":["Script · report-extract"]},{"id":"valid","kind":"decision","title":"格式与字段有效"},{"id":"review","kind":"activity","title":"判断异常与后续操作","resources":["Role · Reviewer"]},{"id":"repair","kind":"activity","title":"解释报告并补齐材料","resources":["Role · Reviewer"]},{"id":"render","kind":"activity","title":"生成结构化结果","resources":["Template · review-summary"]},{"id":"end","kind":"end","title":"交付判断","outcome":"completed"}],"edges":[{"id":"a","from":"start","to":"extract","intent":"expected"},{"id":"b","from":"extract","to":"valid","intent":"expected"},{"id":"c","from":"valid","to":"review","label":"有效","intent":"expected"},{"id":"d","from":"valid","to":"repair","label":"格式不支持","intent":"recovery","trigger":"报告格式不支持或必要字段缺失","layoutRole":"advance"},{"id":"e","from":"repair","to":"review","intent":"recovery","trigger":"材料已补齐","layoutRole":"advance"},{"id":"f","from":"review","to":"render","intent":"expected"},{"id":"g","from":"render","to":"end","intent":"expected"}]},"layout":{"width":1340,"height":556,"ports":[],"nodes":[{"id":"repair","x":432,"y":360,"width":184,"height":88,"expanded":false},{"id":"valid","x":444,"y":116,"width":160,"height":136,"expanded":false},{"id":"end","x":1236,"y":160,"width":48,"height":48,"expanded":false},{"id":"extract","x":144,"y":140,"width":184,"height":88,"expanded":false},{"id":"render","x":1036,"y":140,"width":160,"height":88,"expanded":false},{"id":"review","x":812,"y":140,"width":184,"height":88,"expanded":false},{"id":"start","x":56,"y":160,"width":48,"height":48,"expanded":false}],"edges":[{"originalId":"b","points":[{"x":368,"y":184},{"x":444,"y":184}],"id":"b","segmentKey":"b:0","path":"M368 184 L444 184","arrow":true},{"originalId":"c","points":[{"x":604,"y":184},{"x":692,"y":184}],"id":"c","segmentKey":"c:1","path":"M604 184 L692 184","arrow":false},{"originalId":"d","points":[{"x":524,"y":252},{"x":524,"y":360}],"label":{"text":"格式不支持","width":82,"height":28,"x":440,"y":292},"id":"d","segmentKey":"d:2","path":"M524 252 L524 360","arrow":true},{"originalId":"a","points":[{"x":104,"y":184},{"x":144,"y":184}],"id":"a","segmentKey":"a:3","path":"M104 184 L144 184","arrow":true},{"originalId":"b","points":[{"x":328,"y":184},{"x":368,"y":184}],"id":"b","segmentKey":"b:4","path":"M328 184 L368 184","arrow":false},{"originalId":"c","points":[{"x":692,"y":184},{"x":812,"y":184}],"label":{"text":"有效","width":40,"height":28,"x":732,"y":153},"id":"c","segmentKey":"c:5","path":"M692 184 L812 184","arrow":true},{"originalId":"f","points":[{"x":996,"y":184},{"x":1036,"y":184}],"id":"f","segmentKey":"f:6","path":"M996 184 L1036 184","arrow":true},{"originalId":"g","points":[{"x":1196,"y":184},{"x":1236,"y":184}],"id":"g","segmentKey":"g:7","path":"M1196 184 L1236 184","arrow":true},{"originalId":"e","points":[{"x":616,"y":404},{"x":904,"y":404},{"x":904,"y":228}],"id":"e","segmentKey":"e:8","path":"M616 404 L904 404 L904 228","arrow":true}],"boundaries":[],"interfaces":[],"branchBlocks":[{"id":"[\"auxiliary-block\",\"valid\",\"repair\"]","trigger":"valid","handler":"repair","edge":"d","returnEdge":"e","rejoins":true}]}}}
+{
+  "before": {
+    "ir": {
+      "version": "0.2",
+      "title": "报告处理",
+      "nodes": [
+        { "id": "start", "kind": "start", "title": "报告就绪" },
+        {
+          "id": "review",
+          "kind": "activity",
+          "title": "阅读报告并决定后续操作",
+          "resources": ["Role · Reviewer"]
+        },
+        {
+          "id": "end",
+          "kind": "end",
+          "title": "交付判断",
+          "outcome": "completed"
+        }
+      ],
+      "edges": [
+        { "id": "a", "from": "start", "to": "review", "intent": "expected" },
+        { "id": "b", "from": "review", "to": "end", "intent": "expected" }
+      ]
+    },
+    "layout": {
+      "width": 504,
+      "height": 208,
+      "ports": [],
+      "nodes": [
+        {
+          "id": "end",
+          "x": 400,
+          "y": 84,
+          "width": 48,
+          "height": 48,
+          "expanded": false
+        },
+        {
+          "id": "review",
+          "x": 144,
+          "y": 64,
+          "width": 216,
+          "height": 88,
+          "expanded": false
+        },
+        {
+          "id": "start",
+          "x": 56,
+          "y": 84,
+          "width": 48,
+          "height": 48,
+          "expanded": false
+        }
+      ],
+      "edges": [
+        {
+          "originalId": "a",
+          "points": [
+            { "x": 104, "y": 108 },
+            { "x": 144, "y": 108 }
+          ],
+          "id": "a",
+          "segmentKey": "a:0",
+          "path": "M104 108 L144 108",
+          "arrow": true
+        },
+        {
+          "originalId": "b",
+          "points": [
+            { "x": 360, "y": 108 },
+            { "x": 400, "y": 108 }
+          ],
+          "id": "b",
+          "segmentKey": "b:1",
+          "path": "M360 108 L400 108",
+          "arrow": true
+        }
+      ],
+      "boundaries": [],
+      "interfaces": [],
+      "branchBlocks": []
+    }
+  },
+  "after": {
+    "ir": {
+      "version": "0.2",
+      "title": "报告处理",
+      "nodes": [
+        { "id": "start", "kind": "start", "title": "报告就绪" },
+        {
+          "id": "extract",
+          "kind": "activity",
+          "title": "提取并校验报告数据",
+          "resources": ["Script · report-extract"]
+        },
+        { "id": "valid", "kind": "decision", "title": "格式与字段有效" },
+        {
+          "id": "review",
+          "kind": "activity",
+          "title": "判断异常与后续操作",
+          "resources": ["Role · Reviewer"]
+        },
+        {
+          "id": "repair",
+          "kind": "activity",
+          "title": "解释报告并补齐材料",
+          "resources": ["Role · Reviewer"]
+        },
+        {
+          "id": "render",
+          "kind": "activity",
+          "title": "生成结构化结果",
+          "resources": ["Template · review-summary"]
+        },
+        {
+          "id": "end",
+          "kind": "end",
+          "title": "交付判断",
+          "outcome": "completed"
+        }
+      ],
+      "edges": [
+        { "id": "a", "from": "start", "to": "extract", "intent": "expected" },
+        { "id": "b", "from": "extract", "to": "valid", "intent": "expected" },
+        {
+          "id": "c",
+          "from": "valid",
+          "to": "review",
+          "label": "有效",
+          "intent": "expected"
+        },
+        {
+          "id": "d",
+          "from": "valid",
+          "to": "repair",
+          "label": "格式不支持",
+          "intent": "recovery",
+          "trigger": "报告格式不支持或必要字段缺失",
+          "layoutRole": "advance"
+        },
+        {
+          "id": "e",
+          "from": "repair",
+          "to": "review",
+          "intent": "recovery",
+          "trigger": "材料已补齐",
+          "layoutRole": "advance"
+        },
+        { "id": "f", "from": "review", "to": "render", "intent": "expected" },
+        { "id": "g", "from": "render", "to": "end", "intent": "expected" }
+      ]
+    },
+    "layout": {
+      "width": 1340,
+      "height": 556,
+      "ports": [],
+      "nodes": [
+        {
+          "id": "repair",
+          "x": 432,
+          "y": 360,
+          "width": 184,
+          "height": 88,
+          "expanded": false
+        },
+        {
+          "id": "valid",
+          "x": 444,
+          "y": 116,
+          "width": 160,
+          "height": 136,
+          "expanded": false
+        },
+        {
+          "id": "end",
+          "x": 1236,
+          "y": 160,
+          "width": 48,
+          "height": 48,
+          "expanded": false
+        },
+        {
+          "id": "extract",
+          "x": 144,
+          "y": 140,
+          "width": 184,
+          "height": 88,
+          "expanded": false
+        },
+        {
+          "id": "render",
+          "x": 1036,
+          "y": 140,
+          "width": 160,
+          "height": 88,
+          "expanded": false
+        },
+        {
+          "id": "review",
+          "x": 812,
+          "y": 140,
+          "width": 184,
+          "height": 88,
+          "expanded": false
+        },
+        {
+          "id": "start",
+          "x": 56,
+          "y": 160,
+          "width": 48,
+          "height": 48,
+          "expanded": false
+        }
+      ],
+      "edges": [
+        {
+          "originalId": "b",
+          "points": [
+            { "x": 368, "y": 184 },
+            { "x": 444, "y": 184 }
+          ],
+          "id": "b",
+          "segmentKey": "b:0",
+          "path": "M368 184 L444 184",
+          "arrow": true
+        },
+        {
+          "originalId": "c",
+          "points": [
+            { "x": 604, "y": 184 },
+            { "x": 692, "y": 184 }
+          ],
+          "id": "c",
+          "segmentKey": "c:1",
+          "path": "M604 184 L692 184",
+          "arrow": false
+        },
+        {
+          "originalId": "d",
+          "points": [
+            { "x": 524, "y": 252 },
+            { "x": 524, "y": 360 }
+          ],
+          "label": {
+            "text": "格式不支持",
+            "width": 82,
+            "height": 28,
+            "x": 440,
+            "y": 292
+          },
+          "id": "d",
+          "segmentKey": "d:2",
+          "path": "M524 252 L524 360",
+          "arrow": true
+        },
+        {
+          "originalId": "a",
+          "points": [
+            { "x": 104, "y": 184 },
+            { "x": 144, "y": 184 }
+          ],
+          "id": "a",
+          "segmentKey": "a:3",
+          "path": "M104 184 L144 184",
+          "arrow": true
+        },
+        {
+          "originalId": "b",
+          "points": [
+            { "x": 328, "y": 184 },
+            { "x": 368, "y": 184 }
+          ],
+          "id": "b",
+          "segmentKey": "b:4",
+          "path": "M328 184 L368 184",
+          "arrow": false
+        },
+        {
+          "originalId": "c",
+          "points": [
+            { "x": 692, "y": 184 },
+            { "x": 812, "y": 184 }
+          ],
+          "label": {
+            "text": "有效",
+            "width": 40,
+            "height": 28,
+            "x": 732,
+            "y": 153
+          },
+          "id": "c",
+          "segmentKey": "c:5",
+          "path": "M692 184 L812 184",
+          "arrow": true
+        },
+        {
+          "originalId": "f",
+          "points": [
+            { "x": 996, "y": 184 },
+            { "x": 1036, "y": 184 }
+          ],
+          "id": "f",
+          "segmentKey": "f:6",
+          "path": "M996 184 L1036 184",
+          "arrow": true
+        },
+        {
+          "originalId": "g",
+          "points": [
+            { "x": 1196, "y": 184 },
+            { "x": 1236, "y": 184 }
+          ],
+          "id": "g",
+          "segmentKey": "g:7",
+          "path": "M1196 184 L1236 184",
+          "arrow": true
+        },
+        {
+          "originalId": "e",
+          "points": [
+            { "x": 616, "y": 404 },
+            { "x": 904, "y": 404 },
+            { "x": 904, "y": 228 }
+          ],
+          "id": "e",
+          "segmentKey": "e:8",
+          "path": "M616 404 L904 404 L904 228",
+          "arrow": true
+        }
+      ],
+      "boundaries": [],
+      "interfaces": [],
+      "branchBlocks": [
+        {
+          "id": "[\"auxiliary-block\",\"valid\",\"repair\"]",
+          "trigger": "valid",
+          "handler": "repair",
+          "edge": "d",
+          "returnEdge": "e",
+          "rejoins": true
+        }
+      ]
+    }
+  }
+}

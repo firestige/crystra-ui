@@ -8,7 +8,9 @@ export default defineConfig({
     emptyOutDir: true,
     assetsInlineLimit: process.env.CRYSTRA_PREVIEW_ENTRY ? Infinity : 4096,
     rollupOptions: {
-      output: process.env.CRYSTRA_PREVIEW_ENTRY ? { codeSplitting: false } : undefined,
+      output: process.env.CRYSTRA_PREVIEW_ENTRY
+        ? { codeSplitting: false }
+        : undefined,
       input: process.env.CRYSTRA_PREVIEW_ENTRY ?? "components.html",
     },
   },

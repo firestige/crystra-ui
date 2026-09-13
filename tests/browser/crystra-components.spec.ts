@@ -81,9 +81,16 @@ test("state samples filter locally, expand within the bench, and show explicit p
   page,
 }) => {
   await page.goto("/components.html");
-  await page.getByRole("searchbox", { name: "搜索条目" }).fill("不存在");
+  const searchSample = page.locator(".wsr-card").filter({
+    has: page.getByRole("heading", { name: "搜索、筛选与选择", exact: true }),
+  });
+  await searchSample
+    .getByRole("searchbox", { name: "搜索条目", exact: true })
+    .fill("不存在");
   await expect(page.getByText("没有匹配的条目", { exact: true })).toBeVisible();
-  await page.getByRole("searchbox", { name: "搜索条目" }).fill("");
+  await searchSample
+    .getByRole("searchbox", { name: "搜索条目", exact: true })
+    .fill("");
   const bench = page.locator(".preview-bench");
   const before = await bench.boundingBox();
   await page.getByRole("button", { name: "展开条目列表" }).click();

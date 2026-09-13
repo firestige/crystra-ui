@@ -1,6 +1,6 @@
-import { MonitoringMetricPanel } from "./monitoring-metric";
-import type { MonitoringWidgetSize } from "../domain/widget-catalog";
 import { useRef, useState, type ReactNode } from "react";
+import type { MonitoringWidgetSize } from "../domain/widget-catalog";
+import { MonitoringMetricPanel } from "./monitoring-metric";
 
 import { CATALOG_COORDINATES } from "../domain/evolution/client";
 import type { MetricResult } from "../domain/evolution/types";
@@ -10,8 +10,8 @@ import {
   type DashboardLayout,
   type LayoutPanel,
 } from "../domain/layout/layout";
-import { ButtonGroup, IconButton } from "./design-system";
 import { DashboardGrid } from "./dashboard-grid";
+import { ButtonGroup, IconButton } from "./design-system";
 import { DashboardMetricPanel } from "./result-visualizer";
 
 const clone = (layout: DashboardLayout): DashboardLayout =>

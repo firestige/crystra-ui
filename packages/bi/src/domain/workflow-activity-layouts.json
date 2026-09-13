@@ -98,9 +98,7 @@
             "y": 234,
             "width": 130,
             "height": 30,
-            "lines": [
-              "Finding 已关闭"
-            ]
+            "lines": ["Finding 已关闭"]
           }
         },
         "prepared": {
@@ -165,9 +163,7 @@
             "y": 117,
             "width": 128,
             "height": 30,
-            "lines": [
-              "有 ready Goal"
-            ]
+            "lines": ["有 ready Goal"]
           }
         },
         "ladder-ready": {
@@ -248,9 +244,7 @@
             "y": 443,
             "width": 117,
             "height": 30,
-            "lines": [
-              "选择下一 Goal"
-            ]
+            "lines": ["选择下一 Goal"]
           }
         },
         "whole-pass": {
@@ -286,9 +280,7 @@
             "y": 681,
             "width": 130,
             "height": 30,
-            "lines": [
-              "回归与双复核通过"
-            ]
+            "lines": ["回归与双复核通过"]
           }
         },
         "terminal": {
@@ -324,9 +316,7 @@
             "y": 681,
             "width": 70,
             "height": 30,
-            "lines": [
-              "终门通过"
-            ]
+            "lines": ["终门通过"]
           }
         },
         "all-goals": {
@@ -370,9 +360,7 @@
             "y": 518,
             "width": 141,
             "height": 30,
-            "lines": [
-              "全部 Goal 已提交"
-            ]
+            "lines": ["全部 Goal 已提交"]
           }
         }
       },
@@ -500,10 +488,7 @@
             "y": 224,
             "width": 131,
             "height": 52,
-            "lines": [
-              "Goal / Oracle",
-              "歧义"
-            ]
+            "lines": ["Goal / Oracle", "歧义"]
           }
         },
         "implementation-result": {
@@ -555,9 +540,7 @@
             "y": 224,
             "width": 100,
             "height": 30,
-            "lines": [
-              "返回测试结果"
-            ]
+            "lines": ["返回测试结果"]
           }
         },
         "rung-red": {
@@ -577,9 +560,7 @@
             "y": 282,
             "width": 108,
             "height": 30,
-            "lines": [
-              "RED 且有进展"
-            ]
+            "lines": ["RED 且有进展"]
           }
         },
         "coverage-ready": {
@@ -615,9 +596,7 @@
             "y": 178,
             "width": 85,
             "height": 30,
-            "lines": [
-              "分支已覆盖"
-            ]
+            "lines": ["分支已覆盖"]
           }
         },
         "refactor-ready": {
@@ -653,9 +632,7 @@
             "y": 386,
             "width": 130,
             "height": 30,
-            "lines": [
-              "GREEN / 无重构"
-            ]
+            "lines": ["GREEN / 无重构"]
           }
         },
         "tests-ready": {
@@ -699,9 +676,7 @@
             "y": 107,
             "width": 70,
             "height": 30,
-            "lines": [
-              "校准通过"
-            ]
+            "lines": ["校准通过"]
           }
         },
         "rung-green": {
@@ -753,9 +728,7 @@
             "y": 76,
             "width": 103,
             "height": 30,
-            "lines": [
-              "rung GREEN"
-            ]
+            "lines": ["rung GREEN"]
           }
         },
         "coverage-red": {
@@ -807,9 +780,7 @@
             "y": 122,
             "width": 108,
             "height": 30,
-            "lines": [
-              "新增测试 RED"
-            ]
+            "lines": ["新增测试 RED"]
           }
         },
         "refactor-red": {
@@ -861,9 +832,7 @@
             "y": 305,
             "width": 70,
             "height": 30,
-            "lines": [
-              "出现回归"
-            ]
+            "lines": ["出现回归"]
           }
         },
         "next-rung": {
@@ -915,9 +884,7 @@
             "y": 595,
             "width": 87,
             "height": 30,
-            "lines": [
-              "还有 rung"
-            ]
+            "lines": ["还有 rung"]
           }
         },
         "ladder-complete": {
@@ -969,9 +936,7 @@
             "y": 356,
             "width": 115,
             "height": 30,
-            "lines": [
-              "整个阶梯已验证"
-            ]
+            "lines": ["整个阶梯已验证"]
           }
         },
         "invalid-feedback": {
@@ -1015,10 +980,7 @@
             "y": 534,
             "width": 128,
             "height": 52,
-            "lines": [
-              "反馈无效 / 阶段",
-              "失败"
-            ]
+            "lines": ["反馈无效 / 阶段", "失败"]
           }
         }
       },
@@ -1094,9 +1056,7 @@
             "y": 198,
             "width": 40,
             "height": 30,
-            "lines": [
-              "产出"
-            ]
+            "lines": ["产出"]
           }
         },
         "research-start": {
@@ -1206,9 +1166,7 @@
             "y": 325,
             "width": 100,
             "height": 30,
-            "lines": [
-              "交付研究依据"
-            ]
+            "lines": ["交付研究依据"]
           }
         }
       },
@@ -1342,9 +1300,7 @@
             "y": 83,
             "width": 40,
             "height": 30,
-            "lines": [
-              "通过"
-            ]
+            "lines": ["通过"]
           }
         },
         "simple-revise": {
@@ -1388,9 +1344,7 @@
             "y": 151,
             "width": 70,
             "height": 30,
-            "lines": [
-              "需要修订"
-            ]
+            "lines": ["需要修订"]
           }
         }
       },
@@ -1509,9 +1463,7 @@
             "y": 187,
             "width": 130,
             "height": 30,
-            "lines": [
-              "有 ready Goal"
-            ]
+            "lines": ["有 ready Goal"]
           }
         },
         "ladder-ready": {
@@ -1560,9 +1512,7 @@
             "y": 187,
             "width": 132,
             "height": 30,
-            "lines": [
-              "Finding 已关闭"
-            ]
+            "lines": ["Finding 已关闭"]
           }
         },
         "next-goal": {
@@ -1606,9 +1556,7 @@
             "y": 36,
             "width": 119,
             "height": 30,
-            "lines": [
-              "选择下一 Goal"
-            ]
+            "lines": ["选择下一 Goal"]
           }
         },
         "all-goals": {
@@ -1644,9 +1592,7 @@
             "y": 359,
             "width": 143,
             "height": 30,
-            "lines": [
-              "全部 Goal 已提交"
-            ]
+            "lines": ["全部 Goal 已提交"]
           }
         },
         "whole-pass": {
@@ -1674,9 +1620,7 @@
             "y": 359,
             "width": 132,
             "height": 30,
-            "lines": [
-              "回归与双复核通过"
-            ]
+            "lines": ["回归与双复核通过"]
           }
         },
         "terminal": {
@@ -1704,9 +1648,7 @@
             "y": 359,
             "width": 72,
             "height": 30,
-            "lines": [
-              "终门通过"
-            ]
+            "lines": ["终门通过"]
           }
         }
       }
@@ -1808,9 +1750,7 @@
             "y": 171,
             "width": 72,
             "height": 30,
-            "lines": [
-              "校准通过"
-            ]
+            "lines": ["校准通过"]
           }
         },
         "oracle-ambiguity": {
@@ -1846,10 +1786,7 @@
             "y": 368,
             "width": 158,
             "height": 52,
-            "lines": [
-              "Goal / Oracle 歧",
-              "义"
-            ]
+            "lines": ["Goal / Oracle 歧", "义"]
           }
         },
         "implementation-result": {
@@ -1914,9 +1851,7 @@
             "y": 36,
             "width": 110,
             "height": 30,
-            "lines": [
-              "RED 且有进展"
-            ]
+            "lines": ["RED 且有进展"]
           }
         },
         "rung-green": {
@@ -1960,9 +1895,7 @@
             "y": 622,
             "width": 105,
             "height": 30,
-            "lines": [
-              "rung GREEN"
-            ]
+            "lines": ["rung GREEN"]
           }
         },
         "coverage-red": {
@@ -2006,9 +1939,7 @@
             "y": 44,
             "width": 110,
             "height": 30,
-            "lines": [
-              "新增测试 RED"
-            ]
+            "lines": ["新增测试 RED"]
           }
         },
         "coverage-ready": {
@@ -2036,9 +1967,7 @@
             "y": 196,
             "width": 87,
             "height": 30,
-            "lines": [
-              "分支已覆盖"
-            ]
+            "lines": ["分支已覆盖"]
           }
         },
         "refactor-red": {
@@ -2082,9 +2011,7 @@
             "y": 105,
             "width": 72,
             "height": 30,
-            "lines": [
-              "出现回归"
-            ]
+            "lines": ["出现回归"]
           }
         },
         "refactor-ready": {
@@ -2112,9 +2039,7 @@
             "y": 221,
             "width": 132,
             "height": 30,
-            "lines": [
-              "GREEN / 无重构"
-            ]
+            "lines": ["GREEN / 无重构"]
           }
         },
         "next-rung": {
@@ -2142,9 +2067,7 @@
             "y": 196,
             "width": 89,
             "height": 30,
-            "lines": [
-              "还有 rung"
-            ]
+            "lines": ["还有 rung"]
           }
         },
         "ladder-complete": {
@@ -2180,9 +2103,7 @@
             "y": 368,
             "width": 117,
             "height": 30,
-            "lines": [
-              "整个阶梯已验证"
-            ]
+            "lines": ["整个阶梯已验证"]
           }
         },
         "invalid-feedback": {
@@ -2218,9 +2139,7 @@
             "y": 540,
             "width": 160,
             "height": 30,
-            "lines": [
-              "反馈无效 / 阶段失败"
-            ]
+            "lines": ["反馈无效 / 阶段失败"]
           }
         }
       }
@@ -2337,9 +2256,7 @@
             "y": 175,
             "width": 42,
             "height": 30,
-            "lines": [
-              "产出"
-            ]
+            "lines": ["产出"]
           }
         },
         "research-handoff": {
@@ -2375,9 +2292,7 @@
             "y": 175,
             "width": 102,
             "height": 30,
-            "lines": [
-              "交付研究依据"
-            ]
+            "lines": ["交付研究依据"]
           }
         }
       }
@@ -2486,9 +2401,7 @@
             "y": 105,
             "width": 42,
             "height": 30,
-            "lines": [
-              "通过"
-            ]
+            "lines": ["通过"]
           }
         },
         "simple-revise": {
@@ -2532,9 +2445,7 @@
             "y": 212,
             "width": 72,
             "height": 30,
-            "lines": [
-              "需要修订"
-            ]
+            "lines": ["需要修订"]
           }
         }
       }
@@ -2652,9 +2563,7 @@
             "y": 464,
             "width": 130,
             "height": 30,
-            "lines": [
-              "有 ready Goal"
-            ]
+            "lines": ["有 ready Goal"]
           }
         },
         "ladder-ready": {
@@ -2703,9 +2612,7 @@
             "y": 957,
             "width": 132,
             "height": 30,
-            "lines": [
-              "Finding 已关闭"
-            ]
+            "lines": ["Finding 已关闭"]
           }
         },
         "next-goal": {
@@ -2749,9 +2656,7 @@
             "y": 597,
             "width": 119,
             "height": 30,
-            "lines": [
-              "选择下一 Goal"
-            ]
+            "lines": ["选择下一 Goal"]
           }
         },
         "all-goals": {
@@ -2787,9 +2692,7 @@
             "y": 464,
             "width": 143,
             "height": 30,
-            "lines": [
-              "全部 Goal 已提交"
-            ]
+            "lines": ["全部 Goal 已提交"]
           }
         },
         "whole-pass": {
@@ -2817,9 +2720,7 @@
             "y": 777,
             "width": 132,
             "height": 30,
-            "lines": [
-              "回归与双复核通过"
-            ]
+            "lines": ["回归与双复核通过"]
           }
         },
         "terminal": {
@@ -2847,9 +2748,7 @@
             "y": 1137,
             "width": 72,
             "height": 30,
-            "lines": [
-              "终门通过"
-            ]
+            "lines": ["终门通过"]
           }
         }
       }
@@ -2951,9 +2850,7 @@
             "y": 1061,
             "width": 72,
             "height": 30,
-            "lines": [
-              "校准通过"
-            ]
+            "lines": ["校准通过"]
           }
         },
         "oracle-ambiguity": {
@@ -2989,10 +2886,7 @@
             "y": 1050,
             "width": 158,
             "height": 52,
-            "lines": [
-              "Goal / Oracle 歧",
-              "义"
-            ]
+            "lines": ["Goal / Oracle 歧", "义"]
           }
         },
         "implementation-result": {
@@ -3057,9 +2951,7 @@
             "y": 1370,
             "width": 110,
             "height": 30,
-            "lines": [
-              "RED 且有进展"
-            ]
+            "lines": ["RED 且有进展"]
           }
         },
         "rung-green": {
@@ -3103,9 +2995,7 @@
             "y": 784,
             "width": 105,
             "height": 30,
-            "lines": [
-              "rung GREEN"
-            ]
+            "lines": ["rung GREEN"]
           }
         },
         "coverage-red": {
@@ -3149,9 +3039,7 @@
             "y": 639,
             "width": 110,
             "height": 30,
-            "lines": [
-              "新增测试 RED"
-            ]
+            "lines": ["新增测试 RED"]
           }
         },
         "coverage-ready": {
@@ -3179,9 +3067,7 @@
             "y": 240,
             "width": 87,
             "height": 30,
-            "lines": [
-              "分支已覆盖"
-            ]
+            "lines": ["分支已覆盖"]
           }
         },
         "refactor-red": {
@@ -3225,9 +3111,7 @@
             "y": 784,
             "width": 72,
             "height": 30,
-            "lines": [
-              "出现回归"
-            ]
+            "lines": ["出现回归"]
           }
         },
         "refactor-ready": {
@@ -3255,9 +3139,7 @@
             "y": 506,
             "width": 132,
             "height": 30,
-            "lines": [
-              "GREEN / 无重构"
-            ]
+            "lines": ["GREEN / 无重构"]
           }
         },
         "next-rung": {
@@ -3285,9 +3167,7 @@
             "y": 784,
             "width": 89,
             "height": 30,
-            "lines": [
-              "还有 rung"
-            ]
+            "lines": ["还有 rung"]
           }
         },
         "ladder-complete": {
@@ -3323,9 +3203,7 @@
             "y": 784,
             "width": 117,
             "height": 30,
-            "lines": [
-              "整个阶梯已验证"
-            ]
+            "lines": ["整个阶梯已验证"]
           }
         },
         "invalid-feedback": {
@@ -3361,9 +3239,7 @@
             "y": 784,
             "width": 160,
             "height": 30,
-            "lines": [
-              "反馈无效 / 阶段失败"
-            ]
+            "lines": ["反馈无效 / 阶段失败"]
           }
         }
       }
@@ -3480,9 +3356,7 @@
             "y": 416,
             "width": 42,
             "height": 30,
-            "lines": [
-              "产出"
-            ]
+            "lines": ["产出"]
           }
         },
         "research-handoff": {
@@ -3518,9 +3392,7 @@
             "y": 682,
             "width": 102,
             "height": 30,
-            "lines": [
-              "交付研究依据"
-            ]
+            "lines": ["交付研究依据"]
           }
         }
       }
@@ -3629,9 +3501,7 @@
             "y": 662,
             "width": 42,
             "height": 30,
-            "lines": [
-              "通过"
-            ]
+            "lines": ["通过"]
           }
         },
         "simple-revise": {
@@ -3675,9 +3545,7 @@
             "y": 396,
             "width": 72,
             "height": 30,
-            "lines": [
-              "需要修订"
-            ]
+            "lines": ["需要修订"]
           }
         }
       }

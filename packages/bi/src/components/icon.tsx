@@ -1,6 +1,6 @@
 import type { SVGProps } from "react";
-import icons from "../domain/crystra-icons.json";
 import tokens from "../../../../design/crystra.tokens.json";
+import icons from "../domain/crystra-icons.json";
 export type IconName = keyof typeof icons.icons;
 export type IconSize =
   | "widget-signal"

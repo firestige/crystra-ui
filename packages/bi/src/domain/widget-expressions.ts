@@ -1,5 +1,5 @@
+import type { MonitoringWidgetSize, WidgetCategory } from "./widget-catalog";
 import { FAMILY_FIXTURES, familyViews } from "./widget-families";
-import type { WidgetCategory, MonitoringWidgetSize } from "./widget-catalog";
 export type Kind =
   | "state"
   | "value"

@@ -22,12 +22,12 @@ distinct information composition, not a scaled-down copy of a larger panel.
 
 The accepted eight-category catalog is [Widget monitoring](widget-monitoring.md). `WIDGET_CATALOG` defines semantic capacity; `MONITORING_RENDERERS` refines it for existing renderers; `monitoringSizes` supplies the menu. These are the current Crystra size authorities.
 
-| Renderer | Semantic category | Legal sizes |
-| --- | --- | --- |
-| numeric-card@1 | value | 1×1 |
-| badge@1 | status | 1×1 |
-| ratio-bar@1 | progress, linear | 1×1, 1×2, 1×3 |
-| table@1 / multiple slices | records | 2×3, 3×3 |
+| Renderer                  | Semantic category | Legal sizes   |
+| ------------------------- | ----------------- | ------------- |
+| numeric-card@1            | value             | 1×1           |
+| badge@1                   | status            | 1×1           |
+| ratio-bar@1               | progress, linear  | 1×1, 1×2, 1×3 |
+| table@1 / multiple slices | records           | 2×3, 3×3      |
 
 A 1×1 card shows a centered 48px colored object icon with an actual tooltip carrying its full title and coordinate. Primary content remains a readable value or state. True has no redundant check by default. Availability is a green compact marker where needed; badge avoids repeating it. Larger titles use 14px / 20px, weight 400 regardless of language or icons. Details are optional business actions; the preview adapter exposes full MetricPanel data for review, not as a universal widget requirement.
 

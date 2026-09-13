@@ -57,11 +57,18 @@ const labels = [
 ];
 export const observationTraceTime = (version: string) =>
   `2026-09-09T${version === "v3" ? "14:08" : "10:32"}:00Z`;
-export function observationTrace(task: string, version: string, delivery?: DeliverySearchRecord): TraceView {
-  const traceId = delivery?.traceId ?? (
+export function observationTrace(
+  task: string,
+  version: string,
+  delivery?: DeliverySearchRecord,
+): TraceView {
+  const traceId =
+    delivery?.traceId ??
     (task === "demo-release" ? "a" : "b").repeat(30) +
-    (version === "v3" ? "03" : "02"));
-  const start = BigInt(Date.parse(delivery?.startedAt ?? observationTraceTime(version))) * 1_000_000n;
+      (version === "v3" ? "03" : "02");
+  const start =
+    BigInt(Date.parse(delivery?.startedAt ?? observationTraceTime(version))) *
+    1_000_000n;
   const oldIds = statisticsTrace.nodes.map((n) => n.id);
   const idFor = (id: string) =>
     String(oldIds.indexOf(id) + 1).padStart(16, "0");
@@ -80,7 +87,9 @@ export function observationTrace(task: string, version: string, delivery?: Deliv
     ),
     traceState: "fixture=observation-design",
     fields: [
-      ...(delivery ? [{field:"delivery_id",value:delivery.deliveryId}] : []),
+      ...(delivery
+        ? [{ field: "delivery_id", value: delivery.deliveryId }]
+        : []),
       { field: "preview.task_id", value: task },
       { field: "preview.workflow_revision", value: version },
       { field: "preview.source", value: "设计示例" },

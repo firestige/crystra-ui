@@ -1,7 +1,6 @@
 /* D17: accepted dark-theme card surfaces. State-specific styling stays authoritative. */
 .wsr-bi {
   --card-surface-border: var(--color-border-subtle, #ffffff0f);
-
 }
 .wsr-bi
   :is(

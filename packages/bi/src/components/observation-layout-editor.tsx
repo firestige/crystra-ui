@@ -1,83 +1,42 @@
-import {ConfigurationFileInput,downloadConfiguration} from './configuration-file';
+import {
+  decodeObservationLayout,
+  encodeObservationLayout,
+  ObservationSources,
+  resolveObservationSource,
+  resolveObservationWidget,
+} from "./observation-layout-codec";
+
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import {
   applyChartRange,
   defaultChartRange,
   supportsChartRange,
-  validateChartRange,
   type ChartRange,
 } from "../domain/chart-range";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { Button, ButtonGroup, IconButton } from "./design-system";
-import { Icon, type IconName } from "./icon";
-import { WidgetTooltip } from "./widget-tooltip";
-import { SemanticWidget } from "./semantic-widget";
 import {
-  familyViews,
-  chartMinimumSize,
-  isWidgetSizeAllowed,
-  type View,
-  type WidgetData,
-} from "../domain/widget-families";
+  panelSizeForGrid,
+  type DashboardLayout,
+} from "../domain/layout/layout";
 import {
   queryBinding,
-  queryFromBinding,
   type ObservationQuery,
   type ObservationQueryCatalog,
 } from "../domain/observation-query";
 import type { MonitoringWidgetSize } from "../domain/widget-catalog";
 import {
-  panelSizeForGrid,
-  type DashboardLayout,
-  type LayoutPanel,
-} from "../domain/layout/layout";
+  chartMinimumSize,
+  familyViews,
+  isWidgetSizeAllowed,
+  type View,
+  type WidgetData,
+} from "../domain/widget-families";
 import { dashboardLayout } from "../test-harness/dashboard-fixture";
-
-export type ObservationSources = Record<
-  string,
-  {
-    topic?: "resources" | "quality";
-    data: WidgetData;
-    view: View;
-    size: MonitoringWidgetSize;
-    empty?: boolean;
-  }
->;
-export function resolveObservationSource(
-  source: string,
-  sources: ObservationSources,
-  queries?: ObservationQueryCatalog,
-) {
-  const query = queryFromBinding(source);
-  if (query) {
-    if (!queries) throw new Error("当前页面没有指标查询服务");
-    return queries.resolve(query);
-  }
-  if (!Object.hasOwn(sources, source)) throw new Error("未知数据源");
-  return sources[source];
-}
-export function resolveObservationWidget(
-  panel: LayoutPanel,
-  sources: ObservationSources,
-  queries?: ObservationQueryCatalog,
-) {
-  const source = resolveObservationSource(
-    panel.channels.source ?? panel.panel_id,
-    sources,
-    queries,
-  );
-  const view = (panel.channels.expressionView ?? source.view) as View;
-  const range = panel.channels.range
-    ? (JSON.parse(panel.channels.range) as ChartRange)
-    : defaultChartRange(view);
-  return {
-    ...source,
-    data: {
-      ...applyChartRange(source.data, view, range),
-      title: panel.channels.title ?? source.data.title,
-    },
-    view,
-  };
-}
+import { downloadConfiguration } from "./configuration-download";
+import { ConfigurationFileInput } from "./configuration-file";
+import { Button, ButtonGroup, IconButton } from "./design-system";
+import { Icon, type IconName } from "./icon";
+import { SemanticWidget } from "./semantic-widget";
+import { WidgetTooltip } from "./widget-tooltip";
 export function ObservationWidget({
   result,
   view,
@@ -117,98 +76,6 @@ export function ObservationWidget({
     </article>
   );
 }
-export function encodeObservationLayout(
-  layout: DashboardLayout,
-  sources: ObservationSources,
-  queries?: ObservationQueryCatalog,
-) {
-  return JSON.stringify(
-    {
-      format: "crystra-observation-layout",
-      version: 2,
-      name: layout.name,
-      widgets: layout.panels.map((p) => ({
-        id: p.panel_id,
-        ...(queryFromBinding(p.channels.source ?? p.panel_id)
-          ? { query: queryFromBinding(p.channels.source ?? p.panel_id) }
-          : { source: p.channels.source ?? p.panel_id }),
-        title: resolveObservationWidget(p, sources, queries).data.title,
-        view: resolveObservationWidget(p, sources, queries).view,
-        grid: p.grid,
-        ...(p.channels.range ? { range: JSON.parse(p.channels.range) } : {}),
-      })),
-    },
-    null,
-    2,
-  );
-}
-export function decodeObservationLayout(
-  text: string,
-  sources: ObservationSources,
-  queries?: ObservationQueryCatalog,
-): DashboardLayout {
-  const file = JSON.parse(text);
-  if (
-    file?.format !== "crystra-observation-layout" ||
-    ![1, 2].includes(file.version) ||
-    typeof file.name !== "string" ||
-    !file.name.trim() ||
-    !Array.isArray(file.widgets)
-  )
-    throw new Error("布局文件格式不匹配");
-  const ids = new Set<string>();
-  const panels = file.widgets.map(
-    (item: {
-      id: string;
-      source: string;
-      query?: ObservationQuery;
-      range?: ChartRange;
-      title: string;
-      view: View;
-      grid: LayoutPanel["grid"];
-    }) => {
-      if (
-        !item ||
-        typeof item.id !== "string" ||
-        !item.id ||
-        ids.has(item.id) ||
-        (!item.query && typeof item.source !== "string") ||
-        typeof item.title !== "string" ||
-        !item.title.trim()
-      )
-        throw new Error("Widget 身份、数据源或标题无效");
-      const source = item.query ? queryBinding(item.query) : item.source;
-      const resolved = resolveObservationSource(source, sources, queries);
-      const g = item.grid;
-      if (
-        !g ||
-        ![g.x, g.y, g.w, g.h].every(Number.isSafeInteger) ||
-        g.x < 0 ||
-        g.y < 0 ||
-        g.w < 1 ||
-        g.h < 1
-      )
-        throw new Error("Widget 位置无效");
-      if (item.range) validateChartRange(item.range);
-      if (!isWidgetSizeAllowed(resolved.data, item.view, `${g.h}x${g.w}`))
-        throw new Error("表达方式或尺寸与数据源不兼容");
-      ids.add(item.id);
-      return {
-        ...dashboardLayout.panels[0],
-        panel_id: item.id,
-        grid: { x: g.x, y: g.y, w: g.w, h: g.h },
-        size: panelSizeForGrid(g),
-        channels: {
-          source,
-          title: item.title,
-          expressionView: item.view,
-          ...(item.range ? { range: JSON.stringify(item.range) } : {}),
-        },
-      };
-    },
-  );
-  return { layout_version: 1, name: file.name, panels };
-}
 export function ObservationLayoutEditor({
   editing,
   onBegin,
@@ -232,10 +99,19 @@ export function ObservationLayoutEditor({
 }) {
   const [adding, setAdding] = useState(false),
     [busy, setBusy] = useState(false);
-  const fileInput=useRef<HTMLInputElement>(null);
-  const exportFile=()=>{
-    try{downloadConfiguration(encodeObservationLayout(layout,sources,queries),'crystra-layout.json');onNotice('布局下载已开始');}
-    catch(error){onNotice(`无法导出：${error instanceof Error?error.message:'文件操作失败'}`);}
+  const fileInput = useRef<HTMLInputElement>(null);
+  const exportFile = () => {
+    try {
+      downloadConfiguration(
+        encodeObservationLayout(layout, sources, queries),
+        "crystra-layout.json",
+      );
+      onNotice("布局下载已开始");
+    } catch (error) {
+      onNotice(
+        `无法导出：${error instanceof Error ? error.message : "文件操作失败"}`,
+      );
+    }
   };
   const frame = useRef<HTMLDivElement>(null);
   const previousEditing = useRef(editing);
@@ -288,16 +164,42 @@ export function ObservationLayoutEditor({
     ];
   }, [editing]);
   useEffect(() => () => motion.current.forEach((a) => a.cancel()), []);
-  const actions: { label: string; icon: IconName; run: () => void }[] = [
-    { label: "导出布局", icon: "download", run: exportFile },
-    { label: "导入布局", icon: "upload", run: () => fileInput.current?.click() },
-    { label: "添加 Widget", icon: "plus", run: () => setAdding(true) },
-    { label: "保存布局", icon: "check", run: onConfirm },
-    { label: "取消编辑", icon: "x", run: onCancel },
+  const actions: {
+    label: string;
+    icon: IconName;
+    run: "export" | "import" | "add" | "save" | "cancel";
+  }[] = [
+    { label: "导出布局", icon: "download", run: "export" },
+    {
+      label: "导入布局",
+      icon: "upload",
+      run: "import",
+    },
+    { label: "添加 Widget", icon: "plus", run: "add" },
+    { label: "保存布局", icon: "check", run: "save" },
+    { label: "取消编辑", icon: "x", run: "cancel" },
   ];
   return (
     <>
-      <ConfigurationFileInput inputRef={fileInput} label="导入布局文件" onBusy={setBusy} onFile={async file=>{const imported=decodeObservationLayout(await file.text(),sources,queries);onChange(imported);onNotice('布局已加载，可继续编辑后保存');}} onError={error=>onNotice(`无法导入：${error instanceof Error?error.message:'文件操作失败'}`)}/>
+      <ConfigurationFileInput
+        inputRef={fileInput}
+        label="导入布局文件"
+        onBusy={setBusy}
+        onFile={async (file) => {
+          const imported = decodeObservationLayout(
+            await file.text(),
+            sources,
+            queries,
+          );
+          onChange(imported);
+          onNotice("布局已加载，可继续编辑后保存");
+        }}
+        onError={(error) =>
+          onNotice(
+            `无法导入：${error instanceof Error ? error.message : "文件操作失败"}`,
+          )
+        }
+      />
       <div ref={frame} className="obs-layout-editor" data-expanded={editing}>
         <div
           className="obs-layout-group"
@@ -315,7 +217,14 @@ export function ObservationLayoutEditor({
                   aria-label={action.label}
                   appearance="ghost"
                   disabled={busy}
-                  onClick={action.run}
+                  onClick={() => {
+                    if (action.run === "export") exportFile();
+                    else if (action.run === "import")
+                      fileInput.current?.click();
+                    else if (action.run === "save") onConfirm();
+                    else if (action.run === "cancel") onCancel();
+                    else setAdding(true);
+                  }}
                 >
                   <Icon name={action.icon} />
                 </IconButton>
@@ -445,8 +354,9 @@ function AddObservationWidget({
     setQuery((current) => ({ ...current, ...patch }));
   const dialog = useRef<HTMLDialogElement>(null);
   useEffect(() => {
-    dialog.current?.showModal();
-    return () => dialog.current?.close();
+    const element = dialog.current;
+    element?.showModal();
+    return () => element?.close();
   }, []);
   const groups = {
     none: "不分组 · 合并统计",
@@ -956,8 +866,9 @@ export function ObservationRangeDialog({
   const dialog = useRef<HTMLDialogElement>(null);
   const [range, setRange] = useState(initial ?? defaultChartRange(view));
   useEffect(() => {
-    dialog.current?.showModal();
-    return () => dialog.current?.close();
+    const element = dialog.current;
+    element?.showModal();
+    return () => element?.close();
   }, []);
   let error = "",
     preview = data;

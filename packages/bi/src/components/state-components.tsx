@@ -1,13 +1,15 @@
 import {
+  useEffect,
   useId,
+  useLayoutEffect,
   useRef,
   useState,
-  useEffect,
-  useLayoutEffect,
   type InputHTMLAttributes,
-  type SelectHTMLAttributes,
   type ReactNode,
+  type SelectHTMLAttributes,
 } from "react";
+import "../search-field.css";
+import "../select-dropdown.css";
 import {
   Button,
   IconButton,
@@ -15,12 +17,17 @@ import {
   type ComponentSize,
 } from "./design-system";
 import { Icon } from "./icon";
-import "../select-dropdown.css";
-import "../search-field.css";
 export type SearchFieldProps = Omit<
   InputHTMLAttributes<HTMLInputElement>,
   "size" | "type"
-> & { label: string; size?: ComponentSize; appearance?: "default" | "surface"; hideLabel?: boolean; leading?: ReactNode; trailing?: ReactNode };
+> & {
+  label: string;
+  size?: ComponentSize;
+  appearance?: "default" | "surface";
+  hideLabel?: boolean;
+  leading?: ReactNode;
+  trailing?: ReactNode;
+};
 export function SearchField({
   label,
   appearance = "surface",
@@ -32,18 +39,36 @@ export function SearchField({
   ...props
 }: SearchFieldProps) {
   const generated = useId();
-  if (appearance === "surface") return (
-    <div className="wsr-search-field" data-size={size} data-disabled={props.disabled || undefined}>
-      {!hideLabel && <label htmlFor={id ?? generated}><Typography variant="label">{label}</Typography></label>}
-      <div className="wsr-search-surface" onClick={event => {
-        if (event.target === event.currentTarget) event.currentTarget.querySelector("input")?.focus();
-      }}>
-        {leading && <span className="wsr-search-leading">{leading}</span>}
-        <input aria-label={hideLabel ? label : undefined} {...props} id={id ?? generated} type="search" />
-        {trailing}
+  if (appearance === "surface")
+    return (
+      <div
+        className="wsr-search-field"
+        data-size={size}
+        data-disabled={props.disabled || undefined}
+      >
+        {!hideLabel && (
+          <label htmlFor={id ?? generated}>
+            <Typography variant="label">{label}</Typography>
+          </label>
+        )}
+        <div
+          className="wsr-search-surface"
+          onClick={(event) => {
+            if (event.target === event.currentTarget)
+              event.currentTarget.querySelector("input")?.focus();
+          }}
+        >
+          {leading && <span className="wsr-search-leading">{leading}</span>}
+          <input
+            aria-label={hideLabel ? label : undefined}
+            {...props}
+            id={id ?? generated}
+            type="search"
+          />
+          {trailing}
+        </div>
       </div>
-    </div>
-  );
+    );
   return (
     <label className="wsr-field" data-size={size} htmlFor={id ?? generated}>
       <Typography variant="label">{label}</Typography>
@@ -74,7 +99,12 @@ export function SelectField({
 }: SelectFieldProps) {
   const generated = useId();
   return (
-    <label className="wsr-field" data-size={size} data-appearance={appearance} htmlFor={id ?? generated}>
+    <label
+      className="wsr-field"
+      data-size={size}
+      data-appearance={appearance}
+      htmlFor={id ?? generated}
+    >
       {!hideLabel && <Typography variant="label">{label}</Typography>}
       <select
         {...props}

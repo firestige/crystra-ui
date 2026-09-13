@@ -1,10 +1,10 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
+import type { LayoutPanel } from "../domain/layout/layout";
 import {
   type MonitoringWidgetSize,
   monitoringSizes,
 } from "../domain/widget-catalog";
-import type { LayoutPanel } from "../domain/layout/layout";
 import { Icon } from "./icon";
 
 export interface WidgetViewOption {

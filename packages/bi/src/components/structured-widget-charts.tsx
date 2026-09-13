@@ -40,9 +40,25 @@ export function StructuredSeriesLegend({ data }: { data: MatrixData }) {
     </div>
   );
 }
-export function StructuredChartLegend({data,view}:{data:MatrixData;view:View}){
- if(view==='heatmap')return <div className="structured-header-color-key" aria-label="颜色图例"><span>{data.legendLabel??data.unit}</span><div className="expression-color-scale"/><span>{label(data.domain[0],data.unit)} — {label(data.domain[1],data.unit)}</span></div>;
- return <StructuredSeriesLegend data={data}/>;
+export function StructuredChartLegend({
+  data,
+  view,
+}: {
+  data: MatrixData;
+  view: View;
+}) {
+  if (view === "heatmap")
+    return (
+      <div className="structured-header-color-key" aria-label="颜色图例">
+        <span>{data.legendLabel ?? data.unit}</span>
+        <div className="expression-color-scale" />
+        <span>
+          {label(data.domain[0], data.unit)} —{" "}
+          {label(data.domain[1], data.unit)}
+        </span>
+      </div>
+    );
+  return <StructuredSeriesLegend data={data} />;
 }
 function Distribution({ data, view }: { data: DistributionData; view: View }) {
   if (view === "frequency-table")
@@ -197,70 +213,81 @@ function Heatmap({ data }: { data: MatrixData }) {
   const [min, max] = data.domain;
   return (
     <div className="expression-heatmap-body">
-      {data.xAxisLabel&&<div className="structured-heatmap-x-axis">{data.xAxisLabel}</div>}
-      <div className="structured-heatmap-axes">{data.yAxisLabel&&<div className="structured-heatmap-y-axis">{data.yAxisLabel}</div>}
-      <div
-        className="expression-matrix"
-        style={{
-          gridTemplateColumns: `${data.rows.some((r) => r.name.length > 15) ? 132 : 76}px repeat(${data.dimensions.length},1fr)`,
-          gridTemplateRows: `28px repeat(${data.rows.length},1fr)`,
-        }}
-      >
-        <span />
-        {data.dimensions.map((d) => (
-          <label key={d}>{d}</label>
-        ))}
-        {data.rows.map((row) => (
-          <div className="expression-matrix-row" key={row.name}>
-            <label>{row.name}</label>
-            {row.values.map((v, i) => {
-              const pct =
-                v === null
-                  ? 0
-                  : Math.max(0, Math.min(100, ((v - min) / (max - min)) * 100));
-              return (
-                <div
-                  key={i}
-                  className={v === null ? "expression-no-data" : undefined}
-                  style={{
-                    background:
-                      v === null
-                        ? undefined
-                        : `color-mix(in srgb, #679efe ${pct}%, #202a3a)`,
-                    color: pct >= 60 ? "#101827" : "#e9efff",
-                  }}
-                  title={`${row.name} · ${data.dimensions[i]} · ${label(v, data.unit)}`}
-                >
-                  {v === null ? "—" : label(v, data.unit)}
-                </div>
-              );
-            })}
-          </div>
-        ))}
-      </div>
-      </div>
-      {data.legendPlacement!=="external"&&<div className="expression-color-key">
-        <div>
-          <span>
-            {data.legendLabel ?? (data.family === "profile" ? "评分" : "数值")}
-          </span>
-          <div className="expression-color-scale" />
-          <div className="expression-scale-ticks">
-            {[0, 0.25, 0.5, 0.75, 1].map((t) => (
-              <span key={t}>
-                {Number((min + (max - min) * t).toFixed(2))}
-                {data.unit}
-              </span>
-            ))}
-          </div>
-        </div>
-        {data.rows.some((r) => r.values.includes(null)) && (
-          <span className="expression-missing-key">
-            <i className="expression-no-data" />
-            无数据
-          </span>
+      {data.xAxisLabel && (
+        <div className="structured-heatmap-x-axis">{data.xAxisLabel}</div>
+      )}
+      <div className="structured-heatmap-axes">
+        {data.yAxisLabel && (
+          <div className="structured-heatmap-y-axis">{data.yAxisLabel}</div>
         )}
-      </div>}
+        <div
+          className="expression-matrix"
+          style={{
+            gridTemplateColumns: `${data.rows.some((r) => r.name.length > 15) ? 132 : 76}px repeat(${data.dimensions.length},1fr)`,
+            gridTemplateRows: `28px repeat(${data.rows.length},1fr)`,
+          }}
+        >
+          <span />
+          {data.dimensions.map((d) => (
+            <label key={d}>{d}</label>
+          ))}
+          {data.rows.map((row) => (
+            <div className="expression-matrix-row" key={row.name}>
+              <label>{row.name}</label>
+              {row.values.map((v, i) => {
+                const pct =
+                  v === null
+                    ? 0
+                    : Math.max(
+                        0,
+                        Math.min(100, ((v - min) / (max - min)) * 100),
+                      );
+                return (
+                  <div
+                    key={i}
+                    className={v === null ? "expression-no-data" : undefined}
+                    style={{
+                      background:
+                        v === null
+                          ? undefined
+                          : `color-mix(in srgb, #679efe ${pct}%, #202a3a)`,
+                      color: pct >= 60 ? "#101827" : "#e9efff",
+                    }}
+                    title={`${row.name} · ${data.dimensions[i]} · ${label(v, data.unit)}`}
+                  >
+                    {v === null ? "—" : label(v, data.unit)}
+                  </div>
+                );
+              })}
+            </div>
+          ))}
+        </div>
+      </div>
+      {data.legendPlacement !== "external" && (
+        <div className="expression-color-key">
+          <div>
+            <span>
+              {data.legendLabel ??
+                (data.family === "profile" ? "评分" : "数值")}
+            </span>
+            <div className="expression-color-scale" />
+            <div className="expression-scale-ticks">
+              {[0, 0.25, 0.5, 0.75, 1].map((t) => (
+                <span key={t}>
+                  {Number((min + (max - min) * t).toFixed(2))}
+                  {data.unit}
+                </span>
+              ))}
+            </div>
+          </div>
+          {data.rows.some((r) => r.values.includes(null)) && (
+            <span className="expression-missing-key">
+              <i className="expression-no-data" />
+              无数据
+            </span>
+          )}
+        </div>
+      )}
     </div>
   );
 }
@@ -280,7 +307,7 @@ function Radar({ data }: { data: MatrixData }) {
       <svg
         viewBox="0 0 306 232"
         role="img"
-        aria-label={`${data.title}；${data.rows.map((r) => `${r.name}：${r.values.map(v=>label(v,data.unit)).join("/")}`).join("；")}`}
+        aria-label={`${data.title}；${data.rows.map((r) => `${r.name}：${r.values.map((v) => label(v, data.unit)).join("/")}`).join("；")}`}
       >
         {[0.25, 0.5, 0.75, 1].map((t) => (
           <polygon
@@ -358,9 +385,11 @@ function Radar({ data }: { data: MatrixData }) {
           </g>
         ))}
       </svg>
-      {data.legendPlacement!=="external"&&<StructuredSeriesLegend data={data} />}
+      {data.legendPlacement !== "external" && (
+        <StructuredSeriesLegend data={data} />
+      )}
       <div className="expression-radar-caption">
-        {label(min,data.unit)}–{label(max,data.unit)}
+        {label(min, data.unit)}–{label(max, data.unit)}
       </div>
     </div>
   );
@@ -370,7 +399,7 @@ function GroupedBars({ data }: { data: MatrixData }) {
   return (
     <div className="structured-grouped-bars">
       <div className="structured-axis-note">
-        {data.xAxisLabel??`${label(min,data.unit)}—${label(max,data.unit)}`}
+        {data.xAxisLabel ?? `${label(min, data.unit)}—${label(max, data.unit)}`}
       </div>
       <div className="structured-bar-groups">
         {data.dimensions.map((name, i) => (
@@ -397,8 +426,19 @@ function GroupedBars({ data }: { data: MatrixData }) {
           </div>
         ))}
       </div>
-      {data.yAxisLabel&&<div className="structured-bar-numeric-axis"><div>{[0,.5,1].map(t=><span key={t}>{label(min+(max-min)*t,'')}</span>)}</div><span>{data.yAxisLabel}</span></div>}
-      {data.legendPlacement!=="external"&&<StructuredSeriesLegend data={data} />}
+      {data.yAxisLabel && (
+        <div className="structured-bar-numeric-axis">
+          <div>
+            {[0, 0.5, 1].map((t) => (
+              <span key={t}>{label(min + (max - min) * t, "")}</span>
+            ))}
+          </div>
+          <span>{data.yAxisLabel}</span>
+        </div>
+      )}
+      {data.legendPlacement !== "external" && (
+        <StructuredSeriesLegend data={data} />
+      )}
     </div>
   );
 }
@@ -414,8 +454,17 @@ function MultiSeries({
   const width = plotSize?.width ?? 490,
     height = plotSize?.height ?? 228;
   const left = plotSize ? 64 : 35;
-  const tickCount=Math.min(data.dimensions.length,Math.max(2,Math.floor((width-left-90)/80)+1));
-  const visibleTicks=new Set(Array.from({length:tickCount},(_,i)=>Math.round(i*(data.dimensions.length-1)/Math.max(1,tickCount-1))));
+  const tickCount = Math.min(
+    data.dimensions.length,
+    Math.max(2, Math.floor((width - left - 90) / 80) + 1),
+  );
+  const visibleTicks = new Set(
+    Array.from({ length: tickCount }, (_, i) =>
+      Math.round(
+        (i * (data.dimensions.length - 1)) / Math.max(1, tickCount - 1),
+      ),
+    ),
+  );
   const stacked = view === "stacked-columns";
   const barStep = Math.min(
     data.dimensions.length === 1 ? 56 : stacked ? 28 : 14,
@@ -423,8 +472,8 @@ function MultiSeries({
       Math.max(1, data.dimensions.length) /
       (stacked ? 1 : Math.max(1, data.rows.length)),
   );
-  const baseline = height - (data.xAxisLabel?58:38),
-    plotHeight = height - (data.xAxisLabel?108:78);
+  const baseline = height - (data.xAxisLabel ? 58 : 38),
+    plotHeight = height - (data.xAxisLabel ? 108 : 78);
   const [min, max] =
     stacked && !data.rangeApplied
       ? [
@@ -471,7 +520,7 @@ function MultiSeries({
           </g>
         ))}
         <text x={left} y="20">
-          {data.yAxisLabel??data.unit}
+          {data.yAxisLabel ?? data.unit}
         </text>
         {data.rows.map((row, j) => {
           const path = row.values
@@ -483,12 +532,33 @@ function MultiSeries({
             .join(" ");
           return (
             <g key={row.name}>
-              {view === "area" && row.values.map((value,index)=>{
-                if(value===null || (index>0 && row.values[index-1]!==null))return null;
-                let end=index;while(end+1<row.values.length&&row.values[end+1]!==null)end++;
-                const points=row.values.slice(index,end+1).map((v,i)=>`L ${x(index+i)} ${y(v!)}`).join(' ');
-                return <path key={index} data-area-fill d={`M ${x(index)} ${baseline} ${points} L ${x(end)} ${baseline} Z`} fill={row.color??colors[j%4]} fillOpacity=".16"/>;
-              })}
+              {view === "area" &&
+                row.values.map((value, index) => {
+                  if (
+                    value === null ||
+                    (index > 0 && row.values[index - 1] !== null)
+                  )
+                    return null;
+                  let end = index;
+                  while (
+                    end + 1 < row.values.length &&
+                    row.values[end + 1] !== null
+                  )
+                    end++;
+                  const points = row.values
+                    .slice(index, end + 1)
+                    .map((v, i) => `L ${x(index + i)} ${y(v!)}`)
+                    .join(" ");
+                  return (
+                    <path
+                      key={index}
+                      data-area-fill
+                      d={`M ${x(index)} ${baseline} ${points} L ${x(end)} ${baseline} Z`}
+                      fill={row.color ?? colors[j % 4]}
+                      fillOpacity=".16"
+                    />
+                  );
+                })}
               {(view === "multi-line" || view === "area") && (
                 <path
                   d={path}
@@ -518,7 +588,7 @@ function MultiSeries({
                         stroke={row.color ?? colors[j % 4]}
                         strokeWidth="1.5"
                       />
-                    ) : (view === "multi-line" || view === "area") ? (
+                    ) : view === "multi-line" || view === "area" ? (
                       <circle
                         cx={px}
                         cy={y(v)}
@@ -546,15 +616,19 @@ function MultiSeries({
           );
         })}
         {data.dimensions.map((d, i) => (
-          <text key={d} x={x(i)} y={baseline+22} textAnchor="middle">
-            {visibleTicks.has(i)
-              ? d
-              : ""}
+          <text key={d} x={x(i)} y={baseline + 22} textAnchor="middle">
+            {visibleTicks.has(i) ? d : ""}
           </text>
         ))}
-      {data.xAxisLabel&&<text x={(left+width-20)/2} y={height-5} textAnchor="middle">{data.xAxisLabel}</text>}
+        {data.xAxisLabel && (
+          <text x={(left + width - 20) / 2} y={height - 5} textAnchor="middle">
+            {data.xAxisLabel}
+          </text>
+        )}
       </svg>
-      {data.legendPlacement!=="external"&&<StructuredSeriesLegend data={data} />}
+      {data.legendPlacement !== "external" && (
+        <StructuredSeriesLegend data={data} />
+      )}
       {data.rows.some((r) => r.values.includes(null)) && (
         <span className="structured-axis-note">
           缺值保留断点；底部交叉标记表示无数据

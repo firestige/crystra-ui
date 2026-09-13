@@ -1,4 +1,59 @@
-import {it,expect} from 'vitest';
-import {resourceCatalog,type CatalogFile} from './resource-catalog';
-import {projectRelations} from './resource-relation-graph';
-it('uses explicit ownership and README entry instead of guessing directories',()=>{const files:CatalogFile[]=[{path:'objects/a.md',content:'# Tool',internal:false,presentation:{id:'tool:a',type:'cli',name:'My CLI',renderer:'markdown',members:['objects/a.md','objects/b.mjs'],aliases:['entry:a','entry:b','file:objects/a.md','file:objects/b.mjs']}},{path:'objects/b.mjs',content:'',internal:false}];const nodes=[{id:'file:objects/a.md',file:'objects/a.md',kind:'file',label:'a.md'},{id:'file:objects/b.mjs',file:'objects/b.mjs',kind:'file',label:'b.mjs'},{id:'entry:a',kind:'resource',label:'index'},{id:'entry:b',kind:'resource',label:'index'},{id:'activity:a',kind:'activity',label:'Use tool'}],edges=[{from:'activity:a',to:'entry:b',label:'可用工具'},{from:'entry:b',to:'file:objects/b.mjs',label:'资源定义'}];const catalog=resourceCatalog(files,nodes,edges);expect(catalog).toHaveLength(1);expect(catalog[0]).toMatchObject({id:'tool:a',name:'My CLI',path:'objects/a.md'});expect(catalog[0].files).toHaveLength(2);const graph=projectRelations({files,nodes,edges},'file:objects/a.md');expect(graph.rootId).toBe('tool:a');expect(graph.nodes).toHaveLength(2);expect(graph.edges[0].to).toBe('tool:a');});
+import { expect, it } from "vitest";
+import { resourceCatalog, type CatalogFile } from "./resource-catalog";
+import { projectRelations } from "./resource-relations";
+it("uses explicit ownership and README entry instead of guessing directories", () => {
+  const files: CatalogFile[] = [
+    {
+      path: "objects/a.md",
+      content: "# Tool",
+      internal: false,
+      presentation: {
+        id: "tool:a",
+        type: "cli",
+        name: "My CLI",
+        renderer: "markdown",
+        members: ["objects/a.md", "objects/b.mjs"],
+        aliases: [
+          "entry:a",
+          "entry:b",
+          "file:objects/a.md",
+          "file:objects/b.mjs",
+        ],
+      },
+    },
+    { path: "objects/b.mjs", content: "", internal: false },
+  ];
+  const nodes = [
+      {
+        id: "file:objects/a.md",
+        file: "objects/a.md",
+        kind: "file",
+        label: "a.md",
+      },
+      {
+        id: "file:objects/b.mjs",
+        file: "objects/b.mjs",
+        kind: "file",
+        label: "b.mjs",
+      },
+      { id: "entry:a", kind: "resource", label: "index" },
+      { id: "entry:b", kind: "resource", label: "index" },
+      { id: "activity:a", kind: "activity", label: "Use tool" },
+    ],
+    edges = [
+      { from: "activity:a", to: "entry:b", label: "可用工具" },
+      { from: "entry:b", to: "file:objects/b.mjs", label: "资源定义" },
+    ];
+  const catalog = resourceCatalog(files, nodes, edges);
+  expect(catalog).toHaveLength(1);
+  expect(catalog[0]).toMatchObject({
+    id: "tool:a",
+    name: "My CLI",
+    path: "objects/a.md",
+  });
+  expect(catalog[0].files).toHaveLength(2);
+  const graph = projectRelations({ files, nodes, edges }, "file:objects/a.md");
+  expect(graph.rootId).toBe("tool:a");
+  expect(graph.nodes).toHaveLength(2);
+  expect(graph.edges[0].to).toBe("tool:a");
+});

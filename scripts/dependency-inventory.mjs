@@ -41,9 +41,12 @@ const dependencies = Object.entries(lock.packages)
 
 const unsupported = dependencies.filter(
   ({ path, license, development }) =>
-      !allowedLicenses.has(license) &&
-      !(path === "node_modules/elkjs" && development &&
-        license === "EPL-2.0 OR GPL-3.0-or-later"), // ELK preview generator: use the EPL-2.0 option; no engine in browser bundle.
+    !allowedLicenses.has(license) &&
+    !(
+      path === "node_modules/elkjs" &&
+      development &&
+      license === "EPL-2.0 OR GPL-3.0-or-later"
+    ), // ELK preview generator: use the EPL-2.0 option; no engine in browser bundle.
 );
 if (unsupported.length > 0) {
   throw new Error(

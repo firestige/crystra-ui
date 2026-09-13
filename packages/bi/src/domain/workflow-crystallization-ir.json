@@ -12,9 +12,7 @@
         "id": "review",
         "kind": "activity",
         "title": "阅读报告并决定后续操作",
-        "resources": [
-          "Role · Reviewer"
-        ]
+        "resources": ["Role · Reviewer"]
       },
       {
         "id": "end",
@@ -51,9 +49,7 @@
         "id": "extract",
         "kind": "activity",
         "title": "提取并校验报告数据",
-        "resources": [
-          "Script · report-extract"
-        ]
+        "resources": ["Script · report-extract"]
       },
       {
         "id": "valid",
@@ -64,25 +60,19 @@
         "id": "review",
         "kind": "activity",
         "title": "判断异常与后续操作",
-        "resources": [
-          "Role · Reviewer"
-        ]
+        "resources": ["Role · Reviewer"]
       },
       {
         "id": "repair",
         "kind": "activity",
         "title": "解释报告并补齐材料",
-        "resources": [
-          "Role · Reviewer"
-        ]
+        "resources": ["Role · Reviewer"]
       },
       {
         "id": "render",
         "kind": "activity",
         "title": "生成结构化结果",
-        "resources": [
-          "Template · review-summary"
-        ]
+        "resources": ["Template · review-summary"]
       },
       {
         "id": "end",

@@ -17,8 +17,7 @@ html = html.replace(
     `<style>${readFileSync(resolve(root, src.replace(/^\//, "")), "utf8")}</style>`,
 );
 const target = resolve(
-  process.argv[2] ??
-    "../docs/design/crystra-ui/assets/component-preview.html",
+  process.argv[2] ?? "../docs/design/crystra-ui/assets/component-preview.html",
 );
 mkdirSync(dirname(target), { recursive: true });
 writeFileSync(target, html);

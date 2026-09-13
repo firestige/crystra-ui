@@ -1,5 +1,3 @@
-import { SearchField } from "./state-components";
-import { traceViewMessages, type TraceViewLocale } from "../i18n/trace-view";
 import { scaleLinear } from "d3";
 import {
   memo,
@@ -11,13 +9,11 @@ import {
   useState,
   type ReactNode,
 } from "react";
+import { traceViewMessages, type TraceViewLocale } from "../i18n/trace-view";
+import { SearchField } from "./state-components";
 
 import type { TraceView, TraceViewNode } from "../domain/trace/trace-view";
-import {
-  ButtonGroup,
-  IconButton,
-  Typography,
-} from "./design-system";
+import { ButtonGroup, IconButton, Typography } from "./design-system";
 import { ScopedError } from "./status";
 
 const compareText = (left: string, right: string) =>
@@ -773,13 +769,28 @@ export function TraceWaterfall({
                   applyZoom([pointerStart, pointerStart], false);
                 event.currentTarget.setPointerCapture?.(event.pointerId);
               }}
-              onKeyDown={(event)=>{
-                if(!['ArrowLeft','ArrowRight','Home'].includes(event.key))return;
+              onKeyDown={(event) => {
+                if (!["ArrowLeft", "ArrowRight", "Home"].includes(event.key))
+                  return;
                 event.preventDefault();
-                if(event.key==='Home'){applyZoom([0,100],true);return;}
-                const delta=event.key==='ArrowLeft'?-5:5;
-                if(event.shiftKey){applyZoom([zoom[0],Math.max(zoom[0]+1,Math.min(100,zoom[1]+delta))],true);}
-                else{const width=zoom[1]-zoom[0],start=Math.max(0,Math.min(100-width,zoom[0]+delta));applyZoom([start,start+width],true);}
+                if (event.key === "Home") {
+                  applyZoom([0, 100], true);
+                  return;
+                }
+                const delta = event.key === "ArrowLeft" ? -5 : 5;
+                if (event.shiftKey) {
+                  applyZoom(
+                    [
+                      zoom[0],
+                      Math.max(zoom[0] + 1, Math.min(100, zoom[1] + delta)),
+                    ],
+                    true,
+                  );
+                } else {
+                  const width = zoom[1] - zoom[0],
+                    start = Math.max(0, Math.min(100 - width, zoom[0] + delta));
+                  applyZoom([start, start + width], true);
+                }
               }}
               onPointerMove={(event) => updateZoom(event, false)}
               onPointerUp={(event) => updateZoom(event, true)}
@@ -865,7 +876,9 @@ export function TraceWaterfall({
                   </Typography>
                 </div>
                 <SearchField
-                  label={messages.search} hideLabel size="compact"
+                  label={messages.search}
+                  hideLabel
+                  size="compact"
                   aria-label={messages.search}
                   onChange={(event) => setQuery(event.currentTarget.value)}
                   placeholder={messages.searchPlaceholder}
@@ -1857,7 +1870,10 @@ export const TraceTree = memo(function TraceTree({
 
   if (trace.status !== "READY" || selected === undefined)
     return <InvalidTrace trace={trace} />;
-  const lensReceipt=lens==='none'?messages.lensNone:`${lens==='ancestors'?messages.ancestors:messages.descendants} · ${lensIds.size} ${messages.lensCount}`;
+  const lensReceipt =
+    lens === "none"
+      ? messages.lensNone
+      : `${lens === "ancestors" ? messages.ancestors : messages.descendants} · ${lensIds.size} ${messages.lensCount}`;
   const moveCameraFromMinimap = (event: React.PointerEvent<HTMLElement>) => {
     const bounds = event.currentTarget.getBoundingClientRect();
     if (bounds.width <= 0 || bounds.height <= 0) return;

@@ -1,5 +1,5 @@
-import { useState } from "react";
 import { fireEvent, render, screen } from "@testing-library/react";
+import { useState } from "react";
 import { expect, it, vi } from "vitest";
 import { ToggleSwitch } from "./toggle-switch";
 

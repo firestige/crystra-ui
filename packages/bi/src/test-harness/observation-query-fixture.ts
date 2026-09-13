@@ -1,4 +1,4 @@
-import { inObservationRange } from "../components/observation-time-controls";
+import { inObservationRange } from "../components/observation-time";
 import type {
   ObservationMetric,
   ObservationQuery,

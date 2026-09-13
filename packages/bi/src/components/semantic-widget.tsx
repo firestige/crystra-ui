@@ -1,16 +1,16 @@
 import { useLayoutEffect, useRef, useState } from "react";
-import { StructuredChart } from "./structured-widget-charts";
-import { Icon } from "./icon";
-import { WidgetTooltip } from "./widget-tooltip";
 import {
   widgetSpan,
   type MonitoringWidgetSize,
 } from "../domain/widget-catalog";
 import {
   isWidgetSizeAllowed,
-  type WidgetData,
   type View,
+  type WidgetData,
 } from "../domain/widget-families";
+import { Icon } from "./icon";
+import { StructuredChart } from "./structured-widget-charts";
+import { WidgetTooltip } from "./widget-tooltip";
 const colors = ["#679efe", "#32bd91", "#ba92f5", "#f0b85e"];
 const Num = ({ value, unit }: { value: number | string; unit?: string }) => (
   <span className="expression-number">

@@ -1,14 +1,14 @@
 import { useState } from "react";
-import { Button, Card, Typography, type ComponentSize } from "./design-system";
 import { List, ListItem } from "./collection-components";
+import { Button, Card, Typography, type ComponentSize } from "./design-system";
 import {
+  EmptyState,
+  FullBenchViewer,
+  Popover,
+  ProgressNotice,
   SearchField,
   SelectField,
   SelectionControl,
-  Popover,
-  EmptyState,
-  FullBenchViewer,
-  ProgressNotice,
 } from "./state-components";
 export function StatePreview({ size }: { size: ComponentSize }) {
   const [query, setQuery] = useState("");
@@ -46,7 +46,16 @@ export function StatePreview({ size }: { size: ComponentSize }) {
               { value: "desc", label: "示例逆序" },
             ]}
           />
-          <SelectField label="向上展开" menuPlacement="top" defaultValue="expected" size={size} options={[{value:"expected",label:"预期路径"},{value:"all",label:"全部路径"}]}/>
+          <SelectField
+            label="向上展开"
+            menuPlacement="top"
+            defaultValue="expected"
+            size={size}
+            options={[
+              { value: "expected", label: "预期路径" },
+              { value: "all", label: "全部路径" },
+            ]}
+          />
           <Popover label="筛选条件" size={size}>
             <SelectionControl
               label="仅显示首项（演示）"

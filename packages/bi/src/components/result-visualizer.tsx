@@ -1,17 +1,17 @@
-import { Icon } from "./icon";
 import { scaleLinear } from "d3";
+import { Icon } from "./icon";
 
 import { METRIC_COPY } from "../domain/catalog/metric-copy";
 import type { MetricResult, MetricSlice } from "../domain/evolution/types";
 import { isMetricResult } from "../domain/evolution/validation";
+import { presentExactValue } from "../domain/visualization/presentation";
 import {
   compatibleVisualizerIds,
   selectDefaultVisualizer,
   type VisualizerId,
 } from "../domain/visualization/registry";
-import { presentExactValue } from "../domain/visualization/presentation";
-import { MetricResultFrame } from "./metric-result";
 import { Button, IconButton } from "./design-system";
+import { MetricResultFrame } from "./metric-result";
 import { MetricTruthLabel, ScopedError } from "./status";
 
 function PanelActions({

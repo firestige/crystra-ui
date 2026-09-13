@@ -143,12 +143,8 @@ describe("recorded Trace business panels", () => {
     const { container } = render(<TraceWaterfall trace={trace} />);
 
     expect(container.querySelector(".trace-view-tools")).toBeNull();
-    expect(
-      screen.getByRole("button", { name: "展开全部调用" }),
-    ).toBeVisible();
-    expect(
-      screen.getByRole("button", { name: "收起全部调用" }),
-    ).toBeVisible();
+    expect(screen.getByRole("button", { name: "展开全部调用" })).toBeVisible();
+    expect(screen.getByRole("button", { name: "收起全部调用" })).toBeVisible();
     expect(screen.getByRole("button", { name: "重置焦点" })).toHaveAttribute(
       "data-icon-button",
       "true",
@@ -158,18 +154,14 @@ describe("recorded Trace business panels", () => {
         .getByRole("button", { name: "展开全部调用" })
         .closest('[role="group"]'),
     ).not.toHaveAttribute("data-segmented");
-    expect(
-      screen.getByRole("searchbox", { name: "搜索调用" }),
-    ).toBeVisible();
+    expect(screen.getByRole("searchbox", { name: "搜索调用" })).toBeVisible();
     expect(container.querySelector(".trace-timeline-head")).toBeNull();
 
     await userEvent.click(
       screen.getByRole("button", { name: "Collapse workflow.run descendants" }),
     );
     expect(screen.queryByRole("button", { name: /tool.execute/i })).toBeNull();
-    await userEvent.click(
-      screen.getByRole("button", { name: "展开全部调用" }),
-    );
+    await userEvent.click(screen.getByRole("button", { name: "展开全部调用" }));
     expect(
       screen
         .getAllByTestId("trace-waterfall-node")
@@ -600,7 +592,9 @@ describe("recorded Trace business panels", () => {
     expect(graph).toHaveAttribute("data-edge-flow-count", "2");
     expect(screen.getByRole("button", { name: "祖先调用" })).toBeVisible();
     expect(screen.getByRole("button", { name: "后代调用" })).toBeVisible();
-    expect(region.querySelector(".trace-focus-receipt")).toHaveTextContent("已记录");
+    expect(region.querySelector(".trace-focus-receipt")).toHaveTextContent(
+      "已记录",
+    );
     expect(
       screen.queryByRole("slider", { name: "Recorded time position" }),
     ).toBeNull();
@@ -1050,17 +1044,13 @@ describe("recorded Trace business panels", () => {
       screen.getByRole("treeitem", { name: /tool.execute/i }),
     );
     await userEvent.click(screen.getByRole("button", { name: "祖先调用" }));
-    expect(
-      screen.getByText(/祖先调用 · 2 个调用/),
-    ).toBeVisible();
+    expect(screen.getByText(/祖先调用 · 2 个调用/)).toBeVisible();
     expect(
       screen.getByRole("region", { name: "Recorded trace tree" }),
     ).toHaveAttribute("data-lens", "ancestors");
 
     await userEvent.click(screen.getByRole("button", { name: "后代调用" }));
-    expect(
-      screen.getByText(/后代调用 · 1 个调用/),
-    ).toBeVisible();
+    expect(screen.getByText(/后代调用 · 1 个调用/)).toBeVisible();
     expect(
       screen.getByRole("region", { name: "Recorded trace tree" }),
     ).toHaveAttribute("data-lens", "descendants");
@@ -1078,14 +1068,15 @@ it("uses paired localized titles while preserving recorded span names", () => {
   expect(screen.getByRole("heading", { name: "Call tree" })).toBeVisible();
   expect(screen.getAllByText("workflow.run").length).toBeGreaterThan(0);
 });
-it('supports keyboard resizing and moving the waterfall zoom window',()=>{
- render(<TraceWaterfall trace={trace}/>);
- const zoom=screen.getByTestId('trace-waterfall-data-zoom');
- const initial=zoom.getAttribute('aria-valuetext');
- fireEvent.keyDown(zoom,{key:'ArrowLeft',shiftKey:true});
- expect(zoom.getAttribute('aria-valuetext')).not.toBe(initial);
- const resized=zoom.getAttribute('aria-valuetext');
- fireEvent.keyDown(zoom,{key:'ArrowRight'});
- expect(zoom.getAttribute('aria-valuetext')).not.toBe(resized);
- fireEvent.keyDown(zoom,{key:'Home'});expect(zoom.getAttribute('aria-valuetext')).toBe(initial);
+it("supports keyboard resizing and moving the waterfall zoom window", () => {
+  render(<TraceWaterfall trace={trace} />);
+  const zoom = screen.getByTestId("trace-waterfall-data-zoom");
+  const initial = zoom.getAttribute("aria-valuetext");
+  fireEvent.keyDown(zoom, { key: "ArrowLeft", shiftKey: true });
+  expect(zoom.getAttribute("aria-valuetext")).not.toBe(initial);
+  const resized = zoom.getAttribute("aria-valuetext");
+  fireEvent.keyDown(zoom, { key: "ArrowRight" });
+  expect(zoom.getAttribute("aria-valuetext")).not.toBe(resized);
+  fireEvent.keyDown(zoom, { key: "Home" });
+  expect(zoom.getAttribute("aria-valuetext")).toBe(initial);
 });

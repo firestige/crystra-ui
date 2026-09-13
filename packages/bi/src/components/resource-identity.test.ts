@@ -1,5 +1,67 @@
-import {it,expect} from 'vitest';
-import {projectRelations} from './resource-relation-graph';
-import {resourceCatalog} from './resource-catalog';
-it('merges role declaration, index and content into the same current resource without a self edge',()=>{const source={files:[{path:'roles/impl.md',content:'# Implementer',internal:false}],nodes:[{id:'activity:a',kind:'activity',label:'Implement'},{id:'action:a',kind:'action',label:'Contract'},{id:'route:a',kind:'route',label:'Route'},{id:'role:impl',kind:'role',label:'Implementer'},{id:'resource:impl',kind:'resource',label:'Index'},{id:'file:roles/impl.md',kind:'file',label:'impl.md',file:'roles/impl.md'}],edges:[{from:'activity:a',to:'action:a',label:'活动定义'},{from:'action:a',to:'route:a',label:'可用执行配置'},{from:'route:a',to:'role:impl',label:'使用职责'},{from:'role:impl',to:'resource:impl',label:'职责指令'},{from:'resource:impl',to:'file:roles/impl.md',label:'资源定义'}]};const graph=projectRelations(source,'file:roles/impl.md');expect(graph.rootId).toBe(resourceCatalog(source.files,source.nodes,source.edges)[0].id);expect(graph.nodes.map(n=>n.label)).toEqual(['Implementer','Implement']);expect(graph.edges).toHaveLength(1);expect(graph.edges[0]).toMatchObject({from:'activity:a',to:'role:impl',kind:'call'});});
-it('does not merge distinct skills merely because names match',()=>{const files=['a','b'].map(id=>({path:`skills/${id}/SKILL.md`,content:'---\nname: same\n---',internal:false}));const source={files,nodes:files.map(f=>({id:'file:'+f.path,kind:'file',label:'SKILL.md',file:f.path})),edges:[{from:'file:'+files[0].path,to:'file:'+files[1].path,label:'文档链接'}]};const graph=projectRelations(source,'file:'+files[0].path);expect(graph.nodes).toHaveLength(2);expect(new Set(graph.nodes.map(n=>n.id)).size).toBe(2);});
+import { expect, it } from "vitest";
+import { resourceCatalog } from "./resource-catalog";
+import { projectRelations } from "./resource-relations";
+it("merges role declaration, index and content into the same current resource without a self edge", () => {
+  const source = {
+    files: [
+      { path: "roles/impl.md", content: "# Implementer", internal: false },
+    ],
+    nodes: [
+      { id: "activity:a", kind: "activity", label: "Implement" },
+      { id: "action:a", kind: "action", label: "Contract" },
+      { id: "route:a", kind: "route", label: "Route" },
+      { id: "role:impl", kind: "role", label: "Implementer" },
+      { id: "resource:impl", kind: "resource", label: "Index" },
+      {
+        id: "file:roles/impl.md",
+        kind: "file",
+        label: "impl.md",
+        file: "roles/impl.md",
+      },
+    ],
+    edges: [
+      { from: "activity:a", to: "action:a", label: "活动定义" },
+      { from: "action:a", to: "route:a", label: "可用执行配置" },
+      { from: "route:a", to: "role:impl", label: "使用职责" },
+      { from: "role:impl", to: "resource:impl", label: "职责指令" },
+      { from: "resource:impl", to: "file:roles/impl.md", label: "资源定义" },
+    ],
+  };
+  const graph = projectRelations(source, "file:roles/impl.md");
+  expect(graph.rootId).toBe(
+    resourceCatalog(source.files, source.nodes, source.edges)[0].id,
+  );
+  expect(graph.nodes.map((n) => n.label)).toEqual(["Implementer", "Implement"]);
+  expect(graph.edges).toHaveLength(1);
+  expect(graph.edges[0]).toMatchObject({
+    from: "activity:a",
+    to: "role:impl",
+    kind: "call",
+  });
+});
+it("does not merge distinct skills merely because names match", () => {
+  const files = ["a", "b"].map((id) => ({
+    path: `skills/${id}/SKILL.md`,
+    content: "---\nname: same\n---",
+    internal: false,
+  }));
+  const source = {
+    files,
+    nodes: files.map((f) => ({
+      id: "file:" + f.path,
+      kind: "file",
+      label: "SKILL.md",
+      file: f.path,
+    })),
+    edges: [
+      {
+        from: "file:" + files[0].path,
+        to: "file:" + files[1].path,
+        label: "文档链接",
+      },
+    ],
+  };
+  const graph = projectRelations(source, "file:" + files[0].path);
+  expect(graph.nodes).toHaveLength(2);
+  expect(new Set(graph.nodes.map((n) => n.id)).size).toBe(2);
+});

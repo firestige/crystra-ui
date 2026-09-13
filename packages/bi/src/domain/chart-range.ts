@@ -1,4 +1,4 @@
-import type { WidgetData, View } from "./widget-families";
+import type { View, WidgetData } from "./widget-families";
 export type ChartRange = {
   mode: "auto" | "zero" | "full" | "custom";
   min?: number;

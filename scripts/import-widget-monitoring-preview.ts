@@ -6,8 +6,7 @@ const require = createRequire(import.meta.url);
 const { JSDOM } = require("jsdom");
 const postcss = require("postcss");
 const source =
-  process.argv[2] ??
-  "../docs/design/crystra-ui/assets/widget-semantics.html";
+  process.argv[2] ?? "../docs/design/crystra-ui/assets/widget-semantics.html";
 const d = new JSDOM(readFileSync(source, "utf8")).window.document as Document;
 const fixture = {
   groups: Array.from(d.querySelectorAll<HTMLElement>(".group")).map(

@@ -924,18 +924,38 @@
   min-width: 0;
 }
 /* Surface List: the row owns hover/selection, including its trailing actions. */
-.wsr-bi[data-crystra-theme="dark"] .wsr-list[data-selection-appearance="surface"] .wsr-list-item {
-  transition:background-color var(--component-motion-duration) var(--component-motion-ease);
+.wsr-bi[data-crystra-theme="dark"]
+  .wsr-list[data-selection-appearance="surface"]
+  .wsr-list-item {
+  transition: background-color var(--component-motion-duration)
+    var(--component-motion-ease);
 }
-.wsr-bi[data-crystra-theme="dark"] .wsr-list[data-selection-appearance="surface"] .wsr-list-item:is(:hover,[data-selected="true"]) {
-  background:var(--color-background-neutral-action,#353538);
+.wsr-bi[data-crystra-theme="dark"]
+  .wsr-list[data-selection-appearance="surface"]
+  .wsr-list-item:is(:hover, [data-selected="true"]) {
+  background: var(--color-background-neutral-action, #353538);
 }
-.wsr-bi[data-crystra-theme="dark"] .wsr-list[data-selection-appearance="surface"] .wsr-list-item > .wsr-list-main,
-.wsr-bi[data-crystra-theme="dark"] .wsr-list[data-selection-appearance="surface"] .wsr-list-item > .wsr-list-main:is(:hover,:focus-visible) {
-  border:0; background:transparent; outline:none; box-shadow:none;
+.wsr-bi[data-crystra-theme="dark"]
+  .wsr-list[data-selection-appearance="surface"]
+  .wsr-list-item
+  > .wsr-list-main,
+.wsr-bi[data-crystra-theme="dark"]
+  .wsr-list[data-selection-appearance="surface"]
+  .wsr-list-item
+  > .wsr-list-main:is(:hover, :focus-visible) {
+  border: 0;
+  background: transparent;
+  outline: none;
+  box-shadow: none;
 }
-.wsr-bi[data-crystra-theme="dark"] .wsr-list[data-selection-appearance="surface"] .wsr-list-item:has(:focus-visible) {
-  background:var(--color-background-neutral-action,#353538);
-  box-shadow:inset 3px 0 0 var(--color-text-secondary,#aaa);
+.wsr-bi[data-crystra-theme="dark"]
+  .wsr-list[data-selection-appearance="surface"]
+  .wsr-list-item:has(:focus-visible) {
+  background: var(--color-background-neutral-action, #353538);
+  box-shadow: inset 3px 0 0 var(--color-text-secondary, #aaa);
 }
-.wsr-bi[data-crystra-theme="dark"] .wsr-list[data-selection-appearance="surface"] .wsr-list-actions { padding-right:6px; }
+.wsr-bi[data-crystra-theme="dark"]
+  .wsr-list[data-selection-appearance="surface"]
+  .wsr-list-actions {
+  padding-right: 6px;
+}

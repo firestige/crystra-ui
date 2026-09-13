@@ -59,6 +59,9 @@
 }
 /* Compact main content shares the centered identity axis; footer keeps its slots. */
 .crystra-monitoring-widget[data-size="1x1"]
-  .crystra-monitoring-widget-content:not([data-host-owned], [data-host-owned] *) {
+  .crystra-monitoring-widget-content:not(
+    [data-host-owned],
+    [data-host-owned] *
+  ) {
   text-align: center;
 }

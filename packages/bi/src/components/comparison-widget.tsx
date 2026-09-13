@@ -1,11 +1,11 @@
 import type { ComponentProps } from "react";
+import "../comparison-widget.css";
+import { presentExactValue } from "../domain/visualization/presentation";
 import type { CompareResultFrame } from "./compare-result";
+import { IconButton } from "./design-system";
+import { Icon } from "./icon";
 import { MonitoringWidget } from "./monitoring-widget";
 import { WidgetTooltip } from "./widget-tooltip";
-import { Icon } from "./icon";
-import { IconButton } from "./design-system";
-import { presentExactValue } from "../domain/visualization/presentation";
-import "../comparison-widget.css";
 
 export function ComparisonWidget({
   coordinate,

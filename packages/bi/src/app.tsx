@@ -1,6 +1,6 @@
-import { MonitoringMetricPanel } from "./components/monitoring-metric";
 import { scaleLinear } from "d3";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { MonitoringMetricPanel } from "./components/monitoring-metric";
 
 import { MetricExplanationView, ReceiptView } from "./components/details";
 import {
@@ -21,13 +21,13 @@ import {
   EvidenceLifecycleLabel,
   MetricTruthLabel,
 } from "./components/status";
-import { previewReceipt, previewSlice } from "./preview-fixtures";
 import type {
   Coverage,
   MetricSlice,
   TruthState,
   WithholdingReason,
 } from "./domain/evolution/types";
+import { previewReceipt, previewSlice } from "./preview-fixtures";
 
 type Theme = "system" | "light" | "dark";
 type Density = "comfortable" | "compact";

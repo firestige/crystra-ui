@@ -1,28 +1,36 @@
-import { WidgetTooltip } from "./widget-tooltip";
-import {
-  metricTruthMessages,
-  type MetricTruthLocale,
-} from "../i18n/metric-truth";
-import { Icon, type IconName } from "./icon";
 import type { Truth } from "../domain/evidence/types";
 import type {
   Coverage,
   TruthState,
   WithholdingReason,
 } from "../domain/evolution/types";
+import {
+  metricTruthMessages,
+  type MetricTruthLocale,
+} from "../i18n/metric-truth";
+import { Icon, type IconName } from "./icon";
+import { WidgetTooltip } from "./widget-tooltip";
 
 const metricTruth: Record<
   TruthState,
   { label: string; marker: IconName; tone: string }
 > = {
   AVAILABLE: { label: "Available", marker: "circle-check", tone: "available" },
-  LOWER_BOUND: { label: "Lower bound", marker: "circle-arrow-up", tone: "attention" },
+  LOWER_BOUND: {
+    label: "Lower bound",
+    marker: "circle-arrow-up",
+    tone: "attention",
+  },
   NOT_APPLICABLE: {
     label: "Not applicable",
     marker: "circle-minus",
     tone: "unavailable",
   },
-  UNAVAILABLE: { label: "Unavailable", marker: "circle-x", tone: "unavailable" },
+  UNAVAILABLE: {
+    label: "Unavailable",
+    marker: "circle-x",
+    tone: "unavailable",
+  },
   EXPIRED: { label: "Expired", marker: "clock", tone: "expired" },
   INCOMPATIBLE: {
     label: "Incompatible",

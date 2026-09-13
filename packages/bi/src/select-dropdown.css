@@ -40,4 +40,12 @@
 }
 
 /* Page-selected opening direction. Flip only if the preferred side cannot fit. */
-.wsr-bi[data-crystra-theme="dark"] select[data-menu-placement="top"]:not([multiple]):not([data-host-owned] *)::picker(select){position-area:block-start span-inline-end;align-self:end;margin:8px 8px 4px 0;position-try-fallbacks:flip-block;}
+.wsr-bi[data-crystra-theme="dark"]
+  select[data-menu-placement="top"]:not([multiple]):not(
+    [data-host-owned] *
+  )::picker(select) {
+  position-area: block-start span-inline-end;
+  align-self: end;
+  margin: 8px 8px 4px 0;
+  position-try-fallbacks: flip-block;
+}

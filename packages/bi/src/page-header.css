@@ -78,5 +78,7 @@
   background: var(--color-interaction-primary, #679efe);
 }
 
-
-.wb-page-header.studio-header > [data-header-slot="context"] { grid-row: 1 / -1; align-self: center; }
+.wb-page-header.studio-header > [data-header-slot="context"] {
+  grid-row: 1 / -1;
+  align-self: center;
+}

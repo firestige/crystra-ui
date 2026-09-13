@@ -1,5 +1,3 @@
-import { COMPONENT_DEFAULTS } from "../domain/component-recipes";
-import { forwardRef, type ComponentPropsWithoutRef } from "react";
 import type {
   ButtonHTMLAttributes,
   ElementType,
@@ -7,6 +5,8 @@ import type {
   InputHTMLAttributes,
   ReactNode,
 } from "react";
+import { forwardRef, type ComponentPropsWithoutRef } from "react";
+import { COMPONENT_DEFAULTS } from "../domain/component-recipes";
 
 export type TypographyVariant =
   | "page-title"

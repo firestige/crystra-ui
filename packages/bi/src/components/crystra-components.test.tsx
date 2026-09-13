@@ -1,7 +1,7 @@
-import { createRef } from "react";
 import { fireEvent, render, screen } from "@testing-library/react";
+import { createRef } from "react";
 import { describe, expect, it, vi } from "vitest";
-import { Button, IconButton, Card, Divider, Chip, Typography } from "../public";
+import { Button, Card, Chip, Divider, IconButton, Typography } from "../public";
 
 describe("Crystra reusable component contracts", () => {
   it("keeps SVG content, refs and activation when composing IconButton from Button", () => {
