@@ -1,0 +1,74 @@
+.comparison-widget .comparison-values {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1.15fr;
+  gap: 16px;
+  align-items: start;
+}
+.comparison-widget .comparison-value {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.comparison-widget .comparison-label {
+  font-size: 12px;
+  line-height: 18px;
+  color: var(--color-text-secondary, #aaa);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.comparison-widget .comparison-number {
+  font-size: 24px;
+  line-height: 32px;
+  font-weight: 400;
+  white-space: nowrap;
+  display: block;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.comparison-widget .comparison-number small {
+  font-size: 12px;
+}
+.comparison-widget .comparison-change {
+  border-left: 1px solid var(--color-border-default, #424242);
+  padding-left: 16px;
+  color: var(--color-interaction-primary, #679efe);
+}
+.comparison-widget .comparison-actions,
+.comparison-widget .comparison-side-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.comparison-widget .comparison-side-actions + .comparison-side-actions {
+  border-left: 1px solid var(--color-border-default, #424242);
+  padding-left: 4px;
+}
+.comparison-widget .crystra-monitoring-widget-footer {
+  font-size: 11px;
+}
+
+/* Direction encoding follows the Chinese-market convention; it is not success/error. */
+.comparison-widget {
+  --comparison-up: var(--color-status-error-solid, #ef4444);
+  --comparison-down: var(--color-status-success-solid, #22c55e);
+}
+.comparison-widget .comparison-delta-number {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.comparison-widget .comparison-direction {
+  flex-shrink: 0;
+}
+.comparison-widget .comparison-direction[data-direction="INCREASE"] {
+  color: var(--comparison-up);
+}
+.comparison-widget .comparison-direction[data-direction="DECREASE"] {
+  color: var(--comparison-down);
+}
+.comparison-widget .comparison-direction[data-direction="NO_CHANGE"] {
+  color: var(--color-text-secondary, #aaa);
+}

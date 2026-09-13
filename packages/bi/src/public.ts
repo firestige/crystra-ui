@@ -1,9 +1,21 @@
 import "./shared.css";
 import "./primitives.css";
+import "./crystra-theme.css";
+import "./crystra-components.css";
 
 export {
   Button,
   ButtonGroup,
+  Card,
+  Chip,
+  type ButtonProps,
+  type IconButtonProps,
+  type CardProps,
+  type ChipProps,
+  type DividerProps,
+  type ComponentSize,
+  type SemanticTone,
+  type SurfaceProps,
   Divider,
   IconButton,
   StatusBadge,
@@ -111,3 +123,63 @@ export interface BiNavigationPort {
 export interface BiHostErrorPort {
   report(error: unknown, context: string): void;
 }
+
+export { Icon, type IconName, type IconSize } from "./components/icon";
+
+export { COMPONENT_DEFAULTS } from "./domain/component-recipes";
+
+export {
+  List,
+  ListItem,
+  Tabs,
+  Menu,
+  type ListProps,
+  type ListItemProps,
+  type TabsProps,
+  type TabItem,
+  type MenuProps,
+  type MenuItem,
+} from "./components/collection-components";
+export {
+  SearchField,
+  SelectField,
+  SelectionControl,
+  Popover,
+  EmptyState,
+  FullBenchViewer,
+  ProgressNotice,
+  type SearchFieldProps,
+  type SelectFieldProps,
+  type SelectionControlProps,
+  type PopoverProps,
+  type FullBenchViewerProps,
+  type ProgressNoticeProps,
+} from "./components/state-components";
+
+export { Widget, type WidgetProps, type WidgetSize } from "./components/widget";
+
+import "./monitoring-widget-base.css";
+export {
+  MonitoringWidget,
+  type MonitoringWidgetProps,
+} from "./components/monitoring-widget";
+export {
+  WIDGET_CATALOG,
+  type WidgetCategory,
+  type MonitoringWidgetSize,
+} from "./domain/widget-catalog";
+
+export { MonitoringMetricPanel } from "./components/monitoring-metric";
+
+export {
+  WIDGET_UNIT,
+  WIDGET_GAP,
+  widgetSpan,
+  MONITORING_RENDERERS,
+  monitoringSizes,
+} from "./domain/widget-catalog";
+
+export { ExpandableSearchField, type ExpandableSearchFieldProps } from "./components/expandable-search-field";
+
+export { ToggleSwitch, type ToggleSwitchProps } from "./components/toggle-switch";
+export { WidgetTooltip } from "./components/widget-tooltip";

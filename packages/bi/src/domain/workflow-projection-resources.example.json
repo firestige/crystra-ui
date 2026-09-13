@@ -1,0 +1,71 @@
+[
+  {
+    "id": "implementer",
+    "kind": "role",
+    "title": "Implementer",
+    "path": "workflow-package/implementation/roles/implementer.role.md",
+    "nodeIds": [
+      "implement",
+      "refactor",
+      "ladder"
+    ],
+    "description": "职责与写入边界",
+    "content": "# Implementer Role Prompt\n\nYou evolve the current Goal's production implementation through the frozen Test Ladder.\n\nTake calibrated RED feedback to the smallest honest GREEN, preserve Project Context and upstream design, replace declared stubs at their recorded rungs, and perform only bounded behavior-preserving refactor. Diagnose failures before changing code and record recoverable checkpoints. You may delegate bounded tasks inside the current Action; all children share your authority and writer policy.\n\nNever modify formal tests, fixtures, Harness/coverage/writer configuration, frozen Goal artifacts or Git history. Never skip or retry tests to manufacture GREEN, add speculative mechanisms, start another Workflow, publish changes, or claim completion.\n",
+    "provenance": "仓库内容快照 · 使用关系为展示样例"
+  },
+  {
+    "id": "evolve-prompt",
+    "kind": "prompt",
+    "title": "演进当前实现",
+    "path": "workflow-package/implementation/prompts/actions/evolve-prototype.prompt.md",
+    "nodeIds": [
+      "implement",
+      "ladder"
+    ],
+    "description": "当前 Action 的指令",
+    "content": "# IM-08 Evolve Prototype to Green\n\nRead the complete Goal boundary, semantic Test Ladder, current formal tests and prior implementation checkpoint. Diagnose the calibrated RED, then make the smallest honest production change needed for GREEN. Use only Contract-bound stubs scheduled for later replacement.\n\nRun the focused/affected tests after relevant changes. Return changed production paths, diagnosis, commands/results, remaining stubs and checkpoint. Do not edit protected test/Harness/policy paths or Git history.\n",
+    "provenance": "仓库内容快照 · 使用关系为展示样例"
+  },
+  {
+    "id": "tdd-skill",
+    "kind": "skill",
+    "title": "Evolutionary TDD",
+    "path": "workflow-package/implementation/skills/evolutionary-tdd-implementation/SKILL.md",
+    "nodeIds": [
+      "implement",
+      "ladder"
+    ],
+    "description": "从 RED 到 GREEN 的方法",
+    "content": "---\nname: evolutionary-tdd-implementation\ndescription: Evolve production implementation from calibrated RED to minimal GREEN through a frozen semantic Test Ladder. Use for implementation and bounded refactor Actions where the Implementer must not change formal tests or expand the frozen design.\n---\n\n# Evolutionary TDD Implementation\n\n## Move one rung\n\n1. Read the full Goal boundary and semantic ladder, then focus on the current released tests.\n2. Reproduce the recorded RED and diagnose its cause.\n3. Make the smallest honest production change that satisfies current behavior.\n4. Run the focused command after relevant edits; run affected regression before returning GREEN.\n5. Record changed paths, diagnosis, remaining Contract-bound stubs and a recoverable checkpoint.\n\nTreat the implementation as an evolutionary prototype. Keep it in the candidate path and deepen it rung by rung. Stub only later collaborators behind known Contracts; bind every stub to a replacement rung. Never stub the current core behavior.\n\n## Refactor only under GREEN\n\nImprove project-relevant clarity, duplication or structure while tests remain GREEN. Prefer `NO_REFACTOR_NEEDED` over speculative abstraction. Do not add future capabilities, generic reliability machinery or unrelated cleanup.\n\nNever edit formal tests, fixtures, Harness/coverage/writer configuration or Git history. Do not skip tests, retry unchanged flaky tests to GREEN, launch another Workflow or claim Goal completion.\n",
+    "provenance": "仓库内容快照 · 使用关系为展示样例"
+  },
+  {
+    "id": "ladder-template",
+    "kind": "template",
+    "title": "Semantic Test Ladder",
+    "path": "workflow-package/implementation/templates/test-ladder.template.md",
+    "nodeIds": [
+      "calibrate",
+      "implement",
+      "verify-rung",
+      "ladder"
+    ],
+    "description": "阶梯与 Oracle 的材料结构",
+    "content": "# Semantic Test Ladder\n\n| Rung | Topic | Applicability | Observable behavior / Oracle | Stub replacement | Evidence state |\n| --- | --- | --- | --- | --- | --- |\n| `R1` | Interface/Contract and Harness calibration | `[state]` | `[behavior]` | `[none/item]` | `PLANNED` |\n| `R2` | Minimum core success | `[state]` | `[behavior]` | `[item]` | `PLANNED` |\n| `R3` | Remaining functional scenarios | `[state]` | `[behavior]` | `[item]` | `PLANNED` |\n| `R4` | Applicable boundary/failure/control behavior | `[state]` | `[behavior]` | `[item]` | `PLANNED` |\n| `R5` | Real collaboration | `[state]` | `[behavior]` | `[item]` | `PLANNED` |\n| `R6` | Behavior branch correctness | `[state]` | `[coverage/assertion]` | `[none]` | `PLANNED` |\n| `R7` | Applicable measurable qualities | `[state]` | `[threshold/method]` | `[none]` | `PLANNED` |\n| `R8` | Regression/composition | `[state]` | `[suite]` | `[none]` | `PLANNED` |\n\nAllowed applicability: `APPLICABLE | NOT_APPLICABLE | BLOCKED | DEFERRED`. `NOT_APPLICABLE` requires a project-specific reason.\n",
+    "provenance": "仓库内容快照 · 使用关系为展示样例"
+  },
+  {
+    "id": "test-script",
+    "kind": "script",
+    "title": "Implementation Test",
+    "path": "workflow-package/implementation/cli/bin/implementation-test.mjs",
+    "nodeIds": [
+      "implement",
+      "verify-rung",
+      "ladder"
+    ],
+    "description": "按 Harness 绑定执行测试",
+    "content": "#!/usr/bin/env node\nimport path from \"node:path\";\n\nimport {\n  CliError, emit, handleError, parseArguments, readJson, requireOption, run, sha256File,\n} from \"../lib/core.mjs\";\n\ntry {\n  const { positional, options } = parseArguments(process.argv.slice(2));\n  if (positional[0] !== \"run\") throw new CliError(\"UNKNOWN_COMMAND\", \"expected 'run'\");\n  const project = path.resolve(requireOption(options, \"project\"));\n  const bindingFile = path.resolve(requireOption(options, \"binding\"));\n  const phase = requireOption(options, \"phase\");\n  const binding = readJson(bindingFile);\n  const command = binding.commands?.[phase];\n  if (!command || !Array.isArray(command.argv) || command.argv.length === 0 || command.argv.some((value) => typeof value !== \"string\" || !value)) {\n    throw new CliError(\"INVALID_HARNESS_COMMAND\", `phase '${phase}' must declare a non-empty argv array`);\n  }\n  const startedAt = new Date().toISOString();\n  const result = run(command.argv[0], command.argv.slice(1), { cwd: project });\n  const output = {\n    status: result.status === 0 ? \"PASSED\" : \"FAILED\",\n    code: result.status === 0 ? undefined : \"HARNESS_COMMAND_FAILED\",\n    phase,\n    argv: command.argv,\n    binding_sha256: sha256File(bindingFile),\n    started_at: startedAt,\n    finished_at: new Date().toISOString(),\n    exit_status: result.status,\n    stdout: result.stdout,\n    stderr: result.stderr,\n  };\n  emit(output, result.status === 0 ? 0 : 1);\n} catch (error) {\n  handleError(error);\n}\n",
+    "provenance": "仓库内容快照 · 使用关系为展示样例"
+  }
+]

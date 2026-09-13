@@ -1,3 +1,4 @@
+import { MonitoringMetricPanel } from "./components/monitoring-metric";
 import { scaleLinear } from "d3";
 import { useEffect, useMemo, useRef, useState } from "react";
 
@@ -232,7 +233,7 @@ function TracePreview() {
   );
 }
 
-export function App() {
+export function App({ monitoring = false }: { monitoring?: boolean }) {
   const [theme, setTheme] = useState<Theme>("system");
   const [density, setDensity] = useState<Density>("comfortable");
   const [inspector, setInspector] = useState<InspectorKind | null>(null);
@@ -256,7 +257,13 @@ export function App() {
     inspector === "receipt" ? receiptButton : explanationButton;
 
   return (
-    <main className="min-h-screen bg-surface-canvas px-layout-page py-layout-section text-content-primary">
+    <main
+      className={
+        monitoring
+          ? "monitoring-foundations bg-surface-canvas text-content-primary"
+          : "min-h-screen bg-surface-canvas px-layout-page py-layout-section text-content-primary"
+      }
+    >
       <div className="mx-auto flex max-w-layout-content flex-col gap-layout-section">
         <header className="flex flex-wrap items-end justify-between gap-layout-cluster">
           <div className="space-y-layout-tight">
@@ -302,21 +309,45 @@ export function App() {
           <h2 className="text-heading">Metric truth states</h2>
           <div className="flex flex-wrap gap-layout-cluster">
             {truthStates.map((state) => (
-              <MetricTruthLabel key={state} state={state} />
-            ))}
-          </div>
-          <div className="grid gap-layout-grid lg:grid-cols-2">
-            {truthSlices.map((slice) => (
-              <MetricResultFrame
-                content={{ tag: "RESULT", slice }}
-                coordinate={`${slice.state.toLowerCase().replaceAll("_", "-")}-preview@2.0.0`}
-                key={slice.state}
-                onRecover={
-                  slice.value === undefined ? () => undefined : undefined
-                }
-                recoveryLabel="Change selection"
+              <MetricTruthLabel
+                key={state}
+                state={state}
+                locale={monitoring ? "zh-CN" : "en"}
               />
             ))}
+          </div>
+          <div
+            className={
+              monitoring
+                ? "monitoring-row"
+                : "grid gap-layout-grid lg:grid-cols-2"
+            }
+          >
+            {truthSlices.map((slice) =>
+              monitoring ? (
+                <MonitoringMetricPanel
+                  key={slice.state}
+                  result={{
+                    metric_id: "terminal-outcome-rate",
+                    metric_version: "2.0.0",
+                    slices: [slice],
+                  }}
+                  visualizer="numeric-card@1"
+                  title="终态结果率"
+                  locale="zh-CN"
+                />
+              ) : (
+                <MetricResultFrame
+                  content={{ tag: "RESULT", slice }}
+                  coordinate={`${slice.state.toLowerCase().replaceAll("_", "-")}-preview@2.0.0`}
+                  key={slice.state}
+                  onRecover={
+                    slice.value === undefined ? () => undefined : undefined
+                  }
+                  recoveryLabel="Change selection"
+                />
+              ),
+            )}
           </div>
           <div className="grid gap-layout-grid lg:grid-cols-2">
             {coverages.map((coverage) => (

@@ -66,9 +66,9 @@ describe("Metric panel visualization", () => {
     const available = within(panel)
       .getByText("Available")
       .closest(".status-label")!;
-    expect(available.querySelector(".status-label-marker")).toHaveTextContent(
-      "✓",
-    );
+    expect(
+      available.querySelector('[data-iconify="tabler:circle-check"]'),
+    ).not.toBeNull();
     expect(available.querySelector(".status-label-text")).toHaveTextContent(
       "Available",
     );
@@ -146,7 +146,7 @@ describe("Metric panel visualization", () => {
 
     expect(
       screen.getByRole("status", { name: "Boolean result" }),
-    ).toHaveTextContent("✓ True");
+    ).toHaveTextContent("True");
   });
 
   it("renders a D3 ratio bar with a semantic table fallback", () => {

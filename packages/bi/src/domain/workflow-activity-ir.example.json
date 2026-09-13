@@ -1,0 +1,588 @@
+{
+  "schemaVersion": "0.1-draft",
+  "source": {
+    "kind": "example",
+    "id": "implementation-authority-overview"
+  },
+  "title": "Implementation · 从 Goal 到已验证实现",
+  "nodes": [
+    {
+      "id": "intake",
+      "kind": "group",
+      "title": "准备与确认",
+      "summary": "IM-01–05 · 设计与 Goal",
+      "description": "绑定 Goal 与权威设计，完成环境预检；必要时执行可行性验证。澄清并冻结 Goal 图，经用户确认后激活干净的 feature branch。待用户或外部条件时暂停并返回规定阶段；设计需重开则停止当前 Delivery。此节点折叠多个已声明 Action，不表示一步执行。",
+      "output": "确认的 Goal 图与实现分支",
+      "sourceRef": "workflow-package/implementation/workflow.md §3 / IM-01–05"
+    },
+    {
+      "id": "select-goal",
+      "kind": "decision",
+      "title": "选择 Goal / rung",
+      "summary": "IM-06 · Runtime",
+      "description": "Runtime 根据依赖、既有提交与已声明规则确定可执行的 Goal/rung；不是 Implementer 自选。全部 Goal 已提交才进入全范围验证。缺少跨 owner 必需产物且无独立可执行 Goal 时等待，恢复到 IM-03。",
+      "output": "ready Goal/rung 或全范围验证",
+      "sourceRef": "workflow-package/implementation/workflow.md §3 / IM-06",
+      "role": "Runtime"
+    },
+    {
+      "id": "ladder",
+      "kind": "group",
+      "title": "测试阶梯",
+      "summary": "IM-07–11 · 展开查看",
+      "description": "先校准可区分的测试，再实现、补结构覆盖、有限重构并验证 rung。展开页展示这些 Action 与真实返工路径；这是视图分解，不是嵌套 Workflow。",
+      "output": "整个 Goal 的测试阶梯已验证",
+      "sourceRef": "workflow-package/implementation/workflow.md §3 / IM-07–11"
+    },
+    {
+      "id": "review",
+      "kind": "group",
+      "title": "独立复核与修复",
+      "summary": "IM-12–15 · 双视角",
+      "description": "同一候选交给隔离的 Goal Adversary 黑盒复核与 Implementation Reviewer 白盒复核，等待两者完成后汇总 Finding。测试侧问题交 IM-14T，代码侧交 IM-14I，IM-15 由原 Finding 视角重新检查；未关闭返回 IM-13。聚合器不能代替原视角关闭 Finding。",
+      "output": "Goal 范围 Finding 已关闭或无 Finding",
+      "sourceRef": "workflow-package/implementation/workflow.md §3 / IM-12–15"
+    },
+    {
+      "id": "commit",
+      "kind": "activity",
+      "title": "提交已验证 Goal",
+      "summary": "IM-16 · Custodian",
+      "description": "验证当前 Goal 满足提交条件后执行 Goal commit，再返回 IM-06 选择下一个 Goal/rung。",
+      "output": "已验证 Goal commit",
+      "sourceRef": "workflow-package/implementation/workflow.md §3 / IM-16",
+      "role": "Custodian"
+    },
+    {
+      "id": "whole-verify",
+      "kind": "group",
+      "title": "全范围验证",
+      "summary": "IM-17 · 回归与双复核",
+      "description": "全部 Goal 提交后运行全范围回归及两种独立复核。有 Finding 进入 IM-13 → IM-14T / IM-14I → IM-15；全范围 Finding 关闭后回到 IM-17。本概览折叠这段修复循环，保留 whole scope，不误回到 Goal commit。",
+      "output": "回归与双复核全部通过",
+      "sourceRef": "workflow-package/implementation/workflow.md §3 / IM-17; IM-13–15"
+    },
+    {
+      "id": "finalize",
+      "kind": "activity",
+      "title": "终门校验",
+      "summary": "IM-18 · Custodian",
+      "description": "检查证据、工作区和完成条件。通过后才输出 VERIFIED_IMPLEMENTATION_READY；不会默认合并、推送、发 PR 或部署。",
+      "output": "VERIFIED_IMPLEMENTATION_READY",
+      "sourceRef": "workflow-package/implementation/workflow.md §3 / IM-18",
+      "role": "Custodian"
+    },
+    {
+      "id": "done",
+      "kind": "final",
+      "title": "实现就绪",
+      "summary": "Delivery 终态",
+      "description": "VERIFIED_IMPLEMENTATION_READY 是此 Delivery 的成功终态，不代表 Task 自动终结。",
+      "output": "VERIFIED_IMPLEMENTATION_READY",
+      "sourceRef": "workflow-package/implementation/workflow.md §3 / IM-18"
+    },
+    {
+      "id": "calibrate",
+      "kind": "activity",
+      "title": "校准测试",
+      "summary": "IM-07 · Test Designer",
+      "description": "先物化并校准 formal tests。得到可区分的 RED 或经过挑战的 existing-GREEN 后才能进入实现；Goal 或 Oracle 歧义返回 IM-03。Test Designer 与实现隔离。",
+      "output": "校准的测试与 Oracle",
+      "sourceRef": "workflow-package/implementation/workflow.md §3 / IM-07",
+      "role": "Test Designer"
+    },
+    {
+      "id": "implement",
+      "kind": "activity",
+      "title": "编写 / 修改实现",
+      "summary": "IM-08 · Implementer",
+      "description": "仅修改生产实现以满足当前 rung 的校准测试，不修改 formal tests 或 harness。返回结果供 Runtime 按已声明路径路由。",
+      "output": "测试结果与诊断进展",
+      "sourceRef": "workflow-package/implementation/workflow.md §3 / IM-08",
+      "role": "Implementer"
+    },
+    {
+      "id": "rung-result",
+      "kind": "decision",
+      "title": "实现结果",
+      "summary": "Runtime · 结果路由",
+      "description": "这是 IM-08 返回结果的路由投影，不是额外 Action 或 Planner Role。预期 RED 且有诊断进展继续 IM-08，当前 rung GREEN 才进入 IM-09。",
+      "output": "已声明分支",
+      "sourceRef": "workflow-package/implementation/workflow.md §3 / IM-08",
+      "role": "Runtime"
+    },
+    {
+      "id": "coverage",
+      "kind": "activity",
+      "title": "补结构覆盖",
+      "summary": "IM-09 · Test Designer",
+      "description": "由新的 code-aware Test Designer 检查实现分支。新增测试出现 RED 返回 IM-08；分支已覆盖进入 IM-10。",
+      "output": "结构分支覆盖",
+      "sourceRef": "workflow-package/implementation/workflow.md §3 / IM-09",
+      "role": "Test Designer"
+    },
+    {
+      "id": "refactor",
+      "kind": "activity",
+      "title": "有限重构",
+      "summary": "IM-10 · Implementer",
+      "description": "在验证约束下进行有限重构。回归失败返回 IM-08；保持 GREEN 或不需重构进入 IM-11。",
+      "output": "GREEN 或 NO_REFACTOR_NEEDED",
+      "sourceRef": "workflow-package/implementation/workflow.md §3 / IM-10",
+      "role": "Implementer"
+    },
+    {
+      "id": "verify-rung",
+      "kind": "activity",
+      "title": "验证 rung",
+      "summary": "IM-11 · Custodian",
+      "description": "还有 rung 时返回 IM-07；整个 ladder 验证完成才交给 IM-12。无效反馈或可归属的前阶段失败返回记录的 owning Action，不任意重选路径。",
+      "output": "下一 rung / 复核 / 精确返回",
+      "sourceRef": "workflow-package/implementation/workflow.md §3 / IM-11",
+      "role": "Custodian"
+    },
+    {
+      "id": "review-handoff",
+      "kind": "boundary",
+      "title": "进入独立复核",
+      "summary": "转到 IM-12",
+      "description": "当前 Goal 的整个测试阶梯已验证，返回主图的独立复核与修复阶段；不是 Delivery 终态。",
+      "output": "当前 Goal 候选与证据",
+      "sourceRef": "workflow-package/implementation/workflow.md §3 / IM-11 → IM-12"
+    },
+    {
+      "id": "refine-handoff",
+      "kind": "boundary",
+      "title": "返回 Goal 澄清",
+      "summary": "转到 IM-03",
+      "description": "Goal / Oracle 歧义必须回到 grilling/classification。不能通过改测试掩盖歧义。",
+      "output": "澄清请求",
+      "sourceRef": "workflow-package/implementation/workflow.md §3 / IM-07 → IM-03"
+    },
+    {
+      "id": "recorded-return",
+      "kind": "boundary",
+      "title": "返回责任阶段",
+      "summary": "按记录定位 Action",
+      "description": "无效反馈 / 精确前阶段失败，返回记录的 owning Action。此跨图出口不表示任选一个阶段。",
+      "output": "明确的目标 Action",
+      "sourceRef": "workflow-package/implementation/workflow.md §3 / IM-11"
+    },
+    {
+      "id": "request",
+      "kind": "activity",
+      "title": "接收信息缺口",
+      "summary": "来自发起活动",
+      "description": "任一消费事实的 Action 缺少获准且可派生的事实时，记录准确的 requesting Action 和事实缺口。",
+      "output": "有明确来源的研究请求",
+      "sourceRef": "workflow-package/implementation/workflow.md §3 / IM-01R"
+    },
+    {
+      "id": "scouter",
+      "kind": "activity",
+      "title": "外查与整理",
+      "summary": "IM-01R · Evidence Scout",
+      "description": "只读外查可派生、获准的事实，提供来源和不确定项；不承担设计决策、不写实现、不启动其他工作流。DeepSeek v4 Flash 仅为用户指定的模型绑定样例。",
+      "output": "研究摘要：结论、来源引用、适用范围与不确定项",
+      "role": "Evidence Scout",
+      "model": "DeepSeek v4 Flash",
+      "sourceRef": "workflow-package/implementation/workflow.md §3 / IM-01R"
+    },
+    {
+      "id": "research-note",
+      "kind": "artifact",
+      "title": "研究摘要",
+      "summary": "可引用材料",
+      "description": "只读研究产生的可引用材料，交回记录的 requesting Action；材料不承担路由。",
+      "output": "事实、来源、适用范围与不确定项",
+      "sourceRef": "workflow-package/implementation/workflow.md §3 / IM-01R"
+    },
+    {
+      "id": "return-source",
+      "kind": "activity",
+      "title": "交回发起活动",
+      "summary": "恢复原活动",
+      "description": "外查结束后，将结果交回记录的发起活动，继续原来的工作。这里的返回位置由调用来源决定。",
+      "output": "研究结果与原活动继续所需的上下文",
+      "sourceRef": "workflow-package/implementation/workflow.md §3 / IM-01R"
+    }
+  ],
+  "flows": [
+    {
+      "id": "main",
+      "kind": "main",
+      "title": "主流程",
+      "entryNodeId": "intake",
+      "exitNodeIds": [
+        "done"
+      ],
+      "nodeIds": [
+        "intake",
+        "select-goal",
+        "ladder",
+        "review",
+        "commit",
+        "whole-verify",
+        "finalize",
+        "done"
+      ],
+      "edges": [
+        {
+          "id": "prepared",
+          "from": "intake",
+          "to": "select-goal",
+          "title": "Goal 图已确认",
+          "outcome": "continue",
+          "kind": "control",
+          "description": "Goal 图已确认",
+          "sourceRef": "workflow-package/implementation/workflow.md §3"
+        },
+        {
+          "id": "goal-ready",
+          "from": "select-goal",
+          "to": "ladder",
+          "title": "有 ready Goal",
+          "outcome": "continue",
+          "kind": "control",
+          "description": "有 ready Goal",
+          "sourceRef": "workflow-package/implementation/workflow.md §3"
+        },
+        {
+          "id": "ladder-ready",
+          "from": "ladder",
+          "to": "review",
+          "title": "阶梯已验证",
+          "outcome": "continue",
+          "kind": "control",
+          "description": "阶梯已验证",
+          "sourceRef": "workflow-package/implementation/workflow.md §3"
+        },
+        {
+          "id": "review-closed",
+          "from": "review",
+          "to": "commit",
+          "title": "Finding 已关闭",
+          "outcome": "success",
+          "kind": "control",
+          "description": "Finding 已关闭",
+          "sourceRef": "workflow-package/implementation/workflow.md §3"
+        },
+        {
+          "id": "next-goal",
+          "from": "commit",
+          "to": "select-goal",
+          "title": "选择下一 Goal",
+          "outcome": "rework",
+          "kind": "control",
+          "description": "选择下一 Goal",
+          "sourceRef": "workflow-package/implementation/workflow.md §3"
+        },
+        {
+          "id": "all-goals",
+          "from": "select-goal",
+          "to": "whole-verify",
+          "title": "全部 Goal 已提交",
+          "outcome": "success",
+          "kind": "control",
+          "description": "全部 Goal 已提交",
+          "sourceRef": "workflow-package/implementation/workflow.md §3"
+        },
+        {
+          "id": "whole-pass",
+          "from": "whole-verify",
+          "to": "finalize",
+          "title": "回归与双复核通过",
+          "outcome": "success",
+          "kind": "control",
+          "description": "回归与双复核通过",
+          "sourceRef": "workflow-package/implementation/workflow.md §3"
+        },
+        {
+          "id": "terminal",
+          "from": "finalize",
+          "to": "done",
+          "title": "终门通过",
+          "outcome": "success",
+          "kind": "control",
+          "description": "终门通过",
+          "sourceRef": "workflow-package/implementation/workflow.md §3"
+        }
+      ]
+    },
+    {
+      "id": "ladder",
+      "kind": "subflow",
+      "title": "测试阶梯",
+      "entryNodeId": "calibrate",
+      "exitNodeIds": [
+        "review-handoff",
+        "refine-handoff",
+        "recorded-return"
+      ],
+      "nodeIds": [
+        "calibrate",
+        "implement",
+        "rung-result",
+        "coverage",
+        "refactor",
+        "verify-rung",
+        "review-handoff",
+        "refine-handoff",
+        "recorded-return"
+      ],
+      "edges": [
+        {
+          "id": "tests-ready",
+          "from": "calibrate",
+          "to": "implement",
+          "title": "校准通过",
+          "outcome": "continue",
+          "kind": "control",
+          "description": "校准通过",
+          "sourceRef": "workflow-package/implementation/workflow.md §3"
+        },
+        {
+          "id": "oracle-ambiguity",
+          "from": "calibrate",
+          "to": "refine-handoff",
+          "title": "Goal / Oracle 歧义",
+          "outcome": "rework",
+          "kind": "control",
+          "description": "Goal / Oracle 歧义",
+          "sourceRef": "workflow-package/implementation/workflow.md §3"
+        },
+        {
+          "id": "implementation-result",
+          "from": "implement",
+          "to": "rung-result",
+          "title": "返回测试结果",
+          "outcome": "continue",
+          "kind": "control",
+          "description": "返回测试结果",
+          "sourceRef": "workflow-package/implementation/workflow.md §3"
+        },
+        {
+          "id": "rung-red",
+          "from": "rung-result",
+          "to": "implement",
+          "title": "RED 且有进展",
+          "outcome": "rework",
+          "kind": "control",
+          "description": "RED 且有进展",
+          "sourceRef": "workflow-package/implementation/workflow.md §3"
+        },
+        {
+          "id": "rung-green",
+          "from": "rung-result",
+          "to": "coverage",
+          "title": "rung GREEN",
+          "outcome": "success",
+          "kind": "control",
+          "description": "当前 rung GREEN",
+          "sourceRef": "workflow-package/implementation/workflow.md §3"
+        },
+        {
+          "id": "coverage-red",
+          "from": "coverage",
+          "to": "implement",
+          "title": "新增测试 RED",
+          "outcome": "rework",
+          "kind": "control",
+          "description": "新增测试 RED",
+          "sourceRef": "workflow-package/implementation/workflow.md §3"
+        },
+        {
+          "id": "coverage-ready",
+          "from": "coverage",
+          "to": "refactor",
+          "title": "分支已覆盖",
+          "outcome": "continue",
+          "kind": "control",
+          "description": "分支已覆盖",
+          "sourceRef": "workflow-package/implementation/workflow.md §3"
+        },
+        {
+          "id": "refactor-red",
+          "from": "refactor",
+          "to": "implement",
+          "title": "出现回归",
+          "outcome": "rework",
+          "kind": "control",
+          "description": "出现回归",
+          "sourceRef": "workflow-package/implementation/workflow.md §3"
+        },
+        {
+          "id": "refactor-ready",
+          "from": "refactor",
+          "to": "verify-rung",
+          "title": "GREEN / 无重构",
+          "outcome": "continue",
+          "kind": "control",
+          "description": "GREEN / 无需重构",
+          "sourceRef": "workflow-package/implementation/workflow.md §3"
+        },
+        {
+          "id": "next-rung",
+          "from": "verify-rung",
+          "to": "calibrate",
+          "title": "还有 rung",
+          "outcome": "rework",
+          "kind": "control",
+          "description": "还有 rung",
+          "sourceRef": "workflow-package/implementation/workflow.md §3"
+        },
+        {
+          "id": "ladder-complete",
+          "from": "verify-rung",
+          "to": "review-handoff",
+          "title": "整个阶梯已验证",
+          "outcome": "success",
+          "kind": "control",
+          "description": "整个阶梯已验证",
+          "sourceRef": "workflow-package/implementation/workflow.md §3"
+        },
+        {
+          "id": "invalid-feedback",
+          "from": "verify-rung",
+          "to": "recorded-return",
+          "title": "反馈无效 / 阶段失败",
+          "outcome": "rework",
+          "kind": "control",
+          "description": "反馈无效 / 阶段失败",
+          "sourceRef": "workflow-package/implementation/workflow.md §3"
+        }
+      ]
+    },
+    {
+      "id": "research",
+      "kind": "triggered",
+      "title": "按需外查",
+      "entryNodeId": "request",
+      "exitNodeIds": [
+        "return-source"
+      ],
+      "nodeIds": [
+        "request",
+        "scouter",
+        "return-source",
+        "research-note"
+      ],
+      "edges": [
+        {
+          "id": "research-start",
+          "from": "request",
+          "to": "scouter",
+          "kind": "control",
+          "outcome": "continue",
+          "title": "限定研究问题",
+          "description": "研究围绕已记录的信息缺口开展。"
+        },
+        {
+          "id": "research-return",
+          "from": "scouter",
+          "to": "return-source",
+          "kind": "control",
+          "outcome": "continue",
+          "title": "外查结束",
+          "description": "完成外查后返回原活动，不在此替代原活动的业务决策。"
+        },
+        {
+          "id": "research-output",
+          "from": "scouter",
+          "to": "research-note",
+          "kind": "material",
+          "outcome": "continue",
+          "title": "产出",
+          "description": "产出带来源引用的研究摘要。"
+        },
+        {
+          "id": "research-handoff",
+          "from": "research-note",
+          "to": "return-source",
+          "kind": "material",
+          "outcome": "continue",
+          "title": "交付研究依据",
+          "description": "返回活动时携带研究结果，虚线表示材料交接。"
+        }
+      ]
+    }
+  ],
+  "relations": [
+    {
+      "id": "ladder-detail",
+      "kind": "subflow",
+      "from": {
+        "flowId": "main",
+        "nodeId": "ladder"
+      },
+      "target": {
+        "flowId": "ladder",
+        "entryNodeId": "calibrate",
+        "exitNodeId": "review-handoff"
+      },
+      "resume": {
+        "kind": "node",
+        "flowId": "main",
+        "nodeId": "review"
+      },
+      "inputs": [
+        "选定的 Goal / rung",
+        "权威设计与 Oracle"
+      ],
+      "outputs": [
+        "已验证的 Goal 候选"
+      ],
+      "sourceRef": "workflow-package/implementation/workflow.md §3 / IM-07–11"
+    },
+    {
+      "id": "intake-research",
+      "kind": "trigger",
+      "from": {
+        "flowId": "main",
+        "nodeId": "intake"
+      },
+      "target": {
+        "flowId": "research",
+        "entryNodeId": "request",
+        "exitNodeId": "return-source"
+      },
+      "condition": "缺少获准且可派生的事实",
+      "resume": {
+        "kind": "origin"
+      },
+      "inputs": [
+        "事实缺口",
+        "记录的 requesting Action"
+      ],
+      "outputs": [
+        "研究事实与来源"
+      ],
+      "sourceRef": "workflow-package/implementation/workflow.md §3 / IM-01R"
+    },
+    {
+      "id": "implement-research",
+      "kind": "trigger",
+      "from": {
+        "flowId": "ladder",
+        "nodeId": "implement"
+      },
+      "target": {
+        "flowId": "research",
+        "entryNodeId": "request",
+        "exitNodeId": "return-source"
+      },
+      "condition": "缺少获准且可派生的事实",
+      "resume": {
+        "kind": "origin"
+      },
+      "inputs": [
+        "事实缺口",
+        "记录的 requesting Action"
+      ],
+      "outputs": [
+        "研究事实与来源"
+      ],
+      "sourceRef": "workflow-package/implementation/workflow.md §3 / IM-01R"
+    }
+  ]
+}

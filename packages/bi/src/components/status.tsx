@@ -1,3 +1,9 @@
+import { WidgetTooltip } from "./widget-tooltip";
+import {
+  metricTruthMessages,
+  type MetricTruthLocale,
+} from "../i18n/metric-truth";
+import { Icon, type IconName } from "./icon";
 import type { Truth } from "../domain/evidence/types";
 import type {
   Coverage,
@@ -7,18 +13,22 @@ import type {
 
 const metricTruth: Record<
   TruthState,
-  { label: string; marker: string; tone: string }
+  { label: string; marker: IconName; tone: string }
 > = {
-  AVAILABLE: { label: "Available", marker: "✓", tone: "available" },
-  LOWER_BOUND: { label: "Lower bound", marker: "≥", tone: "attention" },
+  AVAILABLE: { label: "Available", marker: "circle-check", tone: "available" },
+  LOWER_BOUND: { label: "Lower bound", marker: "circle-arrow-up", tone: "attention" },
   NOT_APPLICABLE: {
     label: "Not applicable",
-    marker: "—",
+    marker: "circle-minus",
     tone: "unavailable",
   },
-  UNAVAILABLE: { label: "Unavailable", marker: "×", tone: "unavailable" },
-  EXPIRED: { label: "Expired", marker: "⌛", tone: "expired" },
-  INCOMPATIBLE: { label: "Incompatible", marker: "≠", tone: "incompatible" },
+  UNAVAILABLE: { label: "Unavailable", marker: "circle-x", tone: "unavailable" },
+  EXPIRED: { label: "Expired", marker: "clock", tone: "expired" },
+  INCOMPATIBLE: {
+    label: "Incompatible",
+    marker: "exclamation-circle",
+    tone: "incompatible",
+  },
 };
 
 export function MetricTruthLabel({
@@ -26,20 +36,24 @@ export function MetricTruthLabel({
   withholdingReason,
   reading,
   detail = "full",
+  locale = "en",
 }: {
   state: TruthState;
   withholdingReason?: WithholdingReason;
   reading?: string;
   detail?: "full" | "label";
+  locale?: MetricTruthLocale;
 }) {
   const truth = metricTruth[state];
   return (
     <div className="status-stack" data-state={state}>
       <span className={`status-label status-${truth.tone}`}>
         <span aria-hidden="true" className="status-label-marker">
-          {truth.marker}
+          <Icon name={truth.marker} size="content-marker" />
         </span>
-        <span className="status-label-text">{truth.label}</span>
+        <span className="status-label-text">
+          {metricTruthMessages[locale][state].label}
+        </span>
       </span>
       {detail === "label" || withholdingReason === undefined ? null : (
         <span className="status-reason">Reason: {withholdingReason}</span>
@@ -60,12 +74,12 @@ const coverageLabels: Record<Coverage["state"], string> = {
 
 const coveragePresentation: Record<
   Coverage["state"],
-  { marker: string; tone: string }
+  { marker: IconName; tone: string }
 > = {
-  NO_POPULATION: { marker: "○", tone: "unavailable" },
-  NO_COVERAGE: { marker: "○", tone: "attention" },
-  PARTIAL: { marker: "△", tone: "attention" },
-  FULL: { marker: "●", tone: "available" },
+  NO_POPULATION: { marker: "circle", tone: "unavailable" },
+  NO_COVERAGE: { marker: "circle", tone: "attention" },
+  PARTIAL: { marker: "exclamation-mark", tone: "attention" },
+  FULL: { marker: "circle-filled", tone: "available" },
 };
 
 export function CoverageLabel({ coverage }: { coverage: Coverage | null }) {
@@ -73,7 +87,7 @@ export function CoverageLabel({ coverage }: { coverage: Coverage | null }) {
     return (
       <div className="coverage-label" data-coverage="UNAVAILABLE">
         <span className="status-label status-unavailable">
-          <span aria-hidden="true">○</span>
+          <Icon name="circle" size="content-marker" />
           Coverage unavailable
         </span>
       </div>
@@ -82,7 +96,9 @@ export function CoverageLabel({ coverage }: { coverage: Coverage | null }) {
   return (
     <div className="coverage-label" data-coverage={coverage.state}>
       <span className={`status-label status-${presentation.tone}`}>
-        <span aria-hidden="true">{presentation.marker}</span>
+        <span aria-hidden="true">
+          <Icon name={presentation.marker} size="content-marker" />
+        </span>
         {coverageLabels[coverage.state]}
       </span>
       <span className="numeric-exact">
@@ -120,7 +136,7 @@ export function EvidenceLifecycleLabel(props: EvidenceLifecycleProps) {
             : "unavailable";
     return (
       <span className={`status-label status-${tone}`}>
-        <span aria-hidden="true">◇</span>
+        <Icon name="diamond" size="content-marker" />
         Trace: {label}
       </span>
     );
@@ -168,5 +184,29 @@ export function ScopedError({
         </button>
       ) : null}
     </section>
+  );
+}
+
+export function MetricTruthMark({
+  state,
+  locale = "en",
+}: {
+  state: TruthState;
+  locale?: MetricTruthLocale;
+}) {
+  const truth = metricTruth[state];
+  const text = metricTruthMessages[locale][state];
+  return (
+    <WidgetTooltip
+      text={`${text.label} · ${text.description}`}
+      className="monitoring-state-mark"
+    >
+      <Icon
+        name={truth.marker}
+        size="content-marker"
+        aria-label={text.label}
+        data-truth-state={state}
+      />
+    </WidgetTooltip>
   );
 }

@@ -2,7 +2,10 @@ import type { CSSProperties, HTMLAttributes, ReactNode } from "react";
 
 import type { BiTheme } from "../domain/theme";
 
-export interface BiSurfaceProps {
+export interface BiSurfaceProps extends Omit<
+  HTMLAttributes<HTMLDivElement>,
+  "children"
+> {
   children: ReactNode;
   className?: string;
   density?: "comfortable" | "compact";
@@ -14,6 +17,7 @@ export function BiSurface({
   className,
   density,
   theme = "system",
+  ...props
 }: BiSurfaceProps) {
   const resolvedTheme = typeof theme === "string" ? theme : theme.mode;
   const resolvedDensity =
@@ -68,6 +72,7 @@ export function BiSurface({
   }
   return (
     <div
+      {...props}
       className={["wsr-bi", className].filter(Boolean).join(" ")}
       data-density={resolvedDensity}
       data-theme={resolvedTheme}

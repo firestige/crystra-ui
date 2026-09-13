@@ -144,22 +144,22 @@ describe("recorded Trace business panels", () => {
 
     expect(container.querySelector(".trace-view-tools")).toBeNull();
     expect(
-      screen.getByRole("button", { name: "Expand all spans" }),
+      screen.getByRole("button", { name: "展开全部调用" }),
     ).toBeVisible();
     expect(
-      screen.getByRole("button", { name: "Collapse all spans" }),
+      screen.getByRole("button", { name: "收起全部调用" }),
     ).toBeVisible();
-    expect(screen.getByRole("button", { name: "Reset focus" })).toHaveAttribute(
+    expect(screen.getByRole("button", { name: "重置焦点" })).toHaveAttribute(
       "data-icon-button",
       "true",
     );
     expect(
       screen
-        .getByRole("button", { name: "Expand all spans" })
+        .getByRole("button", { name: "展开全部调用" })
         .closest('[role="group"]'),
     ).not.toHaveAttribute("data-segmented");
     expect(
-      screen.getByRole("searchbox", { name: "Search recorded spans" }),
+      screen.getByRole("searchbox", { name: "搜索调用" }),
     ).toBeVisible();
     expect(container.querySelector(".trace-timeline-head")).toBeNull();
 
@@ -168,7 +168,7 @@ describe("recorded Trace business panels", () => {
     );
     expect(screen.queryByRole("button", { name: /tool.execute/i })).toBeNull();
     await userEvent.click(
-      screen.getByRole("button", { name: "Expand all spans" }),
+      screen.getByRole("button", { name: "展开全部调用" }),
     );
     expect(
       screen
@@ -532,18 +532,16 @@ describe("recorded Trace business panels", () => {
     expect(graph).toHaveAttribute("data-parent-edge-count", "1");
     expect(graph).toHaveAttribute("data-link-count", "1");
     const canvasHeader = region.querySelector(".trace-tree-canvas-head");
-    expect(canvasHeader?.querySelector("h2")).toHaveTextContent(
-      "Span call tree",
-    );
+    expect(canvasHeader?.querySelector("h2")).toHaveTextContent("调用关系树");
     expect(canvasHeader?.querySelector("h2")).toHaveAttribute(
       "data-variant",
       "subtitle1",
     );
     expect(canvasHeader?.querySelector("p")).toHaveTextContent(
-      "Click a Span or exact relationship · deterministic geometry",
+      "选择调用节点或关系，查看详情",
     );
     const cameraControls = screen.getByRole("group", {
-      name: "Tree camera controls",
+      name: "调用树视口操作",
     });
     for (const button of cameraControls.querySelectorAll("button"))
       expect(button).toHaveAttribute("data-icon-button", "true");
@@ -562,9 +560,9 @@ describe("recorded Trace business panels", () => {
       name: "Tree minimap navigation",
     });
     expect(minimap).toBeVisible();
-    expect(screen.getByRole("button", { name: "Fit tree" })).toBeVisible();
-    expect(screen.getByRole("button", { name: "Zoom out" })).toBeVisible();
-    await userEvent.click(screen.getByRole("button", { name: "Zoom in" }));
+    expect(screen.getByRole("button", { name: "适应画布" })).toBeVisible();
+    expect(screen.getByRole("button", { name: "缩小" })).toBeVisible();
+    await userEvent.click(screen.getByRole("button", { name: "放大" }));
     expect(graph).toHaveAttribute("data-camera-view", "98 56 784 448");
     expect(screen.getByTestId("trace-tree-minimap-viewport")).toHaveAttribute(
       "data-camera-width",
@@ -597,12 +595,12 @@ describe("recorded Trace business panels", () => {
     });
     expect(graph).toHaveAttribute("data-camera-view", "196 56 784 448");
     fireEvent.pointerUp(minimap, { pointerId: 1 });
-    await userEvent.click(screen.getByRole("button", { name: "Fit tree" }));
+    await userEvent.click(screen.getByRole("button", { name: "适应画布" }));
     expect(graph).toHaveAttribute("data-camera-view", "0 0 980 560");
     expect(graph).toHaveAttribute("data-edge-flow-count", "2");
-    expect(screen.getByRole("button", { name: "Ancestors" })).toBeVisible();
-    expect(screen.getByRole("button", { name: "Descendants" })).toBeVisible();
-    expect(screen.getByText(/Focus receipt/)).toBeVisible();
+    expect(screen.getByRole("button", { name: "祖先调用" })).toBeVisible();
+    expect(screen.getByRole("button", { name: "后代调用" })).toBeVisible();
+    expect(region.querySelector(".trace-focus-receipt")).toHaveTextContent("已记录");
     expect(
       screen.queryByRole("slider", { name: "Recorded time position" }),
     ).toBeNull();
@@ -613,7 +611,13 @@ describe("recorded Trace business panels", () => {
     const passport = screen.getByRole("region", { name: "Span passport" });
     expect(
       passport.querySelector(":scope > .trace-passport-head"),
-    ).toHaveTextContent("Span PassportExact focus");
+    ).toHaveTextContent("workflow.run");
+    expect(
+      passport.querySelector(":scope > .trace-passport-head"),
+    ).toHaveTextContent("INTERNAL · 深度 0");
+    expect(
+      passport.querySelector(".trace-passport-body .trace-passport-title"),
+    ).toBeNull();
     expect(
       passport.querySelector(":scope > .trace-passport-body"),
     ).not.toBeNull();
@@ -1045,20 +1049,43 @@ describe("recorded Trace business panels", () => {
     await userEvent.click(
       screen.getByRole("treeitem", { name: /tool.execute/i }),
     );
-    await userEvent.click(screen.getByRole("button", { name: "Ancestors" }));
+    await userEvent.click(screen.getByRole("button", { name: "祖先调用" }));
     expect(
-      screen.getByText(/Ancestors receipt · 2 exact Span identities/),
+      screen.getByText(/祖先调用 · 2 个调用/),
     ).toBeVisible();
     expect(
       screen.getByRole("region", { name: "Recorded trace tree" }),
     ).toHaveAttribute("data-lens", "ancestors");
 
-    await userEvent.click(screen.getByRole("button", { name: "Descendants" }));
+    await userEvent.click(screen.getByRole("button", { name: "后代调用" }));
     expect(
-      screen.getByText(/Descendants receipt · 1 exact Span identity/),
+      screen.getByText(/后代调用 · 1 个调用/),
     ).toBeVisible();
     expect(
       screen.getByRole("region", { name: "Recorded trace tree" }),
     ).toHaveAttribute("data-lens", "descendants");
   });
+});
+
+it("uses paired localized titles while preserving recorded span names", () => {
+  const { rerender } = render(<TraceWaterfall trace={trace} />);
+  expect(screen.getByRole("heading", { name: "调用时间线" })).toBeVisible();
+  rerender(<TraceWaterfall trace={trace} locale="en" />);
+  expect(screen.getByRole("heading", { name: "Call timeline" })).toBeVisible();
+  rerender(<TraceTree trace={trace} />);
+  expect(screen.getByRole("heading", { name: "调用关系树" })).toBeVisible();
+  rerender(<TraceTree trace={trace} locale="en" />);
+  expect(screen.getByRole("heading", { name: "Call tree" })).toBeVisible();
+  expect(screen.getAllByText("workflow.run").length).toBeGreaterThan(0);
+});
+it('supports keyboard resizing and moving the waterfall zoom window',()=>{
+ render(<TraceWaterfall trace={trace}/>);
+ const zoom=screen.getByTestId('trace-waterfall-data-zoom');
+ const initial=zoom.getAttribute('aria-valuetext');
+ fireEvent.keyDown(zoom,{key:'ArrowLeft',shiftKey:true});
+ expect(zoom.getAttribute('aria-valuetext')).not.toBe(initial);
+ const resized=zoom.getAttribute('aria-valuetext');
+ fireEvent.keyDown(zoom,{key:'ArrowRight'});
+ expect(zoom.getAttribute('aria-valuetext')).not.toBe(resized);
+ fireEvent.keyDown(zoom,{key:'Home'});expect(zoom.getAttribute('aria-valuetext')).toBe(initial);
 });

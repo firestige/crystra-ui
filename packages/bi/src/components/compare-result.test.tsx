@@ -90,3 +90,70 @@ describe("Before Delta After", () => {
     expect(retry).toHaveBeenCalledOnce();
   });
 });
+
+it("represents one comparison with one widget and side-specific actions", async () => {
+  const evidence = vi.fn();
+  const { container } = render(
+    <CompareResultFrame
+      monitoring
+      coordinate="example@2.0.0"
+      before={slice("2")}
+      after={slice("9")}
+      delta={{
+        metric_coordinate: "example@2.0.0",
+        slice_key: {},
+        state: "AVAILABLE",
+        direction: "INCREASE",
+        value: { kind: "COUNT", value: "7", unit: "deliveries" },
+      }}
+      onEvidence={evidence}
+    />,
+  );
+  expect(container.querySelectorAll(".crystra-monitoring-widget")).toHaveLength(
+    1,
+  );
+  expect(
+    container.querySelector('[data-category="comparison"]'),
+  ).toHaveAttribute("data-size", "1x3");
+  await userEvent.click(screen.getByRole("button", { name: "查看对照证据" }));
+  expect(evidence.mock.calls[0]?.[0]).toBe("right");
+});
+
+it.each([
+  ["INCREASE", "上涨"],
+  ["DECREASE", "下跌"],
+  ["NO_CHANGE", "持平"],
+] as const)(
+  "shows a direction marker for %s without declaring performance",
+  (direction, label) => {
+    const { container } = render(
+      <CompareResultFrame
+        monitoring
+        coordinate="example@2.0.0"
+        before={slice("2")}
+        after={slice("9")}
+        delta={{
+          metric_coordinate: "example@2.0.0",
+          slice_key: {},
+          state: "AVAILABLE",
+          direction,
+          value: {
+            kind: "COUNT",
+            value:
+              direction === "DECREASE"
+                ? "-7"
+                : direction === "NO_CHANGE"
+                  ? "0"
+                  : "7",
+            unit: "deliveries",
+          },
+        }}
+      />,
+    );
+    expect(screen.getByRole("img", { name: label })).toBeVisible();
+    expect(container.querySelector(".comparison-direction")).toHaveAttribute(
+      "data-direction",
+      direction,
+    );
+  },
+);

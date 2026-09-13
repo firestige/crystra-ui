@@ -8,5 +8,9 @@
     "noEmit": true,
     "strict": true
   },
-  "include": ["vite.config.ts", "vite.harness.config.ts"]
+  "include": [
+    "vite.config.ts",
+    "vite.harness.config.ts",
+    "vite.components.config.ts"
+  ]
 }

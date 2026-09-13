@@ -1,0 +1,42 @@
+{
+  "activity": {
+    "label": "活动",
+    "shape": "circle",
+    "color": "var(--relation-type-activity)"
+  },
+  "role": {
+    "label": "角色",
+    "shape": "circle",
+    "color": "var(--relation-type-role)"
+  },
+  "skill": {
+    "label": "技能",
+    "shape": "circle",
+    "color": "var(--relation-type-skill)"
+  },
+  "script": {
+    "label": "脚本／工具",
+    "shape": "circle",
+    "color": "var(--relation-type-script)"
+  },
+  "template": {
+    "label": "模板",
+    "shape": "circle",
+    "color": "var(--relation-type-template)"
+  },
+  "artifact": {
+    "label": "产出",
+    "shape": "circle",
+    "color": "var(--relation-type-artifact)"
+  },
+  "reference": {
+    "label": "参考资料",
+    "shape": "circle",
+    "color": "var(--relation-type-reference)"
+  },
+  "prompt": {
+    "label": "活动指令",
+    "shape": "circle",
+    "color": "var(--relation-type-prompt)"
+  }
+}

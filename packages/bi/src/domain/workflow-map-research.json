@@ -1,0 +1,269 @@
+{
+  "version": "0.2",
+  "title": "科研项目进展整理",
+  "description": "汇集项目信息，计算进展并核查关键动作",
+  "nodes": [
+    {
+      "id": "collect",
+      "kind": "group",
+      "title": "收集与核对"
+    },
+    {
+      "id": "compute",
+      "kind": "group",
+      "title": "计算与检查"
+    },
+    {
+      "id": "s",
+      "kind": "start",
+      "title": "本期开始",
+      "description": "本期开始的目标与工作规则可继续在对话中细化。"
+    },
+    {
+      "id": "fork",
+      "kind": "fork",
+      "title": "收集两类材料",
+      "description": "收集两类材料的目标与工作规则可继续在对话中细化。",
+      "parent": "collect"
+    },
+    {
+      "id": "records",
+      "kind": "activity",
+      "title": "读取项目进展",
+      "description": "读取项目进展的目标与工作规则可继续在对话中细化。",
+      "parent": "collect",
+      "inputs": [
+        "当前工作材料"
+      ],
+      "outputs": [
+        "阶段成果"
+      ],
+      "resources": [
+        "工作指南"
+      ]
+    },
+    {
+      "id": "actions",
+      "kind": "activity",
+      "title": "读取关键动作记录",
+      "description": "读取关键动作记录的目标与工作规则可继续在对话中细化。",
+      "parent": "collect",
+      "inputs": [
+        "当前工作材料"
+      ],
+      "outputs": [
+        "阶段成果"
+      ],
+      "resources": [
+        "工作指南"
+      ]
+    },
+    {
+      "id": "join",
+      "kind": "join",
+      "title": "汇齐材料",
+      "description": "汇齐材料的目标与工作规则可继续在对话中细化。",
+      "parent": "collect",
+      "join": "all"
+    },
+    {
+      "id": "complete",
+      "kind": "decision",
+      "title": "材料完整？",
+      "description": "材料完整？的目标与工作规则可继续在对话中细化。",
+      "parent": "collect"
+    },
+    {
+      "id": "supplement",
+      "kind": "activity",
+      "title": "请求补充材料",
+      "description": "请求补充材料的目标与工作规则可继续在对话中细化。",
+      "parent": "collect",
+      "inputs": [
+        "当前工作材料"
+      ],
+      "outputs": [
+        "阶段成果"
+      ],
+      "resources": [
+        "工作指南"
+      ]
+    },
+    {
+      "id": "calc",
+      "kind": "activity",
+      "title": "计算进展指标",
+      "description": "计算进展指标的目标与工作规则可继续在对话中细化。",
+      "parent": "compute",
+      "inputs": [
+        "当前工作材料"
+      ],
+      "outputs": [
+        "阶段成果"
+      ],
+      "resources": [
+        "工作指南"
+      ]
+    },
+    {
+      "id": "check",
+      "kind": "activity",
+      "title": "核对关键动作",
+      "description": "核对关键动作的目标与工作规则可继续在对话中细化。",
+      "parent": "compute",
+      "inputs": [
+        "当前工作材料"
+      ],
+      "outputs": [
+        "阶段成果"
+      ],
+      "resources": [
+        "工作指南"
+      ]
+    },
+    {
+      "id": "abnormal",
+      "kind": "decision",
+      "title": "存在异常？",
+      "description": "存在异常？的目标与工作规则可继续在对话中细化。",
+      "parent": "compute"
+    },
+    {
+      "id": "investigate",
+      "kind": "activity",
+      "title": "核实并修正记录",
+      "description": "核实并修正记录的目标与工作规则可继续在对话中细化。",
+      "parent": "compute",
+      "inputs": [
+        "当前工作材料"
+      ],
+      "outputs": [
+        "阶段成果"
+      ],
+      "resources": [
+        "工作指南"
+      ]
+    },
+    {
+      "id": "report",
+      "kind": "activity",
+      "title": "生成进展表格",
+      "description": "生成进展表格的目标与工作规则可继续在对话中细化。",
+      "inputs": [
+        "当前工作材料"
+      ],
+      "outputs": [
+        "阶段成果"
+      ],
+      "resources": [
+        "工作指南"
+      ]
+    },
+    {
+      "id": "e",
+      "kind": "end",
+      "title": "本期完成",
+      "description": "本期完成的目标与工作规则可继续在对话中细化。"
+    }
+  ],
+  "edges": [
+    {
+      "id": "edge-1",
+      "from": "s",
+      "to": "fork",
+      "intent": "expected"
+    },
+    {
+      "id": "edge-2",
+      "from": "fork",
+      "to": "records",
+      "intent": "expected"
+    },
+    {
+      "id": "edge-3",
+      "from": "fork",
+      "to": "actions",
+      "intent": "expected"
+    },
+    {
+      "id": "edge-4",
+      "from": "records",
+      "to": "join",
+      "intent": "expected"
+    },
+    {
+      "id": "edge-5",
+      "from": "actions",
+      "to": "join",
+      "intent": "expected"
+    },
+    {
+      "id": "edge-6",
+      "from": "join",
+      "to": "complete",
+      "intent": "expected"
+    },
+    {
+      "id": "edge-7",
+      "from": "complete",
+      "to": "supplement",
+      "label": "缺失",
+      "intent": "recovery",
+      "trigger": "项目材料缺失"
+    },
+    {
+      "id": "edge-8",
+      "from": "supplement",
+      "to": "fork",
+      "intent": "recovery",
+      "trigger": "材料补充后重新收集核对"
+    },
+    {
+      "id": "edge-9",
+      "from": "complete",
+      "to": "calc",
+      "label": "完整",
+      "intent": "expected"
+    },
+    {
+      "id": "edge-10",
+      "from": "calc",
+      "to": "check",
+      "intent": "expected"
+    },
+    {
+      "id": "edge-11",
+      "from": "check",
+      "to": "abnormal",
+      "intent": "expected"
+    },
+    {
+      "id": "edge-12",
+      "from": "abnormal",
+      "to": "investigate",
+      "label": "有",
+      "intent": "recovery",
+      "trigger": "指标异常需要核查"
+    },
+    {
+      "id": "edge-13",
+      "from": "investigate",
+      "to": "calc",
+      "intent": "recovery",
+      "trigger": "异常记录核查后重新计算"
+    },
+    {
+      "id": "edge-14",
+      "from": "abnormal",
+      "to": "report",
+      "label": "无",
+      "intent": "expected"
+    },
+    {
+      "id": "edge-15",
+      "from": "report",
+      "to": "e",
+      "intent": "expected"
+    }
+  ]
+}

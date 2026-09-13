@@ -1,0 +1,64 @@
+/* Accepted monitoring frame. Independent of the gallery and its illustration styles. */
+.crystra-monitoring-widget:not([data-host-owned], [data-host-owned] *) {
+  box-sizing: border-box;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 12px;
+  overflow: hidden;
+  background: var(
+    --crystra-widget-surface,
+    var(--color-background-card, #232323)
+  );
+  color: var(--crystra-widget-text, var(--color-text-primary, #eee));
+  border: 1px solid
+    var(--crystra-widget-border, var(--color-border-default, #424242));
+  border-radius: 12px;
+  font:
+    14px/1.5 system-ui,
+    sans-serif;
+}
+.crystra-monitoring-widget-header:not([data-host-owned], [data-host-owned] *),
+.crystra-monitoring-widget-footer:not([data-host-owned], [data-host-owned] *) {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-shrink: 0;
+  min-width: 0;
+}
+.crystra-monitoring-widget-header
+  > div:not([data-host-owned], [data-host-owned] *) {
+  min-width: 0;
+}
+.crystra-monitoring-widget-title:not([data-host-owned], [data-host-owned] *) {
+  font-size: var(--crystra-widget-title-size, 14px);
+  line-height: var(--crystra-widget-title-line, 20px);
+  font-weight: var(--crystra-widget-title-weight, 400);
+}
+.crystra-monitoring-widget-subtitle:not(
+  [data-host-owned],
+  [data-host-owned] *
+) {
+  color: var(--crystra-widget-secondary, var(--color-text-secondary, #aaa));
+  font-size: 12px;
+}
+.crystra-monitoring-widget-content:not([data-host-owned], [data-host-owned] *) {
+  flex: 1;
+  min-height: 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 12px;
+}
+.crystra-monitoring-widget-footer:not([data-host-owned], [data-host-owned] *) {
+  font-size: 12px;
+  color: var(--crystra-widget-muted, var(--color-text-muted, #888));
+}
+/* Compact main content shares the centered identity axis; footer keeps its slots. */
+.crystra-monitoring-widget[data-size="1x1"]
+  .crystra-monitoring-widget-content:not([data-host-owned], [data-host-owned] *) {
+  text-align: center;
+}

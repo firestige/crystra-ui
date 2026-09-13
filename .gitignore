@@ -6,3 +6,9 @@ test-results/
 qualification/panel-benchmark/v1/results/
 .vite/
 *.tsbuildinfo
+
+# Generated component review bundle
+packages/bi/dist-components/
+
+# Generated review builds (sources and reviewed artifacts live in docs)
+packages/bi/dist-*/

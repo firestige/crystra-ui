@@ -1,0 +1,670 @@
+{
+  "status": "accepted",
+  "date": "2026-09-08",
+  "scope": "Accepted balanced typography, DSH-aligned five-family dark page colors and DeepSeek-calibrated icon sizes. Layout, complete icon artwork and light theme remain outside this package.",
+  "fontFamily": "Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+  "typography": {
+    "page-title": {
+      "size": 24,
+      "lineHeight": 32,
+      "weight": 600,
+      "meaning": "页面主标题"
+    },
+    "section-title": {
+      "size": 18,
+      "lineHeight": 26,
+      "weight": 600,
+      "meaning": "工作面焦点、当前问题、展开视图标题"
+    },
+    "card-title": {
+      "size": 16,
+      "lineHeight": 24,
+      "weight": 600,
+      "meaning": "卡片与信息分组标题"
+    },
+    "item-title": {
+      "size": 14,
+      "lineHeight": 20,
+      "weight": 500,
+      "meaning": "列表、证据入口、步骤的主标题"
+    },
+    "body": {
+      "size": 14,
+      "lineHeight": 24,
+      "weight": 400,
+      "meaning": "连续说明、AI 理解、Chat 正文"
+    },
+    "body-compact": {
+      "size": 14,
+      "lineHeight": 20,
+      "weight": 400,
+      "meaning": "检查清单、短事实、结构化内容"
+    },
+    "header-description": {
+      "size": 14,
+      "lineHeight": 22,
+      "weight": 400,
+      "meaning": "页面标题下的一行说明"
+    },
+    "description": {
+      "size": 12,
+      "lineHeight": 18,
+      "weight": 400,
+      "meaning": "列表副标题、卡片辅助说明"
+    },
+    "meta": {
+      "size": 12,
+      "lineHeight": 18,
+      "weight": 400,
+      "meaning": "版本、时间、计数、来源与状态标签"
+    },
+    "label": {
+      "size": 12,
+      "lineHeight": 18,
+      "weight": 600,
+      "meaning": "分区标签、字段组提示、kicker"
+    },
+    "control": {
+      "size": 14,
+      "lineHeight": 20,
+      "weight": 500,
+      "meaning": "导航、菜单、按钮、输入文字"
+    },
+    "code": {
+      "size": 12,
+      "lineHeight": 20,
+      "weight": 400,
+      "meaning": "代码、路径、精确标识与预览"
+    },
+    "metric": {
+      "size": 20,
+      "lineHeight": 28,
+      "weight": 500,
+      "meaning": "独立汇总指标"
+    },
+    "brand": {
+      "size": 20,
+      "lineHeight": 28,
+      "weight": 600,
+      "meaning": "品牌字标；独立于内容等级"
+    },
+    "badge": {
+      "size": 11,
+      "lineHeight": 14,
+      "weight": 500,
+      "meaning": "受约束的计数徽标、步骤编号"
+    },
+    "graph-title": {
+      "size": 13,
+      "lineHeight": 18,
+      "weight": 500,
+      "meaning": "SVG 节点主标签；viewBox 单位"
+    },
+    "graph-meta": {
+      "size": 11,
+      "lineHeight": 16,
+      "weight": 400,
+      "meaning": "SVG 状态与边标签；viewBox 单位"
+    }
+  },
+  "color": {
+    "status": "accepted",
+    "default": "semantic",
+    "scope": "Page UI uses five families; charts own their palette and are excluded from page color overrides",
+    "families": {
+      "neutral": {
+        "base": "#151517",
+        "variants": {
+          "base": "#151517",
+          "text": "#6e6e6f",
+          "strong-text": "#adadae",
+          "dark": "#0f0f10",
+          "darker": "#0b0b0c",
+          "shell": "#151517",
+          "sidebar": "#1b1b1c",
+          "card": "#232324",
+          "inset": "#2c2c2e",
+          "composer": "#2c2c2e",
+          "message": "#2c2c2e",
+          "floating": "#353638",
+          "primary": "#f9fafb",
+          "secondary": "#cfd3d6",
+          "muted": "#adb2b8",
+          "disabled": "#81858c",
+          "border-subtle": "#ffffff0f",
+          "border-default": "#ffffff1f",
+          "border-strong": "#ffffff29",
+          "hover": "#ffffff14",
+          "pressed": "#ffffff24",
+          "action": "#43454a",
+          "action-hover": "#353638",
+          "on-solid": "#ffffff",
+          "shadow": "#000000"
+        },
+        "derivation": {
+          "base": "host(--dsw-alias-bg-base)",
+          "text": "mix(base, white, 0.38)",
+          "strong-text": "mix(base, white, 0.65)",
+          "dark": "mix(base, black, 0.3)",
+          "darker": "mix(base, black, 0.46)",
+          "shell": "host(--dsw-alias-bg-base)",
+          "sidebar": "host(--dsw-specific-sidebar-fill)",
+          "card": "host(--dsw-alias-bg-layer-1)",
+          "inset": "host(--dsw-alias-bg-layer-2)",
+          "composer": "host(--dsw-specific-input-major)",
+          "message": "host(--dsw-alias-bg-layer-2)",
+          "floating": "host(--dsw-alias-bg-layer-3)",
+          "primary": "host(--dsw-alias-label-primary)",
+          "secondary": "host(--dsw-alias-label-secondary)",
+          "muted": "host(--dsw-alias-label-tertiary)",
+          "disabled": "host(--dsw-alias-label-caption)",
+          "border-subtle": "host(--dsw-alias-border-l1)",
+          "border-default": "host(--dsw-alias-border-l2)",
+          "border-strong": "host(--dsw-alias-border-l3)",
+          "hover": "host(--dsw-alias-interactive-bg-hover)",
+          "pressed": "host(--dsw-alias-interactive-bg-active)",
+          "action": "host(--dsw-alias-button-elevated-fill)",
+          "action-hover": "host(--dsw-alias-button-floating-hover)",
+          "on-solid": "mix(base, white, 1)",
+          "shadow": "mix(base, black, 1)"
+        }
+      },
+      "blue": {
+        "base": "#679efe",
+        "variants": {
+          "base": "#679efe",
+          "text": "#679efe",
+          "strong-text": "#679efe",
+          "dark": "#486fb2",
+          "darker": "#385589",
+          "surface": "#679efe1f",
+          "border": "#679efe94",
+          "primary": "#679efe",
+          "primary-hover": "#4176e6"
+        },
+        "derivation": {
+          "base": "host(--dsw-alias-state-business-primary)",
+          "text": "host(--dsw-alias-state-business-primary)",
+          "strong-text": "host(--dsw-alias-state-business-primary)",
+          "dark": "mix(base, black, 0.3)",
+          "darker": "mix(base, black, 0.46)",
+          "surface": "base with alpha 0.12",
+          "border": "base with alpha 0.58",
+          "primary": "host(--dsw-alias-button-info-fill)",
+          "primary-hover": "host(--dsw-alias-button-info-hover)"
+        }
+      },
+      "green": {
+        "base": "#22c55e",
+        "variants": {
+          "base": "#22c55e",
+          "text": "#22c55e",
+          "strong-text": "#22c55e",
+          "dark": "#188a42",
+          "darker": "#126a33",
+          "surface": "#22c55e1f",
+          "border": "#22c55e94"
+        },
+        "derivation": {
+          "base": "host(--dsw-alias-state-success-primary)",
+          "text": "host(--dsw-alias-state-success-primary)",
+          "strong-text": "host(--dsw-alias-state-success-primary)",
+          "dark": "mix(base, black, 0.3)",
+          "darker": "mix(base, black, 0.46)",
+          "surface": "base with alpha 0.12",
+          "border": "base with alpha 0.58"
+        }
+      },
+      "amber": {
+        "base": "#f59e0b",
+        "variants": {
+          "base": "#f59e0b",
+          "text": "#f59e0b",
+          "strong-text": "#f59e0b",
+          "dark": "#ac6f08",
+          "darker": "#845506",
+          "surface": "#f59e0b1f",
+          "border": "#f59e0b94"
+        },
+        "derivation": {
+          "base": "host(--dsw-alias-state-warn-primary)",
+          "text": "host(--dsw-alias-state-warn-primary)",
+          "strong-text": "host(--dsw-alias-state-warn-primary)",
+          "dark": "mix(base, black, 0.3)",
+          "darker": "mix(base, black, 0.46)",
+          "surface": "base with alpha 0.12",
+          "border": "base with alpha 0.58"
+        }
+      },
+      "red": {
+        "base": "#f25a5a",
+        "variants": {
+          "base": "#f25a5a",
+          "text": "#f25a5a",
+          "strong-text": "#f25a5a",
+          "dark": "#a93f3f",
+          "darker": "#833131",
+          "surface": "#f25a5a1f",
+          "border": "#f25a5a94"
+        },
+        "derivation": {
+          "base": "host(--dsw-alias-state-error-primary)",
+          "text": "host(--dsw-alias-state-error-primary)",
+          "strong-text": "host(--dsw-alias-state-error-primary)",
+          "dark": "mix(base, black, 0.3)",
+          "darker": "mix(base, black, 0.46)",
+          "surface": "base with alpha 0.12",
+          "border": "base with alpha 0.58"
+        }
+      }
+    },
+    "roles": {
+      "background-shell": {
+        "ref": "neutral.shell",
+        "value": "#151517",
+        "family": "neutral",
+        "meaning": "最外层背景"
+      },
+      "background-sidebar": {
+        "ref": "neutral.sidebar",
+        "value": "#1b1b1c",
+        "family": "neutral",
+        "meaning": "Sidebar 背景"
+      },
+      "background-workspace": {
+        "ref": "neutral.base",
+        "value": "#151517",
+        "family": "neutral",
+        "meaning": "工作区背景"
+      },
+      "background-card": {
+        "ref": "neutral.card",
+        "value": "#232324",
+        "family": "neutral",
+        "meaning": "卡片底色"
+      },
+      "background-inset": {
+        "ref": "neutral.inset",
+        "value": "#2c2c2e",
+        "family": "neutral",
+        "meaning": "卡内条目底色"
+      },
+      "background-composer": {
+        "ref": "neutral.composer",
+        "value": "#2c2c2e",
+        "family": "neutral",
+        "meaning": "输入区底色"
+      },
+      "background-message": {
+        "ref": "neutral.message",
+        "value": "#2c2c2e",
+        "family": "neutral",
+        "meaning": "Chat 消息底色"
+      },
+      "background-canvas": {
+        "ref": "neutral.sidebar",
+        "value": "#1b1b1c",
+        "family": "neutral",
+        "meaning": "图画布背景"
+      },
+      "background-surface": {
+        "ref": "neutral.base",
+        "value": "#151517",
+        "family": "neutral",
+        "meaning": "普通内容面"
+      },
+      "background-summary": {
+        "ref": "neutral.card",
+        "value": "#232324",
+        "family": "neutral",
+        "meaning": "摘要面"
+      },
+      "background-floating": {
+        "ref": "neutral.floating",
+        "value": "#353638",
+        "family": "neutral",
+        "meaning": "菜单/提示/目录浮层"
+      },
+      "text-primary": {
+        "ref": "neutral.primary",
+        "value": "#f9fafb",
+        "family": "neutral",
+        "meaning": "主要正文"
+      },
+      "text-secondary": {
+        "ref": "neutral.secondary",
+        "value": "#cfd3d6",
+        "family": "neutral",
+        "meaning": "次级正文"
+      },
+      "text-muted": {
+        "ref": "neutral.muted",
+        "value": "#adb2b8",
+        "family": "neutral",
+        "meaning": "时间/版本/辅助说明"
+      },
+      "text-disabled": {
+        "ref": "neutral.disabled",
+        "value": "#81858c",
+        "family": "neutral",
+        "meaning": "不可用文字"
+      },
+      "text-on-primary": {
+        "ref": "neutral.on-solid",
+        "value": "#ffffff",
+        "family": "neutral",
+        "meaning": "实色主按钮上的文字"
+      },
+      "text-on-status": {
+        "ref": "neutral.shell",
+        "value": "#151517",
+        "family": "neutral",
+        "meaning": "实色状态徽标上的文字"
+      },
+      "border-subtle": {
+        "ref": "neutral.border-subtle",
+        "value": "#ffffff0f",
+        "family": "neutral",
+        "meaning": "普通分隔"
+      },
+      "border-default": {
+        "ref": "neutral.border-default",
+        "value": "#ffffff1f",
+        "family": "neutral",
+        "meaning": "可见组件边界"
+      },
+      "border-strong": {
+        "ref": "neutral.border-strong",
+        "value": "#ffffff29",
+        "family": "neutral",
+        "meaning": "加强边界"
+      },
+      "border-focus": {
+        "ref": "blue.text",
+        "value": "#679efe",
+        "family": "blue",
+        "meaning": "键盘焦点"
+      },
+      "interaction-hover": {
+        "ref": "neutral.hover",
+        "value": "#ffffff14",
+        "family": "neutral",
+        "meaning": "普通悬停"
+      },
+      "interaction-pressed": {
+        "ref": "neutral.pressed",
+        "value": "#ffffff24",
+        "family": "neutral",
+        "meaning": "普通按下"
+      },
+      "interaction-selected": {
+        "ref": "blue.surface",
+        "value": "#679efe1f",
+        "family": "blue",
+        "meaning": "选中底色"
+      },
+      "interaction-selected-text": {
+        "ref": "blue.strong-text",
+        "value": "#679efe",
+        "family": "blue",
+        "meaning": "选中文字"
+      },
+      "interaction-selected-border": {
+        "ref": "blue.base",
+        "value": "#679efe",
+        "family": "blue",
+        "meaning": "选中边框"
+      },
+      "interaction-link": {
+        "ref": "blue.text",
+        "value": "#679efe",
+        "family": "blue",
+        "meaning": "链接/可进入入口"
+      },
+      "interaction-primary": {
+        "ref": "blue.primary",
+        "value": "#679efe",
+        "family": "blue",
+        "meaning": "实色主操作"
+      },
+      "interaction-primary-hover": {
+        "ref": "blue.primary-hover",
+        "value": "#4176e6",
+        "family": "blue",
+        "meaning": "主操作悬停"
+      },
+      "interaction-primary-pressed": {
+        "ref": "blue.primary-hover",
+        "value": "#4176e6",
+        "family": "blue",
+        "meaning": "主操作按下"
+      },
+      "background-neutral-action": {
+        "ref": "neutral.action",
+        "value": "#43454a",
+        "family": "neutral",
+        "meaning": "中性操作底色"
+      },
+      "background-neutral-action-hover": {
+        "ref": "neutral.action-hover",
+        "value": "#353638",
+        "family": "neutral",
+        "meaning": "中性操作悬停"
+      },
+      "brand": {
+        "ref": "blue.text",
+        "value": "#679efe",
+        "family": "blue",
+        "meaning": "品牌图标"
+      },
+      "status-success-text": {
+        "ref": "green.text",
+        "value": "#22c55e",
+        "family": "green",
+        "meaning": "成功/满足/有效 · 文字"
+      },
+      "status-success-surface": {
+        "ref": "green.surface",
+        "value": "#22c55e1f",
+        "family": "green",
+        "meaning": "成功/满足/有效 · 提示底色"
+      },
+      "status-success-border": {
+        "ref": "green.border",
+        "value": "#22c55e94",
+        "family": "green",
+        "meaning": "成功/满足/有效 · 边界"
+      },
+      "status-success-solid": {
+        "ref": "green.base",
+        "value": "#22c55e",
+        "family": "green",
+        "meaning": "成功/满足/有效 · 状态点/线条"
+      },
+      "status-warning-text": {
+        "ref": "amber.text",
+        "value": "#f59e0b",
+        "family": "amber",
+        "meaning": "需关注/警告/待裁决 · 文字"
+      },
+      "status-warning-surface": {
+        "ref": "amber.surface",
+        "value": "#f59e0b1f",
+        "family": "amber",
+        "meaning": "需关注/警告/待裁决 · 提示底色"
+      },
+      "status-warning-border": {
+        "ref": "amber.border",
+        "value": "#f59e0b94",
+        "family": "amber",
+        "meaning": "需关注/警告/待裁决 · 边界"
+      },
+      "status-warning-solid": {
+        "ref": "amber.base",
+        "value": "#f59e0b",
+        "family": "amber",
+        "meaning": "需关注/警告/待裁决 · 状态点/线条"
+      },
+      "status-error-text": {
+        "ref": "red.text",
+        "value": "#f25a5a",
+        "family": "red",
+        "meaning": "失败/错误/阻断 · 文字"
+      },
+      "status-error-surface": {
+        "ref": "red.surface",
+        "value": "#f25a5a1f",
+        "family": "red",
+        "meaning": "失败/错误/阻断 · 提示底色"
+      },
+      "status-error-border": {
+        "ref": "red.border",
+        "value": "#f25a5a94",
+        "family": "red",
+        "meaning": "失败/错误/阻断 · 边界"
+      },
+      "status-error-solid": {
+        "ref": "red.base",
+        "value": "#f25a5a",
+        "family": "red",
+        "meaning": "失败/错误/阻断 · 状态点/线条"
+      },
+      "status-info-text": {
+        "ref": "blue.text",
+        "value": "#679efe",
+        "family": "blue",
+        "meaning": "说明/当前 AI 理解/变化信息 · 文字"
+      },
+      "status-info-surface": {
+        "ref": "blue.surface",
+        "value": "#679efe1f",
+        "family": "blue",
+        "meaning": "说明/当前 AI 理解/变化信息 · 提示底色"
+      },
+      "status-info-border": {
+        "ref": "blue.border",
+        "value": "#679efe94",
+        "family": "blue",
+        "meaning": "说明/当前 AI 理解/变化信息 · 边界"
+      },
+      "status-info-solid": {
+        "ref": "blue.base",
+        "value": "#679efe",
+        "family": "blue",
+        "meaning": "说明/当前 AI 理解/变化信息 · 状态点/线条"
+      },
+      "status-running-text": {
+        "ref": "blue.text",
+        "value": "#679efe",
+        "family": "blue",
+        "meaning": "正在执行/运行前沿 · 文字"
+      },
+      "status-running-surface": {
+        "ref": "blue.surface",
+        "value": "#679efe1f",
+        "family": "blue",
+        "meaning": "正在执行/运行前沿 · 提示底色"
+      },
+      "status-running-border": {
+        "ref": "blue.border",
+        "value": "#679efe94",
+        "family": "blue",
+        "meaning": "正在执行/运行前沿 · 边界"
+      },
+      "status-running-solid": {
+        "ref": "blue.base",
+        "value": "#679efe",
+        "family": "blue",
+        "meaning": "正在执行/运行前沿 · 状态点/线条"
+      },
+      "status-paused-text": {
+        "ref": "neutral.muted",
+        "value": "#adb2b8",
+        "family": "neutral",
+        "meaning": "暂停/未开始/非活动 · 文字"
+      },
+      "status-paused-surface": {
+        "ref": "neutral.inset",
+        "value": "#2c2c2e",
+        "family": "neutral",
+        "meaning": "暂停/未开始/非活动 · 提示底色"
+      },
+      "status-paused-border": {
+        "ref": "neutral.border-default",
+        "value": "#ffffff1f",
+        "family": "neutral",
+        "meaning": "暂停/未开始/非活动 · 边界"
+      },
+      "status-paused-solid": {
+        "ref": "neutral.disabled",
+        "value": "#81858c",
+        "family": "neutral",
+        "meaning": "暂停/未开始/非活动 · 状态点/线条"
+      },
+      "shadow-panel": {
+        "ref": "neutral.shadow",
+        "value": "0 18px 45px #0000003d",
+        "family": "neutral",
+        "meaning": "面板阴影"
+      },
+      "shadow-floating": {
+        "ref": "neutral.shadow",
+        "value": "0 18px 56px #00000066",
+        "family": "neutral",
+        "meaning": "浮层阴影"
+      },
+      "overlay": {
+        "ref": "neutral.shadow",
+        "value": "#00000055",
+        "family": "neutral",
+        "meaning": "遮罩"
+      }
+    },
+    "familyLimit": 5,
+    "chartScope": "data-color-scope=\"chart\"; retain source chart colors, gradients and effects",
+    "semanticDecision": {
+      "date": "2026-09-08",
+      "basis": "用户：语义方案接受",
+      "scope": "five page families, role grouping and independent chart colors"
+    },
+    "appearanceStatus": "accepted DSH dark alignment",
+    "hostReference": "dsh-theme-reference.json",
+    "appearanceDecision": {
+      "date": "2026-09-08",
+      "basis": "用户：现在的方案我认为很不错，可以生成相应的资产",
+      "scope": "Current DSH-aligned dark page colors; chart palette remains independent"
+    }
+  },
+  "icon": {
+    "status": "accepted",
+    "selected": "dsh",
+    "roles": {
+      "disclosure": 12,
+      "inline-action": 14,
+      "content-marker": 14,
+      "navigation": 18,
+      "primary-action": 18,
+      "brand-slot": 24,
+      "context-marker": 24,
+      "widget-signal": 48
+    },
+    "hitAreas": {
+      "tool": 28,
+      "primary": 36,
+      "rail": 40
+    },
+    "hostReference": {
+      "package": "@deepseek-ai/dsh-client-ui-sidebar",
+      "source": "lib/client.js:214",
+      "component": "IconNewChatOutline16",
+      "expanded": 14,
+      "collapsed": 18,
+      "note": "Installed DSH source; same existing SVG shape. User prefers prominent but prioritizes host alignment."
+    },
+    "contextMapping": {
+      "new-task-expanded": "inline-action",
+      "new-task-collapsed": "navigation"
+    },
+    "hostOwnedExcluded": true
+  }
+}

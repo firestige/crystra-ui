@@ -1,0 +1,252 @@
+{
+  "version": "0.2",
+  "title": "系统设计",
+  "description": "从模糊想法到有依据的系统设计",
+  "nodes": [
+    {
+      "id": "explore",
+      "kind": "group",
+      "title": "探索问题"
+    },
+    {
+      "id": "architecture",
+      "kind": "group",
+      "title": "形成架构方案"
+    },
+    {
+      "id": "reviewing",
+      "kind": "group",
+      "title": "多角度评审",
+      "parent": "architecture"
+    },
+    {
+      "id": "s",
+      "kind": "start",
+      "title": "开始",
+      "description": "开始的目标与工作规则可继续在对话中细化。"
+    },
+    {
+      "id": "brainstorm",
+      "kind": "activity",
+      "title": "头脑风暴",
+      "description": "头脑风暴的目标与工作规则可继续在对话中细化。",
+      "parent": "explore",
+      "inputs": [
+        "当前工作材料"
+      ],
+      "outputs": [
+        "阶段成果"
+      ],
+      "resources": [
+        "工作指南"
+      ]
+    },
+    {
+      "id": "scope",
+      "kind": "activity",
+      "title": "明确目标与约束",
+      "description": "明确目标与约束的目标与工作规则可继续在对话中细化。",
+      "parent": "explore",
+      "inputs": [
+        "当前工作材料"
+      ],
+      "outputs": [
+        "阶段成果"
+      ],
+      "resources": [
+        "工作指南"
+      ]
+    },
+    {
+      "id": "options",
+      "kind": "activity",
+      "title": "比较架构方案",
+      "description": "比较架构方案的目标与工作规则可继续在对话中细化。",
+      "parent": "architecture",
+      "inputs": [
+        "当前工作材料"
+      ],
+      "outputs": [
+        "阶段成果"
+      ],
+      "resources": [
+        "工作指南"
+      ]
+    },
+    {
+      "id": "fork",
+      "kind": "fork",
+      "title": "并行检查",
+      "description": "并行检查的目标与工作规则可继续在对话中细化。",
+      "parent": "reviewing"
+    },
+    {
+      "id": "quality",
+      "kind": "activity",
+      "title": "检查非功能需求",
+      "description": "检查非功能需求的目标与工作规则可继续在对话中细化。",
+      "parent": "reviewing",
+      "inputs": [
+        "当前工作材料"
+      ],
+      "outputs": [
+        "阶段成果"
+      ],
+      "resources": [
+        "工作指南"
+      ]
+    },
+    {
+      "id": "boundaries",
+      "kind": "activity",
+      "title": "检查职责与边界",
+      "description": "检查职责与边界的目标与工作规则可继续在对话中细化。",
+      "parent": "reviewing",
+      "inputs": [
+        "当前工作材料"
+      ],
+      "outputs": [
+        "阶段成果"
+      ],
+      "resources": [
+        "工作指南"
+      ]
+    },
+    {
+      "id": "join",
+      "kind": "join",
+      "title": "汇总评审",
+      "description": "汇总评审的目标与工作规则可继续在对话中细化。",
+      "parent": "reviewing",
+      "join": "all"
+    },
+    {
+      "id": "decision",
+      "kind": "decision",
+      "title": "方案一致？",
+      "description": "方案一致？的目标与工作规则可继续在对话中细化。",
+      "parent": "architecture"
+    },
+    {
+      "id": "adjust",
+      "kind": "activity",
+      "title": "调整方案",
+      "description": "调整方案的目标与工作规则可继续在对话中细化。",
+      "parent": "architecture",
+      "inputs": [
+        "当前工作材料"
+      ],
+      "outputs": [
+        "阶段成果"
+      ],
+      "resources": [
+        "工作指南"
+      ]
+    },
+    {
+      "id": "write",
+      "kind": "activity",
+      "title": "按模板形成设计文档",
+      "description": "按模板形成设计文档的目标与工作规则可继续在对话中细化。",
+      "inputs": [
+        "当前工作材料"
+      ],
+      "outputs": [
+        "阶段成果"
+      ],
+      "resources": [
+        "工作指南"
+      ]
+    },
+    {
+      "id": "e",
+      "kind": "end",
+      "title": "设计完成",
+      "description": "设计完成的目标与工作规则可继续在对话中细化。"
+    }
+  ],
+  "edges": [
+    {
+      "id": "edge-1",
+      "from": "s",
+      "to": "brainstorm",
+      "intent": "expected"
+    },
+    {
+      "id": "edge-2",
+      "from": "brainstorm",
+      "to": "scope",
+      "intent": "expected"
+    },
+    {
+      "id": "edge-3",
+      "from": "scope",
+      "to": "options",
+      "intent": "expected"
+    },
+    {
+      "id": "edge-4",
+      "from": "options",
+      "to": "fork",
+      "intent": "expected"
+    },
+    {
+      "id": "edge-5",
+      "from": "fork",
+      "to": "quality",
+      "intent": "expected"
+    },
+    {
+      "id": "edge-6",
+      "from": "fork",
+      "to": "boundaries",
+      "intent": "expected"
+    },
+    {
+      "id": "edge-7",
+      "from": "quality",
+      "to": "join",
+      "intent": "expected"
+    },
+    {
+      "id": "edge-8",
+      "from": "boundaries",
+      "to": "join",
+      "intent": "expected"
+    },
+    {
+      "id": "edge-9",
+      "from": "join",
+      "to": "decision",
+      "intent": "expected"
+    },
+    {
+      "id": "edge-10",
+      "from": "decision",
+      "to": "adjust",
+      "label": "有冲突",
+      "intent": "rework",
+      "trigger": "架构检查发现冲突"
+    },
+    {
+      "id": "edge-11",
+      "from": "adjust",
+      "to": "options",
+      "intent": "rework",
+      "trigger": "冲突调整后重新比较方案"
+    },
+    {
+      "id": "edge-12",
+      "from": "decision",
+      "to": "write",
+      "label": "一致",
+      "intent": "expected"
+    },
+    {
+      "id": "edge-13",
+      "from": "write",
+      "to": "e",
+      "intent": "expected"
+    }
+  ]
+}

@@ -1,0 +1,82 @@
+/* Shared workbench Header: identity, baseline navigation and page-owned context. */
+.wb-header.wb-page-header {
+  display: grid;
+  grid-template-columns: 268px auto minmax(0, 1fr);
+  grid-template-rows: 34px 34px;
+  grid-template-areas: "identity navigation time" "identity navigation context";
+  gap: 4px 24px;
+  padding: 8px 32px;
+  min-height: 0;
+  height: auto;
+  position: relative;
+  z-index: 30;
+  align-items: center;
+}
+.wb-page-header > [data-header-slot="identity"] {
+  grid-area: identity;
+}
+.wb-page-header > [data-header-slot="navigation"] {
+  grid-area: navigation;
+  align-self: end;
+  margin-bottom: -8px;
+}
+.wb-page-header > [data-header-slot="context"] {
+  grid-area: context;
+  justify-self: end;
+}
+.wb-page-header .wsr-tabs {
+  height: 100%;
+}
+.wb-page-header .wsr-tab-list {
+  height: 100%;
+  gap: 16px;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  background: transparent;
+}
+.wb-page-header .wsr-tab {
+  height: 40px;
+  padding: 8px 4px;
+  min-width: 64px;
+  box-shadow: none;
+}
+.wb-page-header [role="tabpanel"] {
+  display: none;
+}
+.wb-page-header [role="tablist"] {
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  padding: 0 !important;
+  gap: 24px !important;
+}
+.wb-page-header [role="tab"] {
+  background: transparent !important;
+  border: 0 !important;
+  border-bottom: 2px solid transparent !important;
+  border-radius: 0 !important;
+  padding: 12px 0 16px !important;
+  height: 52px !important;
+  font-size: var(--type-scale-16, 16px) !important;
+  line-height: 24px !important;
+}
+.wb-page-header [role="tab"][aria-selected="true"] {
+  border-bottom-color: var(--color-interaction-primary, #679efe) !important;
+}
+.wb-page-header [role="tab"] {
+  position: relative;
+  border-bottom-width: 0 !important;
+}
+.wb-page-header [role="tab"][aria-selected="true"]::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--color-interaction-primary, #679efe);
+}
+
+
+.wb-page-header.studio-header > [data-header-slot="context"] { grid-row: 1 / -1; align-self: center; }

@@ -6,10 +6,36 @@ import { Typography } from "../public";
 
 import { dashboardLayout, dashboardResults } from "./dashboard-fixture";
 
-export function ActiveScenario() {
-  const [layout, setLayout] = useState<DashboardLayout>(dashboardLayout);
+export function ActiveScenario({
+  monitoring = false,
+}: {
+  monitoring?: boolean;
+}) {
+  const [layout, setLayout] = useState<DashboardLayout>(() =>
+    monitoring
+      ? {
+          ...dashboardLayout,
+          panels: dashboardLayout.panels.map((panel) => ({
+            ...panel,
+            grid: {
+              ...panel.grid,
+              ...({
+                rework: { x: 0, y: 0 },
+                "role-model-outcome": { x: 2, y: 0 },
+                latency: { x: 3, y: 0 },
+                "terminal-outcome": { x: 4, y: 0 },
+              }[panel.panel_id] ??
+                (panel.metric_coordinate.startsWith("delivery-stage")
+                  ? { x: 0, y: 1 }
+                  : { x: 3, y: 1 })),
+            },
+          })),
+        }
+      : dashboardLayout,
+  );
   return (
     <DashboardComposer
+      monitoring={monitoring}
       layout={layout}
       onApply={setLayout}
       results={dashboardResults}

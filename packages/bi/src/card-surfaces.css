@@ -1,0 +1,45 @@
+/* D17: accepted dark-theme card surfaces. State-specific styling stays authoritative. */
+.wsr-bi {
+  --card-surface-border: var(--color-border-subtle, #ffffff0f);
+
+}
+.wsr-bi
+  :is(
+    .browser-task-card,
+    [data-section-id][class*="bg-panel"][class*="rounded"],
+    .wsr-card,
+    .wsr-widget,
+    .crystra-monitoring-widget,
+    .trace-waterfall-canvas,
+    .trace-tree-canvas-shell,
+    .trace-minimap,
+    .span-passport
+  ):not([data-host-owned], [data-host-owned] *) {
+  border: 1px solid var(--card-surface-border);
+  border-radius: var(--shape-panel, 12px);
+  box-shadow: var(--card-surface-shadow);
+}
+/* The prototype palette has a blanket strong-border rule; preserve the card's semantic border. */
+:root.wsr-bi[data-palette],
+.wsr-bi[data-crystra-theme="dark"] {
+  --card-surface-border: var(--color-border-subtle, #ffffff0f);
+}
+:is(:root.wsr-bi[data-palette], .wsr-bi[data-crystra-theme="dark"])
+  :is(
+    .browser-task-card,
+    [data-section-id][class*="bg-panel"][class*="rounded"],
+    .wsr-card,
+    .wsr-widget,
+    .crystra-monitoring-widget,
+    .trace-waterfall-canvas,
+    .trace-tree-canvas-shell,
+    .trace-minimap,
+    .span-passport
+  ):not([data-host-owned], [data-host-owned] *):not(
+    [data-tone]:not([data-tone="neutral"]),
+    [aria-selected="true"],
+    [data-selected="true"],
+    :focus-visible
+  ) {
+  border-color: var(--card-surface-border) !important;
+}

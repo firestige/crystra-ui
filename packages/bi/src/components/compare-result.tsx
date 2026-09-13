@@ -1,3 +1,4 @@
+import { ComparisonWidget } from "./comparison-widget";
 import type {
   DeltaEntry,
   MetricResult,
@@ -105,6 +106,9 @@ function DeltaView({ delta }: { delta: DeltaEntry }) {
 }
 
 export function CompareResultFrame({
+  title,
+  beforeLabel,
+  afterLabel,
   coordinate,
   before,
   after,
@@ -117,7 +121,12 @@ export function CompareResultFrame({
   onExplain,
   onEvidence,
   visualizer = "numeric-card@1",
+  monitoring = false,
 }: {
+  monitoring?: boolean;
+  title?: string;
+  beforeLabel?: string;
+  afterLabel?: string;
   coordinate: string;
   before?: MetricSlice;
   after?: MetricSlice;
@@ -131,6 +140,27 @@ export function CompareResultFrame({
   onEvidence?: (side: "left" | "right", trigger: HTMLButtonElement) => void;
   visualizer?: VisualizerId;
 }) {
+  if (monitoring)
+    return (
+      <ComparisonWidget
+        {...{
+          coordinate,
+          title,
+          beforeLabel,
+          afterLabel,
+          before,
+          after,
+          beforeError,
+          afterError,
+          delta,
+          onRetryFailedSide,
+          ownsFailedSide,
+          focusEvidenceSide,
+          onExplain,
+          onEvidence,
+        }}
+      />
+    );
   return (
     <article aria-label={`Compare ${coordinate}`} className="compare-result">
       <CompareSide
