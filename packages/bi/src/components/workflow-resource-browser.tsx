@@ -248,7 +248,15 @@ export function WorkflowResourceBrowser({
       );
       return false;
     }
-    saveResourceContent(workspace, file.path, draft.base, draft.text);
+    try {
+      saveResourceContent(workspace, file.path, draft.base, draft.text);
+    } catch {
+      setConflict(true);
+      setNotice(
+        "文件已被其他来源修改，当前草稿已保留；请查看最新内容后重新调整。",
+      );
+      return false;
+    }
     setDraft({ base: draft.text, text: draft.text });
     setConflict(false);
     setNotice("已保存到页面样本 · 未写入磁盘");
