@@ -1,0 +1,135 @@
+{
+  "before": {
+    "version": "0.2",
+    "title": "报告处理",
+    "nodes": [
+      {
+        "id": "start",
+        "kind": "start",
+        "title": "报告就绪"
+      },
+      {
+        "id": "review",
+        "kind": "activity",
+        "title": "阅读报告并决定后续操作",
+        "resources": ["Role · Reviewer"]
+      },
+      {
+        "id": "end",
+        "kind": "end",
+        "title": "交付判断",
+        "outcome": "completed"
+      }
+    ],
+    "edges": [
+      {
+        "id": "a",
+        "from": "start",
+        "to": "review",
+        "intent": "expected"
+      },
+      {
+        "id": "b",
+        "from": "review",
+        "to": "end",
+        "intent": "expected"
+      }
+    ]
+  },
+  "after": {
+    "version": "0.2",
+    "title": "报告处理",
+    "nodes": [
+      {
+        "id": "start",
+        "kind": "start",
+        "title": "报告就绪"
+      },
+      {
+        "id": "extract",
+        "kind": "activity",
+        "title": "提取并校验报告数据",
+        "resources": ["Script · report-extract"]
+      },
+      {
+        "id": "valid",
+        "kind": "decision",
+        "title": "格式与字段有效"
+      },
+      {
+        "id": "review",
+        "kind": "activity",
+        "title": "判断异常与后续操作",
+        "resources": ["Role · Reviewer"]
+      },
+      {
+        "id": "repair",
+        "kind": "activity",
+        "title": "解释报告并补齐材料",
+        "resources": ["Role · Reviewer"]
+      },
+      {
+        "id": "render",
+        "kind": "activity",
+        "title": "生成结构化结果",
+        "resources": ["Template · review-summary"]
+      },
+      {
+        "id": "end",
+        "kind": "end",
+        "title": "交付判断",
+        "outcome": "completed"
+      }
+    ],
+    "edges": [
+      {
+        "id": "a",
+        "from": "start",
+        "to": "extract",
+        "intent": "expected"
+      },
+      {
+        "id": "b",
+        "from": "extract",
+        "to": "valid",
+        "intent": "expected"
+      },
+      {
+        "id": "c",
+        "from": "valid",
+        "to": "review",
+        "label": "有效",
+        "intent": "expected"
+      },
+      {
+        "id": "d",
+        "from": "valid",
+        "to": "repair",
+        "label": "格式不支持",
+        "intent": "recovery",
+        "trigger": "报告格式不支持或必要字段缺失",
+        "layoutRole": "advance"
+      },
+      {
+        "id": "e",
+        "from": "repair",
+        "to": "review",
+        "intent": "recovery",
+        "trigger": "材料已补齐",
+        "layoutRole": "advance"
+      },
+      {
+        "id": "f",
+        "from": "review",
+        "to": "render",
+        "intent": "expected"
+      },
+      {
+        "id": "g",
+        "from": "render",
+        "to": "end",
+        "intent": "expected"
+      }
+    ]
+  }
+}

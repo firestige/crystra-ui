@@ -9,5 +9,10 @@
     "noEmit": true,
     "strict": true
   },
-  "include": ["playwright.config.ts", "vitest.config.ts", "tests/**/*.ts"]
+  "include": [
+    "playwright.config.ts",
+    "vitest.config.ts",
+    "tests/**/*.ts",
+    "scripts/*.ts"
+  ]
 }

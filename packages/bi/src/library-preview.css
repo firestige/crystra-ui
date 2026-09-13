@@ -1,0 +1,110 @@
+body {
+  margin: 0;
+  background: #141414;
+}
+.library-gallery {
+  padding: 24px;
+  color: #eee;
+  font-family: Inter, system-ui, sans-serif;
+}
+.library-heading,
+.library-description,
+.library-navigation,
+.library-footer {
+  max-width: 1800px;
+  margin: 0 auto 16px;
+}
+.library-heading h1 {
+  font-size: 24px;
+  margin: 0 0 8px;
+}
+.library-heading p,
+.library-description p,
+.library-footer {
+  font-size: 14px;
+  line-height: 1.6;
+  color: #aaa;
+}
+.library-heading a {
+  color: #6698ff;
+}
+.library-navigation {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.library-navigation button {
+  padding: 8px 12px;
+  border: 1px solid #444;
+  border-radius: 8px;
+  background: #232323;
+  color: #ddd;
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+}
+.library-navigation button[aria-pressed="true"] {
+  border-color: #6698ff;
+  color: #80aaff;
+  background: #293345;
+}
+.library-navigation button:focus-visible {
+  outline: 2px solid #6698ff;
+  outline-offset: 2px;
+}
+.library-description {
+  padding: 16px;
+  background: #222;
+  border: 1px solid #383838;
+  border-radius: 12px;
+}
+.library-description h2 {
+  font-size: 18px;
+  margin: 0 0 6px;
+}
+.library-description code {
+  font-size: 12px;
+  color: #b9c7db;
+}
+.library-stage {
+  max-width: 1800px;
+  margin: auto;
+  padding: 16px;
+  border: 1px solid #383838;
+  border-radius: 12px;
+  min-width: 0;
+  min-height: 450px;
+  background: var(--surface-canvas);
+}
+.library-details {
+  display: grid;
+  grid-template-columns: 1fr 1.3fr;
+  gap: 16px;
+}
+.library-footer {
+  margin-top: 20px;
+}
+.library-visualizers {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+.library-visualizers h3 {
+  margin: 0 0 12px;
+  font-size: 14px;
+}
+
+.comparison-demo-controls {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+.comparison-demo-controls .wsr-field {
+  width: 200px;
+}
+.comparison-demo-controls p {
+  color: var(--color-text-secondary, #aaa);
+  font-size: 12px;
+  margin: 0;
+}

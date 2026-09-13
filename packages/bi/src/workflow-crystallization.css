@@ -1,0 +1,220 @@
+.map-workbench[data-crystallization="true"] > :not(.crystal-workspace) {
+  display: none !important;
+}
+.crystal-workspace {
+  height: 100%;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  color: var(--color-text-primary);
+  overflow: auto;
+}
+.crystal-header,
+.crystal-subhead,
+.crystal-benefit-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+.crystal-header h2 {
+  margin: 6px 0 0;
+}
+.crystal-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.crystal-subhead {
+  padding: 8px 24px;
+  justify-content: flex-start;
+}
+.crystal-subhead > span {
+  margin-left: auto;
+}
+.crystal-canvas {
+  position: relative;
+  min-height: 330px;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: var(--color-background-workspace);
+}
+.crystal-canvas > svg {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  inset: 0;
+  padding: 48px 24px 28px;
+  box-sizing: border-box;
+}
+.crystal-legend {
+  position: absolute;
+  top: 18px;
+  left: 24px;
+  right: 24px;
+  display: flex;
+  gap: 18px;
+  align-items: center;
+  z-index: 1;
+  font-size: 12px;
+  color: var(--color-text-secondary);
+}
+.crystal-legend > span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.crystal-legend > span:last-child {
+  margin-left: auto;
+}
+.crystal-legend i {
+  height: 7px;
+  width: 7px;
+  border-radius: 50%;
+}
+.crystal-new {
+  background: var(--workflow-flow-expected);
+}
+.crystal-adjusted {
+  background: var(--workflow-flow-rework);
+}
+.crystal-retained {
+  background: var(--color-text-muted);
+}
+.crystal-flow {
+  stroke: var(--workflow-flow-expected);
+}
+.crystal-recovery {
+  stroke: var(--workflow-flow-recovery);
+  stroke-dasharray: 7 5;
+}
+.crystal-flow text,
+.crystal-recovery text {
+  stroke: none;
+  fill: var(--color-text-secondary);
+  font-size: 13px;
+}
+.crystal-node {
+  cursor: pointer;
+  outline: none;
+}
+.crystal-node > rect,
+.crystal-node > path,
+.crystal-node > circle {
+  fill: var(--color-background-surface);
+  stroke: var(--color-border-subtle);
+  stroke-width: 1.5;
+}
+.crystal-node[data-change="new"] > rect,
+.crystal-node[data-change="new"] > path {
+  fill: color-mix(
+    in srgb,
+    var(--workflow-flow-expected) 9%,
+    var(--color-background-surface)
+  );
+  stroke: var(--workflow-flow-expected);
+}
+.crystal-node[data-change="adjusted"] > rect {
+  fill: color-mix(
+    in srgb,
+    var(--workflow-flow-rework) 9%,
+    var(--color-background-surface)
+  );
+  stroke: var(--workflow-flow-rework);
+}
+.crystal-node[data-selected="true"] > rect,
+.crystal-node:focus-visible > rect,
+.crystal-node:hover > rect {
+  stroke-width: 3;
+}
+.crystal-node text {
+  fill: var(--color-text-primary);
+  font: 16px system-ui;
+}
+.crystal-node text.crystal-node-binding {
+  font-size: 12px;
+  fill: var(--color-text-secondary);
+}
+.crystal-detail {
+  position: absolute;
+  right: 18px;
+  top: 48px;
+  width: 290px;
+  padding: 18px;
+  border-radius: 12px;
+  background: var(--color-background-surface);
+  border: 1px solid var(--color-border-subtle);
+  box-shadow: 0 12px 32px #0003;
+  z-index: 2;
+}
+.crystal-detail .crystal-actions {
+  justify-content: space-between;
+}
+.crystal-detail h3 {
+  margin: 12px 0;
+}
+.crystal-detail p {
+  line-height: 1.7;
+}
+.crystal-benefits {
+  border-top: 1px solid var(--color-border-subtle);
+}
+.crystal-benefit-head {
+  border: 0;
+  padding: 8px 24px;
+}
+.crystal-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  padding: 0 24px 20px;
+}
+.crystal-metrics p {
+  line-height: 1.6;
+  margin: 10px 0;
+}
+.crystal-workspace dialog .crystal-actions {
+  justify-content: space-between;
+}
+.crystal-workspace dialog p,
+.crystal-workspace dialog li {
+  line-height: 1.8;
+}
+.crystal-workspace dialog::backdrop {
+  background: #0008;
+}
+@media (max-width: 1250px) {
+  .crystal-header {
+    align-items: flex-start;
+  }
+  .crystal-metrics {
+    gap: 8px;
+    padding: 0 14px 14px;
+  }
+  .crystal-legend > span:last-child {
+    display: none;
+  }
+}
+
+.crystal-node[data-change="retained"] > circle {
+  stroke: var(--color-text-secondary);
+}
+
+.crystal-data-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 12px;
+}
+.crystal-data-row > :last-child {
+  white-space: nowrap;
+}
+.crystal-metrics {
+  align-items: stretch;
+}

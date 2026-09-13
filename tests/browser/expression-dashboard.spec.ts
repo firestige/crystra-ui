@@ -1,0 +1,36 @@
+import { test, expect } from "@playwright/test";
+test("accepted expressions drive dashboard sizing and cancel restores the layout", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1920, height: 1080 });
+  await page.goto("/library.html");
+  await expect(page.locator(".library-description h2")).toHaveText("表达方式");
+  await page
+    .getByRole("button", { name: "Dashboard 与图表", exact: true })
+    .click();
+  await expect(
+    page.locator(".expression-dashboard .expression-widget"),
+  ).toHaveCount(17);
+  await page
+    .getByRole("button", { name: "Edit dashboard", exact: true })
+    .click();
+  const value = page.locator('.dashboard-panel[data-panel-id="value"]');
+  await value.click({ button: "right" });
+  await expect(
+    page.getByRole("menuitemradio", { name: /^[123]×[123]$/ }),
+  ).toHaveText(["1×1", "1×2"]);
+  await page.keyboard.press("Escape");
+  const gauge = page.locator('.dashboard-panel[data-panel-id="gauge"]');
+  await gauge.click({ button: "right" });
+  await expect(
+    page.getByRole("menuitemradio", { name: /^[123]×[123]$/ }),
+  ).toHaveCount(2);
+  await page.getByRole("menuitemradio", { name: "1×1", exact: true }).click();
+  await expect(gauge.locator(".expression-gauge-compact")).toBeVisible();
+  await expect(gauge.locator(".expression-widget")).toHaveCSS("width", "160px");
+  await page
+    .getByRole("button", { name: "Cancel editing", exact: true })
+    .click();
+  await expect(gauge.locator(".expression-widget")).toHaveCSS("width", "336px");
+  await expect(page.locator(".react-resizable-handle")).toHaveCount(0);
+});

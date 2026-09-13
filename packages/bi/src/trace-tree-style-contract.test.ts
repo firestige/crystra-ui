@@ -17,16 +17,14 @@ describe("frozen Trace Tree visual grammar", () => {
     expect(css).not.toMatch(/--trace-type-|--trace-surface-/);
   });
 
-  it("restores the Passport divider and frozen spacing hierarchy", () => {
+  it("keeps the dynamic Passport header separated from its detail body", () => {
     expect(css).toMatch(
       /\.trace-passport-head\s*\{[^}]*border-block-end:\s*1px solid var\(--border-default\)/s,
     );
     expect(css).toMatch(
       /\.trace-passport-body\s*\{[^}]*padding:\s*0\.8125rem/s,
     );
-    expect(css).toMatch(
-      /\.trace-passport-title\s*\{[^}]*margin-block-end:\s*0\.875rem/s,
-    );
+    expect(css).toMatch(/\.trace-passport-title\s*\{[^}]*margin:\s*0/s);
   });
 
   it("highlights waterfall action icons on hover and keyboard focus", () => {

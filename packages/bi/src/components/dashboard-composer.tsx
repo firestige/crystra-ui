@@ -1,4 +1,6 @@
 import { useRef, useState, type ReactNode } from "react";
+import type { MonitoringWidgetSize } from "../domain/widget-catalog";
+import { MonitoringMetricPanel } from "./monitoring-metric";
 
 import { CATALOG_COORDINATES } from "../domain/evolution/client";
 import type { MetricResult } from "../domain/evolution/types";
@@ -8,8 +10,8 @@ import {
   type DashboardLayout,
   type LayoutPanel,
 } from "../domain/layout/layout";
-import { ButtonGroup, IconButton } from "./design-system";
 import { DashboardGrid } from "./dashboard-grid";
+import { ButtonGroup, IconButton } from "./design-system";
 import { DashboardMetricPanel } from "./result-visualizer";
 
 const clone = (layout: DashboardLayout): DashboardLayout =>
@@ -56,7 +58,9 @@ export function DashboardComposer({
   focusedMetricCoordinate,
   onEditingChange,
   renderPanel,
+  monitoring = false,
 }: {
+  monitoring?: boolean;
   layout: DashboardLayout;
   results: MetricResult[];
   onApply: (layout: DashboardLayout) => void;
@@ -203,6 +207,7 @@ export function DashboardComposer({
 
   const dashboard = (
     <DashboardGrid
+      exactWidgets={monitoring}
       editing={editing}
       focusedMetricCoordinate={focusedMetricCoordinate}
       layout={editing ? draft : layout}
@@ -226,6 +231,12 @@ export function DashboardComposer({
         );
         return metric === undefined ? (
           <p className="status-reading">{panel.metric_coordinate}</p>
+        ) : monitoring ? (
+          <MonitoringMetricPanel
+            result={metric}
+            visualizer={panel.visualizer}
+            size={`${panel.grid.h}x${panel.grid.w}` as MonitoringWidgetSize}
+          />
         ) : (
           <DashboardMetricPanel
             onEvidence={() => undefined}

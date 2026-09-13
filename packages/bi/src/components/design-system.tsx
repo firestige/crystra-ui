@@ -5,9 +5,31 @@ import type {
   InputHTMLAttributes,
   ReactNode,
 } from "react";
+import { forwardRef, type ComponentPropsWithoutRef } from "react";
+import { COMPONENT_DEFAULTS } from "../domain/component-recipes";
 
 export type TypographyVariant =
-  "h1" | "h2" | "subtitle1" | "body1" | "body2" | "caption" | "overline";
+  | "page-title"
+  | "section-title"
+  | "card-title"
+  | "item-title"
+  | "body"
+  | "body-compact"
+  | "header-description"
+  | "description"
+  | "meta"
+  | "label"
+  | "control"
+  | "metric"
+  | "badge"
+  | "code"
+  | "h1"
+  | "h2"
+  | "subtitle1"
+  | "body1"
+  | "body2"
+  | "caption"
+  | "overline";
 export type TypographyFamily = "sans" | "mono";
 export type TypographyWeight = "regular" | "medium" | "semibold" | "bold";
 export type TypographyTone =
@@ -18,9 +40,12 @@ export type TypographyTone =
   | "error"
   | "warning"
   | "success";
-type ButtonAppearance = "solid" | "outline" | "ghost" | "segment";
-type ButtonTone = "neutral" | "primary" | "danger";
-type SurfaceLevel = "section" | "panel" | "inset" | "raised";
+export type ButtonAppearance = "solid" | "outline" | "ghost" | "segment";
+export type SemanticTone =
+  "neutral" | "primary" | "success" | "warning" | "danger";
+export type ButtonTone = SemanticTone;
+export type ComponentSize = "compact" | "regular";
+export type SurfaceLevel = "section" | "panel" | "inset" | "raised";
 type Status = "available" | "selected" | "partial" | "unavailable" | "error";
 
 export function Typography({
@@ -59,54 +84,78 @@ export function Typography({
   );
 }
 
-export function Button({
-  appearance = "outline",
-  tone = "neutral",
-  size = "compact",
-  selected,
-  className,
-  ...props
-}: ButtonHTMLAttributes<HTMLButtonElement> & {
+export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   appearance?: ButtonAppearance;
-  tone?: ButtonTone;
-  size?: "compact" | "regular";
+  tone?: SemanticTone;
+  size?: ComponentSize;
   selected?: boolean;
-}) {
-  return (
-    <button
-      aria-pressed={appearance === "segment" ? selected : props["aria-pressed"]}
-      className={["wsr-button", className].filter(Boolean).join(" ")}
-      data-appearance={appearance}
-      data-size={size}
-      data-tone={tone}
-      {...props}
-    />
-  );
+  startIcon?: ReactNode;
+  endIcon?: ReactNode;
 }
 
-export function IconButton({
-  "aria-label": label,
-  title,
-  children,
-  ...props
-}: ButtonHTMLAttributes<HTMLButtonElement> & {
+export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
+  function Button(
+    {
+      appearance = COMPONENT_DEFAULTS.button.appearance,
+      tone = COMPONENT_DEFAULTS.button.tone,
+      size = COMPONENT_DEFAULTS.button.size,
+      selected,
+      startIcon,
+      endIcon,
+      children,
+      className,
+      type = "button",
+      ...props
+    },
+    ref,
+  ) {
+    return (
+      <button
+        {...props}
+        ref={ref}
+        type={type}
+        aria-pressed={
+          appearance === "segment" ? selected : props["aria-pressed"]
+        }
+        className={["wsr-button", className].filter(Boolean).join(" ")}
+        data-appearance={appearance}
+        data-size={size}
+        data-tone={tone}
+      >
+        {startIcon && (
+          <span className="wsr-button-icon" aria-hidden="true">
+            {startIcon}
+          </span>
+        )}
+        {children}
+        {endIcon && (
+          <span className="wsr-button-icon" aria-hidden="true">
+            {endIcon}
+          </span>
+        )}
+      </button>
+    );
+  },
+);
+
+export type IconButtonProps = Omit<ButtonProps, "startIcon" | "endIcon"> & {
   "aria-label": string;
-  appearance?: ButtonAppearance;
-  tone?: ButtonTone;
-  size?: "compact" | "regular";
-  selected?: boolean;
-}) {
-  return (
-    <Button
-      aria-label={label}
-      data-icon-button="true"
-      title={title ?? label}
-      {...props}
-    >
-      {children}
-    </Button>
-  );
-}
+};
+export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(
+  function IconButton({ "aria-label": label, title, children, ...props }, ref) {
+    return (
+      <Button
+        {...props}
+        ref={ref}
+        aria-label={label}
+        title={title ?? label}
+        data-icon-button="true"
+      >
+        {children}
+      </Button>
+    );
+  },
+);
 
 export function ButtonGroup({
   segmented = false,
@@ -148,11 +197,20 @@ export function Surface({
   );
 }
 
-export function Divider(props: HTMLAttributes<HTMLHRElement>) {
+export type DividerProps = HTMLAttributes<HTMLHRElement> & {
+  orientation?: "horizontal" | "vertical";
+};
+export function Divider({
+  orientation = "horizontal",
+  className,
+  ...props
+}: DividerProps) {
   return (
     <hr
-      className={["wsr-divider", props.className].filter(Boolean).join(" ")}
       {...props}
+      className={["wsr-divider", className].filter(Boolean).join(" ")}
+      aria-orientation={orientation}
+      data-orientation={orientation}
     />
   );
 }
@@ -173,16 +231,103 @@ export function TextInput({
   );
 }
 
+const STATUS_TONES: Record<Status, SemanticTone> = {
+  available: "primary",
+  selected: "primary",
+  partial: "warning",
+  unavailable: "neutral",
+  error: "danger",
+};
 export function StatusBadge({
   status,
+  tone = STATUS_TONES[status],
   className,
   ...props
-}: HTMLAttributes<HTMLSpanElement> & { status: Status }) {
+}: ChipProps & { status: Status }) {
   return (
-    <span
+    <Chip
+      {...props}
+      tone={tone}
       className={["wsr-status-badge", className].filter(Boolean).join(" ")}
       data-status={status}
+    />
+  );
+}
+
+export type SurfaceProps = ComponentPropsWithoutRef<typeof Surface>;
+export type CardProps = SurfaceProps & {
+  heading?: ReactNode;
+  description?: ReactNode;
+  actions?: ReactNode;
+  footer?: ReactNode;
+  tone?: SemanticTone;
+  padding?: "none" | ComponentSize;
+};
+
+export function Card({
+  heading,
+  description,
+  actions,
+  footer,
+  children,
+  level = COMPONENT_DEFAULTS.card.level,
+  border = COMPONENT_DEFAULTS.card.border,
+  padding = COMPONENT_DEFAULTS.card.padding,
+  tone = "neutral",
+  className,
+  ...props
+}: CardProps) {
+  return (
+    <Surface
       {...props}
+      level={level}
+      border={border}
+      className={["wsr-card", className].filter(Boolean).join(" ")}
+      data-tone={tone}
+      data-padding={padding}
+    >
+      {(heading || description || actions) && (
+        <div className="wsr-card-header">
+          <div className="wsr-card-copy">
+            {heading && (
+              <Typography as="h3" variant="card-title">
+                {heading}
+              </Typography>
+            )}
+            {description && (
+              <Typography as="p" variant="description" tone="secondary">
+                {description}
+              </Typography>
+            )}
+          </div>
+          {actions && <div className="wsr-card-actions">{actions}</div>}
+        </div>
+      )}
+      <div className="wsr-card-content">{children}</div>
+      {footer && <div className="wsr-card-footer">{footer}</div>}
+    </Surface>
+  );
+}
+
+export interface ChipProps extends HTMLAttributes<HTMLSpanElement> {
+  tone?: SemanticTone;
+  appearance?: "soft" | "outline" | "solid";
+  size?: ComponentSize;
+}
+export function Chip({
+  tone = "neutral",
+  appearance = "soft",
+  size = "compact",
+  className,
+  ...props
+}: ChipProps) {
+  return (
+    <span
+      {...props}
+      className={["wsr-chip", className].filter(Boolean).join(" ")}
+      data-tone={tone}
+      data-appearance={appearance}
+      data-size={size}
     />
   );
 }

@@ -1,0 +1,26 @@
+{
+  "version": "candidate-1",
+  "scope": "workflow node kinds, terminal outcomes and flow intents, not runtime state",
+  "dark": {
+    "--workflow-activity-fill": "#123A3A",
+    "--workflow-activity-accent": "#68C8C2",
+    "--workflow-group-fill": "#1B2E4B",
+    "--workflow-group-accent": "#8EB7EE",
+    "--workflow-decision-fill": "#493819",
+    "--workflow-decision-accent": "#E4BC70",
+    "--workflow-parallel-fill": "#352949",
+    "--workflow-parallel-accent": "#BDA0E4",
+    "--workflow-start-fill": "#285144",
+    "--workflow-start-accent": "#90CCB2",
+    "--workflow-end-fill": "#203D35",
+    "--workflow-end-accent": "#8DD5B2",
+    "--workflow-terminated-fill": "#4A2830",
+    "--workflow-terminated-accent": "#ED939D",
+    "--workflow-flow-expected": "#83C8BC",
+    "--workflow-flow-rework": "#DCB268",
+    "--workflow-flow-recovery": "#ACAAE7",
+    "--workflow-flow-exit": "#ED939D",
+    "--workflow-flow-material": "#8EB7EE",
+    "--workflow-flow-unclassified": "#A2A8B4"
+  }
+}

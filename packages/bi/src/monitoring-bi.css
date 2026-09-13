@@ -1,0 +1,435 @@
+.monitoring-metric
+  .monitoring-title:not([data-host-owned], [data-host-owned] *) {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.monitoring-signal:not([data-host-owned], [data-host-owned] *) {
+  font-size: 32px;
+  font-weight: 600;
+  line-height: 1.2;
+  font-variant-numeric: tabular-nums;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.monitoring-empty:not([data-host-owned], [data-host-owned] *) {
+  font-size: 18px;
+  color: var(--color-text-muted, #aaa);
+}
+.monitoring-truth:not([data-host-owned], [data-host-owned] *) {
+  display: block;
+  font-size: 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
+}
+.monitoring-metric
+  .crystra-monitoring-widget-footer
+  > span:not([data-host-owned], [data-host-owned] *) {
+  min-width: 0;
+}
+.monitoring-ratio:not([data-host-owned], [data-host-owned] *) {
+  height: 6px;
+  flex-shrink: 0;
+  border-radius: 4px;
+  background: var(--color-background-inset, #414141);
+  overflow: hidden;
+}
+.monitoring-ratio i:not([data-host-owned], [data-host-owned] *) {
+  display: block;
+  height: 100%;
+  background: var(--color-interaction-primary, #6698ff);
+}
+.monitoring-records:not([data-host-owned], [data-host-owned] *) {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  font-size: 12px;
+}
+.monitoring-records table:not([data-host-owned], [data-host-owned] *) {
+  width: 100%;
+  border-collapse: collapse;
+}
+.monitoring-records th:not([data-host-owned], [data-host-owned] *),
+.monitoring-records td:not([data-host-owned], [data-host-owned] *) {
+  padding: 8px;
+  border-bottom: 1px solid var(--color-border-default, #424242);
+  text-align: left;
+}
+.monitoring-bi .monitoring-row:not([data-host-owned], [data-host-owned] *) {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  align-items: flex-start;
+}
+.monitoring-bi .panel-card:not([data-host-owned], [data-host-owned] *),
+.monitoring-bi .compare-side:not([data-host-owned], [data-host-owned] *),
+.monitoring-bi .compare-delta:not([data-host-owned], [data-host-owned] *) {
+  border-radius: 12px;
+  background: var(--color-background-card, #232323);
+  border-color: var(--color-border-default, #424242);
+}
+.monitoring-bi .compare-result:not([data-host-owned], [data-host-owned] *) {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 20px;
+}
+.monitoring-bi .compare-side:not([data-host-owned], [data-host-owned] *) {
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+.monitoring-bi
+  .metric-navigator
+  ul:not([data-host-owned], [data-host-owned] *) {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 0;
+}
+.monitoring-bi .metric-nav-item:not([data-host-owned], [data-host-owned] *) {
+  border-radius: 8px;
+}
+.monitoring-bi .owned-inspector:not([data-host-owned], [data-host-owned] *) {
+  border-radius: 12px;
+  background: var(--color-background-card, #232323);
+}
+.monitoring-bi .inspector-header:not([data-host-owned], [data-host-owned] *) {
+  border-bottom: 1px solid var(--color-border-default, #424242);
+}
+.monitoring-bi .action-control:not([data-host-owned], [data-host-owned] *),
+.monitoring-bi .control-field:not([data-host-owned], [data-host-owned] *) {
+  border-radius: 8px;
+}
+.dashboard-grid-shell[data-exact-widgets="true"]
+  .dashboard-panel:not([data-host-owned], [data-host-owned] *) {
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  padding: 0;
+  overflow: visible;
+}
+.dashboard-grid-shell[data-exact-widgets="true"] {
+  max-width: 100%;
+  overflow-x: auto;
+}
+.monitoring-bi.wsr-bi[data-crystra-theme="dark"]:not(
+    [data-host-owned],
+    [data-host-owned] *
+  ) {
+  --wsr-surface-section: var(--color-background-workspace);
+  --wsr-surface-panel: var(--color-background-card);
+  --wsr-surface-raised: var(--color-background-floating);
+  --wsr-surface-inset: var(--color-background-inset);
+  --surface-canvas: var(--color-background-workspace);
+  --status-expired: var(--color-text-muted);
+  --status-incompatible: var(--color-status-error-solid);
+}
+.monitoring-signal small:not([data-host-owned], [data-host-owned] *) {
+  font-size: 12px;
+  font-weight: 400;
+}
+.monitoring-empty:not([data-host-owned], [data-host-owned] *) {
+  white-space: normal;
+  overflow-wrap: anywhere;
+  line-height: 1.3;
+}
+.monitoring-bi .status-label:not([data-host-owned], [data-host-owned] *) {
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 6px;
+}
+.monitoring-bi .status-expired:not([data-host-owned], [data-host-owned] *) {
+  color: var(--color-text-muted);
+  background: var(--color-background-inset);
+  border-color: var(--color-border-default);
+}
+.monitoring-bi
+  .status-incompatible:not([data-host-owned], [data-host-owned] *) {
+  color: var(--color-status-error-text);
+  background: var(--color-status-error-surface);
+  border-color: var(--color-status-error-border);
+}
+.monitoring-bi
+  .monitoring-foundations:not([data-host-owned], [data-host-owned] *) {
+  padding: 20px;
+}
+.monitoring-bi
+  .monitoring-foundations
+  > div:not([data-host-owned], [data-host-owned] *) {
+  max-width: none;
+}
+.monitoring-bi
+  .monitoring-foundations
+  h1:not([data-host-owned], [data-host-owned] *) {
+  font-size: 24px;
+}
+.monitoring-bi
+  .monitoring-foundations
+  h2:not([data-host-owned], [data-host-owned] *) {
+  font-size: 18px;
+}
+.monitoring-bi
+  .library-visualizers:not([data-host-owned], [data-host-owned] *) {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  align-items: flex-start;
+}
+.monitoring-signal > svg:not([data-host-owned], [data-host-owned] *) {
+  display: inline-block;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+.monitoring-available:not([data-host-owned], [data-host-owned] *) {
+  display: inline-flex;
+  align-items: center;
+  color: var(--color-status-success-text, #22c55e);
+}
+
+.monitoring-title-icon:not([data-host-owned], [data-host-owned] *) {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  width: 100%;
+  color: var(--color-text-secondary, #aaa);
+}
+.monitoring-boolean:not([data-host-owned], [data-host-owned] *) {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--color-text-primary, #eee);
+}
+.monitoring-metric[data-visualizer="badge@1"]
+  .crystra-monitoring-widget-footer:not(
+    [data-host-owned],
+    [data-host-owned] *
+  ) {
+  justify-content: flex-end;
+}
+.monitoring-title-icon:focus-visible:not(
+    [data-host-owned],
+    [data-host-owned] *
+  ),
+.monitoring-boolean:focus-visible:not([data-host-owned], [data-host-owned] *) {
+  outline: 2px solid var(--color-border-focus, #679efe);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.monitoring-title-icon > svg:not([data-host-owned], [data-host-owned] *) {
+  flex-shrink: 0;
+}
+.monitoring-short-title:not([data-host-owned], [data-host-owned] *) {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.monitoring-boolean:not([data-host-owned], [data-host-owned] *) {
+  gap: 8px;
+}
+.monitoring-boolean > svg:not([data-host-owned], [data-host-owned] *) {
+  flex-shrink: 0;
+}
+.monitoring-boolean-label:not([data-host-owned], [data-host-owned] *) {
+  font-size: 24px;
+  line-height: 32px;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Compact 48px icon trial: color supplies emphasis; the 160px border box stays fixed. */
+.monitoring-metric[data-size="1x1"]:not(
+    [data-host-owned],
+    [data-host-owned] *
+  ) {
+  gap: 4px;
+}
+.monitoring-metric[data-size="1x1"]
+  .monitoring-short-title:not([data-host-owned], [data-host-owned] *),
+.monitoring-metric[data-size="1x1"]
+  .monitoring-signal:not([data-host-owned], [data-host-owned] *),
+.monitoring-metric[data-size="1x1"]
+  .monitoring-boolean-label:not([data-host-owned], [data-host-owned] *) {
+  font-weight: 400;
+}
+.monitoring-title-icon > svg:not([data-host-owned], [data-host-owned] *),
+.monitoring-boolean > svg:not([data-host-owned], [data-host-owned] *) {
+  color: var(--color-interaction-primary, #679efe);
+}
+.monitoring-title-icon
+  > svg
+  [stroke-width]:not([data-host-owned], [data-host-owned] *),
+.monitoring-boolean
+  > svg
+  [stroke-width]:not([data-host-owned], [data-host-owned] *) {
+  stroke-width: 1.5;
+}
+
+/* Title typography is independent of language, capacity and icon presence. */
+.monitoring-metric
+  .monitoring-title:not([data-host-owned], [data-host-owned] *),
+.monitoring-metric
+  .monitoring-short-title:not([data-host-owned], [data-host-owned] *) {
+  font-size: var(--crystra-widget-title-size, 14px);
+  line-height: var(--crystra-widget-title-line, 20px);
+  font-weight: var(--crystra-widget-title-weight, 400);
+}
+/* Object identity stays discoverable without consuming two title lines. */
+.monitoring-metric[data-size="1x1"]
+  .monitoring-title-icon:not([data-host-owned], [data-host-owned] *) {
+  justify-content: center;
+}
+.monitoring-metric[data-size="1x1"]
+  .crystra-monitoring-widget-header
+  > div:not([data-host-owned], [data-host-owned] *) {
+  display: none;
+}
+.dashboard-grid-shell[data-exact-widgets="true"] .dashboard-panel {
+  transition:
+    width 240ms ease,
+    height 240ms ease,
+    transform 240ms ease;
+}
+.dashboard-grid-shell[data-exact-widgets="true"] .crystra-monitoring-widget {
+  transition:
+    width 240ms ease,
+    height 240ms ease;
+}
+@media (prefers-reduced-motion: reduce) {
+  .dashboard-grid-shell[data-exact-widgets="true"] .dashboard-panel,
+  .dashboard-grid-shell[data-exact-widgets="true"] .crystra-monitoring-widget {
+    transition: none;
+  }
+}
+
+.dashboard-size-menu {
+  position: fixed;
+  z-index: 10000;
+  min-width: 160px;
+  max-width: calc(100vw - 16px);
+}
+.dashboard-size-menu-heading {
+  padding: 8px 12px;
+  color: var(--color-text-muted);
+  font-size: 12px;
+}
+.dashboard-size-menu-mark {
+  display: inline-flex;
+  width: 14px;
+}
+.dashboard-size-menu .wsr-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.dashboard-custom-size {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  padding: 8px 12px 12px;
+  border-bottom: 1px solid var(--color-border-default, #424242);
+}
+.dashboard-custom-size label {
+  display: grid;
+  gap: 4px;
+  color: var(--color-text-secondary, #aaa);
+  font-size: 11px;
+}
+.dashboard-custom-size input {
+  width: 62px;
+  height: 30px;
+  padding: 4px 7px;
+  border: 1px solid var(--color-border-default, #424242);
+  border-radius: 6px;
+  background: var(--color-background-workspace, #191919);
+  color: var(--color-text-primary, #eee);
+}
+.dashboard-custom-size small,
+.dashboard-custom-size > button {
+  grid-column: 1 / -1;
+}
+.dashboard-custom-size small {
+  color: var(--color-text-muted, #888);
+}
+.dashboard-custom-size > button {
+  height: 30px;
+  border: 1px solid var(--color-border-default, #424242);
+  border-radius: 6px;
+  background: var(--color-background-card, #242426);
+  color: var(--color-text-primary, #eee);
+  cursor: pointer;
+}
+.dashboard-custom-size > button:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+/* The dragged card follows the pointer above a separate snapped landing ghost. */
+.wsr-bi .dashboard-grid-shell[data-exact-widgets="true"][data-editing="true"] {
+  background-image: none;
+  background-color: transparent;
+}
+.wsr-bi
+  .dashboard-grid-shell[data-exact-widgets="true"][data-editing="true"]
+  .dashboard-grid
+  > .react-grid-item:not(.react-grid-placeholder) {
+  outline: none;
+}
+.wsr-bi
+  .dashboard-grid-shell[data-exact-widgets="true"]
+  .dashboard-grid
+  > .react-grid-placeholder {
+  z-index: 1;
+  background: #303030;
+  opacity: 1;
+  border: 1px solid #414141;
+  border-radius: 12px;
+  outline: none;
+  pointer-events: none;
+}
+.wsr-bi
+  .dashboard-grid-shell[data-exact-widgets="true"]
+  .dashboard-panel.react-draggable-dragging {
+  z-index: 3;
+  opacity: 1;
+  transition: none;
+}
+.wsr-bi
+  .dashboard-grid-shell[data-exact-widgets="true"]
+  .dashboard-grid
+  > .react-grid-placeholder {
+  transition: none;
+}
+.monitoring-state-mark {
+  display: inline-flex;
+  align-items: center;
+}
+.monitoring-state-mark [data-truth-state="AVAILABLE"] {
+  color: var(--color-status-success-solid, #30b870);
+}
+.monitoring-state-mark [data-truth-state="LOWER_BOUND"],
+.monitoring-state-mark [data-truth-state="EXPIRED"] {
+  color: var(--color-status-warning-solid, #e7ad44);
+}
+.monitoring-state-mark [data-truth-state="INCOMPATIBLE"] {
+  color: var(--color-status-error-solid, #ef4444);
+}
+.monitoring-state-mark [data-truth-state="NOT_APPLICABLE"],
+.monitoring-state-mark [data-truth-state="UNAVAILABLE"] {
+  color: var(--color-text-secondary, #aaa);
+}
+/* Footer status recipe: size belongs to this placement, not navigation icons. */
+.monitoring-state-mark {
+  --widget-status-icon-size: 18px;
+}
+.monitoring-state-mark svg[data-truth-state] {
+  width: var(--widget-status-icon-size);
+  height: var(--widget-status-icon-size);
+}

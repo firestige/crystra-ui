@@ -1,15 +1,27 @@
-import "./shared.css";
+import "./crystra-components.css";
+import "./crystra-theme.css";
 import "./primitives.css";
+import "./shared.css";
 
 export {
   Button,
   ButtonGroup,
+  Card,
+  Chip,
   Divider,
   IconButton,
   StatusBadge,
   Surface,
   TextInput,
   Typography,
+  type ButtonProps,
+  type CardProps,
+  type ChipProps,
+  type ComponentSize,
+  type DividerProps,
+  type IconButtonProps,
+  type SemanticTone,
+  type SurfaceProps,
   type TypographyFamily,
   type TypographyTone,
   type TypographyVariant,
@@ -26,14 +38,8 @@ export {
   BiSurface,
   type BiSurfaceProps,
 } from "./components/bi-surface";
-export {
-  createBiTheme,
-  type BiDataPalette,
-  type BiPalette,
-  type BiTheme,
-  type BiTypographyScale,
-} from "./domain/theme";
 export { CompareResultFrame } from "./components/compare-result";
+export { DashboardGrid } from "./components/dashboard-grid";
 export { MetricExplanationView, ReceiptView } from "./components/details";
 export {
   EvidenceConsoleFoundation,
@@ -59,32 +65,38 @@ export {
   DashboardMetricPanel,
   MetricPanel,
 } from "./components/result-visualizer";
-export { DashboardGrid } from "./components/dashboard-grid";
-export {
-  SpanPassport,
-  TraceStatistics,
-  TraceTree,
-  TraceWaterfall,
-} from "./components/trace-views";
 export {
   CoverageLabel,
   EvidenceLifecycleLabel,
   MetricTruthLabel,
   ScopedError,
 } from "./components/status";
+export {
+  SpanPassport,
+  TraceStatistics,
+  TraceTree,
+  TraceWaterfall,
+} from "./components/trace-views";
 export type * from "./domain/evidence/types";
-export type * from "./domain/evolution/types";
 export { CATALOG_COORDINATES } from "./domain/evolution/client";
+export type * from "./domain/evolution/types";
 export { isMetricResult } from "./domain/evolution/validation";
 export {
-  type TracePagePort,
+  createBiTheme,
+  type BiDataPalette,
+  type BiPalette,
+  type BiTheme,
+  type BiTypographyScale,
+} from "./domain/theme";
+export {
   loadRecordedTrace,
+  type TracePagePort,
 } from "./domain/trace/load-recorded-trace";
 export {
+  projectRecordedStructure,
   type RecordedNode,
   type RecordedStructure,
   type UnresolvedEndpoint,
-  projectRecordedStructure,
 } from "./domain/trace/recorded-structure";
 export {
   compileTraceView,
@@ -111,3 +123,69 @@ export interface BiNavigationPort {
 export interface BiHostErrorPort {
   report(error: unknown, context: string): void;
 }
+
+export { Icon, type IconName, type IconSize } from "./components/icon";
+
+export { COMPONENT_DEFAULTS } from "./domain/component-recipes";
+
+export {
+  List,
+  ListItem,
+  Menu,
+  Tabs,
+  type ListItemProps,
+  type ListProps,
+  type MenuItem,
+  type MenuProps,
+  type TabItem,
+  type TabsProps,
+} from "./components/collection-components";
+export {
+  EmptyState,
+  FullBenchViewer,
+  Popover,
+  ProgressNotice,
+  SearchField,
+  SelectField,
+  SelectionControl,
+  type FullBenchViewerProps,
+  type PopoverProps,
+  type ProgressNoticeProps,
+  type SearchFieldProps,
+  type SelectFieldProps,
+  type SelectionControlProps,
+} from "./components/state-components";
+
+export {
+  MonitoringWidget,
+  type MonitoringWidgetProps,
+} from "./components/monitoring-widget";
+export { Widget, type WidgetProps, type WidgetSize } from "./components/widget";
+export {
+  WIDGET_CATALOG,
+  type MonitoringWidgetSize,
+  type WidgetCategory,
+} from "./domain/widget-catalog";
+
+import "./monitoring-widget-base.css";
+
+export { MonitoringMetricPanel } from "./components/monitoring-metric";
+
+export {
+  MONITORING_RENDERERS,
+  WIDGET_GAP,
+  WIDGET_UNIT,
+  monitoringSizes,
+  widgetSpan,
+} from "./domain/widget-catalog";
+
+export {
+  ExpandableSearchField,
+  type ExpandableSearchFieldProps,
+} from "./components/expandable-search-field";
+
+export {
+  ToggleSwitch,
+  type ToggleSwitchProps,
+} from "./components/toggle-switch";
+export { WidgetTooltip } from "./components/widget-tooltip";

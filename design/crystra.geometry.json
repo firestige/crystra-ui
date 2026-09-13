@@ -1,0 +1,80 @@
+{
+  "status": "Accepted component values extracted; layout roles separated from internal spacing",
+  "scope": "Crystra-owned UI geometry, including accepted observation layouts. Host Input remains excluded.",
+  "groups": {
+    "layout": {
+      "layout-bench-inset-inline": "20px",
+      "layout-bench-inset-block": "16px",
+      "layout-section-gap": "12px",
+      "layout-card-gap": "12px",
+      "layout-input-min-width": "360px",
+      "layout-bench-min-width": "680px",
+      "layout-files-min-width": "320px",
+      "layout-bench-inset-end": "20px"
+    },
+    "shape": {
+      "shape-panel": "12px",
+      "shape-control": "8px",
+      "shape-detail": "4px",
+      "shape-pill": "999px",
+      "border-hairline": "1px",
+      "border-emphasis": "2px"
+    },
+    "component": {
+      "component-padding-compact": "12px",
+      "component-padding-regular": "16px",
+      "component-content-gap": "12px",
+      "component-control-gap": "8px",
+      "component-detail-gap": "4px",
+      "component-row-padding-block": "8px",
+      "component-control-padding-block-compact": "5px",
+      "component-control-padding-block-regular": "7px",
+      "component-control-height-compact": "32px",
+      "component-control-height-regular": "36px",
+      "component-icon-hit-compact": "28px",
+      "component-icon-hit-regular": "36px",
+      "component-card-min-height": "120px"
+    },
+    "overlay": {
+      "overlay-menu-min-width": "192px",
+      "overlay-popover-min-width": "240px",
+      "overlay-notice-width": "320px",
+      "overlay-notice-offset": "24px"
+    },
+    "motion": {
+      "component-motion-duration": "150ms",
+      "component-motion-ease": "ease",
+      "motion-sidebar-duration": "340ms",
+      "motion-sidebar-ease": "cubic-bezier(.22, .68, .2, 1)"
+    },
+    "observation": {
+      "layout-comparison-card-min": "480px",
+      "layout-comparison-card-max": "640px",
+      "layout-comparison-break-lg": "1044px",
+      "layout-comparison-break-xl": "1566px",
+      "layout-comparison-break-2xl": "2080px",
+      "layout-comparison-gap-min": "16px",
+      "layout-comparison-gap-max": "32px",
+      "layout-comparison-gap-ratio": "0.02",
+      "layout-comparison-sidebar-inner": "300px",
+      "layout-comparison-sidebar-width": "324px",
+      "layout-comparison-sidebar-gap": "24px",
+      "layout-observation-editor-list": "210px",
+      "layout-observation-editor-controls": "280px",
+      "layout-observation-editor-gap": "24px",
+      "layout-observation-editor-list-compact": "170px",
+      "layout-observation-editor-controls-compact": "240px",
+      "layout-observation-editor-gap-compact": "16px",
+      "layout-observation-editor-max": "1840px",
+      "layout-observation-dialog-inset": "48px",
+      "layout-observation-dialog-width": "600px",
+      "layout-observation-dataset-width": "740px",
+      "motion-observation-sidebar-duration": "340ms",
+      "motion-observation-sidebar-ease": "cubic-bezier(.22,1,.36,1)",
+      "overlay-observation-backdrop": "rgba(0,0,0,.6)",
+      "overlay-observation-blur": "2px",
+      "component-trace-zoom-inset": "6px",
+      "card-surface-shadow": "0 4px 12px 0 #00000005, 0 2px 8px 0 #0000000a"
+    }
+  }
+}

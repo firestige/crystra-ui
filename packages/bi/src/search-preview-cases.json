@@ -1,0 +1,58 @@
+[
+  {
+    "id": "sidebar-task",
+    "title": "侧栏 · 任务搜索",
+    "page": "crystra-task-work-v8-sidebar.html",
+    "selector": "[data-section-id=task-working-set]",
+    "description": "五个 v8 页面共用。点击放大镜展开并替换标题；即时过滤任务；关闭或 Escape 清空并收起。",
+    "width": 320
+  },
+  {
+    "id": "sidebar-workflow",
+    "title": "侧栏 · 工作流搜索",
+    "page": "crystra-workflow-explorer-v8.html",
+    "selector": "#sidebar-panel-workflows",
+    "description": "五个 v8 页面共用。展开式搜索，匹配工作流；与排序、版本显示共存。",
+    "width": 320
+  },
+  {
+    "id": "task-browser",
+    "title": "任务浏览器 · 资源搜索",
+    "page": "crystra-task-browser-v8.html",
+    "selector": ".browser-host",
+    "description": "常驻放大镜与原生 search 输入；按任务、目标、Workspace 过滤，并与分类筛选组合。",
+    "width": 900
+  },
+  {
+    "id": "workflow-browser",
+    "title": "工作流浏览器 · 资源搜索",
+    "page": "crystra-workflow-explorer-v8.html",
+    "selector": ".browser-host",
+    "description": "与任务浏览器同形，搜索工作流、用途或版本；保留资源列表和筛选上下文。",
+    "width": 900
+  },
+  {
+    "id": "plan-dag",
+    "title": "Plan DAG · 节点定位",
+    "page": "crystra-task-work-v8-sidebar.html",
+    "selector": "[data-section-id=plan-full-dag]",
+    "description": "文字前缀“搜索”与原生 search 输入；匹配节点名称或标识，高亮命中并淡化其他节点。",
+    "width": 900
+  },
+  {
+    "id": "trace-directory",
+    "title": "调用目录 · 记录搜索",
+    "page": "crystra-analysis-audit-v8.html",
+    "selector": ".obs-run-list",
+    "description": "常驻放大镜与 text 输入；按 Task、版本、Delivery 过滤，与状态和版本筛选组合。",
+    "width": 320
+  },
+  {
+    "id": "trace-timeline",
+    "title": "调用时间线 · Span 搜索",
+    "page": "crystra-analysis-audit-v8.html",
+    "selector": ".trace-waterfall-canvas",
+    "description": "TextInput，无搜索图标，英文 placeholder；直接过滤调用，保留原始时间线与展开操作。",
+    "width": 1100
+  }
+]

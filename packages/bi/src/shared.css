@@ -1,6 +1,8 @@
 @reference "./styles.css";
 
 .wsr-bi {
+  /* Generated trace geometry default */
+  --component-trace-zoom-inset: 6px;
   color-scheme: light;
   --wsr-surface-panel: oklch(1 0 0);
   --wsr-surface-section: var(--wsr-surface-panel);
@@ -877,17 +879,8 @@
   align-items: center;
   justify-content: space-between;
   gap: var(--space-cluster);
-  padding: 0 0.75rem;
+  padding: 12px;
   border-block-end: 1px solid var(--border-default);
-}
-.wsr-bi .trace-passport-head strong {
-  font-size: 0.625rem;
-}
-.wsr-bi .trace-passport-head span {
-  color: var(--content-muted);
-  font-size: 0.5rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
 }
 .wsr-bi .trace-passport-body {
   padding: 0.8125rem;
@@ -896,20 +889,24 @@
   display: flex;
   align-items: center;
   gap: 0.5625rem;
-  margin-block-end: 0.875rem;
+  min-width: 0;
+  margin: 0;
 }
 .wsr-bi .trace-passport-title > div {
   min-width: 0;
 }
 .wsr-bi .trace-passport-name {
   display: block;
+  margin: 0;
+  overflow-wrap: anywhere;
   font-size: var(--type-body-size);
 }
 .wsr-bi .trace-passport-title small {
   display: block;
   margin-block-start: 0.1875rem;
   color: var(--content-muted);
-  font-size: 0.5rem;
+  font-size: 12px;
+  line-height: 18px;
 }
 .wsr-bi .trace-passport-sigil {
   display: grid;
@@ -1133,8 +1130,7 @@
 .wsr-bi .trace-view {
   gap: 0.75rem;
 }
-.wsr-bi .trace-view button,
-.wsr-bi .trace-view input[type="search"] {
+.wsr-bi .trace-view button {
   min-height: 2rem;
   padding: 0 0.7rem;
   border: 1px solid var(--border-strong);
@@ -2282,4 +2278,17 @@
   .wsr-bi .trace-waterfall-actions {
     justify-self: start;
   }
+}
+
+.wsr-bi .trace-waterfall-main {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-grid);
+  min-width: 0;
+  min-height: 0;
+}
+
+.wsr-bi .trace-minimap-track {
+  margin-inline-end: var(--component-trace-zoom-inset);
+  margin-block: var(--component-trace-zoom-inset);
 }

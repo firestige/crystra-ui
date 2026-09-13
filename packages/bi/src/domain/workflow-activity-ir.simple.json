@@ -1,0 +1,98 @@
+{
+  "schemaVersion": "0.1-draft",
+  "source": {
+    "kind": "example",
+    "id": "资料摘要"
+  },
+  "title": "资料摘要",
+  "nodes": [
+    {
+      "id": "simple-input",
+      "kind": "activity",
+      "title": "接收资料",
+      "summary": "输入",
+      "description": "接收用户指定的资料和摘要要求。",
+      "output": "资料与摘要要求"
+    },
+    {
+      "id": "simple-write",
+      "kind": "activity",
+      "title": "整理摘要",
+      "summary": "Writer",
+      "description": "依据输入资料生成摘要；收到校对意见后修订。",
+      "output": "摘要候选",
+      "role": "Writer"
+    },
+    {
+      "id": "simple-review",
+      "kind": "activity",
+      "title": "校对摘要",
+      "summary": "Reviewer",
+      "description": "检查摘要是否忠实于原资料，并输出通过或需修订的明确结果。",
+      "output": "通过 / 修订意见",
+      "role": "Reviewer"
+    },
+    {
+      "id": "simple-done",
+      "kind": "final",
+      "title": "摘要完成",
+      "summary": "完成",
+      "description": "摘要通过校对，交付结果。",
+      "output": "经校对的摘要"
+    }
+  ],
+  "flows": [
+    {
+      "id": "simple",
+      "kind": "main",
+      "title": "主流程",
+      "entryNodeId": "simple-input",
+      "exitNodeIds": ["simple-done"],
+      "nodeIds": [
+        "simple-input",
+        "simple-write",
+        "simple-review",
+        "simple-done"
+      ],
+      "edges": [
+        {
+          "id": "simple-read",
+          "from": "simple-input",
+          "to": "simple-write",
+          "kind": "control",
+          "outcome": "continue",
+          "title": "按要求整理",
+          "description": "资料交给 Writer 整理。"
+        },
+        {
+          "id": "simple-check",
+          "from": "simple-write",
+          "to": "simple-review",
+          "kind": "control",
+          "outcome": "continue",
+          "title": "提交校对",
+          "description": "摘要交给 Reviewer 校对。"
+        },
+        {
+          "id": "simple-pass",
+          "from": "simple-review",
+          "to": "simple-done",
+          "kind": "control",
+          "outcome": "success",
+          "title": "通过",
+          "description": "校对通过后交付摘要。"
+        },
+        {
+          "id": "simple-revise",
+          "from": "simple-review",
+          "to": "simple-write",
+          "kind": "control",
+          "outcome": "rework",
+          "title": "需要修订",
+          "description": "按校对意见修订摘要，再提交校对。"
+        }
+      ]
+    }
+  ],
+  "relations": []
+}

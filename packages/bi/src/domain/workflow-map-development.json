@@ -1,0 +1,377 @@
+{
+  "version": "0.2",
+  "title": "Implementation",
+  "description": "从需求与设计到经过验证的实现",
+  "nodes": [
+    {
+      "id": "s",
+      "kind": "start",
+      "title": "开始",
+      "description": "开始的目标与工作规则可继续在对话中细化。"
+    },
+    {
+      "id": "plan",
+      "kind": "group",
+      "title": "理解与设计"
+    },
+    {
+      "id": "work",
+      "kind": "group",
+      "title": "逐单元实现"
+    },
+    {
+      "id": "delivery",
+      "kind": "group",
+      "title": "测试与复核"
+    },
+    {
+      "id": "ready",
+      "kind": "decision",
+      "title": "整体测试通过？",
+      "description": "在工作流层级判断整体测试结果；失败时根据原因回到设计、实现，或终止本次工作。"
+    },
+    {
+      "id": "e",
+      "kind": "end",
+      "title": "完成",
+      "description": "完成的目标与工作规则可继续在对话中细化。",
+      "outcome": "completed"
+    },
+    {
+      "id": "aborted",
+      "kind": "end",
+      "title": "退出",
+      "description": "无法继续时结束本次工作，不代表完成目标。",
+      "outcome": "terminated"
+    },
+    {
+      "id": "next",
+      "kind": "decision",
+      "title": "还有实现单元？",
+      "description": "还有实现单元？的目标与工作规则可继续在对话中细化。",
+      "parent": "work"
+    },
+    {
+      "id": "pack",
+      "kind": "activity",
+      "title": "汇总测试结果",
+      "description": "汇总设计符合性复核与整体验证的证据，交给顶层判断。",
+      "inputs": ["当前工作材料"],
+      "outputs": ["阶段成果"],
+      "resources": ["工作指南"],
+      "parent": "delivery"
+    },
+    {
+      "id": "tdd",
+      "kind": "group",
+      "title": "测试与实现循环",
+      "parent": "work"
+    },
+    {
+      "id": "read",
+      "kind": "activity",
+      "title": "理解需求与系统设计",
+      "description": "理解需求与系统设计的目标与工作规则可继续在对话中细化。",
+      "parent": "plan",
+      "inputs": ["当前工作材料"],
+      "outputs": ["阶段成果"],
+      "resources": ["工作指南"]
+    },
+    {
+      "id": "clear",
+      "kind": "decision",
+      "title": "材料足够？",
+      "description": "材料足够？的目标与工作规则可继续在对话中细化。",
+      "parent": "plan"
+    },
+    {
+      "id": "ask",
+      "kind": "activity",
+      "title": "澄清缺口",
+      "description": "澄清缺口的目标与工作规则可继续在对话中细化。",
+      "parent": "plan",
+      "inputs": ["当前工作材料"],
+      "outputs": ["阶段成果"],
+      "resources": ["工作指南"]
+    },
+    {
+      "id": "design",
+      "kind": "activity",
+      "title": "完成详细设计与测试目标",
+      "description": "完成详细设计与测试目标的目标与工作规则可继续在对话中细化。",
+      "parent": "plan",
+      "inputs": ["当前工作材料"],
+      "outputs": ["阶段成果"],
+      "resources": ["工作指南"]
+    },
+    {
+      "id": "choose",
+      "kind": "activity",
+      "title": "选择待实现单元",
+      "description": "选择待实现单元的目标与工作规则可继续在对话中细化。",
+      "parent": "work",
+      "inputs": ["当前工作材料"],
+      "outputs": ["阶段成果"],
+      "resources": ["工作指南"]
+    },
+    {
+      "id": "red",
+      "kind": "activity",
+      "title": "编写并校准测试",
+      "description": "编写并校准测试的目标与工作规则可继续在对话中细化。",
+      "parent": "tdd",
+      "inputs": ["当前工作材料"],
+      "outputs": ["阶段成果"],
+      "resources": ["工作指南"]
+    },
+    {
+      "id": "green",
+      "kind": "activity",
+      "title": "完成最小实现",
+      "description": "完成最小实现的目标与工作规则可继续在对话中细化。",
+      "parent": "tdd",
+      "inputs": ["当前工作材料"],
+      "outputs": ["阶段成果"],
+      "resources": ["工作指南"]
+    },
+    {
+      "id": "pass",
+      "kind": "decision",
+      "title": "测试通过？",
+      "description": "测试通过？的目标与工作规则可继续在对话中细化。",
+      "parent": "tdd"
+    },
+    {
+      "id": "refactor",
+      "kind": "activity",
+      "title": "重构并运行回归",
+      "description": "重构并运行回归的目标与工作规则可继续在对话中细化。",
+      "parent": "tdd",
+      "inputs": ["当前工作材料"],
+      "outputs": ["阶段成果"],
+      "resources": ["工作指南"]
+    },
+    {
+      "id": "stable",
+      "kind": "decision",
+      "title": "回归通过？",
+      "description": "回归通过？的目标与工作规则可继续在对话中细化。",
+      "parent": "tdd"
+    },
+    {
+      "id": "fork",
+      "kind": "fork",
+      "title": "并行复核",
+      "description": "并行复核的目标与工作规则可继续在对话中细化。",
+      "parent": "delivery"
+    },
+    {
+      "id": "review",
+      "kind": "activity",
+      "title": "检查设计符合性",
+      "description": "检查设计符合性的目标与工作规则可继续在对话中细化。",
+      "parent": "delivery",
+      "inputs": ["当前工作材料"],
+      "outputs": ["阶段成果"],
+      "resources": ["工作指南"]
+    },
+    {
+      "id": "verify",
+      "kind": "activity",
+      "title": "执行整体验证",
+      "description": "执行整体验证的目标与工作规则可继续在对话中细化。",
+      "parent": "delivery",
+      "inputs": ["当前工作材料"],
+      "outputs": ["阶段成果"],
+      "resources": ["工作指南"]
+    },
+    {
+      "id": "join",
+      "kind": "join",
+      "title": "等待全部复核",
+      "description": "等待全部复核的目标与工作规则可继续在对话中细化。",
+      "parent": "delivery",
+      "join": "all"
+    }
+  ],
+  "edges": [
+    {
+      "id": "edge-1",
+      "from": "s",
+      "to": "read",
+      "intent": "expected"
+    },
+    {
+      "id": "edge-2",
+      "from": "read",
+      "to": "clear",
+      "intent": "expected"
+    },
+    {
+      "id": "edge-3",
+      "from": "clear",
+      "to": "ask",
+      "label": "材料缺失，补充澄清",
+      "intent": "recovery",
+      "trigger": "需求材料不足"
+    },
+    {
+      "id": "edge-4",
+      "from": "ask",
+      "to": "read",
+      "intent": "recovery",
+      "trigger": "缺口已澄清，重新检查材料"
+    },
+    {
+      "id": "edge-5",
+      "from": "clear",
+      "to": "design",
+      "label": "材料完整，开始设计",
+      "intent": "expected"
+    },
+    {
+      "id": "edge-6",
+      "from": "design",
+      "to": "choose",
+      "intent": "expected",
+      "summaryLabel": "设计完成"
+    },
+    {
+      "id": "edge-7",
+      "from": "choose",
+      "to": "red",
+      "intent": "expected"
+    },
+    {
+      "id": "edge-8",
+      "from": "red",
+      "to": "green",
+      "intent": "expected"
+    },
+    {
+      "id": "edge-9",
+      "from": "green",
+      "to": "pass",
+      "intent": "expected"
+    },
+    {
+      "id": "edge-10",
+      "from": "pass",
+      "to": "green",
+      "label": "测试未通过，继续实现",
+      "intent": "expected"
+    },
+    {
+      "id": "edge-11",
+      "from": "pass",
+      "to": "refactor",
+      "label": "测试通过，开始重构",
+      "intent": "expected"
+    },
+    {
+      "id": "edge-12",
+      "from": "refactor",
+      "to": "stable",
+      "intent": "expected"
+    },
+    {
+      "id": "edge-13",
+      "from": "stable",
+      "to": "green",
+      "label": "回归失败，修复实现",
+      "intent": "rework",
+      "trigger": "回归测试失败"
+    },
+    {
+      "id": "edge-14",
+      "from": "stable",
+      "to": "next",
+      "label": "回归通过，本单元完成",
+      "intent": "expected",
+      "summaryLabel": "本单元验证完成"
+    },
+    {
+      "id": "edge-15",
+      "from": "next",
+      "to": "choose",
+      "label": "仍有单元待实现",
+      "intent": "expected"
+    },
+    {
+      "id": "edge-16",
+      "from": "next",
+      "to": "fork",
+      "label": "全部单元已完成",
+      "intent": "expected",
+      "summaryLabel": "实现完成"
+    },
+    {
+      "id": "edge-17",
+      "from": "fork",
+      "to": "review",
+      "intent": "expected"
+    },
+    {
+      "id": "edge-18",
+      "from": "fork",
+      "to": "verify",
+      "intent": "expected"
+    },
+    {
+      "id": "edge-19",
+      "from": "review",
+      "to": "join",
+      "intent": "expected"
+    },
+    {
+      "id": "edge-20",
+      "from": "verify",
+      "to": "join",
+      "intent": "expected"
+    },
+    {
+      "id": "edge-21",
+      "from": "join",
+      "to": "pack",
+      "intent": "expected"
+    },
+    {
+      "id": "edge-24",
+      "from": "ready",
+      "to": "e",
+      "label": "测试通过",
+      "intent": "expected"
+    },
+    {
+      "id": "edge-25",
+      "from": "pack",
+      "to": "ready",
+      "intent": "expected",
+      "summaryLabel": "测试结果已就绪"
+    },
+    {
+      "id": "reconsider-design",
+      "from": "ready",
+      "to": "read",
+      "label": "未通过：设计问题",
+      "intent": "rework",
+      "trigger": "测试暴露设计问题，需要修订设计"
+    },
+    {
+      "id": "repair-implementation",
+      "from": "ready",
+      "to": "choose",
+      "label": "未通过：实现问题",
+      "intent": "rework",
+      "trigger": "测试暴露实现问题，需要修改实现"
+    },
+    {
+      "id": "stop-work",
+      "from": "ready",
+      "to": "aborted",
+      "label": "未通过：决定终止",
+      "intent": "exit",
+      "trigger": "确认无法继续，终止本次工作"
+    }
+  ]
+}
