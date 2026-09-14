@@ -40,7 +40,7 @@ test("product sidebar matches v8 compact geometry and inline section search", as
   ).toHaveCSS("justify-content", "flex-start");
   await expect(
     sidebar.getByRole("button", { name: "切换到 DeepSeek Harness" }),
-  ).toHaveCSS("font-size", "22px");
+  ).toHaveCSS("font-size", "19px");
   const title = await sidebar
     .getByRole("button", { name: "任务", exact: true })
     .boundingBox();

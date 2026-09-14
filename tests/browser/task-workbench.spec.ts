@@ -110,3 +110,38 @@ test("Plan document and DAG navigation and Wave drilldown retain host input", as
   await expect(page.getByText("计划执行总览", { exact: true })).toBeVisible();
   await expect(input).toHaveValue("层级切换不启动运行");
 });
+
+test("v8 compact rail preserves the input and opens navigation without widening the workspace", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1920, height: 1080 });
+  await page.goto("/task-test.html");
+  const input = page.getByRole("textbox", { name: "宿主输入替身" });
+  await input.fill("折叠后保留");
+  await page.getByRole("button", { name: "收起侧边栏", exact: true }).click();
+  expect(
+    (await page.locator('[data-section-id="sidebar"]').boundingBox())!.width,
+  ).toBe(64);
+  expect(
+    (await page.locator("[data-brand-crystra]").boundingBox())!.width,
+  ).toBe(24);
+  await expect(
+    page.getByRole("button", { name: "收起侧边栏", exact: true }),
+  ).toBeHidden();
+  await page.getByRole("button", { name: "分析", exact: true }).click();
+  await expect(
+    page.getByRole("button", { name: "调用追踪", exact: true }),
+  ).toBeVisible();
+  expect(
+    (await page.locator('[data-section-id="sidebar"]').boundingBox())!.width,
+  ).toBe(64);
+  await page.keyboard.press("Escape");
+  await expect(
+    page.getByRole("button", { name: "调用追踪", exact: true }),
+  ).toBeHidden();
+  await page.getByRole("button", { name: "展开侧边栏", exact: true }).click();
+  expect(
+    (await page.locator('[data-section-id="sidebar"]').boundingBox())!.width,
+  ).toBe(260);
+  await expect(input).toHaveValue("折叠后保留");
+});

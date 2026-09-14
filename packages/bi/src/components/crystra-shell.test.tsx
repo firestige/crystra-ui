@@ -68,3 +68,29 @@ it("opens the accepted expandable search, filters tasks, and clears on Escape", 
     "false",
   );
 });
+
+it("collapsed branding expands the rail without switching to another host", () => {
+  const host = vi.fn();
+  const { container } = render(
+    <CrystraShell
+      route="tasks"
+      tasks={[]}
+      workflows={[]}
+      onNavigate={() => {}}
+      onOpenHarness={host}
+      onNewTask={() => {}}
+      onOpenSettings={() => {}}
+    >
+      <p>Content</p>
+    </CrystraShell>,
+  );
+  fireEvent.click(screen.getByRole("button", { name: "收起侧边栏" }));
+  expect(
+    container.querySelector('[data-product-surface="crystra"]'),
+  ).toHaveAttribute("data-sidebar-collapsed", "true");
+  fireEvent.click(screen.getByRole("button", { name: "展开侧边栏" }));
+  expect(host).not.toHaveBeenCalled();
+  expect(
+    container.querySelector('[data-product-surface="crystra"]'),
+  ).toHaveAttribute("data-sidebar-collapsed", "false");
+});

@@ -203,3 +203,165 @@
   .crystra-button:not([data-section-id="new-task-action"]) {
   justify-content: flex-start;
 }
+
+/* Accepted v8 compact rail: the same sections become flyouts; their state is retained. */
+.crystra-product-shell [data-section-id="sidebar-logo-row"] {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+}
+.crystra-product-shell
+  [data-section-id="sidebar-logo-row"]
+  [data-section-id="surface-banner"] {
+  flex: 1;
+  min-width: 0;
+}
+.crystra-bi[data-theme]
+  .crystra-product-shell[data-product-surface]
+  [data-section-id="surface-banner"] {
+  font-size: 19px;
+  letter-spacing: -0.025em;
+}
+.crystra-bi[data-theme]
+  .crystra-product-shell[data-product-surface]
+  [data-section-id="surface-banner"]
+  svg {
+  color: #7dd3fc;
+}
+.crystra-product-shell [data-section-id="sidebar-rail"] {
+  display: none;
+}
+.crystra-bi[data-theme]
+  .crystra-product-shell[data-product-surface][data-sidebar-collapsed="true"] {
+  grid-template-columns: 64px minmax(0, 1fr);
+}
+.crystra-bi[data-theme]
+  .crystra-product-shell[data-product-surface][data-sidebar-collapsed="true"]
+  > aside {
+  padding: 16px 12px;
+}
+.crystra-product-shell[data-sidebar-collapsed="true"]
+  [data-section-id="sidebar-brand-name"],
+.crystra-product-shell[data-sidebar-collapsed="true"]
+  [data-section-id="sidebar-toggle"],
+.crystra-product-shell[data-sidebar-collapsed="true"]
+  [data-section-id="new-task-label"],
+.crystra-product-shell[data-sidebar-collapsed="true"] [data-settings-label] {
+  display: none;
+}
+.crystra-bi[data-theme]
+  .crystra-product-shell[data-product-surface][data-sidebar-collapsed="true"]
+  [data-section-id="surface-banner"],
+.crystra-bi[data-theme]
+  .crystra-product-shell[data-product-surface][data-sidebar-collapsed="true"]
+  [data-section-id="new-task-action"],
+.crystra-bi[data-theme]
+  .crystra-product-shell[data-product-surface][data-sidebar-collapsed="true"]
+  [data-section-id="host-settings"] {
+  width: 40px;
+  height: 40px;
+  min-height: 40px;
+  padding: 0;
+  justify-content: center;
+}
+.crystra-product-shell[data-sidebar-collapsed="true"]
+  [data-section-id="sidebar-rail"] {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--color-border-default);
+}
+.crystra-product-shell [data-section-id="sidebar-rail"] > button {
+  width: 40px;
+  height: 40px;
+  justify-content: center !important;
+  border-radius: 12px;
+}
+.crystra-product-shell
+  [data-section-id="sidebar-rail"]
+  > [aria-expanded="true"] {
+  background: #263348;
+  border-color: #5b8def;
+  color: #dbeafe;
+}
+.crystra-product-shell[data-sidebar-collapsed="true"]
+  [data-section-id="task-working-set"],
+.crystra-product-shell[data-sidebar-collapsed="true"]
+  [data-section-id="workflow-navigation"],
+.crystra-product-shell[data-sidebar-collapsed="true"]
+  [data-section-id="analysis-navigation"] {
+  display: none;
+}
+.crystra-product-shell[data-sidebar-collapsed="true"]
+  [data-sidebar-flyout="open"] {
+  display: flex !important;
+  flex-direction: column;
+  position: fixed;
+  left: 72px;
+  width: 300px;
+  margin: 0;
+  padding: 14px;
+  border: 1px solid #354052;
+  border-radius: 16px;
+  background: #15181d;
+  box-shadow: 0 18px 56px #0008;
+  z-index: 90;
+}
+.crystra-product-shell[data-sidebar-collapsed="true"]
+  [data-section-id="task-working-set"][data-sidebar-flyout="open"] {
+  top: 146px;
+  max-height: calc(100dvh - 170px);
+}
+.crystra-product-shell[data-sidebar-collapsed="true"]
+  [data-section-id="workflow-navigation"][data-sidebar-flyout="open"] {
+  top: 196px;
+  max-height: calc(100dvh - 220px);
+  overflow: auto;
+}
+.crystra-product-shell[data-sidebar-collapsed="true"]
+  [data-section-id="analysis-navigation"][data-sidebar-flyout="open"] {
+  top: 246px;
+  max-height: calc(100dvh - 270px);
+  overflow: auto;
+}
+.crystra-bi[data-theme]
+  .crystra-product-shell[data-product-surface][data-sidebar-collapsed="true"]
+  [data-section-id="sidebar-toggle"] {
+  display: none;
+}
+.crystra-bi[data-theme]
+  .crystra-product-shell[data-product-surface][data-sidebar-collapsed="true"]
+  [data-section-id="surface-banner"] {
+  flex: none;
+}
+.crystra-bi[data-theme]
+  .crystra-product-shell[data-product-surface]
+  [data-brand-crystra] {
+  flex: none;
+  width: 24px;
+  height: 24px;
+}
+.crystra-bi[data-theme]
+  .crystra-product-shell[data-product-surface]
+  [data-section-id="sidebar-rail"]
+  > button {
+  width: 40px;
+  min-width: 40px;
+  height: 40px;
+  padding: 0;
+}
+.crystra-bi[data-theme]
+  .crystra-product-shell[data-product-surface]
+  [data-section-id="sidebar-rail"]
+  svg {
+  width: 20px;
+  height: 20px;
+}
+.crystra-bi[data-theme]
+  .crystra-product-shell[data-product-surface][data-sidebar-collapsed="true"]
+  [data-section-id="surface-banner"] {
+  justify-content: center !important;
+}
