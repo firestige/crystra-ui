@@ -30,7 +30,7 @@ it("changes only the read surface while retaining the same host input and indepe
   render(<Scenario />);
   const input = screen.getByRole("textbox", { name: "Host draft" });
   fireEvent.change(input, { target: { value: "preserved draft" } });
-  fireEvent.click(screen.getByRole("tab", { name: "计划", exact: true }));
+  fireEvent.click(screen.getByRole("tab", { name: "计划" }));
   expect(change).toHaveBeenCalledWith("plan");
   expect(screen.getByText("Plan projection")).toBeVisible();
   expect(screen.getByText("Gate projection")).not.toBeVisible();
