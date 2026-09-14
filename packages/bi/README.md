@@ -52,3 +52,11 @@ SOFTWARE.
 The component never mutates the supplied snapshot or writes package files. Saving a draft does not publish a Workflow, approve a Plan, or authorize execution. Resource creation, deletion, renaming, semantic relation rebuilding, and distribution to an Agent require separate host contracts.
 
 Unsaved resource drafts remain in memory across page unmounts for the exact definition, definition revision, and workspace root. Another Workflow revision cannot adopt them. Pending local edits keep the browser unload warning active even while a different page is open; they are not durably saved by this mechanism. Returning with a changed source snapshot requires explicit conflict resolution before saving.
+
+`TaskDiagram` renders an explicitly supplied inert SVG tree after validating a
+closed element/attribute vocabulary, local-only paint references and size/depth
+bounds. The caller supplies the accessible label and selectable node IDs;
+selection callbacks carry identity only. `TaskDiagramExplorer` adds view-only
+search, zoom and pan. `isTaskDiagram` and `TaskDiagramNode` are public for host
+admission. These rendering contracts do not assert plan/run authority or grant
+execution permission. Design fixtures remain in the separate test harness.

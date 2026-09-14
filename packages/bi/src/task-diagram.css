@@ -1,0 +1,21 @@
+.crystra-task-diagram-explorer header {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.crystra-task-diagram-explorer input {
+  min-width: 0;
+  flex: 1;
+  padding: 8px;
+  background: var(--color-background-inset);
+  border: 1px solid var(--color-border-default);
+  border-radius: 6px;
+  color: inherit;
+}
+.crystra-task-diagram-viewport {
+  overflow: auto;
+  height: 500px;
+  border: 1px solid var(--color-border-default);
+  margin: 12px 0;
+  background: var(--color-background-inset);
+}

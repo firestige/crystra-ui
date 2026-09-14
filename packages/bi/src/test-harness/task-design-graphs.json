@@ -4,26 +4,255 @@
     "summary": {
       "tag": "svg",
       "props": {
-        "data-iconify": "tabler:arrow-right",
-        "data-icon-role": "disclosure",
-        "data-icon-kind": "svg",
-        "width": "14",
-        "height": "14",
-        "viewBox": "0 0 24 24",
-        "aria-hidden": "true"
+        "data-color-scope": "chart",
+        "viewBox": "0 0 760 250",
+        "aria-label": "当前 Task 计划中包含并行分支、汇合、关口和恢复循环的 DAG"
       },
       "children": [
         {
-          "tag": "path",
+          "tag": "g",
           "props": {
             "fill": "none",
-            "stroke": "currentColor",
-            "strokeLinecap": "round",
-            "strokeLinejoin": "round",
-            "strokeWidth": "2",
-            "d": "M5 12h14m-6 6l6-6m-6-6l6 6"
+            "stroke": "#546171",
+            "strokeWidth": "2"
           },
-          "children": []
+          "children": [
+            {
+              "tag": "path",
+              "props": {
+                "d": "M145 125H205"
+              },
+              "children": []
+            },
+            {
+              "tag": "path",
+              "props": {
+                "d": "M205 125C230 125 225 67 260 67"
+              },
+              "children": []
+            },
+            {
+              "tag": "path",
+              "props": {
+                "d": "M205 125C230 125 225 183 260 183"
+              },
+              "children": []
+            },
+            {
+              "tag": "path",
+              "props": {
+                "d": "M405 67C445 67 440 125 475 125"
+              },
+              "children": []
+            },
+            {
+              "tag": "path",
+              "props": {
+                "d": "M405 183C445 183 440 125 475 125"
+              },
+              "children": []
+            },
+            {
+              "tag": "path",
+              "props": {
+                "d": "M610 125H655"
+              },
+              "children": []
+            },
+            {
+              "tag": "path",
+              "props": {
+                "d": "M542 158C540 226 335 226 335 205",
+                "stroke": "#d49b32",
+                "strokeDasharray": "6 5"
+              },
+              "children": []
+            }
+          ]
+        },
+        {
+          "tag": "g",
+          "props": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": "12"
+          },
+          "children": [
+            {
+              "tag": "rect",
+              "props": {
+                "x": "25",
+                "y": "94",
+                "width": "120",
+                "height": "62",
+                "rx": "10",
+                "fill": "#123029",
+                "stroke": "#2f9f70"
+              },
+              "children": []
+            },
+            {
+              "tag": "text",
+              "props": {
+                "data-type": "graph-meta",
+                "x": "43",
+                "y": "116",
+                "fill": "#8a94a3"
+              },
+              "children": ["目标"]
+            },
+            {
+              "tag": "text",
+              "props": {
+                "data-type": "graph-title",
+                "x": "43",
+                "y": "139",
+                "fill": "#e5e7eb"
+              },
+              "children": ["发布候选可验证"]
+            },
+            {
+              "tag": "rect",
+              "props": {
+                "x": "260",
+                "y": "36",
+                "width": "145",
+                "height": "62",
+                "rx": "10",
+                "fill": "#172b47",
+                "stroke": "#5b8def"
+              },
+              "children": []
+            },
+            {
+              "tag": "text",
+              "props": {
+                "data-type": "graph-meta",
+                "x": "278",
+                "y": "58",
+                "fill": "#8a94a3"
+              },
+              "children": ["批次 1A"]
+            },
+            {
+              "tag": "text",
+              "props": {
+                "data-type": "graph-title",
+                "x": "278",
+                "y": "81",
+                "fill": "#e5e7eb"
+              },
+              "children": ["市场规则研究"]
+            },
+            {
+              "tag": "rect",
+              "props": {
+                "x": "260",
+                "y": "152",
+                "width": "145",
+                "height": "62",
+                "rx": "10",
+                "fill": "#1d2229",
+                "stroke": "#3b4450"
+              },
+              "children": []
+            },
+            {
+              "tag": "text",
+              "props": {
+                "data-type": "graph-meta",
+                "x": "278",
+                "y": "174",
+                "fill": "#8a94a3"
+              },
+              "children": ["批次 1B"]
+            },
+            {
+              "tag": "text",
+              "props": {
+                "data-type": "graph-title",
+                "x": "278",
+                "y": "197",
+                "fill": "#e5e7eb"
+              },
+              "children": ["构建与签名验证"]
+            },
+            {
+              "tag": "rect",
+              "props": {
+                "x": "475",
+                "y": "94",
+                "width": "135",
+                "height": "62",
+                "rx": "10",
+                "fill": "#2d2819",
+                "stroke": "#d49b32"
+              },
+              "children": []
+            },
+            {
+              "tag": "text",
+              "props": {
+                "data-type": "graph-meta",
+                "x": "493",
+                "y": "116",
+                "fill": "#d49b32"
+              },
+              "children": ["批次 2"]
+            },
+            {
+              "tag": "text",
+              "props": {
+                "data-type": "graph-title",
+                "x": "493",
+                "y": "139",
+                "fill": "#e5e7eb"
+              },
+              "children": ["集成验证"]
+            },
+            {
+              "tag": "rect",
+              "props": {
+                "x": "655",
+                "y": "94",
+                "width": "82",
+                "height": "62",
+                "rx": "10",
+                "fill": "#282132",
+                "stroke": "#9c6ade"
+              },
+              "children": []
+            },
+            {
+              "tag": "text",
+              "props": {
+                "data-type": "graph-meta",
+                "x": "674",
+                "y": "116",
+                "fill": "#b7a0e8"
+              },
+              "children": ["关口"]
+            },
+            {
+              "tag": "text",
+              "props": {
+                "data-type": "graph-title",
+                "x": "674",
+                "y": "139",
+                "fill": "#e5e7eb"
+              },
+              "children": ["授权"]
+            },
+            {
+              "tag": "text",
+              "props": {
+                "data-type": "graph-meta",
+                "x": "414",
+                "y": "236",
+                "fill": "#d49b32"
+              },
+              "children": ["验证失败 → 修改实现"]
+            }
+          ]
         }
       ]
     },

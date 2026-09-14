@@ -145,3 +145,32 @@ test("v8 compact rail preserves the input and opens navigation without widening 
   ).toBe(260);
   await expect(input).toHaveValue("折叠后保留");
 });
+
+test("supplied plan drawing uses the full accepted canvas and supports keyboard node selection", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1920, height: 1080 });
+  await page.goto("/task-test.html");
+  await page.getByRole("tab", { name: "计划", exact: true }).click();
+  const summary = page.getByRole("img", {
+    name: "当前 Task 计划中包含并行分支、汇合、关口和恢复循环的 DAG",
+    exact: true,
+  });
+  await expect(summary).toHaveAttribute("viewBox", "0 0 760 250");
+  const bounds = await summary.boundingBox();
+  expect(bounds!.width).toBeGreaterThan(300);
+  expect(bounds!.height).toBeGreaterThan(100);
+  await page.getByRole("button", { name: "查看完整 DAG", exact: true }).click();
+  await expect(
+    page.getByRole("img", { name: "可缩放和拖动的完整计划 DAG", exact: true }),
+  ).toBeVisible();
+  const node = page.getByRole("button", {
+    name: "构建与签名验证",
+    exact: true,
+  });
+  await node.focus();
+  await node.press("Enter");
+  await expect(
+    page.getByText("选中计划节点：build", { exact: true }),
+  ).toBeVisible();
+});

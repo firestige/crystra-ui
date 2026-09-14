@@ -282,3 +282,7 @@ export {
   WorkflowCrystallizationView,
   type CrystallizationProjection,
 } from "./components/workflow-crystallization-view";
+
+export { TaskDiagram, TaskDiagramExplorer } from "./components/task-diagram";
+
+export { isTaskDiagram, type TaskDiagramNode } from "./domain/task-diagram";
