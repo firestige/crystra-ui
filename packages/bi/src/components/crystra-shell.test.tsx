@@ -28,7 +28,7 @@ it("routes v8 navigation with exact identities and leaves host actions to callba
   expect(navigate).toHaveBeenLastCalledWith("workflows");
   fireEvent.click(screen.getByRole("button", { name: "调用追踪" }));
   expect(navigate).toHaveBeenLastCalledWith("analysis-traces");
-  fireEvent.click(screen.getByRole("button", { name: "新建 Task" }));
+  fireEvent.click(screen.getByRole("button", { name: "新建任务" }));
   expect(create).toHaveBeenCalledOnce();
   fireEvent.click(
     screen.getByRole("button", { name: "切换到 DeepSeek Harness" }),

@@ -1,5 +1,5 @@
 import { useState, type ReactNode } from "react";
-import { Button, IconButton, Typography } from "./design-system";
+import { Button, IconButton } from "./design-system";
 import { List, ListItem } from "./collection-components";
 import { ExpandableSearchField } from "./expandable-search-field";
 import { Icon } from "./icon";
@@ -74,27 +74,40 @@ export function CrystraShell(props: CrystraShellProps) {
           aria-label="切换到 DeepSeek Harness"
           onClick={props.onOpenHarness}
         >
-          Crystra
+          <Icon name="diamond" size="brand-slot" />
+          <span>Crystra</span>
         </Button>
         <Button
           appearance="outline"
           data-section-id="new-task-action"
           onClick={props.onNewTask}
         >
-          新建 Task
+          <Icon name="plus" size="inline-action" />
+          新建任务
         </Button>
         <section
           data-section-id="task-working-set"
           data-expanded={expanded.task}
         >
           <header data-section-id="task-section-header">
-            <Button
-              appearance="ghost"
-              aria-expanded={expanded.task}
-              onClick={() => toggle("task")}
-            >
-              任务
-            </Button>
+            <ExpandableSearchField
+              title={
+                <Button
+                  appearance="ghost"
+                  aria-expanded={expanded.task}
+                  onClick={() => toggle("task")}
+                >
+                  <Icon name="chevron-down" size="disclosure" />
+                  任务
+                </Button>
+              }
+              label="搜索任务"
+              placeholder="搜索任务"
+              value={taskQuery}
+              onValueChange={setTaskQuery}
+              triggerProps={{ "data-section-id": "task-search-action" }}
+              cancelProps={{ "data-section-id": "task-search-clear" }}
+            />
             <IconButton
               appearance="ghost"
               aria-label="全部任务"
@@ -106,14 +119,6 @@ export function CrystraShell(props: CrystraShellProps) {
           </header>
           {expanded.task && (
             <div data-section-id="task-section-content">
-              <ExpandableSearchField
-                label="搜索任务"
-                placeholder="搜索任务"
-                value={taskQuery}
-                onValueChange={setTaskQuery}
-                triggerProps={{ "data-section-id": "task-search-action" }}
-                cancelProps={{ "data-section-id": "task-search-clear" }}
-              />
               {records(props.tasks, taskQuery, "task")}
             </div>
           )}
@@ -124,13 +129,24 @@ export function CrystraShell(props: CrystraShellProps) {
           aria-label="工作流"
         >
           <header data-section-id="workflow-section-header">
-            <Button
-              appearance="ghost"
-              aria-expanded={expanded.workflow}
-              onClick={() => toggle("workflow")}
-            >
-              工作流
-            </Button>
+            <ExpandableSearchField
+              title={
+                <Button
+                  appearance="ghost"
+                  aria-expanded={expanded.workflow}
+                  onClick={() => toggle("workflow")}
+                >
+                  <Icon name="chevron-down" size="disclosure" />
+                  工作流
+                </Button>
+              }
+              label="搜索工作流"
+              placeholder="搜索工作流"
+              value={workflowQuery}
+              onValueChange={setWorkflowQuery}
+              triggerProps={{ "data-section-id": "workflow-search-action" }}
+              cancelProps={{ "data-section-id": "workflow-search-clear" }}
+            />
             <IconButton
               appearance="ghost"
               aria-label="全部工作流"
@@ -142,14 +158,6 @@ export function CrystraShell(props: CrystraShellProps) {
           </header>
           {expanded.workflow && (
             <div data-section-id="workflow-section-content">
-              <ExpandableSearchField
-                label="搜索工作流"
-                placeholder="搜索工作流"
-                value={workflowQuery}
-                onValueChange={setWorkflowQuery}
-                triggerProps={{ "data-section-id": "workflow-search-action" }}
-                cancelProps={{ "data-section-id": "workflow-search-clear" }}
-              />
               {records(props.workflows, workflowQuery, "workflow")}
             </div>
           )}
@@ -164,6 +172,7 @@ export function CrystraShell(props: CrystraShellProps) {
             aria-expanded={expanded.analysis}
             onClick={() => toggle("analysis")}
           >
+            <Icon name="chevron-down" size="disclosure" />
             分析
           </Button>
           {expanded.analysis && (
@@ -182,6 +191,16 @@ export function CrystraShell(props: CrystraShellProps) {
                   aria-current={props.route === page ? "page" : undefined}
                   onClick={() => props.onNavigate(page)}
                 >
+                  <Icon
+                    name={
+                      page === "analysis-overview"
+                        ? "layout-columns"
+                        : page === "analysis-traces"
+                          ? "activity"
+                          : "arrows-exchange"
+                    }
+                    size="navigation"
+                  />
                   {label}
                 </Button>
               ))}
@@ -191,12 +210,10 @@ export function CrystraShell(props: CrystraShellProps) {
         <footer data-section-id="sidebar-footer">
           {props.settings ?? (
             <Button appearance="ghost" onClick={props.onOpenSettings}>
+              <Icon name="settings" size="navigation" />
               设置
             </Button>
           )}
-          <Typography variant="caption" tone="secondary">
-            Crystra
-          </Typography>
         </footer>
       </aside>
       <main data-section-id="product-page">{props.children}</main>
