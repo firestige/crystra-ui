@@ -36,3 +36,35 @@ it("routes v8 navigation with exact identities and leaves host actions to callba
   expect(host).toHaveBeenCalledOnce();
   expect(screen.getByText("Page content")).toBeVisible();
 });
+
+it("opens the accepted expandable search, filters tasks, and clears on Escape", () => {
+  render(
+    <CrystraShell
+      route="tasks"
+      tasks={[
+        { id: "one", title: "First task" },
+        { id: "two", title: "Second task" },
+      ]}
+      workflows={[]}
+      onNavigate={() => undefined}
+      onOpenHarness={() => undefined}
+      onNewTask={() => undefined}
+      onOpenSettings={() => undefined}
+    >
+      <p>Content</p>
+    </CrystraShell>,
+  );
+  fireEvent.click(screen.getByRole("button", { name: "搜索任务" }));
+  const search = screen.getByRole("searchbox", { name: "搜索任务" });
+  fireEvent.change(search, { target: { value: "Second" } });
+  expect(
+    screen.queryByRole("button", { name: "First task" }),
+  ).not.toBeInTheDocument();
+  expect(screen.getByRole("button", { name: "Second task" })).toBeVisible();
+  fireEvent.keyDown(search, { key: "Escape" });
+  expect(screen.getByRole("button", { name: "First task" })).toBeVisible();
+  expect(screen.getByRole("button", { name: "搜索任务" })).toHaveAttribute(
+    "aria-expanded",
+    "false",
+  );
+});

@@ -1,7 +1,8 @@
 import { useState, type ReactNode } from "react";
 import { Button, IconButton, Typography } from "./design-system";
 import { List, ListItem } from "./collection-components";
-import { SearchField } from "./state-components";
+import { ExpandableSearchField } from "./expandable-search-field";
+import { Icon } from "./icon";
 import "../crystra-shell.css";
 
 export type CrystraPage =
@@ -100,16 +101,18 @@ export function CrystraShell(props: CrystraShellProps) {
               data-section-id="all-tasks-action"
               onClick={() => props.onNavigate("tasks")}
             >
-              ▾
+              <Icon name="chevron-down" size="inline-action" />
             </IconButton>
           </header>
           {expanded.task && (
             <div data-section-id="task-section-content">
-              <SearchField
+              <ExpandableSearchField
                 label="搜索任务"
-                hideLabel
+                placeholder="搜索任务"
                 value={taskQuery}
-                onChange={(event) => setTaskQuery(event.target.value)}
+                onValueChange={setTaskQuery}
+                triggerProps={{ "data-section-id": "task-search-action" }}
+                cancelProps={{ "data-section-id": "task-search-clear" }}
               />
               {records(props.tasks, taskQuery, "task")}
             </div>
@@ -134,16 +137,18 @@ export function CrystraShell(props: CrystraShellProps) {
               data-section-id="all-workflows-action"
               onClick={() => props.onNavigate("workflows")}
             >
-              ▾
+              <Icon name="chevron-down" size="inline-action" />
             </IconButton>
           </header>
           {expanded.workflow && (
             <div data-section-id="workflow-section-content">
-              <SearchField
+              <ExpandableSearchField
                 label="搜索工作流"
-                hideLabel
+                placeholder="搜索工作流"
                 value={workflowQuery}
-                onChange={(event) => setWorkflowQuery(event.target.value)}
+                onValueChange={setWorkflowQuery}
+                triggerProps={{ "data-section-id": "workflow-search-action" }}
+                cancelProps={{ "data-section-id": "workflow-search-clear" }}
               />
               {records(props.workflows, workflowQuery, "workflow")}
             </div>
