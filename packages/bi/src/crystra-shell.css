@@ -3,16 +3,16 @@
   grid-template-columns: 248px minmax(0, 1fr);
   height: 100%;
   min-height: 0;
-  color: var(--crystra-color-text-primary, #e2e8f0);
-  background: var(--crystra-color-bg-main, #111318);
+  color: var(--color-text-primary);
+  background: var(--color-background-shell);
 }
 .crystra-product-shell > aside {
   display: flex;
   flex-direction: column;
   min-height: 0;
   padding: 16px 14px;
-  border-right: 1px solid var(--crystra-color-border, #282d36);
-  background: var(--crystra-color-bg-sidebar, #16191f);
+  border-right: 1px solid var(--color-border-default);
+  background: var(--color-background-sidebar);
   gap: 8px;
 }
 .crystra-product-shell [data-section-id="new-task-action"] {
@@ -52,7 +52,7 @@
 .crystra-product-shell [data-section-id="sidebar-footer"] {
   margin-top: auto;
   padding-top: 12px;
-  border-top: 1px solid var(--crystra-color-border, #282d36);
+  border-top: 1px solid var(--color-border-default);
   display: flex;
   justify-content: space-between;
   align-items: center;
