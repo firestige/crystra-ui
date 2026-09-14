@@ -7,6 +7,7 @@ import { Icon } from "./icon";
 import "../crystra-shell.css";
 
 export type CrystraPage =
+  | "new-task"
   | "tasks"
   | "task"
   | "workflows"

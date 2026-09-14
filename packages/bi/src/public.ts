@@ -252,3 +252,6 @@ export {
   TaskEvidenceContext,
   type TaskEvidenceContextProjection,
 } from "./components/task-evidence-context";
+
+export { TaskBrowser, type TaskBrowserProps } from "./components/task-browser";
+export type { BrowserTaskRecord } from "./components/task-browser-model";
