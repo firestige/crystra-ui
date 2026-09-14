@@ -89,3 +89,6 @@
   > .crystra-tab-panel {
   margin-top: 0;
 }
+.crystra-workflow-layout > [data-section-id="workflow-projections"] {
+  container: studio-display / inline-size;
+}

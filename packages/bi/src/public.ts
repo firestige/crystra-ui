@@ -270,3 +270,9 @@ export {
   type WorkflowMapViewerProps,
   type WorkflowLayoutResolver,
 } from "./components/workflow-map-viewer";
+export {
+  WorkflowResourceViewer,
+  type WorkflowResourceViewerProps,
+  type ResourceWorkspaceSnapshot,
+  type WorkflowCatalogResource,
+} from "./components/workflow-resource-viewer";

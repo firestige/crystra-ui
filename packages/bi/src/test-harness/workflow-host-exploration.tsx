@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
+import { WorkflowResourceDesign } from "./workflow-resource-design";
 import {
   WorkflowWorkbench,
   type WorkflowWorkbenchPage,
@@ -13,9 +14,11 @@ const identity = () => {};
 export function WorkflowHostExploration({
   definitionId,
   revision,
+  renderMarkdown,
 }: {
   definitionId: string;
   revision: string;
+  renderMarkdown?: (text: string) => ReactNode;
 }) {
   const [page, setPage] = useState<WorkflowWorkbenchPage>("studio"),
     [header, setHeader] = useState<HTMLDivElement | null>(null);
@@ -47,7 +50,7 @@ export function WorkflowHostExploration({
               headerContainer={page === "studio" ? header : null}
             />
           ),
-          resources: <p role="status">资源配置接入中。</p>,
+          resources: <WorkflowResourceDesign renderMarkdown={renderMarkdown} />,
           crystallization: <p role="status">结晶投影接入中。</p>,
         }}
       />

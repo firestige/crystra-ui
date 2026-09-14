@@ -939,3 +939,7 @@
   width: 20px;
   height: 20px;
 }
+/* Preserve the accepted horizontal header scroll without allowing actions to overlap the tabs. */
+.wrb .wrb-file-header.wb-page-header {
+  grid-template-columns: minmax(180px, 268px) max-content max-content;
+}

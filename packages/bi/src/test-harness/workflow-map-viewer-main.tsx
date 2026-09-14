@@ -1,3 +1,4 @@
+import { WorkflowResourceDesign } from "./workflow-resource-design";
 import { createRoot } from "react-dom/client";
 import { useState } from "react";
 import {
@@ -59,7 +60,7 @@ export function Scenario() {
               }}
             />
           ),
-          resources: <p>资源配置接入中</p>,
+          resources: <WorkflowResourceDesign />,
           crystallization: <p>结晶投影接入中</p>,
         }}
       />
