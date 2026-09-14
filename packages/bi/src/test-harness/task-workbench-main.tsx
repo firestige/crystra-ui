@@ -1,3 +1,5 @@
+import { TaskPlanExploration } from "./task-plan-exploration";
+import { TaskExecutionExploration } from "./task-execution-exploration";
 import { TaskGateExploration } from "./task-gate-exploration";
 import { taskDeliveryExploration } from "./task-delivery-exploration";
 import { taskRequirementsExploration } from "./task-requirements-exploration";
@@ -9,7 +11,6 @@ import {
   TaskWorkbench,
   TaskRequirementsPanel,
   TaskDeliveryPanel,
-  Card,
   type TaskWorkbenchPage,
 } from "../public";
 export function TaskFrameScenario() {
@@ -47,8 +48,8 @@ export function TaskFrameScenario() {
             grilling: (
               <TaskRequirementsPanel data={taskRequirementsExploration} />
             ),
-            plan: <Card heading="计划投影">测试内容</Card>,
-            execution: <Card heading="执行投影">测试内容</Card>,
+            plan: <TaskPlanExploration />,
+            execution: <TaskExecutionExploration />,
             gate: <TaskGateExploration />,
             delivery: <TaskDeliveryPanel data={taskDeliveryExploration} />,
           }}

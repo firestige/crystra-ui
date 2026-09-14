@@ -236,3 +236,19 @@ export {
   type TaskGateProjection,
   type TaskGateQueueItem,
 } from "./components/task-gate-panel";
+
+export {
+  TaskPlanPanel,
+  type TaskPlanProjection,
+} from "./components/task-plan-panel";
+export {
+  TaskExecutionPanel,
+  type TaskExecutionProjection,
+  type TaskWaveProjection,
+  type TaskRunIdentity,
+} from "./components/task-execution-panel";
+
+export {
+  TaskEvidenceContext,
+  type TaskEvidenceContextProjection,
+} from "./components/task-evidence-context";

@@ -16,7 +16,7 @@ test("v8 Task frame keeps one host input while switching five independent benche
   await page.getByRole("tab", { name: "计划", exact: true }).click();
   await expect(
     page.getByRole("tabpanel", { name: "计划", exact: true }),
-  ).toContainText("计划投影");
+  ).toContainText("目标与完成判定");
   await expect(input).toHaveValue("保留未发送输入");
   expect(await input.boundingBox()).toEqual(before);
   await expect(page.getByRole("textbox")).toHaveCount(1);
@@ -59,6 +59,13 @@ test("Gate selection and Delivery inspection preserve the unsent host draft", as
   await expect(
     page.locator('[data-section-id="gate-execution-preview"]'),
   ).toContainText("尚未授权");
+  await page.getByRole("button", { name: /^发布说明差异 / }).click();
+  await expect(
+    page.locator('[data-section-id="gate-context-inspector"]'),
+  ).toContainText("proposal:patch-104");
+  await page
+    .getByRole("button", { name: "返回当前审核问题", exact: true })
+    .click();
   await page.getByRole("tab", { name: "交付", exact: true }).click();
   await expect(
     page.getByRole("tabpanel", { name: "交付", exact: true }),
@@ -69,4 +76,37 @@ test("Gate selection and Delivery inspection preserve the unsent host draft", as
     page.locator('[data-section-id="gate-review-overview"]'),
   ).toContainText("Gate G-5");
   await expect(input).toHaveCount(1);
+});
+
+test("Plan document and DAG navigation and Wave drilldown retain host input", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1920, height: 1080 });
+  await page.goto("/task-test.html");
+  const input = page.getByRole("textbox", { name: "宿主输入替身" });
+  await input.fill("层级切换不启动运行");
+  await page.getByRole("tab", { name: "计划", exact: true }).click();
+  await page.getByRole("button", { name: "查看完整计划", exact: true }).click();
+  await expect(
+    page.getByText("修订版 4 · 源提交 abc123 · 设计样本"),
+  ).toBeVisible();
+  await page.getByRole("button", { name: "返回计划摘要", exact: true }).click();
+  await page.getByRole("button", { name: "查看完整 DAG", exact: true }).click();
+  await page.getByRole("button", { name: "适应视图", exact: true }).click();
+  await page.getByRole("button", { name: "市场规则研究", exact: true }).click();
+  await expect(page.getByText("选中计划节点：research")).toBeVisible();
+  await page.getByRole("tab", { name: /^执行/ }).click();
+  await page
+    .getByRole("button", { name: "查看批次 1B 的工作流运行", exact: true })
+    .click();
+  await expect(
+    page.locator('[data-section-id="execution-wave-run-detail"]'),
+  ).toContainText("68%");
+  await page.getByText("运行身份", { exact: true }).click();
+  await expect(
+    page.getByText("workflow-v3/run-08", { exact: true }),
+  ).toBeVisible();
+  await page.getByRole("button", { name: "返回计划执行", exact: true }).click();
+  await expect(page.getByText("计划执行总览", { exact: true })).toBeVisible();
+  await expect(input).toHaveValue("层级切换不启动运行");
 });
