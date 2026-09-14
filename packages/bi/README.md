@@ -44,3 +44,9 @@ SOFTWARE.
 ### MonitoringWidget
 
 `MonitoringWidget` and `WIDGET_CATALOG` provide the accepted eight monitoring categories, optional content slots and 160px grid units with 16px internal gaps in spanning border boxes. Import `crystra-ui-core/styles.css`; no gallery wrapper is required. `Widget` is a deprecated compatibility API. MonitoringMetricPanel provides the four existing result projections; the monitoring Dashboard uses semantic size choices and animated reflow.
+
+### Isolated resource drafts
+
+`WorkflowResourceViewer` defaults to a read-only exact snapshot. A host may provide `onSaveDraft(ResourceDraftSave): Promise<void>` for conditional draft exploration. The request carries the declared resource ID, path, base revision, base content, and edited content. A file-level `revision` takes precedence over the workspace snapshot version. The host must check authority and the exact baseline, persist the draft, and supply the refreshed `workspace` snapshot before resolving. Reject on conflict or failed persistence; the editor retains the local edit and does not claim success. Removing the callback revokes editing, including acceptance of an outstanding save result.
+
+The component never mutates the supplied snapshot or writes package files. Saving a draft does not publish a Workflow, approve a Plan, or authorize execution. Resource creation, deletion, renaming, semantic relation rebuilding, and distribution to an Agent require separate host contracts.

@@ -274,6 +274,7 @@ export {
   WorkflowResourceViewer,
   type WorkflowResourceViewerProps,
   type ResourceWorkspaceSnapshot,
+  type ResourceDraftSave,
   type WorkflowCatalogResource,
 } from "./components/workflow-resource-viewer";
 

@@ -3,6 +3,7 @@ import snapshot from "./workflow-resource-design.json";
 import {
   WorkflowResourceViewer,
   type ResourceWorkspaceSnapshot,
+  type ResourceDraftSave,
 } from "../components/workflow-resource-viewer";
 import { resourceCatalog } from "../components/resource-catalog";
 import { ResourceRelationGraph } from "../components/resource-relation-graph";
@@ -36,7 +37,11 @@ function DesignRelations({
 export function WorkflowResourceDesign({
   renderMarkdown,
   onDiscuss,
+  workspace: authoredWorkspace,
+  onSaveDraft,
 }: {
+  workspace?: ResourceWorkspaceSnapshot;
+  onSaveDraft?: (proposal: ResourceDraftSave) => Promise<void>;
   renderMarkdown?: (text: string) => ReactNode;
   onDiscuss?: (selection: { resourceId: string; path: string }) => void;
 }) {
@@ -44,11 +49,18 @@ export function WorkflowResourceDesign({
     <WorkflowResourceViewer
       definitionId="draft-workflow-implementation"
       revision="v8-resource-snapshot"
-      workspace={workspace}
+      workspace={authoredWorkspace ?? workspace}
+      onSaveDraft={onSaveDraft}
       catalog={catalog}
       renderMarkdown={renderMarkdown}
       onDiscuss={onDiscuss}
-      renderRelations={DesignRelations}
+      renderRelations={
+        authoredWorkspace?.files.some((file) =>
+          file.revision?.startsWith("draft-sha256:"),
+        )
+          ? undefined
+          : DesignRelations
+      }
     />
   );
 }

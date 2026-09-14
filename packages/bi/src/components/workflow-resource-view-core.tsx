@@ -27,6 +27,7 @@ import { SearchField } from "./state-components";
 import { WidgetTooltip } from "./widget-tooltip";
 type FileEntry = {
   path: string;
+  revision?: string;
   content: string;
   truncated: boolean;
   internal: boolean;
@@ -51,7 +52,14 @@ type Workspace = {
   edges: Edge[];
 };
 export type ResourceWorkspaceSnapshot = Workspace;
-type Draft = { base: string; text: string };
+export type ResourceDraftSave = {
+  resourceId: string;
+  path: string;
+  baseRevision: string;
+  baseContent: string;
+  content: string;
+};
+type Draft = { base: string; text: string; revision?: string };
 const retainedDrafts = new Map<
   string,
   { selected: string; draft: Draft | null }
@@ -144,6 +152,7 @@ export function WorkflowResourceViewCore({
   declaredCatalog,
   exploration = false,
   onDiscuss,
+  onSaveDraft,
   renderMarkdown,
   renderRelations: RelationView,
 }: {
@@ -151,6 +160,8 @@ export function WorkflowResourceViewCore({
   identityKey: string;
   declaredCatalog?: CatalogResource[];
   exploration?: boolean;
+  /** Persist an isolated draft and publish the refreshed snapshot before resolving. */
+  onSaveDraft?: (proposal: ResourceDraftSave) => Promise<void>;
   onDiscuss?: (selection: { resourceId: string; path: string }) => void;
   renderMarkdown?: (text: string) => ReactNode;
   renderRelations?: (props: {
@@ -192,6 +203,7 @@ export function WorkflowResourceViewCore({
   const [draft, setDraft] = useState<Draft | null>(() =>
       exploration ? retainedDrafts.get(identityKey)?.draft || null : null,
     ),
+    [saving, setSaving] = useState(false),
     [notice, setNotice] = useState(""),
     [conflict, setConflict] = useState(false),
     [editorSession, setEditorSession] = useState(0);
@@ -213,6 +225,10 @@ export function WorkflowResourceViewCore({
   useEffect(() => {
     if (mutation) management.current?.showModal();
   }, [mutation]);
+  const writeAuthority = useRef(onSaveDraft);
+  useEffect(() => {
+    writeAuthority.current = onSaveDraft;
+  }, [onSaveDraft]);
   const baseline = useRef("");
   const editorActions = useRef<ResourceEditorActions>(null);
   const pending = useRef<(() => void) | null>(null),
@@ -258,19 +274,52 @@ export function WorkflowResourceViewCore({
   };
   if (!workspace)
     return <div className="wrb-empty">当前工作流尚未关联资源包。</div>;
-  const save = () => {
-    if (!exploration) return false;
+  const save = async () => {
+    if ((!exploration && !onSaveDraft) || saving) return false;
     if (!draft || !dirty) return true;
     if (file.truncated) {
       setNotice("内容不完整，不能保存截断文件。");
       return false;
     }
-    if (file.content !== draft.base) {
+    if (
+      file.content !== draft.base ||
+      (draft.revision &&
+        draft.revision !== (file.revision ?? workspace.version))
+    ) {
       setConflict(true);
       setNotice(
         "文件已被其他来源修改，当前草稿已保留；请查看最新内容后重新调整。",
       );
       return false;
+    }
+    if (onSaveDraft) {
+      if (!resource) return false;
+      setSaving(true);
+      setNotice("正在保存草案…");
+      try {
+        await onSaveDraft({
+          resourceId: resource.id,
+          path: file.path,
+          baseRevision: draft.revision ?? file.revision ?? workspace.version,
+          baseContent: draft.base,
+          content: draft.text,
+        });
+        if (!writeAuthority.current) {
+          setNotice("写入权限已撤销，保存结果未应用；本地草稿已保留。");
+          return false;
+        }
+        setDraft(null);
+        setConflict(false);
+        setNotice("草案已保存，未发布。");
+        return true;
+      } catch (error) {
+        setNotice(
+          `草案未保存，修改已保留：${error instanceof Error ? error.message : "保存失败"}`,
+        );
+        return false;
+      } finally {
+        setSaving(false);
+      }
     }
     try {
       saveResourceContent(workspace, file.path, draft.base, draft.text);
@@ -287,6 +336,7 @@ export function WorkflowResourceViewCore({
     return true;
   };
   const selectFile = (path: string) => {
+    if (saving) return;
     if (path === file.path) return;
     const change = () => {
       setSelected(path);
@@ -361,7 +411,8 @@ export function WorkflowResourceViewCore({
   const text = draft?.text ?? file.content;
   const markdown = /\.(md|markdown)$/i.test(file.path),
     image = /\.(png|jpe?g|gif|webp|svg|avif|bmp)$/i.test(file.path),
-    canEdit = exploration && !image && !file.truncated;
+    canEdit =
+      (exploration || !!onSaveDraft) && !saving && !image && !file.truncated;
   const effectiveMode = image
       ? "preview"
       : markdown
@@ -622,7 +673,11 @@ export function WorkflowResourceViewCore({
                   <Button
                     appearance="ghost"
                     onClick={() => {
-                      setDraft({ base: file.content, text: draft!.text });
+                      setDraft({
+                        base: file.content,
+                        text: draft!.text,
+                        revision: file.revision ?? workspace.version,
+                      });
                       setConflict(false);
                       setNotice("已更新比较基线，请核对草稿后保存。");
                     }}
@@ -653,7 +708,11 @@ export function WorkflowResourceViewCore({
                   }}
                   onChange={(text) =>
                     setDraft((d) => ({
-                      base: d?.base ?? baseline.current,
+                      base:
+                        d?.base ??
+                        (onSaveDraft ? file.content : baseline.current),
+                      revision:
+                        d?.revision ?? file.revision ?? workspace.version,
                       text,
                     }))
                   }
@@ -857,6 +916,7 @@ export function WorkflowResourceViewCore({
           <Button
             appearance="ghost"
             onClick={() => {
+              if (saving) return;
               pending.current = null;
               unsaved.current?.close();
             }}
@@ -866,6 +926,7 @@ export function WorkflowResourceViewCore({
           <Button
             appearance="ghost"
             onClick={() => {
+              if (saving) return;
               pending.current?.();
               pending.current = null;
               unsaved.current?.close();
@@ -874,8 +935,9 @@ export function WorkflowResourceViewCore({
             放弃修改
           </Button>
           <Button
-            onClick={() => {
-              if (save()) {
+            disabled={saving}
+            onClick={async () => {
+              if (await save()) {
                 pending.current?.();
                 pending.current = null;
                 unsaved.current?.close();
