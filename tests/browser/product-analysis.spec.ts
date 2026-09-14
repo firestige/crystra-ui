@@ -35,6 +35,12 @@ test("product sidebar matches v8 compact geometry and inline section search", as
   await page.goto("/product-test.html");
   const sidebar = page.getByRole("complementary", { name: "Crystra 导航" });
   expect((await sidebar.boundingBox())!.width).toBe(220);
+  await expect(
+    sidebar.getByRole("button", { name: "切换到 DeepSeek Harness" }),
+  ).toHaveCSS("justify-content", "flex-start");
+  await expect(
+    sidebar.getByRole("button", { name: "切换到 DeepSeek Harness" }),
+  ).toHaveCSS("font-size", "22px");
   const title = await sidebar
     .getByRole("button", { name: "任务", exact: true })
     .boundingBox();
