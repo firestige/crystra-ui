@@ -203,3 +203,9 @@ export {
   type CrystraPage,
   type CrystraNavigationRecord,
 } from "./components/crystra-shell";
+export { decodeEvidencePage } from "./domain/evidence/client";
+export {
+  CrystraAnalysisFrame,
+  CrystraTraceContent,
+  type CrystraAnalysisPage,
+} from "./components/crystra-analysis";

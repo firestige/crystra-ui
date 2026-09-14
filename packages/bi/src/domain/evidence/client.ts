@@ -354,6 +354,31 @@ function traceEndpoint(value: unknown) {
   );
 }
 
+// evidence.query 0.1.0 uses registry IDs, not ingestion attribute names.
+// observation-profile 1.0.0 applicability.span.allowed, in registry order.
+const traceProfileFields = new Map(
+  ["C01", "C02", "C03", "C04", "C05", "C06", "C07", "C08", "C30", "C57"].map(
+    (id, index) => [id, index],
+  ),
+);
+function orderedTraceFields(value: unknown): value is FieldValue[] {
+  if (!uniqueFields(value)) return false;
+  const rank = (name: string) => traceProfileFields.get(name) ?? 1000;
+  return value.every((item, index) => {
+    if (!traceProfileFields.has(item.field) && !standardFields.has(item.field))
+      return false;
+    if (traceProfileFields.has(item.field) && typeof item.value !== "string")
+      return false;
+    const previous = value[index - 1];
+    return (
+      previous === undefined ||
+      rank(previous.field) < rank(item.field) ||
+      (rank(previous.field) === rank(item.field) &&
+        bytewiseCompare(previous.field, item.field) < 0)
+    );
+  });
+}
+
 function traceItem(value: unknown) {
   if (
     !record(value) ||
@@ -411,7 +436,7 @@ function traceItem(value: unknown) {
       (node.trace_state === null || boundedText(node.trace_state, 0, 512)) &&
       Array.isArray(node.fields) &&
       node.fields.length <= 73 &&
-      orderedFields(node.fields) &&
+      orderedTraceFields(node.fields) &&
       value.source.trace_id === value.trace_id &&
       value.source.span_id === node.span_id
     );

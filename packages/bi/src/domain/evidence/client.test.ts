@@ -36,7 +36,10 @@ function traceResponse() {
           span_status: "OK",
           span_flags: 1,
           trace_state: null,
-          fields: [],
+          fields: [] as Array<{
+            field: string;
+            value: string | number | boolean;
+          }>,
         },
         edge: null,
       },
@@ -486,4 +489,25 @@ describe("bounded Evidence transport", () => {
     });
     expect(cancel).toHaveBeenCalledOnce();
   });
+});
+
+it("accepts formal Trace field IDs and rejects raw names, unknown IDs and reordered fields", () => {
+  const body = traceResponse();
+  body.items[0]!.node.fields = [
+    { field: "C01", value: "delivery-1" },
+    { field: "C02", value: "task-1" },
+    { field: "gen_ai.operation.name", value: "invoke_agent" },
+  ];
+  expect(decodeEvidencePage("traces", body, 100).ok).toBe(true);
+  for (const fields of [
+    [{ field: "agentops.delivery.id", value: "delivery-1" }],
+    [{ field: "C99", value: "unknown" }],
+    [
+      { field: "C02", value: "task-1" },
+      { field: "C01", value: "delivery-1" },
+    ],
+  ]) {
+    body.items[0]!.node.fields = fields;
+    expect(decodeEvidencePage("traces", body, 100).ok).toBe(false);
+  }
 });
