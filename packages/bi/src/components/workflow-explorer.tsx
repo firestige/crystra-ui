@@ -1,3 +1,4 @@
+import { restoreWorkflowExplorerView } from "./workflow-explorer-view";
 import {
   useEffect,
   useMemo,
@@ -18,6 +19,8 @@ import {
 import "../task-browser.css";
 import "../workflow-explorer.css";
 export interface WorkflowExplorerProps {
+  initialViewState?: string;
+  onViewStateChange?: (value: string) => void;
   entries: readonly WorkflowDefinitionEntry[];
   phase?: "ready" | "loading" | "error" | "unavailable";
   error?: string;
@@ -53,6 +56,8 @@ function Stamp({ value }: { value?: string }) {
 /** Read-only directory consumer. No mutation exists without an explicit owner callback. */
 export function WorkflowExplorer({
   entries,
+  initialViewState,
+  onViewStateChange,
   phase = "ready",
   error,
   onOpen,
@@ -61,21 +66,61 @@ export function WorkflowExplorer({
   onArchive,
   onAction,
 }: WorkflowExplorerProps) {
+  const [initial] = useState(() =>
+    restoreWorkflowExplorerView(initialViewState),
+  );
   const [query, setQuery] = useState<WorkflowExplorerQuery>({
-    query: "",
-    filter: "all",
-    sort: "updated",
-    versions: "latest",
+    query: initial.query,
+    filter: initial.filter,
+    sort: initial.sort,
+    versions: initial.versions,
   });
-  const [list, setList] = useState(false),
-    [grouping, setGrouping] = useState("none"),
+  const [list, setList] = useState(initial.view === "list"),
+    [grouping, setGrouping] = useState<string>(initial.grouping),
     [selected, setSelected] = useState<Set<string>>(() => new Set()),
     [folded, setFolded] = useState<Set<string>>(() => new Set()),
-    [page, setPage] = useState(1),
-    [size, setSize] = useState(12),
+    [page, setPage] = useState(initial.page),
+    [size, setSize] = useState<number>(initial.pageSize),
     [geometry, setGeometry] = useState({ columns: 1, width: 280 });
   const scroll = useRef<HTMLDivElement>(null),
     gallery = useRef<HTMLDivElement>(null);
+  const viewState = useMemo(
+    () => ({
+      version: 1,
+      ...query,
+      view: list ? "list" : "gallery",
+      grouping,
+      page,
+      pageSize: size,
+      ...(initial.anchorId ? { anchorId: initial.anchorId } : {}),
+    }),
+    [query, list, grouping, page, size, initial.anchorId],
+  );
+  const lastSaved = useRef("");
+  useEffect(() => {
+    const encoded = JSON.stringify(viewState);
+    if (encoded !== lastSaved.current) {
+      lastSaved.current = encoded;
+      onViewStateChange?.(encoded);
+    }
+  }, [viewState, onViewStateChange]);
+  const openEntry = (entry: WorkflowDefinitionEntry) => {
+    onViewStateChange?.(
+      JSON.stringify({ ...viewState, anchorId: workflowEntryKey(entry) }),
+    );
+    onOpen(entry.definitionId, entry.revision);
+  };
+  useEffect(() => {
+    if (phase !== "ready" || !initial.anchorId) return;
+    const target = Array.from(
+      scroll.current?.querySelectorAll<HTMLElement>("[data-resource-id]") ?? [],
+    ).find(
+      (node) =>
+        node.dataset.resourceId === initial.anchorId &&
+        !node.closest("[hidden]"),
+    );
+    target?.scrollIntoView?.({ block: "nearest" });
+  }, [phase, initial.anchorId, list, geometry.columns]);
   const matches = useMemo(
     () =>
       queryWorkflowDefinitions(entries, query).map((entry) => ({
@@ -200,6 +245,7 @@ export function WorkflowExplorer({
     <article
       className="browser-task-card"
       key={workflowEntryKey(entry)}
+      data-resource-id={workflowEntryKey(entry)}
       data-selected={selected.has(workflowEntryKey(entry))}
     >
       <label className="task-select">{checkbox(entry)}</label>
@@ -207,7 +253,7 @@ export function WorkflowExplorer({
         type="button"
         className="task-card-link"
         aria-label={`打开工作流：${entry.title}，${entry.revision}`}
-        onClick={() => onOpen(entry.definitionId, entry.revision)}
+        onClick={() => openEntry(entry)}
       >
         <div className="task-thumbnail">
           {entry.thumbnail ? (
@@ -449,16 +495,18 @@ export function WorkflowExplorer({
               {matches
                 .slice((current - 1) * size, current * size)
                 .map((entry) => (
-                  <tr key={entry.id} data-selected={selected.has(entry.id)}>
+                  <tr
+                    key={entry.id}
+                    data-resource-id={entry.id}
+                    data-selected={selected.has(entry.id)}
+                  >
                     <td>{checkbox(entry)}</td>
                     <td>
                       <button
                         type="button"
                         className="cell-primary"
                         aria-label={`打开工作流：${entry.title}，${entry.revision}`}
-                        onClick={() =>
-                          onOpen(entry.definitionId, entry.revision)
-                        }
+                        onClick={() => openEntry(entry)}
                       >
                         {entry.title}
                       </button>
@@ -502,6 +550,7 @@ export function WorkflowExplorer({
               columns={geometry.columns}
               root={scroll}
               active={!list}
+              anchorId={initial.anchorId}
               collapsed={folded.has(title)}
               onToggle={() =>
                 setFolded((old) => {

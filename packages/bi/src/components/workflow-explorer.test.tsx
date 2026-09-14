@@ -44,3 +44,37 @@ it("distinguishes unavailable directory from an empty authoritative collection",
   );
   expect(screen.queryByText("0 项工作流")).not.toBeInTheDocument();
 });
+it("restores directory filters and saves the exact revision anchor before opening", () => {
+  const save = vi.fn();
+  const open = vi.fn();
+  const initial = JSON.stringify({
+    version: 1,
+    query: "Same",
+    filter: "all",
+    sort: "name",
+    versions: "all",
+    view: "list",
+    grouping: "none",
+    page: 1,
+    pageSize: 24,
+  });
+  render(
+    <WorkflowExplorer
+      initialViewState={initial}
+      onViewStateChange={save}
+      entries={[
+        { definitionId: "a", revision: "r1", title: "Same", isLatest: false },
+      ]}
+      onOpen={open}
+    />,
+  );
+  fireEvent.click(screen.getByRole("button", { name: "打开工作流：Same，r1" }));
+  expect(open).toHaveBeenCalledWith("a", "r1");
+  expect(JSON.parse(save.mock.calls.at(-1)![0])).toMatchObject({
+    query: "Same",
+    view: "list",
+    versions: "all",
+    pageSize: 24,
+    anchorId: JSON.stringify(["a", "r1"]),
+  });
+});

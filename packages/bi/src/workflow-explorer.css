@@ -39,3 +39,10 @@
   font-variant-numeric: tabular-nums;
   overflow-wrap: anywhere;
 }
+/* Keep all version controls reachable when the host leaves less horizontal space. */
+.crystra-workflow-explorer .browser-header {
+  grid-template-columns:
+    minmax(150px, 1fr) minmax(240px, 320px)
+    max-content max-content;
+  overflow-x: auto;
+}

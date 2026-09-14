@@ -55,3 +55,31 @@ test("Workflow Explorer preserves exact revisions, selection and shared v8 Galle
     }),
   ).toBeVisible();
 });
+test("Workflow Explorer restores all-version list and page after leaving its mount", async ({
+  page,
+}) => {
+  await page.goto("/workflow-explorer-test.html");
+  await page.getByRole("button", { name: "全部版本", exact: true }).click();
+  await page
+    .getByRole("button", {
+      name: "工作流视图：Gallery，切换到 List",
+      exact: true,
+    })
+    .click();
+  await page.getByRole("button", { name: "下一页", exact: true }).click();
+  const target = page.getByRole("button", {
+    name: "打开工作流：导入校验工作流 5，r1",
+    exact: true,
+  });
+  await target.click();
+  await page
+    .getByRole("button", { name: "模拟返回工作流目录", exact: true })
+    .click();
+  await expect(target).toBeVisible();
+  await expect(
+    page.getByRole("button", {
+      name: "工作流视图：List，切换到 Gallery",
+      exact: true,
+    }),
+  ).toBeVisible();
+});

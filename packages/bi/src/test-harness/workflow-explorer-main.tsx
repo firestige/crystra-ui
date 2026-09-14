@@ -24,6 +24,8 @@ const entries: WorkflowDefinitionEntry[] = Array.from({ length: 48 }, (_, i) =>
 ).flat();
 export function Scenario() {
   const [opened, setOpened] = useState("");
+  const [saved, setSaved] = useState<string>();
+  const [mount, setMount] = useState(0);
   return (
     <BiSurface
       theme="dark"
@@ -45,11 +47,17 @@ export function Scenario() {
         onOpenSettings={() => {}}
       >
         <WorkflowExplorer
+          key={mount}
+          initialViewState={saved}
+          onViewStateChange={setSaved}
           entries={entries}
           onOpen={(id, revision) => setOpened(`${id}@${revision}`)}
         />
       </CrystraShell>
       <div role="note">
+        <button onClick={() => setMount((n) => n + 1)}>
+          模拟返回工作流目录
+        </button>
         草案探索 · 独立设计测试数据{opened ? ` · 已选择 ${opened}` : ""}
       </div>
     </BiSurface>
