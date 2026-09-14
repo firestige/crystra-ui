@@ -1,3 +1,4 @@
+import process from "node:process";
 import { build } from "vite";
 import { resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";

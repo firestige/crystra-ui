@@ -216,3 +216,7 @@ export {
   type AnalysisWorkspacePage,
   type AnalysisOverviewFilters,
 } from "./components/analysis-workspace";
+export {
+  TaskWorkbench,
+  type TaskWorkbenchPage,
+} from "./components/task-workbench";
