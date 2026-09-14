@@ -265,3 +265,8 @@ export {
   WorkflowWorkbench,
   type WorkflowWorkbenchPage,
 } from "./components/workflow-workbench";
+export {
+  WorkflowMapViewer,
+  type WorkflowMapViewerProps,
+  type WorkflowLayoutResolver,
+} from "./components/workflow-map-viewer";

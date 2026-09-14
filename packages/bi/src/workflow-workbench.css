@@ -82,3 +82,10 @@
   > .crystra-tab-panel[hidden] {
   display: none;
 }
+/* Header owns the tabs; projection content starts directly at the divider. */
+.crystra-bi
+  .crystra-workflow-workbench
+  [data-section-id="workflow-projections"]
+  > .crystra-tab-panel {
+  margin-top: 0;
+}

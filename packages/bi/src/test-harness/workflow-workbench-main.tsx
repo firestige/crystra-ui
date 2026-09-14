@@ -11,9 +11,13 @@ export function Scenario() {
     <BiSurface
       theme="dark"
       data-crystra-theme="dark"
-      style={{ height: "100vh" }}
+      className="workflow-workbench-harness"
     >
-      <style>{"html,body,#root{margin:0;height:100%}"}</style>
+      <style>
+        {
+          "html,body,#root{margin:0;height:100%}.workflow-workbench-harness{height:100vh}"
+        }
+      </style>
       <WorkflowWorkbench
         definitionId="exploration-only"
         revision="draft.1"
