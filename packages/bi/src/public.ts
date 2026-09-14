@@ -189,3 +189,11 @@ export {
   type ToggleSwitchProps,
 } from "./components/toggle-switch";
 export { WidgetTooltip } from "./components/widget-tooltip";
+
+export { DeliveryDirectory } from "./components/delivery-directory";
+export type {
+  DeliverySearchRecord,
+  DeliverySearchField,
+  DeliverySearchCondition,
+  DeliveryFilters,
+} from "./domain/delivery-search";
