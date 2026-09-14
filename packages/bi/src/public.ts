@@ -220,3 +220,19 @@ export {
   TaskWorkbench,
   type TaskWorkbenchPage,
 } from "./components/task-workbench";
+
+export {
+  TaskRequirementsPanel,
+  type TaskRequirementsProjection,
+} from "./components/task-requirements-panel";
+
+export {
+  TaskDeliveryPanel,
+  type TaskDeliveryProjection,
+} from "./components/task-delivery-panel";
+
+export {
+  TaskGatePanel,
+  type TaskGateProjection,
+  type TaskGateQueueItem,
+} from "./components/task-gate-panel";

@@ -1,0 +1,77 @@
+.crystra-task-delivery {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.crystra-delivery-readiness {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 12px 16px;
+  border: 1px solid var(--color-border-default);
+  border-radius: 12px;
+  background: var(--color-background-card);
+}
+.crystra-delivery-readiness[data-tone="success"] {
+  border-color: rgb(91 189 145 / 35%);
+  background: rgb(91 189 145 / 10%);
+}
+.crystra-delivery-readiness[data-tone="warning"] {
+  border-color: rgb(241 191 85 / 35%);
+  background: rgb(241 191 85 / 10%);
+}
+.crystra-delivery-readiness p {
+  margin-top: 6px;
+}
+.crystra-delivery-recalculation {
+  padding: 12px 16px;
+  border: 1px solid var(--color-border-default);
+  border-radius: 10px;
+  background: var(--color-background-inset);
+}
+.crystra-delivery-columns {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  gap: 12px;
+}
+.crystra-task-delivery ul {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+.crystra-delivery-artifacts li,
+.crystra-delivery-acceptance li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--color-border-default);
+}
+.crystra-delivery-artifacts li:last-child,
+.crystra-delivery-acceptance li:last-child {
+  border-bottom: 0;
+}
+.crystra-delivery-artifacts li > div {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.crystra-delivery-artifacts li > div > p + p {
+  margin-top: 5px;
+}
+.crystra-delivery-economics {
+  display: flex;
+  gap: 24px;
+  margin: 0;
+  flex-wrap: wrap;
+}
+.crystra-delivery-economics dd {
+  margin: 6px 0 0;
+}
+
+.crystra-delivery-bottom {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}

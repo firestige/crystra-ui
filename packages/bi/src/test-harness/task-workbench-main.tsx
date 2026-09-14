@@ -1,9 +1,14 @@
+import { TaskGateExploration } from "./task-gate-exploration";
+import { taskDeliveryExploration } from "./task-delivery-exploration";
+import { taskRequirementsExploration } from "./task-requirements-exploration";
 import { useState } from "react";
 import { createRoot } from "react-dom/client";
 import {
   BiSurface,
   CrystraShell,
   TaskWorkbench,
+  TaskRequirementsPanel,
+  TaskDeliveryPanel,
   Card,
   type TaskWorkbenchPage,
 } from "../public";
@@ -39,11 +44,13 @@ export function TaskFrameScenario() {
             <textarea aria-label="宿主输入替身" defaultValue="未发送草稿" />
           }
           panels={{
-            grilling: <Card heading="需求投影">测试内容</Card>,
+            grilling: (
+              <TaskRequirementsPanel data={taskRequirementsExploration} />
+            ),
             plan: <Card heading="计划投影">测试内容</Card>,
             execution: <Card heading="执行投影">测试内容</Card>,
-            gate: <Card heading="审核投影">测试内容</Card>,
-            delivery: <Card heading="交付投影">测试内容</Card>,
+            gate: <TaskGateExploration />,
+            delivery: <TaskDeliveryPanel data={taskDeliveryExploration} />,
           }}
         />
       </CrystraShell>

@@ -1,0 +1,115 @@
+.crystra-task-requirements {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.crystra-requirements-overview {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  border: 1px solid rgb(59 130 246 / 35%);
+  border-radius: 12px;
+  background: rgb(59 130 246 / 10%);
+  padding: 12px 16px;
+}
+.crystra-requirements-marker {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  flex: none;
+  border-radius: 50%;
+  background: rgb(59 130 246 / 15%);
+  color: #93c5fd;
+  font-size: 20px;
+}
+.crystra-requirements-budget {
+  margin-left: auto;
+  text-align: right;
+  flex-shrink: 0;
+}
+.crystra-requirements-columns {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.35fr);
+  gap: 12px;
+}
+.crystra-task-requirements header,
+.crystra-requirements-fields dt {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.crystra-task-requirements ul {
+  list-style: none;
+  padding: 0;
+}
+.crystra-requirements-topics {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 16px;
+}
+.crystra-requirements-topics li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--color-background-raised, #1a1e24);
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 12px;
+}
+.crystra-requirements-topics li > span:last-child {
+  margin-left: auto;
+  color: var(--color-text-muted);
+}
+.crystra-requirements-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--crystra-requirement-tone, #94a3b8);
+}
+.crystra-task-requirements [data-tone="success"] {
+  --crystra-requirement-tone: #5bbd91;
+}
+.crystra-task-requirements [data-tone="warning"] {
+  --crystra-requirement-tone: #f1bf55;
+}
+.crystra-task-requirements [data-tone="danger"] {
+  --crystra-requirement-tone: #ff7182;
+}
+.crystra-requirements-reason,
+.crystra-requirements-changes {
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid var(--color-border-default);
+}
+.crystra-requirements-reason p {
+  margin-top: 8px;
+}
+.crystra-requirements-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 16px 0 0;
+}
+.crystra-requirements-fields dd {
+  margin: 6px 0 0;
+}
+.crystra-requirements-status {
+  font-size: 11px;
+  color: var(--crystra-requirement-tone, #94a3b8);
+}
+.crystra-requirements-changes ul {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 12px 0 0;
+  font-size: 12px;
+}
+.crystra-requirements-changes [data-change="added"] {
+  color: #5bbd91;
+}
+.crystra-requirements-changes [data-change="removed"] {
+  color: #ff7182;
+}
