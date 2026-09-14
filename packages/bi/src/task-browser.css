@@ -1000,23 +1000,6 @@
   summary::-webkit-details-marker {
   display: none;
 }
-.crystra-task-browser .crystra-task-browser-sort > div {
-  position: absolute;
-  right: 0;
-  top: 42px;
-  z-index: 10;
-  padding: 6px;
-  background: var(--color-background-floating);
-  border: 1px solid var(--color-border-default);
-  border-radius: 8px;
-  display: flex;
-  flex-direction: column;
-  min-width: 120px;
-}
-.crystra-task-browser .crystra-task-browser-sort button {
-  padding: 8px;
-  text-align: left;
-}
 .crystra-task-browser .browser-load-marker {
   height: 1px;
 }
@@ -1052,4 +1035,30 @@
   padding: 0;
   color: inherit;
   text-align: left;
+}
+.crystra-task-browser .crystra-task-browser-menu > .crystra-menu > button {
+  width: 28px;
+  min-width: 28px;
+  height: 28px;
+  padding: 0;
+  background: transparent;
+  border: 0;
+}
+.crystra-task-browser .crystra-task-browser-sort > .crystra-menu > button {
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+.crystra-task-browser .crystra-menu-panel .crystra-menu-item {
+  border: 0;
+  border-radius: 0;
+  width: 100%;
+  text-align: left;
+}
+.crystra-task-browser .crystra-menu-item[aria-checked="true"] {
+  background: var(--color-interaction-selected);
+  color: var(--color-interaction-primary);
 }

@@ -37,6 +37,7 @@ const tasks: BrowserTaskRecord[] = Array.from({ length: 60 }, (_, i) => ({
 }));
 export function Scenario() {
   const [opened, setOpened] = useState<string>();
+  const [viewState, setViewState] = useState<string>();
   return (
     <BiSurface
       theme="dark"
@@ -57,11 +58,20 @@ export function Scenario() {
         onNewTask={() => {}}
         onOpenSettings={() => {}}
       >
-        <TaskBrowser
-          tasks={tasks}
-          onOpen={setOpened}
-          onNewTask={() => setOpened("new-draft")}
-        />
+        {opened ? (
+          <section>
+            <h1>{opened}</h1>
+            <button onClick={() => setOpened(undefined)}>返回任务目录</button>
+          </section>
+        ) : (
+          <TaskBrowser
+            tasks={tasks}
+            initialViewState={viewState}
+            onViewStateChange={setViewState}
+            onOpen={setOpened}
+            onNewTask={() => setOpened("new-draft")}
+          />
+        )}
         <p role="note" className="task-browser-sample-note">
           设计样本 · 非真实任务{opened ? ` · 已选择 ${opened}` : ""}
         </p>

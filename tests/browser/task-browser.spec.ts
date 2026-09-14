@@ -71,3 +71,62 @@ test("Gallery group folding survives view and query changes", async ({
     .fill("校验资源导入结果");
   await expect(group).toHaveAttribute("aria-expanded", "false");
 });
+
+test("returning from an exact Task restores the List query and page", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1920, height: 1080 });
+  await page.goto("/task-browser-test.html");
+  await page
+    .getByRole("searchbox", { name: "搜索任务", exact: true })
+    .fill("校验资源导入结果");
+  await page
+    .getByRole("button", { name: "任务视图：Gallery，切换到 List" })
+    .click();
+  await page.getByRole("button", { name: "下一页", exact: true }).click();
+  await page
+    .getByRole("button", {
+      name: "打开任务：校验资源导入结果 · 13",
+      exact: true,
+    })
+    .click();
+  await page.getByRole("button", { name: "返回任务目录", exact: true }).click();
+  await expect(
+    page.getByRole("button", { name: "任务视图：List，切换到 Gallery" }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("searchbox", { name: "搜索任务", exact: true }),
+  ).toHaveValue("校验资源导入结果");
+  await expect(
+    page.getByRole("button", {
+      name: "打开任务：校验资源导入结果 · 13",
+      exact: true,
+    }),
+  ).toBeVisible();
+});
+
+test("sort menu uses keyboard radio navigation and returns focus to its icon trigger", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1920, height: 1080 });
+  await page.goto("/task-browser-test.html");
+  const trigger = page.getByRole("button", {
+    name: "排序：最近活动，降序",
+    exact: true,
+  });
+  await trigger.press("ArrowDown");
+  await expect(
+    page.getByRole("menuitemradio", { name: "最近活动", exact: true }),
+  ).toBeFocused();
+  await page.getByRole("menu").press("End");
+  await expect(
+    page.getByRole("menuitemradio", { name: "成本", exact: true }),
+  ).toBeFocused();
+  await page
+    .getByRole("menuitemradio", { name: "成本", exact: true })
+    .press("Enter");
+  await expect(
+    page.getByRole("button", { name: "排序：成本，降序", exact: true }),
+  ).toBeFocused();
+  await expect(page.getByRole("menu")).toBeHidden();
+});

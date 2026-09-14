@@ -116,3 +116,35 @@ describe("collection components", () => {
     expect(screen.queryByRole("menu")).not.toBeInTheDocument();
   });
 });
+
+it("supports icon-only sorting menus with radio semantics and keyboard focus", () => {
+  const select = vi.fn();
+  render(
+    <Menu
+      label="排序：最近活动，降序"
+      triggerContent={<span aria-hidden="true">↧</span>}
+      items={[
+        {
+          id: "activity",
+          label: "最近活动",
+          checked: true,
+          onSelect: () => select("activity"),
+        },
+        {
+          id: "cost",
+          label: "成本",
+          checked: false,
+          onSelect: () => select("cost"),
+        },
+      ]}
+    />,
+  );
+  const trigger = screen.getByRole("button", { name: "排序：最近活动，降序" });
+  fireEvent.keyDown(trigger, { key: "ArrowDown" });
+  expect(screen.getByRole("menuitemradio", { name: "最近活动" })).toHaveFocus();
+  fireEvent.keyDown(screen.getByRole("menu"), { key: "End" });
+  expect(screen.getByRole("menuitemradio", { name: "成本" })).toHaveFocus();
+  fireEvent.click(screen.getByRole("menuitemradio", { name: "成本" }));
+  expect(select).toHaveBeenCalledWith("cost");
+  expect(trigger).toHaveFocus();
+});

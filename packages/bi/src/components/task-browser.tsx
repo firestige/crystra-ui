@@ -6,6 +6,8 @@ import {
   type CSSProperties,
   type RefObject,
 } from "react";
+import { restoreTaskBrowserView } from "./task-browser-view";
+import { Menu } from "./collection-components";
 import { Icon } from "./icon";
 import { ToggleSwitch } from "./toggle-switch";
 import {
@@ -18,6 +20,8 @@ import "../task-browser.css";
 type Grouping = "workspace" | "status" | "none";
 export interface TaskBrowserProps {
   tasks: readonly BrowserTaskRecord[];
+  initialViewState?: string;
+  onViewStateChange?: (value: string) => void;
   phase?: "loading" | "ready" | "error";
   error?: string;
   onOpen: (id: string) => void;
@@ -88,6 +92,7 @@ function GalleryGroup({
   columns,
   root,
   active,
+  anchorId,
   collapsed,
   onToggle,
   children,
@@ -97,11 +102,14 @@ function GalleryGroup({
   columns: number;
   root: RefObject<HTMLDivElement | null>;
   active: boolean;
+  anchorId?: string;
   collapsed: boolean;
   onToggle: () => void;
   children: (task: BrowserTaskRecord) => React.ReactNode;
 }) {
-  const [count, setCount] = useState(columns);
+  const [count, setCount] = useState(() =>
+    Math.max(columns, tasks.findIndex((task) => task.id === anchorId) + 1),
+  );
   const marker = useRef<HTMLDivElement>(null);
   const visible = Math.max(columns, count);
   useEffect(() => {
@@ -176,6 +184,8 @@ function GalleryGroup({
 /** Accepted v8 Task collection. Actions require explicit host adapters; reading creates no objects. */
 export function TaskBrowser({
   tasks,
+  initialViewState,
+  onViewStateChange,
   phase = "ready",
   error,
   onOpen,
@@ -186,24 +196,59 @@ export function TaskBrowser({
   onArchive,
   onAction,
 }: TaskBrowserProps) {
+  const [initial] = useState(() => restoreTaskBrowserView(initialViewState));
   const [query, setQuery] = useState<TaskBrowserQuery>({
-      query: "",
-      filter: "all",
-      sort: "activity",
+      query: initial.query,
+      filter: initial.filter,
+      sort: initial.sort,
     }),
-    [list, setList] = useState(false),
+    [list, setList] = useState(initial.view === "list"),
     [collapsedGroups, setCollapsedGroups] = useState<Set<string>>(
       () => new Set(),
     ),
-    [grouping, setGrouping] = useState<Grouping>("workspace"),
+    [grouping, setGrouping] = useState<Grouping>(initial.grouping),
     [selected, setSelected] = useState<Set<string>>(() => new Set()),
-    [page, setPage] = useState(1),
-    [pageSize, setPageSize] = useState(12),
+    [page, setPage] = useState(initial.page),
+    [pageSize, setPageSize] = useState<number>(initial.pageSize),
     [columns, setColumns] = useState(1),
     [width, setWidth] = useState(280);
   const scroll = useRef<HTMLDivElement>(null),
     gallery = useRef<HTMLDivElement>(null);
   const nextPageMarker = useRef<HTMLDivElement>(null);
+  const viewState = useMemo(
+    () => ({
+      version: 1,
+      ...query,
+      view: list ? "list" : "gallery",
+      grouping,
+      page,
+      pageSize,
+      ...(initial.anchorId ? { anchorId: initial.anchorId } : {}),
+    }),
+    [query, list, grouping, page, pageSize, initial.anchorId],
+  );
+  const lastSaved = useRef("");
+  useEffect(() => {
+    const encoded = JSON.stringify(viewState);
+    if (encoded === lastSaved.current) return;
+    lastSaved.current = encoded;
+    onViewStateChange?.(encoded);
+  }, [viewState, onViewStateChange]);
+  const openTask = (id: string) => {
+    onViewStateChange?.(JSON.stringify({ ...viewState, anchorId: id }));
+    onOpen(id);
+  };
+  useEffect(() => {
+    if (!initial.anchorId || phase !== "ready") return;
+    const target = Array.from(
+      scroll.current?.querySelectorAll<HTMLElement>("[data-resource-id]") ?? [],
+    ).find(
+      (node) =>
+        node.dataset.resourceId === initial.anchorId &&
+        !node.closest("[hidden]"),
+    );
+    target?.scrollIntoView?.({ block: "nearest" });
+  }, [initial.anchorId, phase, list, columns]);
   useEffect(() => {
     if (
       list ||
@@ -269,8 +314,14 @@ export function TaskBrowser({
     setQuery((old) => ({ ...old, ...patch }));
     setSelected(new Set());
     setPage(1);
-    scroll.current?.scrollTo?.({ top: 0 });
   };
+  const previousQuery = useRef(query);
+  useEffect(() => {
+    if (previousQuery.current !== query) {
+      scroll.current?.scrollTo?.({ top: 0 });
+      previousQuery.current = query;
+    }
+  }, [query]);
   const select = (id: string) =>
     setSelected((old) => {
       const next = new Set(old);
@@ -292,41 +343,39 @@ export function TaskBrowser({
     </span>
   );
   const menu = (task: BrowserTaskRecord) => (
-    <details className="crystra-task-browser-menu">
-      <summary aria-label={`任务操作：${task.title}`}>
-        <Icon name="dots" />
-      </summary>
-      <div className="task-context-menu">
-        <button
-          type="button"
-          disabled={!onAction}
-          onClick={() => onAction?.(task.id, "thumbnail")}
-        >
-          修改缩略图
-        </button>
-        <button
-          type="button"
-          disabled={!onAction}
-          onClick={() => onAction?.(task.id, "rename")}
-        >
-          改名
-        </button>
-        <button
-          type="button"
-          disabled={!onArchive}
-          onClick={() => onArchive?.([task.id])}
-        >
-          归档
-        </button>
-        <button
-          type="button"
-          disabled={!onAction}
-          onClick={() => onAction?.(task.id, "pin")}
-        >
-          {task.pinned ? "取消 Pin" : "Pin"}
-        </button>
-      </div>
-    </details>
+    <div className="crystra-task-browser-menu">
+      <Menu
+        label={`任务操作：${task.title}`}
+        triggerContent={<Icon name="dots" />}
+        side={list ? "auto" : "top"}
+        items={[
+          {
+            id: "thumbnail",
+            label: "修改缩略图",
+            disabled: !onAction,
+            onSelect: () => onAction?.(task.id, "thumbnail"),
+          },
+          {
+            id: "rename",
+            label: "改名",
+            disabled: !onAction,
+            onSelect: () => onAction?.(task.id, "rename"),
+          },
+          {
+            id: "archive",
+            label: "归档",
+            disabled: !onArchive,
+            onSelect: () => onArchive?.([task.id]),
+          },
+          {
+            id: "pin",
+            label: task.pinned ? "取消 Pin" : "Pin",
+            disabled: !onAction,
+            onSelect: () => onAction?.(task.id, "pin"),
+          },
+        ]}
+      />
+    </div>
   );
   const card = (task: BrowserTaskRecord) => (
     <article
@@ -340,7 +389,7 @@ export function TaskBrowser({
         type="button"
         className="task-card-link"
         aria-label={`打开任务：${task.title}`}
-        onClick={() => onOpen(task.id)}
+        onClick={() => openTask(task.id)}
       >
         <div className="task-thumbnail">
           {task.thumbnail ? (
@@ -389,6 +438,7 @@ export function TaskBrowser({
             <Icon name="search" />
             <input
               type="search"
+              maxLength={256}
               aria-label="搜索任务"
               placeholder="搜索任务、目标或 Workspace…"
               value={query.query}
@@ -422,29 +472,24 @@ export function TaskBrowser({
                 {label}
               </button>
             ))}
-            <details className="crystra-task-browser-sort">
-              <summary aria-label="排序方式">
-                <Icon name="sort-descending" />
-              </summary>
-              <div>
-                {(
+            <div className="crystra-task-browser-sort">
+              <Menu
+                label={`排序：${{ activity: "最近活动", created: "创建时间", cost: "成本" }[query.sort]}，降序`}
+                triggerContent={<Icon name="sort-descending" />}
+                items={(
                   [
                     ["activity", "最近活动"],
                     ["created", "创建时间"],
                     ["cost", "成本"],
                   ] as const
-                ).map(([value, label]) => (
-                  <button
-                    type="button"
-                    key={value}
-                    aria-pressed={query.sort === value}
-                    onClick={() => updateQuery({ sort: value })}
-                  >
-                    {label}
-                  </button>
-                ))}
-              </div>
-            </details>
+                ).map(([value, label]) => ({
+                  id: value,
+                  label,
+                  checked: query.sort === value,
+                  onSelect: () => updateQuery({ sort: value }),
+                }))}
+              />
+            </div>
           </div>
           <ToggleSwitch
             checked={list}
@@ -577,7 +622,7 @@ export function TaskBrowser({
                           type="button"
                           className="cell-primary"
                           aria-label={`打开任务：${task.title}`}
-                          onClick={() => onOpen(task.id)}
+                          onClick={() => openTask(task.id)}
                         >
                           {task.title}
                         </button>
@@ -630,6 +675,7 @@ export function TaskBrowser({
                 columns={columns}
                 root={scroll}
                 active={!list}
+                anchorId={initial.anchorId}
                 collapsed={collapsedGroups.has(`${grouping}:${title}`)}
                 onToggle={() =>
                   setCollapsedGroups((old) => {
