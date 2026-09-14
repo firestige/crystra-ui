@@ -64,6 +64,30 @@ const retainedDrafts = new Map<
   string,
   { selected: string; draft: Draft | null }
 >();
+let guardedWindow: Window | undefined;
+function unloadGuard(event: BeforeUnloadEvent) {
+  if (
+    [...retainedDrafts.values()].some(
+      ({ draft }) => draft && draft.text !== draft.base,
+    )
+  ) {
+    event.preventDefault();
+    event.returnValue = "";
+  }
+}
+function syncUnloadGuard() {
+  if (typeof window === "undefined") return;
+  const dirty = [...retainedDrafts.values()].some(
+    ({ draft }) => draft && draft.text !== draft.base,
+  );
+  if (dirty && !guardedWindow) {
+    window.addEventListener("beforeunload", unloadGuard);
+    guardedWindow = window;
+  } else if (!dirty && guardedWindow) {
+    guardedWindow.removeEventListener("beforeunload", unloadGuard);
+    guardedWindow = undefined;
+  }
+}
 function FileAction({
   label,
   icon,
@@ -169,10 +193,11 @@ export function WorkflowResourceViewCore({
     onOpenFile: (path: string) => void;
   }) => ReactNode;
 }) {
+  const retainDraft = exploration || !!onSaveDraft;
   const [query, setQuery] = useState(""),
     [selected, setSelected] = useState(
       () =>
-        (exploration ? retainedDrafts.get(identityKey)?.selected : undefined) ||
+        (retainDraft ? retainedDrafts.get(identityKey)?.selected : undefined) ||
         declaredCatalog?.[0]?.path ||
         (exploration
           ? "roles/implementer.role.md"
@@ -201,7 +226,7 @@ export function WorkflowResourceViewCore({
     r.files.some((f) => f.path === file?.path),
   );
   const [draft, setDraft] = useState<Draft | null>(() =>
-      exploration ? retainedDrafts.get(identityKey)?.draft || null : null,
+      retainDraft ? retainedDrafts.get(identityKey)?.draft || null : null,
     ),
     [saving, setSaving] = useState(false),
     [notice, setNotice] = useState(""),
@@ -215,7 +240,9 @@ export function WorkflowResourceViewCore({
     canUndo: false,
     canRedo: false,
   });
-  const [editingOpen, setEditingOpen] = useState(false),
+  const [editingOpen, setEditingOpen] = useState(
+      () => retainDraft && !!retainedDrafts.get(identityKey)?.draft,
+    ),
     [resourceRevision, setResourceRevision] = useState(0);
   const [mutation, setMutation] = useState<ResourceMutation | null>(null),
     [resourceName, setResourceName] = useState(""),
@@ -235,24 +262,10 @@ export function WorkflowResourceViewCore({
     unsaved = useRef<HTMLDialogElement>(null),
     dirty = !!draft && draft.text !== draft.base;
   useEffect(() => {
-    if (!exploration) return;
+    if (!retainDraft) return;
     retainedDrafts.set(identityKey, { selected, draft });
-  }, [identityKey, selected, draft, exploration]);
-  useEffect(() => {
-    if (!exploration) return;
-    const guard = (e: BeforeUnloadEvent) => {
-      if (
-        [...retainedDrafts.values()].some(
-          (v) => v.draft && v.draft.text !== v.draft.base,
-        )
-      ) {
-        e.preventDefault();
-        e.returnValue = "";
-      }
-    };
-    window.addEventListener("beforeunload", guard);
-    return () => window.removeEventListener("beforeunload", guard);
-  }, [exploration]);
+    syncUnloadGuard();
+  }, [identityKey, selected, draft, retainDraft]);
   const discuss = () => {
     if (!exploration) {
       if (resource && onDiscuss)

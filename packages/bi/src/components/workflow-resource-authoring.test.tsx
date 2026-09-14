@@ -54,7 +54,7 @@ it("awaits isolated draft persistence, prevents duplicate submits, and does not 
   );
   render(
     <WorkflowResourceViewer
-      definitionId="a"
+      definitionId="save-success"
       revision="def-r1"
       workspace={workspace}
       catalog={catalog}
@@ -84,7 +84,7 @@ it("retains edited text and allows retry when the persistence port rejects", asy
   const save = vi.fn().mockRejectedValue(new Error("REVISION_CONFLICT"));
   render(
     <WorkflowResourceViewer
-      definitionId="a"
+      definitionId="save-failure"
       revision="def-r1"
       workspace={workspace}
       catalog={catalog}
@@ -106,7 +106,7 @@ it("retains edited text and allows retry when the persistence port rejects", asy
 it("refuses an edited draft after the supplied resource baseline changes", async () => {
   const save = vi.fn();
   const props = {
-    definitionId: "a",
+    definitionId: "baseline-change",
     revision: "def-r1",
     workspace,
     catalog,
@@ -137,7 +137,12 @@ it("retains the local edit when write authority is revoked during an outstanding
     new Promise<void>((resolve) => {
       complete = resolve;
     });
-  const props = { definitionId: "a", revision: "def-r1", workspace, catalog };
+  const props = {
+    definitionId: "revocation",
+    revision: "def-r1",
+    workspace,
+    catalog,
+  };
   const view = render(<WorkflowResourceViewer {...props} onSaveDraft={save} />);
   fireEvent.change(screen.getByRole("textbox", { name: "资源源码" }), {
     target: { value: "keep" },
@@ -149,4 +154,32 @@ it("retains the local edit when write authority is revoked during an outstanding
     expect(screen.getByRole("status")).toHaveTextContent("写入权限已撤销"),
   );
   expect(screen.queryByText("草案已保存，未发布。")).not.toBeInTheDocument();
+});
+it("retains an unsaved draft across unmounts of the same exact Workflow but isolates another revision", () => {
+  const save = vi.fn();
+  const props = {
+    definitionId: "retention",
+    revision: "def-r1",
+    workspace,
+    catalog,
+    onSaveDraft: save,
+  };
+  const first = render(<WorkflowResourceViewer {...props} />);
+  fireEvent.change(screen.getByRole("textbox", { name: "资源源码" }), {
+    target: { value: "retained unsaved text" },
+  });
+  first.unmount();
+  const unload = new Event("beforeunload", { cancelable: true });
+  window.dispatchEvent(unload);
+  expect(unload.defaultPrevented).toBe(true);
+  const other = render(<WorkflowResourceViewer {...props} revision="def-r2" />);
+  expect(screen.getByRole("textbox", { name: "资源源码" })).toHaveValue(
+    "original",
+  );
+  other.unmount();
+  render(<WorkflowResourceViewer {...props} />);
+  expect(screen.getByRole("textbox", { name: "资源源码" })).toHaveValue(
+    "retained unsaved text",
+  );
+  expect(screen.getByRole("button", { name: "保存" })).toBeEnabled();
 });
