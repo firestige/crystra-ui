@@ -11,7 +11,7 @@ export type CrystraAnalysisPage =
 const pages = [
   { value: "analysis-overview", label: "总览" },
   { value: "analysis-traces", label: "调用追踪" },
-  { value: "analysis-reports", label: "研究报表" },
+  { value: "analysis-reports", label: "对比分析" },
 ] as const;
 /** Accepted v8 frame, with production data and navigation supplied by the host. */
 export function CrystraAnalysisFrame({

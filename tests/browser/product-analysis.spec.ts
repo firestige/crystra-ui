@@ -20,7 +20,7 @@ test("production Analysis composition keeps the closed-directory trace at full w
   ).toBeVisible();
   await page.getByRole("tab", { name: "总览", exact: true }).click();
   await expect(page.getByText("Overview fixture")).toBeVisible();
-  await page.getByRole("tab", { name: "研究报表", exact: true }).click();
+  await page.getByRole("tab", { name: "对比分析", exact: true }).click();
   await expect(page.getByText("Reports fixture")).toBeVisible();
   await page.getByRole("tab", { name: "调用追踪", exact: true }).click();
   await expect(

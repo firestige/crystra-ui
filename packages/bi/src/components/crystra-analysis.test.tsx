@@ -12,7 +12,7 @@ it("keeps distinct Analysis routes and requires no prototype data", () => {
       <p>Real content</p>
     </CrystraAnalysisFrame>,
   );
-  fireEvent.click(screen.getByRole("tab", { name: "研究报表" }));
+  fireEvent.click(screen.getByRole("tab", { name: "对比分析" }));
   expect(navigate).toHaveBeenCalledWith("analysis-reports");
   expect(screen.getByText("Real content")).toBeVisible();
 });

@@ -172,7 +172,7 @@ export function CrystraShell(props: CrystraShellProps) {
                 [
                   ["analysis-overview", "总览", "analysis-dashboard-action"],
                   ["analysis-traces", "调用追踪", "analysis-traces-action"],
-                  ["analysis-reports", "研究报表", "analysis-reports-action"],
+                  ["analysis-reports", "对比分析", "analysis-reports-action"],
                 ] as const
               ).map(([page, label, id]) => (
                 <Button
