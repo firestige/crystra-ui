@@ -16,10 +16,12 @@ export function WorkflowHostExploration({
   definitionId,
   revision,
   renderMarkdown,
+  input: hostInput,
 }: {
   definitionId: string;
   revision: string;
   renderMarkdown?: (text: string) => ReactNode;
+  input?: ReactNode;
 }) {
   const [page, setPage] = useState<WorkflowWorkbenchPage>("studio"),
     [header, setHeader] = useState<HTMLDivElement | null>(null);
@@ -37,9 +39,13 @@ export function WorkflowHostExploration({
         onPageChange={setPage}
         context={<div ref={setHeader} />}
         input={
-          <p role="status" style={{ padding: 16 }}>
-            这是定稿工作流的独立设计样本，尚未关联本实例的包工作区与会话。
-          </p>
+          hostInput === undefined ? (
+            <p role="status" style={{ padding: 16 }}>
+              这是定稿工作流的独立设计样本，尚未关联本实例的包工作区与会话。
+            </p>
+          ) : (
+            hostInput
+          )
         }
         panels={{
           studio: (
