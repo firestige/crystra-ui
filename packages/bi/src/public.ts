@@ -255,3 +255,9 @@ export {
 
 export { TaskBrowser, type TaskBrowserProps } from "./components/task-browser";
 export type { BrowserTaskRecord } from "./components/task-browser-model";
+
+export {
+  WorkflowExplorer,
+  type WorkflowExplorerProps,
+} from "./components/workflow-explorer";
+export type { WorkflowDefinitionEntry } from "./components/workflow-explorer-model";

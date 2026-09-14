@@ -1,10 +1,10 @@
+import { ResourceGalleryGroup } from "./resource-gallery-group";
 import {
   useEffect,
   useMemo,
   useRef,
   useState,
   type CSSProperties,
-  type RefObject,
 } from "react";
 import { restoreTaskBrowserView } from "./task-browser-view";
 import { Menu } from "./collection-components";
@@ -84,101 +84,6 @@ function Stamp({ value }: { value?: string | null }) {
         hour12: false,
       }).format(new Date(value))}
     </time>
-  );
-}
-function GalleryGroup({
-  title,
-  tasks,
-  columns,
-  root,
-  active,
-  anchorId,
-  collapsed,
-  onToggle,
-  children,
-}: {
-  title: string;
-  tasks: readonly BrowserTaskRecord[];
-  columns: number;
-  root: RefObject<HTMLDivElement | null>;
-  active: boolean;
-  anchorId?: string;
-  collapsed: boolean;
-  onToggle: () => void;
-  children: (task: BrowserTaskRecord) => React.ReactNode;
-}) {
-  const [count, setCount] = useState(() =>
-    Math.max(columns, tasks.findIndex((task) => task.id === anchorId) + 1),
-  );
-  const marker = useRef<HTMLDivElement>(null);
-  const visible = Math.max(columns, count);
-  useEffect(() => {
-    if (
-      !active ||
-      collapsed ||
-      visible >= tasks.length ||
-      !marker.current ||
-      !root.current ||
-      typeof IntersectionObserver === "undefined"
-    )
-      return;
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (!entries.some((e) => e.isIntersecting)) return;
-        const bounds = marker.current?.getBoundingClientRect(),
-          viewport = root.current?.getBoundingClientRect();
-        if (
-          !bounds ||
-          !viewport ||
-          bounds.top > viewport.bottom + viewport.height * 0.5
-        )
-          return;
-        setCount(
-          (old) =>
-            Math.max(old, columns) +
-            columns *
-              Math.max(
-                1,
-                Math.ceil(
-                  viewport.height /
-                    ((marker.current?.parentElement
-                      ?.querySelector(".browser-task-card")
-                      ?.getBoundingClientRect().height ?? 226) +
-                      16),
-                ),
-              ),
-        );
-      },
-      { root: root.current, rootMargin: "0px 0px 50% 0px" },
-    );
-    observer.observe(marker.current);
-    return () => observer.disconnect();
-  }, [active, collapsed, visible, tasks.length, columns, root]);
-  return (
-    <section className="browser-group">
-      <button
-        type="button"
-        className="browser-group-heading"
-        aria-expanded={!collapsed}
-        onClick={onToggle}
-      >
-        <Icon name="chevron-down" />
-        <span>{title}</span>
-        <span className="group-count">{tasks.length}</span>
-      </button>
-      <div hidden={collapsed}>
-        <div className="browser-flow">
-          {tasks.slice(0, visible).map(children)}
-        </div>
-        {visible < tasks.length && (
-          <div
-            ref={marker}
-            className="browser-load-marker"
-            aria-hidden="true"
-          />
-        )}
-      </div>
-    </section>
   );
 }
 /** Accepted v8 Task collection. Actions require explicit host adapters; reading creates no objects. */
@@ -668,7 +573,7 @@ export function TaskBrowser({
             style={{ "--browser-card-width": `${width}px` } as CSSProperties}
           >
             {[...groups].map(([title, items]) => (
-              <GalleryGroup
+              <ResourceGalleryGroup
                 key={`${title}:${JSON.stringify(query)}`}
                 title={title}
                 tasks={items}
@@ -688,7 +593,7 @@ export function TaskBrowser({
                 }
               >
                 {card}
-              </GalleryGroup>
+              </ResourceGalleryGroup>
             ))}
           </div>
         </>
