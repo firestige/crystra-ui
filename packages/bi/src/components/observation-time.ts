@@ -23,7 +23,10 @@ export function observationRangeError([start, end]: [string, string]): string {
     return "时间范围最多为一年";
   return "";
 }
-export function observationRange(period: string): [string, string] {
+export function observationRange(
+  period: string,
+  today = observationToday,
+): [string, string] {
   const custom =
     /^custom:(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2})\/(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2})$/.exec(
       period,
@@ -37,23 +40,30 @@ export function observationRange(period: string): [string, string] {
       ? [legacy[1] + "T00:00:00", legacy[2] + "T23:59:59"]
       : undefined;
   if (range && !observationRangeError(range)) return range;
-  const start = new Date(observationToday + "T00:00:00Z");
+  const start = new Date(today + "T00:00:00Z");
   start.setUTCDate(
     start.getUTCDate() -
       ((period === "30d" ? 30 : period === "3d" ? 3 : 7) - 1),
   );
-  return [iso(start) + "T00:00:00", observationToday + "T23:59:59"];
+  return [iso(start) + "T00:00:00", today + "T23:59:59"];
 }
-export const observationRangeLabel = (period: string) =>
+export const observationRangeLabel = (
+  period: string,
+  today = observationToday,
+) =>
   period === "7d"
     ? "最近 7 天"
     : period === "30d"
       ? "最近 30 天"
-      : observationRange(period)
+      : observationRange(period, today)
           .map((d) => d.slice(5).replace("-", "/").replace("T", " "))
           .join(" — ");
-export function inObservationRange(date: string, period: string) {
-  const [start, end] = observationRange(period);
+export function inObservationRange(
+  date: string,
+  period: string,
+  today = observationToday,
+) {
+  const [start, end] = observationRange(period, today);
   // Daily aggregate fixtures intersect the selected range; trace timestamps are exact.
   if (date.length === 10)
     return (

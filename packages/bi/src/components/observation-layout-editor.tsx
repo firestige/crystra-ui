@@ -30,7 +30,8 @@ import {
   type View,
   type WidgetData,
 } from "../domain/widget-families";
-import { dashboardLayout } from "../test-harness/dashboard-fixture";
+import { PRESET_LAYOUTS } from "../domain/layout/layout";
+const dashboardLayout = PRESET_LAYOUTS["default-overview@1"];
 import { downloadConfiguration } from "./configuration-download";
 import { ConfigurationFileInput } from "./configuration-file";
 import { Button, ButtonGroup, IconButton } from "./design-system";

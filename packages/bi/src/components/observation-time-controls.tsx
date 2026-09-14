@@ -13,14 +13,18 @@ export function ObservationTimeControls({
   onChange,
   refreshCount,
   onRefresh,
+  referenceDate,
 }: {
   period: string;
+  referenceDate?: string;
   onChange: (period: string) => void;
   refreshCount: number;
   onRefresh: () => void;
 }) {
   const [open, setOpen] = useState(false),
-    [draft, setDraft] = useState<[string, string]>(observationRange(period));
+    [draft, setDraft] = useState<[string, string]>(
+      observationRange(period, referenceDate),
+    );
   const [month, setMonth] = useState("2026-08-01"),
     [pickingEnd, setPickingEnd] = useState(false);
   const [cadence, setCadence] = useState("0");
@@ -82,21 +86,23 @@ export function ObservationTimeControls({
           appearance="outline"
           aria-label="选择日期范围"
           title={
-            observationRange(period)
+            observationRange(period, referenceDate)
               .map((d) => d.replace("T", " "))
               .join(" — ") + " (UTC+08:00)"
           }
           aria-haspopup="dialog"
           aria-expanded={open}
           onClick={() => {
-            setDraft(observationRange(period));
+            setDraft(observationRange(period, referenceDate));
             setPickingEnd(false);
-            setMonth(observationRange(period)[0].slice(0, 7) + "-01");
+            setMonth(
+              observationRange(period, referenceDate)[0].slice(0, 7) + "-01",
+            );
             setOpen(!open);
           }}
         >
           <Icon name="calendar" />
-          {observationRangeLabel(period)}
+          {observationRangeLabel(period, referenceDate)}
           <Icon name="chevron-down" />
         </Button>
         {open && (

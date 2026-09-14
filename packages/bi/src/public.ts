@@ -209,3 +209,10 @@ export {
   CrystraTraceContent,
   type CrystraAnalysisPage,
 } from "./components/crystra-analysis";
+
+export {
+  AnalysisWorkspace,
+  type AnalysisWorkspaceData,
+  type AnalysisWorkspacePage,
+  type AnalysisOverviewFilters,
+} from "./components/analysis-workspace";
