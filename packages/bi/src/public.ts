@@ -197,3 +197,9 @@ export type {
   DeliverySearchCondition,
   DeliveryFilters,
 } from "./domain/delivery-search";
+export {
+  CrystraShell,
+  type CrystraShellProps,
+  type CrystraPage,
+  type CrystraNavigationRecord,
+} from "./components/crystra-shell";

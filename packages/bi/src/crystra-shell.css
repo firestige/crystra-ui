@@ -1,0 +1,69 @@
+.crystra-product-shell {
+  display: grid;
+  grid-template-columns: 248px minmax(0, 1fr);
+  height: 100%;
+  min-height: 0;
+  color: var(--crystra-color-text-primary, #e2e8f0);
+  background: var(--crystra-color-bg-main, #111318);
+}
+.crystra-product-shell > aside {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  padding: 16px 14px;
+  border-right: 1px solid var(--crystra-color-border, #282d36);
+  background: var(--crystra-color-bg-sidebar, #16191f);
+  gap: 8px;
+}
+.crystra-product-shell [data-section-id="new-task-action"] {
+  margin-top: 16px;
+  min-height: 44px;
+}
+.crystra-product-shell [data-section-id="task-working-set"] {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  flex: 1;
+  margin-top: 12px;
+}
+.crystra-product-shell
+  [data-section-id="task-working-set"][data-expanded="false"] {
+  flex: none;
+}
+.crystra-product-shell aside header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 36px;
+}
+.crystra-product-shell [data-section-id="task-section-content"] {
+  overflow: auto;
+  min-height: 0;
+}
+.crystra-product-shell [data-section-id="workflow-section-content"] {
+  max-height: 25vh;
+  overflow: auto;
+}
+.crystra-product-shell [data-section-id="analysis-secondary-navigation"] {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+.crystra-product-shell [data-section-id="sidebar-footer"] {
+  margin-top: auto;
+  padding-top: 12px;
+  border-top: 1px solid var(--crystra-color-border, #282d36);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.crystra-product-shell > main {
+  min-height: 0;
+  min-width: 0;
+  overflow: auto;
+}
+@media (max-width: 640px) {
+  .crystra-product-shell {
+    grid-template-columns: 184px minmax(0, 1fr);
+  }
+}
