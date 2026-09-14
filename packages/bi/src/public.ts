@@ -261,3 +261,7 @@ export {
   type WorkflowExplorerProps,
 } from "./components/workflow-explorer";
 export type { WorkflowDefinitionEntry } from "./components/workflow-explorer-model";
+export {
+  WorkflowWorkbench,
+  type WorkflowWorkbenchPage,
+} from "./components/workflow-workbench";

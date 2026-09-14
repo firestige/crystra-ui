@@ -148,3 +148,28 @@ it("supports icon-only sorting menus with radio semantics and keyboard focus", (
   expect(select).toHaveBeenCalledWith("cost");
   expect(trigger).toHaveFocus();
 });
+
+it("places tab panels in an explicit host while preserving accessible associations", () => {
+  function Host() {
+    const [host, setHost] = useState<HTMLDivElement | null>(null);
+    return (
+      <>
+        <Tabs
+          aria-label="Projection"
+          value="a"
+          onValueChange={() => {}}
+          panelContainer={host}
+          items={[{ value: "a", label: "Design", panel: <p>Content</p> }]}
+        />
+        <div data-testid="panel-host" ref={setHost} />
+      </>
+    );
+  }
+  render(<Host />);
+  const panel = screen.getByRole("tabpanel", { name: "Design" });
+  expect(screen.getByTestId("panel-host")).toContainElement(panel);
+  expect(screen.getByRole("tab", { name: "Design" })).toHaveAttribute(
+    "aria-controls",
+    panel.id,
+  );
+});

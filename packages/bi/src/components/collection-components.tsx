@@ -1,3 +1,4 @@
+import { createPortal } from "react-dom";
 import {
   useEffect,
   useId,
@@ -123,6 +124,8 @@ export interface TabsProps {
   value: string;
   onValueChange: (value: string) => void;
   items: readonly TabItem[];
+  /** Explicit host-owned panel location; null waits for that host to commit. */
+  panelContainer?: HTMLElement | null;
   size?: ComponentSize;
   appearance?: "soft" | "underline";
   className?: string;
@@ -136,6 +139,7 @@ export function Tabs({
   size = "regular",
   appearance = "soft",
   className,
+  panelContainer,
 }: TabsProps) {
   const id = useId();
   const refs = useRef<(HTMLButtonElement | null)[]>([]);
@@ -163,6 +167,19 @@ export function Tabs({
             ];
     refs.current[target]?.focus();
   };
+  const panels = items.map((item, index) => (
+    <div
+      key={item.value}
+      id={`${id}-panel-${index}`}
+      role="tabpanel"
+      aria-labelledby={`${id}-tab-${index}`}
+      hidden={item.value !== value}
+      tabIndex={0}
+      className="crystra-tab-panel"
+    >
+      {item.panel}
+    </div>
+  ));
   return (
     <div
       className={["crystra-tabs", className].filter(Boolean).join(" ")}
@@ -191,19 +208,11 @@ export function Tabs({
           </button>
         ))}
       </div>
-      {items.map((item, index) => (
-        <div
-          key={item.value}
-          id={`${id}-panel-${index}`}
-          role="tabpanel"
-          aria-labelledby={`${id}-tab-${index}`}
-          hidden={item.value !== value}
-          tabIndex={0}
-          className="crystra-tab-panel"
-        >
-          {item.panel}
-        </div>
-      ))}
+      {panelContainer === undefined
+        ? panels
+        : panelContainer
+          ? createPortal(panels, panelContainer)
+          : null}
     </div>
   );
 }

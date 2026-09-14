@@ -1,0 +1,84 @@
+.crystra-workflow-workbench {
+  height: 100%;
+  min-height: 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-background-shell);
+  overflow: auto;
+}
+.crystra-workflow-workbench > .wb-page-header {
+  flex-shrink: 0;
+  border-bottom: 1px solid var(--color-border-default);
+}
+.crystra-workflow-workbench [data-header-slot="identity"] h1,
+.crystra-workflow-workbench [data-header-slot="identity"] p {
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.crystra-workflow-workbench [data-header-slot="context"] {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+.crystra-workflow-workbench [data-header-slot="context"] > span {
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 12px;
+  color: var(--color-text-muted);
+}
+.crystra-workflow-layout {
+  min-width: 720px;
+  min-height: 0;
+  flex: 1;
+  display: grid;
+  grid-template-columns: var(--workflow-input-width) 1px minmax(0, 1fr);
+  position: relative;
+}
+.crystra-workflow-layout > [data-section-id="input-stream"] {
+  min-height: 0;
+  min-width: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.crystra-workflow-layout > [role="separator"] {
+  position: relative;
+  background: var(--color-border-default);
+  cursor: col-resize;
+  touch-action: none;
+  z-index: 20;
+}
+.crystra-workflow-layout > [role="separator"]::before {
+  content: "";
+  position: absolute;
+  inset: 0 -5px;
+}
+.crystra-workflow-layout > [role="separator"]:focus-visible {
+  outline: 2px solid var(--color-interaction-primary);
+  outline-offset: 0;
+}
+.crystra-workflow-layout > [data-section-id="workflow-projections"] {
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.crystra-workflow-workbench
+  [data-section-id="workflow-projections"]
+  > .crystra-tab-panel {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+}
+.crystra-workflow-workbench
+  [data-section-id="workflow-projections"]
+  > .crystra-tab-panel[hidden] {
+  display: none;
+}
