@@ -1,3 +1,4 @@
+import { WorkflowCrystallization } from "../components/workflow-crystallization";
 import { useState, type ReactNode } from "react";
 import { WorkflowResourceDesign } from "./workflow-resource-design";
 import {
@@ -51,7 +52,7 @@ export function WorkflowHostExploration({
             />
           ),
           resources: <WorkflowResourceDesign renderMarkdown={renderMarkdown} />,
-          crystallization: <p role="status">结晶投影接入中。</p>,
+          crystallization: <WorkflowCrystallization />,
         }}
       />
       <aside

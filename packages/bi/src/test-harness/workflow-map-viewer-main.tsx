@@ -1,3 +1,4 @@
+import { WorkflowCrystallization } from "../components/workflow-crystallization";
 import { WorkflowResourceDesign } from "./workflow-resource-design";
 import { createRoot } from "react-dom/client";
 import { useState } from "react";
@@ -61,7 +62,7 @@ export function Scenario() {
             />
           ),
           resources: <WorkflowResourceDesign />,
-          crystallization: <p>结晶投影接入中</p>,
+          crystallization: <WorkflowCrystallization />,
         }}
       />
       <div role="note" className="map-viewer-test-note">

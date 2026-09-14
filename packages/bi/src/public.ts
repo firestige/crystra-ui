@@ -276,3 +276,8 @@ export {
   type ResourceWorkspaceSnapshot,
   type WorkflowCatalogResource,
 } from "./components/workflow-resource-viewer";
+
+export {
+  WorkflowCrystallizationView,
+  type CrystallizationProjection,
+} from "./components/workflow-crystallization-view";

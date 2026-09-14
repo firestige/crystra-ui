@@ -1,13 +1,10 @@
-import { useRef, useState } from "react";
 import fixtures from "../domain/workflow-crystallization-ir.json";
 import generated from "../domain/workflow-crystallization-layouts.json";
-import type { MapLayout } from "../domain/workflow-map-engine";
 import type { WorkflowMapIR } from "../domain/workflow-map-ir";
-import "../workflow-crystallization.css";
-import { Button, Card, Chip, IconButton, Typography } from "./design-system";
-import { Icon } from "./icon";
-import { ToggleSwitch } from "./toggle-switch";
-import { WidgetTooltip } from "./widget-tooltip";
+import {
+  WorkflowCrystallizationView,
+  type CrystallizationProjection,
+} from "./workflow-crystallization-view";
 const { before, after } = fixtures as {
   before: WorkflowMapIR;
   after: WorkflowMapIR;
@@ -47,404 +44,64 @@ const details: Record<
     output: "结构化复核结果",
   },
 };
+
+const data: CrystallizationProjection = {
+  id: "design-report-crystallization",
+  baselineRevision: "基线设计样本",
+  candidateRevision: "候选设计样本",
+  scope: "复核与交付 / 报告处理",
+  title: "拆出确定性处理，保留异常判断",
+  notice: "草案探索 · 静态设计样本，未修改当前工作流",
+  before,
+  after,
+  layouts: generated as unknown as CrystallizationProjection["layouts"],
+  beforeSummary: "当前职责由 Agent 整体承担",
+  afterSummary: "新增脚本与模板 · 保留判断 · 补充恢复路径",
+  details: Object.fromEntries(
+    Object.entries(details).map(([id, detail]) => [
+      id,
+      {
+        ...detail,
+        kind: id === "review" ? "adjusted" : "new",
+        ...(id === "review"
+          ? {
+              beforeBody:
+                "当前 Agent 同时负责读取、提取、解释和输出；候选将确定性部分拆出，保留判断。",
+            }
+          : {}),
+      },
+    ]),
+  ),
+  history: {
+    sampleLabel: "设计样本 · 120 个 Delivery",
+    costShare: "38%",
+    criticalPathShare: "24%",
+    summary: "重复处理集中在报告提取与排版。",
+  },
+  forecast: {
+    costChange: "↓ 18–26%",
+    latencyChange: "↓ 8–14%",
+    summary: "考虑适用比例、保留判断、脚本开销与恢复路径。",
+    assumptions: [
+      "样本中的120个 Delivery、38%、24%和预测区间均为静态设计数据，不来自真实观测，也不是算法计算结果。",
+    ],
+  },
+  validation: [
+    "待生成并验证 report-extract 脚本。",
+    "待绑定真实活动、输入输出接口与模板。",
+    "待选择真实历史 Delivery，并验证正常和恢复路径。",
+  ],
+};
+/** Accepted standalone design fixture; not runtime evidence. */
 export function WorkflowCrystallization({
   quote,
 }: {
-  quote: (text: string) => void;
+  quote?: (text: string) => void;
 }) {
-  const [view, setView] = useState<"before" | "after">("after"),
-    [selected, setSelected] = useState<string | null>(null),
-    [benefits, setBenefits] = useState(true);
-  const dialog = useRef<HTMLDialogElement>(null);
-  const ir = view === "before" ? before : after;
-  const entry = generated[view];
-  const layout =
-    JSON.stringify(entry.ir) === JSON.stringify(ir)
-      ? (entry.layout as unknown as MapLayout)
-      : null;
-  const error = "定义与布局不匹配，请重新生成候选布局。";
-  const detail = selected ? details[selected] : null;
   return (
-    <section
-      className="crystal-workspace"
-      data-section-id="workflow-crystallization"
-    >
-      <header className="crystal-header">
-        <div>
-          <Typography variant="meta" tone="muted">
-            复核与交付 / 报告处理
-          </Typography>
-          <Typography as="h2" variant="section-title">
-            拆出确定性处理，保留异常判断
-          </Typography>
-        </div>
-        <div className="crystal-actions">
-          <Chip>候选方案</Chip>
-          <Button
-            appearance="ghost"
-            onClick={() => dialog.current?.showModal()}
-          >
-            检查方案
-          </Button>
-          <WidgetTooltip text="脚本与接口尚未验证，暂不能应用" focusable>
-            <Button disabled>应用到草稿</Button>
-          </WidgetTooltip>
-        </div>
-      </header>
-      <div className="crystal-subhead">
-        <div className="crystal-actions">
-          <Typography
-            variant="label"
-            tone={view === "before" ? "primary" : "muted"}
-          >
-            变更前
-          </Typography>
-          <ToggleSwitch
-            mode="choice"
-            shape="round"
-            label="变更对比"
-            labels={["变更前", "变更后"]}
-            checked={view === "after"}
-            onCheckedChange={(checked) => setView(checked ? "after" : "before")}
-          />
-          <Typography
-            variant="label"
-            tone={view === "after" ? "primary" : "muted"}
-          >
-            变更后
-          </Typography>
-        </div>
-        <Typography variant="meta" tone="muted">
-          {view === "before"
-            ? "当前职责由 Agent 整体承担"
-            : "新增脚本与模板 · 保留判断 · 补充恢复路径"}
-        </Typography>
-        <WidgetTooltip text="查看样本与验证边界" focusable={false}>
-          <IconButton
-            appearance="ghost"
-            aria-label="查看样本与验证边界"
-            onClick={() => dialog.current?.showModal()}
-          >
-            <Icon name="help" />
-          </IconButton>
-        </WidgetTooltip>
-      </div>
-      <div className="crystal-canvas">
-        <div className="crystal-legend">
-          <span>
-            <i className="crystal-new" />
-            新增
-          </span>
-          <span>
-            <i className="crystal-adjusted" />
-            调整
-          </span>
-          <span>
-            <i className="crystal-retained" />
-            保留
-          </span>
-          <Typography variant="meta" tone="muted">
-            基于设计样本 · 未修改当前工作流
-          </Typography>
-        </div>
-        {layout ? (
-          <svg
-            role="img"
-            aria-label={view === "before" ? "变更前活动图" : "变更后活动图"}
-            viewBox={`-32 -32 ${layout.width + 64} ${layout.height + 94}`}
-          >
-            <defs>
-              <marker
-                id="crystal-arrow"
-                markerWidth="10"
-                markerHeight="10"
-                refX="8"
-                refY="4"
-                orient="auto"
-              >
-                <path d="M0 0 L8 4 L0 8" fill="none" stroke="context-stroke" />
-              </marker>
-            </defs>
-            {layout.edges.map((e) => {
-              const edge = ir.edges.find((x) => x.id === e.id);
-              return (
-                <g
-                  key={e.segmentKey || e.id}
-                  className={
-                    edge?.intent === "recovery"
-                      ? "crystal-recovery"
-                      : "crystal-flow"
-                  }
-                >
-                  <path
-                    d={e.path}
-                    fill="none"
-                    strokeWidth="2"
-                    markerEnd={
-                      e.arrow === false ? undefined : "url(#crystal-arrow)"
-                    }
-                  />
-                  {e.label && (
-                    <text x={e.label.x + 4} y={e.label.y + 16}>
-                      {e.label.text}
-                    </text>
-                  )}
-                </g>
-              );
-            })}
-            {layout.nodes.map((n) => {
-              const node = ir.nodes.find((x) => x.id === n.id);
-              if (!node) return null;
-              const terminal = node.kind === "start" || node.kind === "end";
-              return (
-                <g
-                  key={n.id}
-                  role={terminal ? undefined : "button"}
-                  tabIndex={terminal ? undefined : 0}
-                  aria-label={node.title}
-                  className="crystal-node"
-                  data-change={
-                    view === "before" || terminal
-                      ? "retained"
-                      : n.id === "review"
-                        ? "adjusted"
-                        : "new"
-                  }
-                  data-selected={selected === n.id}
-                  onClick={() => !terminal && setSelected(n.id)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" || e.key === " ") {
-                      e.preventDefault();
-                      setSelected(n.id);
-                    }
-                  }}
-                >
-                  {terminal ? (
-                    <>
-                      <circle
-                        cx={n.x + n.width / 2}
-                        cy={n.y + n.height / 2}
-                        r="22"
-                      />
-                      {node.kind === "end" && (
-                        <circle
-                          cx={n.x + n.width / 2}
-                          cy={n.y + n.height / 2}
-                          r="13"
-                        />
-                      )}
-                    </>
-                  ) : node.kind === "decision" ? (
-                    <path
-                      d={`M${n.x + n.width / 2} ${n.y}L${n.x + n.width} ${n.y + n.height / 2}L${n.x + n.width / 2} ${n.y + n.height}L${n.x} ${n.y + n.height / 2}Z`}
-                    />
-                  ) : (
-                    <rect
-                      x={n.x}
-                      y={n.y}
-                      width={n.width}
-                      height={n.height}
-                      rx="12"
-                    />
-                  )}
-                  <text
-                    x={n.x + n.width / 2}
-                    y={terminal ? n.y + n.height + 23 : n.y + n.height / 2 + 3}
-                    textAnchor="middle"
-                  >
-                    {node.title}
-                  </text>
-                  {node.resources && (
-                    <text
-                      className="crystal-node-binding"
-                      x={n.x + n.width / 2}
-                      y={n.y + n.height / 2 + 27}
-                      textAnchor="middle"
-                    >
-                      {node.resources[0]}
-                    </text>
-                  )}
-                </g>
-              );
-            })}
-          </svg>
-        ) : (
-          <Typography variant="description">
-            {error || "正在整理变更布局…"}
-          </Typography>
-        )}
-        {detail && (
-          <aside className="crystal-detail">
-            <div className="crystal-actions">
-              <Typography variant="label">{detail.change}</Typography>
-              <WidgetTooltip text="关闭活动变化详情" focusable={false}>
-                <IconButton
-                  appearance="ghost"
-                  aria-label="关闭活动变化详情"
-                  onClick={() => setSelected(null)}
-                >
-                  <Icon name="x" />
-                </IconButton>
-              </WidgetTooltip>
-            </div>
-            <Typography as="h3" variant="item-title">
-              {ir.nodes.find((n) => n.id === selected)?.title ||
-                after.nodes.find((n) => n.id === selected)?.title}
-            </Typography>
-            <Typography as="p" variant="description" tone="secondary">
-              {view === "before" && selected === "review"
-                ? "当前 Agent 同时负责读取、提取、解释和输出；候选将确定性部分拆出，保留判断。"
-                : detail.body}
-            </Typography>
-            <Typography as="p" variant="meta">
-              输入：{detail.input}
-            </Typography>
-            <Typography as="p" variant="meta">
-              输出：{detail.output}
-            </Typography>
-            <Button
-              appearance="ghost"
-              aria-label="在 Chat 中讨论此变化"
-              onClick={() =>
-                quote(
-                  "关于结晶候选「" +
-                    after.nodes.find((n) => n.id === selected)?.title +
-                    "」：",
-                )
-              }
-            >
-              在 Chat 中讨论
-            </Button>
-          </aside>
-        )}
-      </div>
-      <section className="crystal-benefits">
-        <div className="crystal-benefit-head">
-          <Button
-            appearance="ghost"
-            aria-expanded={benefits}
-            onClick={() => setBenefits((v) => !v)}
-          >
-            <Icon
-              name="chevron-down"
-              style={{ transform: benefits ? "none" : "rotate(-90deg)" }}
-            />
-            收益与验证
-          </Button>
-          <Typography variant="meta" tone="muted">
-            演示数据 · 基线版本 → 候选版本
-          </Typography>
-        </div>
-        {benefits && (
-          <div className="crystal-metrics">
-            <Card heading="历史依据">
-              <Typography variant="meta" tone="muted">
-                基线样本 · 120 个 Delivery
-              </Typography>
-              <div className="crystal-data-row">
-                <Typography variant="description">
-                  拟替代部分的模型费用占比
-                </Typography>
-                <Typography variant="item-title">38%</Typography>
-              </div>
-              <div className="crystal-data-row">
-                <Typography variant="description">关键路径时间占比</Typography>
-                <Typography variant="item-title">24%</Typography>
-              </div>
-              <Typography as="p" variant="meta" tone="secondary">
-                重复处理集中在报告提取与排版。
-              </Typography>
-              <Button
-                appearance="ghost"
-                onClick={() =>
-                  quote(
-                    "请解释报告提取与排版的历史占用，列出样本范围、覆盖率与重复模式。",
-                  )
-                }
-              >
-                在 Chat 中查看依据
-              </Button>
-            </Card>
-            <Card heading="收益预测">
-              <Typography variant="meta" tone="muted">
-                预测展示样本 · 非实测结果
-              </Typography>
-              <div className="crystal-data-row">
-                <Typography variant="description">单次运行费用</Typography>
-                <Typography variant="item-title">↓ 18–26%</Typography>
-              </div>
-              <div className="crystal-data-row">
-                <Typography variant="description">端到端延迟</Typography>
-                <Typography variant="item-title">↓ 8–14%</Typography>
-              </div>
-              <Typography as="p" variant="meta" tone="secondary">
-                考虑适用比例、保留判断、脚本开销与恢复路径。
-              </Typography>
-              <Button
-                appearance="ghost"
-                onClick={() => dialog.current?.showModal()}
-              >
-                查看预测假设
-              </Button>
-            </Card>
-            <Card heading="实测对比">
-              <Typography variant="meta" tone="muted">
-                候选版本尚无运行数据
-              </Typography>
-              <div className="crystal-data-row">
-                <Typography variant="description">
-                  费用 / Token / 延迟
-                </Typography>
-                <Typography variant="item-title">—</Typography>
-              </div>
-              <Typography as="p" variant="description" tone="secondary">
-                形成新版本并积累运行数据后，用 Evaluation 的正常指标与基线比较。
-              </Typography>
-              <Typography variant="meta" tone="muted">
-                保留原预测，后续对照实测偏差
-              </Typography>
-            </Card>
-          </div>
-        )}
-      </section>
-      <dialog ref={dialog} className="map-dialog" aria-label="方案检查">
-        <div className="crystal-actions">
-          <Typography variant="section-title">方案检查</Typography>
-          <IconButton
-            appearance="ghost"
-            aria-label="关闭方案检查"
-            onClick={() => dialog.current?.close()}
-          >
-            <Icon name="x" />
-          </IconButton>
-        </div>
-        <Typography as="p" variant="description">
-          这是用于评审布局与交互的拆分方案，不是对当前工作流的真实分析结论。
-        </Typography>
-        <Typography as="p" variant="description" tone="secondary">
-          下方120个
-          Delivery、38%、24%和预测区间均为静态设计数据，不来自真实观测，也不是算法计算结果。正式预测需保留样本、费用来源、关键路径、适用比例、恢复频率、脚本开销和算法版本；费用占比不能直接当作节省比例。
-        </Typography>
-        <ul>
-          <li>待生成并验证 report-extract 脚本。</li>
-          <li>待绑定真实活动、输入输出接口与模板。</li>
-          <li>待选择真实历史 Delivery，并验证正常和恢复路径。</li>
-        </ul>
-        <Typography as="p" variant="description" tone="secondary">
-          检查完成后才能应用到工作流草稿；发布仍需通过版本门禁。当前不会写入包文件。
-        </Typography>
-        <Button
-          appearance="ghost"
-          onClick={() => {
-            dialog.current?.close();
-            quote(
-              "请继续完善报告处理结晶方案，先确认脚本接口、历史依据与版本对比范围。",
-            );
-          }}
-        >
-          在 Chat 中继续完善
-        </Button>
-      </dialog>
-    </section>
+    <WorkflowCrystallizationView
+      data={data}
+      onQuote={quote ? (reference) => quote(reference.text) : undefined}
+    />
   );
 }
