@@ -35,8 +35,10 @@ function DesignRelations({
 }
 export function WorkflowResourceDesign({
   renderMarkdown,
+  onDiscuss,
 }: {
   renderMarkdown?: (text: string) => ReactNode;
+  onDiscuss?: (selection: { resourceId: string; path: string }) => void;
 }) {
   return (
     <WorkflowResourceViewer
@@ -45,6 +47,7 @@ export function WorkflowResourceDesign({
       workspace={workspace}
       catalog={catalog}
       renderMarkdown={renderMarkdown}
+      onDiscuss={onDiscuss}
       renderRelations={DesignRelations}
     />
   );

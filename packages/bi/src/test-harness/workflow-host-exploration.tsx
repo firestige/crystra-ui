@@ -17,11 +17,21 @@ export function WorkflowHostExploration({
   revision,
   renderMarkdown,
   input: hostInput,
+  onReference,
 }: {
   definitionId: string;
   revision: string;
   renderMarkdown?: (text: string) => ReactNode;
   input?: ReactNode;
+  onReference?: (reference: {
+    definitionId: string;
+    revision: string;
+    kind: "resource" | "activity";
+    resourceId?: string;
+    resourceRevision?: string;
+    path?: string;
+    objectId?: string;
+  }) => boolean;
 }) {
   const [page, setPage] = useState<WorkflowWorkbenchPage>("studio"),
     [header, setHeader] = useState<HTMLDivElement | null>(null);
@@ -54,10 +64,40 @@ export function WorkflowHostExploration({
               resolveLayout={resolveWorkflowDesignLayout}
               mode="studio"
               onIdentity={identity}
+              onQuote={
+                onReference
+                  ? (_text, objectId) => {
+                      if (objectId)
+                        onReference({
+                          definitionId,
+                          revision,
+                          kind: "activity",
+                          objectId,
+                        });
+                    }
+                  : undefined
+              }
               headerContainer={page === "studio" ? header : null}
             />
           ),
-          resources: <WorkflowResourceDesign renderMarkdown={renderMarkdown} />,
+          resources: (
+            <WorkflowResourceDesign
+              renderMarkdown={renderMarkdown}
+              onDiscuss={
+                onReference
+                  ? (selection) => {
+                      onReference({
+                        definitionId,
+                        revision,
+                        kind: "resource",
+                        resourceRevision: "v8-resource-snapshot",
+                        ...selection,
+                      });
+                    }
+                  : undefined
+              }
+            />
+          ),
           crystallization: <WorkflowCrystallization />,
         }}
       />
