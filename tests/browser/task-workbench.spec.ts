@@ -174,3 +174,24 @@ test("supplied plan drawing uses the full accepted canvas and supports keyboard 
     page.getByText("选中计划节点：build", { exact: true }),
   ).toBeVisible();
 });
+
+test("opening Task detail views exposes the back control inside the scrolled workbench", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1280, height: 720 });
+  await page.goto("/task-test.html");
+  const input = page.getByRole("textbox", { name: "宿主输入替身" });
+  await input.fill("保留对话滚动与草稿");
+  const inputBox = await input.boundingBox();
+  await page.getByRole("button", { name: /^签名配置差异 / }).click();
+  const panel = page.getByRole("tabpanel", { name: "审核", exact: true });
+  const back = page.getByRole("button", {
+    name: "返回当前审核问题",
+    exact: true,
+  });
+  expect((await back.boundingBox())!.y).toBeGreaterThanOrEqual(
+    (await panel.boundingBox())!.y,
+  );
+  await expect(input).toHaveValue("保留对话滚动与草稿");
+  expect(await input.boundingBox()).toEqual(inputBox);
+});

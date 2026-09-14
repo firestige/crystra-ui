@@ -60,3 +60,10 @@ selection callbacks carry identity only. `TaskDiagramExplorer` adds view-only
 search, zoom and pan. `isTaskDiagram` and `TaskDiagramNode` are public for host
 admission. These rendering contracts do not assert plan/run authority or grant
 execution permission. Design fixtures remain in the separate test harness.
+
+Opening a Task evidence context resets only its containing tabpanel scroll so the back control and source label remain visible. The host input pane and its unsent draft do not move.
+
+`ResourceRelationGraph` is available to explicit host relation ports. Its source
+contains nodes, edges and declared files; the host must bind it to the exact
+resource snapshot and reject stale candidates before rendering or navigation.
+The renderer only explores supplied relationships and opens declared files.

@@ -1,3 +1,4 @@
+import { useLayoutEffect, useRef } from "react";
 import { Button, Card, Typography } from "./design-system";
 import "../task-evidence-context.css";
 export interface TaskEvidenceContextProjection {
@@ -16,8 +17,14 @@ export function TaskEvidenceContext({
   data: TaskEvidenceContextProjection;
   onBack: () => void;
 }) {
+  const root = useRef<HTMLElement>(null);
+  useLayoutEffect(() => {
+    const panel = root.current?.closest<HTMLElement>('[role="tabpanel"]');
+    if (panel) panel.scrollTop = 0;
+  }, [data.id]);
   return (
     <section
+      ref={root}
       className="crystra-task-evidence-context"
       data-section-id="gate-context-inspector"
     >

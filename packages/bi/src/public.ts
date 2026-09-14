@@ -286,3 +286,9 @@ export {
 export { TaskDiagram, TaskDiagramExplorer } from "./components/task-diagram";
 
 export { isTaskDiagram, type TaskDiagramNode } from "./domain/task-diagram";
+export { ResourceRelationGraph } from "./components/resource-relation-graph";
+export type {
+  Source as WorkflowResourceRelationSource,
+  Node as WorkflowResourceRelationNode,
+  Edge as WorkflowResourceRelationEdge,
+} from "./components/resource-relations";
