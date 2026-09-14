@@ -48,3 +48,5 @@ docker build --tag crystra-ui-bi:local .
 
 See [implementation baseline](docs/implementation-baseline.md) for exact versions, ownership and
 qualification commands.
+
+Evidence Facts and Trace readers consume `evidence.query@0.1.0` registry field IDs (`C01`–`C57`, `I01`–`I10`, `S01`–`S06`), with standard OpenTelemetry fields preserved. Ingestion attribute names are not query field IDs. The Facts regression fixture records a root binding from the qualified T6 service chain; it is test evidence, not current runtime state.

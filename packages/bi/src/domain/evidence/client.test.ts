@@ -1,3 +1,4 @@
+import qualifiedRootPage from "./qualified-delivery-root-page.json";
 import { describe, expect, it, vi } from "vitest";
 
 import { EvidenceClient, decodeEvidencePage } from "./client";
@@ -192,8 +193,8 @@ describe("closed Evidence decoder", () => {
 
     const duplicateFields = factResponse();
     duplicateFields.items[0]!.fields = [
-      { field: "agentops.delivery.id", value: "delivery-a" },
-      { field: "agentops.delivery.id", value: "delivery-a" },
+      { field: "C01", value: "delivery-a" },
+      { field: "C01", value: "delivery-a" },
     ] as never;
     expect(decodeEvidencePage("facts", duplicateFields, 100)).toMatchObject({
       ok: false,
@@ -201,8 +202,8 @@ describe("closed Evidence decoder", () => {
 
     const unorderedFields = factResponse();
     unorderedFields.items[0]!.fields = [
-      { field: "agentops.task.id", value: "task-a" },
-      { field: "agentops.delivery.id", value: "delivery-a" },
+      { field: "C02", value: "task-a" },
+      { field: "C01", value: "delivery-a" },
     ] as never;
     expect(decodeEvidencePage("facts", unorderedFields, 100)).toMatchObject({
       ok: false,
@@ -510,4 +511,25 @@ it("accepts formal Trace field IDs and rejects raw names, unknown IDs and reorde
     body.items[0]!.node.fields = fields;
     expect(decodeEvidencePage("traces", body, 100).ok).toBe(false);
   }
+});
+
+it("accepts recorded service roots with registry field IDs and rejects ingestion names", () => {
+  expect(decodeEvidencePage("facts", qualifiedRootPage, 200).ok).toBe(true);
+  const invalid = structuredClone(qualifiedRootPage);
+  invalid.items[0]!.fields[0]!.field = "agentops.delivery.id";
+  expect(decodeEvidencePage("facts", invalid, 200).ok).toBe(false);
+});
+it("uses registry identifiers for fact compatibility dimensions", () => {
+  const body = factResponse();
+  body.items[0]!.compatibility.dimensions = [
+    { field: "C42", value: "tokens" },
+    { field: "C43", value: "token" },
+  ] as never;
+  body.items[0]!.fields = [
+    { field: "C42", value: "tokens" },
+    { field: "C43", value: "token" },
+  ] as never;
+  expect(decodeEvidencePage("facts", body, 200).ok).toBe(true);
+  body.items[0]!.compatibility.dimensions.reverse();
+  expect(decodeEvidencePage("facts", body, 200).ok).toBe(false);
 });
