@@ -8,5 +8,13 @@ export const sidebarInteractionCorrections = `
   background-color: transparent !important;
  }
  :scope[data-palette][data-crystra-theme] [data-section-id="analysis-section-header"] > [data-section-id="analysis-section-toggle"]:is(:hover, :focus-visible) { background-color: transparent !important; }
+ /* C096: the closed search trigger is a header action. Expanded search keeps its own recipe. */
+ :scope[data-palette][data-crystra-theme] [data-section-id$="-search-control"][data-open="false"] .crystra-expandable-search-trigger {
+  transition: left var(--search-motion), transform var(--search-motion), background-color var(--component-motion-duration) var(--component-motion-ease), color var(--component-motion-duration) var(--component-motion-ease);
+ }
+ :scope[data-palette][data-crystra-theme] [data-section-id$="-search-control"][data-open="false"] .crystra-expandable-search-trigger:hover {
+  background-color: var(--color-interaction-hover) !important;
+  color: var(--color-text-primary) !important;
+ }
 }
 `;

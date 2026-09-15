@@ -129,7 +129,12 @@ export function ExpandableSearchField({
         ref={trigger}
         type="button"
         disabled={disabled}
-        className="crystra-expandable-search-trigger"
+        className={[
+          "crystra-expandable-search-trigger",
+          triggerProps?.className,
+        ]
+          .filter(Boolean)
+          .join(" ")}
         aria-label={label}
         aria-expanded={open}
         aria-controls={id}

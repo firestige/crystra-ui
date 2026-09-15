@@ -49,3 +49,42 @@ test("header actions are centered and own their hover without a second header hi
     ).toBeVisible();
   }
 });
+
+test("closed search shares its sibling actions' hover recipe", async ({
+  page,
+}) => {
+  await page.goto("/sidebar-v8-test.html");
+  for (const kind of ["task", "workflow"]) {
+    const view = page.locator(
+      `[data-section-id="${kind}-view-options-action"]`,
+    );
+    await view.hover();
+    await expect(view).toHaveCSS(
+      "background-color",
+      "rgba(255, 255, 255, 0.08)",
+    );
+    const recipe = await view.evaluate((el) => {
+      const s = getComputedStyle(el);
+      return {
+        background: s.backgroundColor,
+        color: s.color,
+        radius: s.borderRadius,
+      };
+    });
+    const search = page.locator(`[data-section-id="${kind}-search-action"]`);
+    await search.hover();
+    await expect(search).toHaveCSS("background-color", recipe.background);
+    await expect(search).toHaveCSS("color", recipe.color);
+    await expect(search).toHaveCSS("border-radius", recipe.radius);
+    await expect(
+      page.locator(`[data-section-id="${kind}-section-header"]`),
+    ).toHaveCSS("background-color", "rgba(0, 0, 0, 0)");
+    await search.click();
+    await expect(
+      page
+        .locator(`[data-section-id="${kind}-search-control"]`)
+        .getByRole("searchbox"),
+    ).toBeFocused();
+    await expect(search).toHaveCSS("background-color", "rgba(0, 0, 0, 0)");
+  }
+});
