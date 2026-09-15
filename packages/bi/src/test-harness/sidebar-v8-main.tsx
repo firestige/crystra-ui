@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { createRoot } from "react-dom/client";
 import { BiSurface, CrystraShell, type CrystraPage } from "../public";
-function Scenario() {
+export function Scenario() {
   const [route, setRoute] = useState<CrystraPage>("tasks");
   return (
     <BiSurface data-crystra-theme="dark" className="product-test-surface">

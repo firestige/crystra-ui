@@ -101,6 +101,8 @@ export function CrystraShell(props: CrystraShellProps) {
       control.replaceChildren();
       control.classList.add("crystra-search-bridge-sidebar");
     }
+    // Slots only exist after mounting the accepted DOM; populate portals before first paint.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setBindings(seats);
     return () => {
       controller.dispose();

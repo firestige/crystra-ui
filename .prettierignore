@@ -3,3 +3,6 @@ coverage
 playwright-report
 test-results
 package-lock.json
+
+# Accepted source snapshot: preserve bytes verified by design/v8/provenance.json.
+design/v8/sidebar.source.html

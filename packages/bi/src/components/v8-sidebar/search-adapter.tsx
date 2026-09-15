@@ -8,6 +8,11 @@ export interface SearchBinding {
   action: HTMLButtonElement;
   close: HTMLButtonElement;
 }
+function dispatchNativeSearch(input: HTMLInputElement, value: string) {
+  input.value = value;
+  input.dispatchEvent(new Event("input", { bubbles: true }));
+}
+
 /** Same adapter as the accepted search-bridge.tsx; the owning root supplies its scope. */
 export function V8SearchAdapter({
   kind,
@@ -42,8 +47,7 @@ export function V8SearchAdapter({
       cancelProps={{ "data-section-id": `${kind}-search-clear` }}
       expanded={open}
       onValueChange={(value) => {
-        input.value = value;
-        input.dispatchEvent(new Event("input", { bubbles: true }));
+        dispatchNativeSearch(input, value);
       }}
       onExpandedChange={(value) => {
         if (value !== (control.dataset.open === "true"))
