@@ -19,8 +19,12 @@ export type ExpandableSearchFieldProps = Omit<
   triggerContent?: ReactNode;
   cancelIcon?: ReactNode;
   cancelLabel?: string;
-  triggerProps?: ButtonHTMLAttributes<HTMLButtonElement>;
-  cancelProps?: ButtonHTMLAttributes<HTMLButtonElement>;
+  triggerProps?: ButtonHTMLAttributes<HTMLButtonElement> & {
+    "data-section-id"?: string;
+  };
+  cancelProps?: ButtonHTMLAttributes<HTMLButtonElement> & {
+    "data-section-id"?: string;
+  };
   onValueChange?: (value: string) => void;
 };
 /** Shared geometry and focus behavior; all displayed content can be supplied by callers. */

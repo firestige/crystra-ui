@@ -1,0 +1,48 @@
+/* Accepted Workflow Explorer field composition over the shared v8 browser recipe. */
+.crystra-workflow-explorer .workflow-revision {
+  position: absolute;
+  left: 12px;
+  top: 110px;
+  max-width: calc(100% - 24px);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  border-radius: 4px;
+  padding: 3px 6px;
+  background: var(--color-background-card);
+  color: var(--color-text-secondary);
+  font-size: 11px;
+  line-height: 16px;
+  font-variant-numeric: tabular-nums;
+}
+.crystra-workflow-explorer [data-browser-id="browser-list"] th:nth-child(1),
+.crystra-workflow-explorer [data-browser-id="browser-list"] th:nth-child(8) {
+  width: 44px;
+}
+.crystra-workflow-explorer [data-browser-id="browser-list"] th:nth-child(2) {
+  width: 34%;
+}
+.crystra-workflow-explorer [data-browser-id="browser-list"] th:nth-child(3) {
+  width: 9%;
+}
+.crystra-workflow-explorer [data-browser-id="browser-list"] th:nth-child(4) {
+  width: 10%;
+}
+.crystra-workflow-explorer [data-browser-id="browser-list"] th:nth-child(5) {
+  width: 7%;
+}
+.crystra-workflow-explorer [data-browser-id="browser-list"] th:nth-child(6),
+.crystra-workflow-explorer [data-browser-id="browser-list"] th:nth-child(7) {
+  width: 16%;
+}
+.crystra-workflow-explorer .workflow-version-cell {
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+/* Keep all version controls reachable when the host leaves less horizontal space. */
+.crystra-workflow-explorer .browser-header {
+  grid-template-columns:
+    minmax(150px, 1fr) minmax(240px, 320px)
+    max-content max-content;
+  overflow-x: auto;
+}

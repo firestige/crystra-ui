@@ -1,0 +1,30 @@
+.crystra-task-evidence-context {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-height: 570px;
+  padding: 16px;
+  background: var(--color-background-card);
+  border: 1px solid var(--color-border-default);
+  border-radius: 12px;
+}
+.crystra-task-evidence-context header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.crystra-task-evidence-context h2 + p {
+  margin-top: 8px;
+}
+.crystra-evidence-context-columns {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+.crystra-task-evidence-context pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.8;
+}

@@ -1,0 +1,129 @@
+.crystra-task-gate {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.crystra-gate-overview {
+  position: relative;
+  border: 1px solid rgb(245 158 11 / 40%);
+  background: rgb(245 158 11 / 10%);
+  border-radius: 12px;
+  padding: 14px 16px;
+}
+.crystra-gate-overview-line,
+.crystra-task-gate header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.crystra-gate-overview-line {
+  margin-bottom: 14px;
+}
+.crystra-gate-overview p {
+  margin-top: 6px;
+}
+.crystra-gate-overview h2 {
+  margin: 8px 0;
+}
+.crystra-gate-queue {
+  position: absolute;
+  z-index: 10;
+  top: 42px;
+  left: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px;
+  max-width: calc(100% - 32px);
+  border: 1px solid var(--color-border-default);
+  border-radius: 8px;
+  background: var(--color-background-floating);
+}
+.crystra-gate-queue button {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  white-space: normal;
+  text-align: left;
+}
+.crystra-gate-queue button > span + span {
+  font-size: 11px;
+  color: var(--color-text-muted);
+}
+.crystra-task-gate summary {
+  cursor: pointer;
+  font-size: 13px;
+}
+.crystra-gate-decisions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  list-style: none;
+  padding: 0;
+  margin: 12px 0 0;
+}
+.crystra-gate-decisions li {
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: var(--color-background-inset);
+  font-size: 12px;
+}
+.crystra-gate-interpretation {
+  margin: 16px 0;
+  padding: 16px;
+  background: rgb(59 130 246 / 8%);
+  border: 1px solid rgb(59 130 246 / 25%);
+  border-radius: 10px;
+}
+.crystra-gate-interpretation p {
+  margin-top: 12px;
+  line-height: 1.8;
+}
+.crystra-gate-deltas {
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-size: 12px;
+}
+.crystra-gate-deltas li {
+  display: flex;
+  gap: 8px;
+  padding: 8px;
+  background: var(--color-background-inset);
+  border-radius: 8px;
+}
+.crystra-gate-deltas [data-tone="warning"] {
+  color: #f1bf55;
+  width: 100%;
+}
+.crystra-gate-steps {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  padding-left: 20px;
+  margin: 16px 0;
+  font-size: 12px;
+}
+.crystra-gate-steps p {
+  margin-top: 6px;
+}
+.crystra-gate-evidence {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+.crystra-gate-evidence > div,
+.crystra-gate-evidence > button {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  white-space: normal;
+  gap: 6px;
+  padding: 12px;
+  border: 1px solid var(--color-border-default);
+  border-radius: 8px;
+}

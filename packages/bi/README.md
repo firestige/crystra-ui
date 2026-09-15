@@ -44,3 +44,26 @@ SOFTWARE.
 ### MonitoringWidget
 
 `MonitoringWidget` and `WIDGET_CATALOG` provide the accepted eight monitoring categories, optional content slots and 160px grid units with 16px internal gaps in spanning border boxes. Import `crystra-ui-core/styles.css`; no gallery wrapper is required. `Widget` is a deprecated compatibility API. MonitoringMetricPanel provides the four existing result projections; the monitoring Dashboard uses semantic size choices and animated reflow.
+
+### Isolated resource drafts
+
+`WorkflowResourceViewer` defaults to a read-only exact snapshot. A host may provide `onSaveDraft(ResourceDraftSave): Promise<void>` for conditional draft exploration. The request carries the declared resource ID, path, base revision, base content, and edited content. A file-level `revision` takes precedence over the workspace snapshot version. The host must check authority and the exact baseline, persist the draft, and supply the refreshed `workspace` snapshot before resolving. Reject on conflict or failed persistence; the editor retains the local edit and does not claim success. Removing the callback revokes editing, including acceptance of an outstanding save result.
+
+The component never mutates the supplied snapshot or writes package files. Saving a draft does not publish a Workflow, approve a Plan, or authorize execution. Resource creation, deletion, renaming, semantic relation rebuilding, and distribution to an Agent require separate host contracts.
+
+Unsaved resource drafts remain in memory across page unmounts for the exact definition, definition revision, and workspace root. Another Workflow revision cannot adopt them. Pending local edits keep the browser unload warning active even while a different page is open; they are not durably saved by this mechanism. Returning with a changed source snapshot requires explicit conflict resolution before saving.
+
+`TaskDiagram` renders an explicitly supplied inert SVG tree after validating a
+closed element/attribute vocabulary, local-only paint references and size/depth
+bounds. The caller supplies the accessible label and selectable node IDs;
+selection callbacks carry identity only. `TaskDiagramExplorer` adds view-only
+search, zoom and pan. `isTaskDiagram` and `TaskDiagramNode` are public for host
+admission. These rendering contracts do not assert plan/run authority or grant
+execution permission. Design fixtures remain in the separate test harness.
+
+Opening a Task evidence context resets only its containing tabpanel scroll so the back control and source label remain visible. The host input pane and its unsent draft do not move.
+
+`ResourceRelationGraph` is available to explicit host relation ports. Its source
+contains nodes, edges and declared files; the host must bind it to the exact
+resource snapshot and reject stale candidates before rendering or navigation.
+The renderer only explores supplied relationships and opens declared files.

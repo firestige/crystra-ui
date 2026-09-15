@@ -165,7 +165,11 @@ export function WorkflowMapMinimap({
             />
           ))}
         {layout.edges.map((e) => (
-          <path key={e.id} d={e.path} className="map-minimap-edge" />
+          <path
+            key={e.segmentKey ?? e.id}
+            d={e.path}
+            className="map-minimap-edge"
+          />
         ))}
         {layout.nodes
           .filter((n) => !n.expanded)

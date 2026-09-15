@@ -25,10 +25,11 @@ const tracePattern = /^[a-f0-9]{32}$/;
 const spanPattern = /^[a-f0-9]{16}$/;
 const unsignedNanoPattern = /^(?:0|[1-9][0-9]{0,19})$/;
 const utf8Encoder = new TextEncoder();
+// evidence.query 0.1.0 projects observation-profile 1.0.0 registry IDs.
 const profileFieldOrder = new Map(
-  `agentops.delivery.id agentops.task.id agentops.workflow.id agentops.workflow.version agentops.implementation.id agentops.runtime.id agentops.manifest.digest agentops.workflow.family agentops.event.id agentops.delivery.outcome agentops.summary.state agentops.review.id agentops.review.lens agentops.review.scope agentops.review.severity agentops.review.total agentops.review.observed.count agentops.finding.id agentops.finding.status agentops.source.review.id agentops.fix.id agentops.fix.finding.id agentops.recheck.id agentops.recheck.review.id agentops.recheck.finding.id agentops.recheck.fix.id agentops.iteration.id agentops.artifact.id agentops.artifact.digest agentops.role.id agentops.role.lineage.id agentops.parent.role.id agentops.writer.role.id agentops.reviewer.role.id agentops.recheck.role.id agentops.writer.invocation.id agentops.reviewer.invocation.id agentops.recheck.invocation.id agentops.intervention.kind agentops.observed.loop.count agentops.observed.intervention.count agentops.usage.kind agentops.usage.unit agentops.usage.source agentops.usage.source.id agentops.usage.value agentops.sampling.decision agentops.sampling.probability agentops.family.schema agentops.finding.summary agentops.finding.scope.id agentops.finding.target.kind agentops.finding.target.id agentops.finding.target.artifact.id agentops.delivery.elapsed_time_ms agentops.delivery.stage.reached agentops.model.id agentops.test.passed agentops.test.failed agentops.test.skipped agentops.test.duration.seconds agentops.coverage.dimension agentops.coverage.covered agentops.coverage.total agentops.coverage.scope agentops.coverage.tool.id agentops.coverage.format agentops.fresh_reader.result agentops.fresh_reader.finding.count agentops.verification.id agentops.verification.result agentops.verification.check.passed agentops.verification.check.failed`
+  "C01 C02 C03 C04 C05 C06 C07 C08 C09 C10 C11 C12 C13 C14 C15 C16 C17 C18 C19 C20 C21 C22 C23 C24 C25 C26 C27 C28 C29 C30 C31 C32 C33 C34 C35 C36 C37 C38 C39 C40 C41 C42 C43 C44 C45 C46 C47 C48 C49 C50 C51 C52 C53 C54 C55 C56 C57 I01 I02 I03 I04 I05 I06 I07 I08 I09 I10 S01 S02 S03 S04 S05 S06"
     .split(" ")
-    .map((name, index) => [name, index] as const),
+    .map((id, index) => [id, index] as const),
 );
 const standardFields = new Set([
   "error.type",
@@ -132,30 +133,15 @@ function orderedDimensions(
   if (!uniqueFields(dimensions)) return false;
   const expected =
     kind === "MODEL_ATTRIBUTION"
-      ? [
-          "gen_ai.provider.name",
-          "agentops.model.id",
-          "agentops.role.id",
-          "agentops.runtime.id",
-        ]
+      ? ["gen_ai.provider.name", "C57", "C30", "C06"]
       : eventName === "usage"
-        ? [
-            "agentops.usage.kind",
-            "agentops.usage.unit",
-            "agentops.usage.source",
-            "agentops.usage.source.id",
-          ]
+        ? ["C42", "C43", "C44", "C45"]
         : eventName === "implementation.summary"
-          ? [
-              "agentops.coverage.dimension",
-              "agentops.coverage.scope",
-              "agentops.coverage.tool.id",
-              "agentops.coverage.format",
-            ]
+          ? ["I05", "I08", "I09", "I10"]
           : eventName === "test.summary"
-            ? ["agentops.artifact.id", "agentops.artifact.digest"]
+            ? ["C28", "C29"]
             : eventName === "review.summary" || kind === "FINDING_ASSERTION"
-              ? ["agentops.review.lens", "agentops.review.scope"]
+              ? ["C13", "C14"]
               : [];
   let cursor = -1;
   return dimensions.every((item) => {
@@ -354,6 +340,31 @@ function traceEndpoint(value: unknown) {
   );
 }
 
+// evidence.query 0.1.0 uses registry IDs, not ingestion attribute names.
+// observation-profile 1.0.0 applicability.span.allowed, in registry order.
+const traceProfileFields = new Map(
+  ["C01", "C02", "C03", "C04", "C05", "C06", "C07", "C08", "C30", "C57"].map(
+    (id, index) => [id, index],
+  ),
+);
+function orderedTraceFields(value: unknown): value is FieldValue[] {
+  if (!uniqueFields(value)) return false;
+  const rank = (name: string) => traceProfileFields.get(name) ?? 1000;
+  return value.every((item, index) => {
+    if (!traceProfileFields.has(item.field) && !standardFields.has(item.field))
+      return false;
+    if (traceProfileFields.has(item.field) && typeof item.value !== "string")
+      return false;
+    const previous = value[index - 1];
+    return (
+      previous === undefined ||
+      rank(previous.field) < rank(item.field) ||
+      (rank(previous.field) === rank(item.field) &&
+        bytewiseCompare(previous.field, item.field) < 0)
+    );
+  });
+}
+
 function traceItem(value: unknown) {
   if (
     !record(value) ||
@@ -411,7 +422,7 @@ function traceItem(value: unknown) {
       (node.trace_state === null || boundedText(node.trace_state, 0, 512)) &&
       Array.isArray(node.fields) &&
       node.fields.length <= 73 &&
-      orderedFields(node.fields) &&
+      orderedTraceFields(node.fields) &&
       value.source.trace_id === value.trace_id &&
       value.source.span_id === node.span_id
     );

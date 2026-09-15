@@ -189,3 +189,106 @@ export {
   type ToggleSwitchProps,
 } from "./components/toggle-switch";
 export { WidgetTooltip } from "./components/widget-tooltip";
+
+export { DeliveryDirectory } from "./components/delivery-directory";
+export type {
+  DeliverySearchRecord,
+  DeliverySearchField,
+  DeliverySearchCondition,
+  DeliveryFilters,
+} from "./domain/delivery-search";
+export {
+  CrystraShell,
+  type CrystraShellProps,
+  type CrystraPage,
+  type CrystraNavigationRecord,
+} from "./components/crystra-shell";
+export { decodeEvidencePage } from "./domain/evidence/client";
+export {
+  CrystraAnalysisFrame,
+  CrystraTraceContent,
+  type CrystraAnalysisPage,
+} from "./components/crystra-analysis";
+
+export {
+  AnalysisWorkspace,
+  type AnalysisWorkspaceData,
+  type AnalysisWorkspacePage,
+  type AnalysisOverviewFilters,
+} from "./components/analysis-workspace";
+export {
+  TaskWorkbench,
+  type TaskWorkbenchPage,
+} from "./components/task-workbench";
+
+export {
+  TaskRequirementsPanel,
+  type TaskRequirementsProjection,
+} from "./components/task-requirements-panel";
+
+export {
+  TaskDeliveryPanel,
+  type TaskDeliveryProjection,
+} from "./components/task-delivery-panel";
+
+export {
+  TaskGatePanel,
+  type TaskGateProjection,
+  type TaskGateQueueItem,
+} from "./components/task-gate-panel";
+
+export {
+  TaskPlanPanel,
+  type TaskPlanProjection,
+} from "./components/task-plan-panel";
+export {
+  TaskExecutionPanel,
+  type TaskExecutionProjection,
+  type TaskWaveProjection,
+  type TaskRunIdentity,
+} from "./components/task-execution-panel";
+
+export {
+  TaskEvidenceContext,
+  type TaskEvidenceContextProjection,
+} from "./components/task-evidence-context";
+
+export { TaskBrowser, type TaskBrowserProps } from "./components/task-browser";
+export type { BrowserTaskRecord } from "./components/task-browser-model";
+
+export {
+  WorkflowExplorer,
+  type WorkflowExplorerProps,
+} from "./components/workflow-explorer";
+export type { WorkflowDefinitionEntry } from "./components/workflow-explorer-model";
+export {
+  WorkflowWorkbench,
+  type WorkflowWorkbenchPage,
+} from "./components/workflow-workbench";
+export {
+  WorkflowMapViewer,
+  type WorkflowMapViewerProps,
+  type WorkflowLayoutResolver,
+} from "./components/workflow-map-viewer";
+export {
+  WorkflowResourceViewer,
+  type WorkflowResourceViewerProps,
+  type ResourceWorkspaceSnapshot,
+  type ResourceDraftSave,
+  type WorkflowCatalogResource,
+} from "./components/workflow-resource-viewer";
+
+export {
+  WorkflowCrystallizationView,
+  type CrystallizationProjection,
+} from "./components/workflow-crystallization-view";
+
+export { TaskDiagram, TaskDiagramExplorer } from "./components/task-diagram";
+
+export { isTaskDiagram, type TaskDiagramNode } from "./domain/task-diagram";
+export { ResourceRelationGraph } from "./components/resource-relation-graph";
+export type {
+  Source as WorkflowResourceRelationSource,
+  Node as WorkflowResourceRelationNode,
+  Edge as WorkflowResourceRelationEdge,
+} from "./components/resource-relations";

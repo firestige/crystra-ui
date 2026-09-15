@@ -1,0 +1,2013 @@
+{
+  "sourceSha256": "b5eefc9739ab1d995e4c10cbb0e90c8dcb2fa099cc4b707ec47a574a46b2af87",
+  "graphs": {
+    "summary": {
+      "tag": "svg",
+      "props": {
+        "data-color-scope": "chart",
+        "viewBox": "0 0 760 250",
+        "aria-label": "当前 Task 计划中包含并行分支、汇合、关口和恢复循环的 DAG"
+      },
+      "children": [
+        {
+          "tag": "g",
+          "props": {
+            "fill": "none",
+            "stroke": "#546171",
+            "strokeWidth": "2"
+          },
+          "children": [
+            {
+              "tag": "path",
+              "props": {
+                "d": "M145 125H205"
+              },
+              "children": []
+            },
+            {
+              "tag": "path",
+              "props": {
+                "d": "M205 125C230 125 225 67 260 67"
+              },
+              "children": []
+            },
+            {
+              "tag": "path",
+              "props": {
+                "d": "M205 125C230 125 225 183 260 183"
+              },
+              "children": []
+            },
+            {
+              "tag": "path",
+              "props": {
+                "d": "M405 67C445 67 440 125 475 125"
+              },
+              "children": []
+            },
+            {
+              "tag": "path",
+              "props": {
+                "d": "M405 183C445 183 440 125 475 125"
+              },
+              "children": []
+            },
+            {
+              "tag": "path",
+              "props": {
+                "d": "M610 125H655"
+              },
+              "children": []
+            },
+            {
+              "tag": "path",
+              "props": {
+                "d": "M542 158C540 226 335 226 335 205",
+                "stroke": "#d49b32",
+                "strokeDasharray": "6 5"
+              },
+              "children": []
+            }
+          ]
+        },
+        {
+          "tag": "g",
+          "props": {
+            "fontFamily": "Inter, sans-serif",
+            "fontSize": "12"
+          },
+          "children": [
+            {
+              "tag": "rect",
+              "props": {
+                "x": "25",
+                "y": "94",
+                "width": "120",
+                "height": "62",
+                "rx": "10",
+                "fill": "#123029",
+                "stroke": "#2f9f70"
+              },
+              "children": []
+            },
+            {
+              "tag": "text",
+              "props": {
+                "data-type": "graph-meta",
+                "x": "43",
+                "y": "116",
+                "fill": "#8a94a3"
+              },
+              "children": ["目标"]
+            },
+            {
+              "tag": "text",
+              "props": {
+                "data-type": "graph-title",
+                "x": "43",
+                "y": "139",
+                "fill": "#e5e7eb"
+              },
+              "children": ["发布候选可验证"]
+            },
+            {
+              "tag": "rect",
+              "props": {
+                "x": "260",
+                "y": "36",
+                "width": "145",
+                "height": "62",
+                "rx": "10",
+                "fill": "#172b47",
+                "stroke": "#5b8def"
+              },
+              "children": []
+            },
+            {
+              "tag": "text",
+              "props": {
+                "data-type": "graph-meta",
+                "x": "278",
+                "y": "58",
+                "fill": "#8a94a3"
+              },
+              "children": ["批次 1A"]
+            },
+            {
+              "tag": "text",
+              "props": {
+                "data-type": "graph-title",
+                "x": "278",
+                "y": "81",
+                "fill": "#e5e7eb"
+              },
+              "children": ["市场规则研究"]
+            },
+            {
+              "tag": "rect",
+              "props": {
+                "x": "260",
+                "y": "152",
+                "width": "145",
+                "height": "62",
+                "rx": "10",
+                "fill": "#1d2229",
+                "stroke": "#3b4450"
+              },
+              "children": []
+            },
+            {
+              "tag": "text",
+              "props": {
+                "data-type": "graph-meta",
+                "x": "278",
+                "y": "174",
+                "fill": "#8a94a3"
+              },
+              "children": ["批次 1B"]
+            },
+            {
+              "tag": "text",
+              "props": {
+                "data-type": "graph-title",
+                "x": "278",
+                "y": "197",
+                "fill": "#e5e7eb"
+              },
+              "children": ["构建与签名验证"]
+            },
+            {
+              "tag": "rect",
+              "props": {
+                "x": "475",
+                "y": "94",
+                "width": "135",
+                "height": "62",
+                "rx": "10",
+                "fill": "#2d2819",
+                "stroke": "#d49b32"
+              },
+              "children": []
+            },
+            {
+              "tag": "text",
+              "props": {
+                "data-type": "graph-meta",
+                "x": "493",
+                "y": "116",
+                "fill": "#d49b32"
+              },
+              "children": ["批次 2"]
+            },
+            {
+              "tag": "text",
+              "props": {
+                "data-type": "graph-title",
+                "x": "493",
+                "y": "139",
+                "fill": "#e5e7eb"
+              },
+              "children": ["集成验证"]
+            },
+            {
+              "tag": "rect",
+              "props": {
+                "x": "655",
+                "y": "94",
+                "width": "82",
+                "height": "62",
+                "rx": "10",
+                "fill": "#282132",
+                "stroke": "#9c6ade"
+              },
+              "children": []
+            },
+            {
+              "tag": "text",
+              "props": {
+                "data-type": "graph-meta",
+                "x": "674",
+                "y": "116",
+                "fill": "#b7a0e8"
+              },
+              "children": ["关口"]
+            },
+            {
+              "tag": "text",
+              "props": {
+                "data-type": "graph-title",
+                "x": "674",
+                "y": "139",
+                "fill": "#e5e7eb"
+              },
+              "children": ["授权"]
+            },
+            {
+              "tag": "text",
+              "props": {
+                "data-type": "graph-meta",
+                "x": "414",
+                "y": "236",
+                "fill": "#d49b32"
+              },
+              "children": ["验证失败 → 修改实现"]
+            }
+          ]
+        }
+      ]
+    },
+    "plan": {
+      "tag": "svg",
+      "props": {
+        "data-color-scope": "chart",
+        "data-section-id": "plan-dag-canvas",
+        "data-scale": "0.44",
+        "data-pan-x": "8",
+        "data-pan-y": "100",
+        "viewBox": "0 0 1280 620",
+        "aria-label": "可缩放和拖动的完整计划 DAG"
+      },
+      "children": [
+        "\n                      ",
+        {
+          "tag": "defs",
+          "props": {},
+          "children": [
+            {
+              "tag": "pattern",
+              "props": {
+                "data-section-id": "plan-dag-grid",
+                "width": "24",
+                "height": "24",
+                "patternUnits": "userSpaceOnUse"
+              },
+              "children": [
+                {
+                  "tag": "circle",
+                  "props": {
+                    "cx": "1",
+                    "cy": "1",
+                    "r": "1",
+                    "fill": "#263443"
+                  },
+                  "children": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "tag": "rect",
+          "props": {
+            "width": "1280",
+            "height": "620",
+            "fill": "url(#plan-dag-grid)"
+          },
+          "children": []
+        },
+        "\n                      ",
+        {
+          "tag": "g",
+          "props": {
+            "fill": "none",
+            "stroke": "#526170",
+            "strokeWidth": "3"
+          },
+          "children": [
+            {
+              "tag": "path",
+              "props": {
+                "d": "M190 300H260"
+              },
+              "children": []
+            },
+            {
+              "tag": "path",
+              "props": {
+                "d": "M420 300C470 300 465 140 520 140"
+              },
+              "children": []
+            },
+            {
+              "tag": "path",
+              "props": {
+                "d": "M420 300H520"
+              },
+              "children": []
+            },
+            {
+              "tag": "path",
+              "props": {
+                "d": "M420 300C470 300 465 460 520 460"
+              },
+              "children": []
+            },
+            {
+              "tag": "path",
+              "props": {
+                "d": "M700 140C760 140 755 300 820 300"
+              },
+              "children": []
+            },
+            {
+              "tag": "path",
+              "props": {
+                "d": "M700 300H820"
+              },
+              "children": []
+            },
+            {
+              "tag": "path",
+              "props": {
+                "d": "M700 460C760 460 755 300 820 300"
+              },
+              "children": []
+            },
+            {
+              "tag": "path",
+              "props": {
+                "d": "M1000 300H1080"
+              },
+              "children": []
+            },
+            {
+              "tag": "path",
+              "props": {
+                "d": "M905 348C900 550 610 555 610 508",
+                "stroke": "#d49b32",
+                "strokeDasharray": "9 7"
+              },
+              "children": []
+            }
+          ]
+        },
+        "\n                      ",
+        {
+          "tag": "g",
+          "props": {
+            "data-dag-node": "goal",
+            "data-node-label": "发布候选可验证"
+          },
+          "children": [
+            {
+              "tag": "rect",
+              "props": {
+                "x": "30",
+                "y": "255",
+                "width": "160",
+                "height": "90",
+                "rx": "14",
+                "fill": "#123029",
+                "stroke": "#2f9f70",
+                "strokeWidth": "2"
+              },
+              "children": []
+            },
+            {
+              "tag": "text",
+              "props": {
+                "data-type": "graph-meta",
+                "x": "52",
+                "y": "282",
+                "fill": "#8a94a3",
+                "fontSize": "13"
+              },
+              "children": ["目标"]
+            },
+            {
+              "tag": "text",
+              "props": {
+                "data-type": "graph-title",
+                "x": "52",
+                "y": "314",
+                "fill": "#e5e7eb",
+                "fontSize": "16"
+              },
+              "children": ["发布候选可验证"]
+            }
+          ]
+        },
+        "\n                      ",
+        {
+          "tag": "g",
+          "props": {
+            "data-dag-node": "research",
+            "data-node-label": "市场规则研究"
+          },
+          "children": [
+            {
+              "tag": "rect",
+              "props": {
+                "x": "260",
+                "y": "255",
+                "width": "160",
+                "height": "90",
+                "rx": "14",
+                "fill": "#172b47",
+                "stroke": "#5b8def",
+                "strokeWidth": "2"
+              },
+              "children": []
+            },
+            {
+              "tag": "text",
+              "props": {
+                "data-type": "graph-meta",
+                "x": "282",
+                "y": "282",
+                "fill": "#8a94a3",
+                "fontSize": "13"
+              },
+              "children": ["批次 0"]
+            },
+            {
+              "tag": "text",
+              "props": {
+                "data-type": "graph-title",
+                "x": "282",
+                "y": "314",
+                "fill": "#e5e7eb",
+                "fontSize": "16"
+              },
+              "children": ["市场规则固定"]
+            }
+          ]
+        },
+        "\n                      ",
+        {
+          "tag": "g",
+          "props": {
+            "data-dag-ordinary-branch": "",
+            "data-dag-node": "security",
+            "data-node-label": "安全检查"
+          },
+          "children": [
+            {
+              "tag": "rect",
+              "props": {
+                "x": "520",
+                "y": "95",
+                "width": "180",
+                "height": "90",
+                "rx": "14",
+                "fill": "#172b47",
+                "stroke": "#5b8def"
+              },
+              "children": []
+            },
+            {
+              "tag": "text",
+              "props": {
+                "data-type": "graph-meta",
+                "x": "542",
+                "y": "122",
+                "fill": "#8a94a3",
+                "fontSize": "13"
+              },
+              "children": ["批次 1A"]
+            },
+            {
+              "tag": "text",
+              "props": {
+                "data-type": "graph-title",
+                "x": "542",
+                "y": "154",
+                "fill": "#e5e7eb",
+                "fontSize": "16"
+              },
+              "children": ["安全与依赖检查"]
+            }
+          ]
+        },
+        "\n                      ",
+        {
+          "tag": "g",
+          "props": {
+            "data-dag-node": "build",
+            "data-node-label": "构建与签名验证"
+          },
+          "children": [
+            {
+              "tag": "rect",
+              "props": {
+                "x": "520",
+                "y": "255",
+                "width": "180",
+                "height": "90",
+                "rx": "14",
+                "fill": "#1d2229",
+                "stroke": "#697586"
+              },
+              "children": []
+            },
+            {
+              "tag": "text",
+              "props": {
+                "data-type": "graph-meta",
+                "x": "542",
+                "y": "282",
+                "fill": "#8a94a3",
+                "fontSize": "13"
+              },
+              "children": ["批次 1B"]
+            },
+            {
+              "tag": "text",
+              "props": {
+                "data-type": "graph-title",
+                "x": "542",
+                "y": "314",
+                "fill": "#e5e7eb",
+                "fontSize": "16"
+              },
+              "children": ["构建与签名验证"]
+            }
+          ]
+        },
+        "\n                      ",
+        {
+          "tag": "g",
+          "props": {
+            "data-dag-ordinary-branch": "",
+            "data-dag-node": "docs",
+            "data-node-label": "发布说明生成"
+          },
+          "children": [
+            {
+              "tag": "rect",
+              "props": {
+                "x": "520",
+                "y": "415",
+                "width": "180",
+                "height": "90",
+                "rx": "14",
+                "fill": "#1d2229",
+                "stroke": "#697586"
+              },
+              "children": []
+            },
+            {
+              "tag": "text",
+              "props": {
+                "data-type": "graph-meta",
+                "x": "542",
+                "y": "442",
+                "fill": "#8a94a3",
+                "fontSize": "13"
+              },
+              "children": ["批次 1C"]
+            },
+            {
+              "tag": "text",
+              "props": {
+                "data-type": "graph-title",
+                "x": "542",
+                "y": "474",
+                "fill": "#e5e7eb",
+                "fontSize": "16"
+              },
+              "children": ["发布说明生成"]
+            }
+          ]
+        },
+        "\n                      ",
+        {
+          "tag": "g",
+          "props": {
+            "data-dag-node": "integration",
+            "data-node-label": "沙盒集成验证"
+          },
+          "children": [
+            {
+              "tag": "rect",
+              "props": {
+                "x": "820",
+                "y": "255",
+                "width": "180",
+                "height": "90",
+                "rx": "14",
+                "fill": "#2d2819",
+                "stroke": "#d49b32",
+                "strokeWidth": "2"
+              },
+              "children": []
+            },
+            {
+              "tag": "text",
+              "props": {
+                "data-type": "graph-meta",
+                "x": "842",
+                "y": "282",
+                "fill": "#d49b32",
+                "fontSize": "13"
+              },
+              "children": ["批次 2 · 关注"]
+            },
+            {
+              "tag": "text",
+              "props": {
+                "data-type": "graph-title",
+                "x": "842",
+                "y": "314",
+                "fill": "#e5e7eb",
+                "fontSize": "16"
+              },
+              "children": ["沙盒集成验证"]
+            }
+          ]
+        },
+        "\n                      ",
+        {
+          "tag": "g",
+          "props": {
+            "data-dag-node": "gate",
+            "data-node-label": "用户发布授权"
+          },
+          "children": [
+            {
+              "tag": "rect",
+              "props": {
+                "x": "1080",
+                "y": "255",
+                "width": "160",
+                "height": "90",
+                "rx": "14",
+                "fill": "#282132",
+                "stroke": "#9c6ade",
+                "strokeWidth": "2"
+              },
+              "children": []
+            },
+            {
+              "tag": "text",
+              "props": {
+                "data-type": "graph-meta",
+                "x": "1102",
+                "y": "282",
+                "fill": "#b7a0e8",
+                "fontSize": "13"
+              },
+              "children": ["人工关口"]
+            },
+            {
+              "tag": "text",
+              "props": {
+                "data-type": "graph-title",
+                "x": "1102",
+                "y": "314",
+                "fill": "#e5e7eb",
+                "fontSize": "16"
+              },
+              "children": ["用户发布授权"]
+            }
+          ]
+        },
+        "\n                      ",
+        {
+          "tag": "text",
+          "props": {
+            "data-type": "graph-meta",
+            "x": "680",
+            "y": "575",
+            "fill": "#d49b32",
+            "fontSize": "14"
+          },
+          "children": ["验证失败 → 修改实现 → 重新验证"]
+        },
+        "\n                    "
+      ]
+    },
+    "execution": {
+      "tag": "svg",
+      "props": {
+        "data-color-scope": "chart",
+        "data-section-id": "execution-plan-run-canvas",
+        "viewBox": "0 0 900 430",
+        "aria-label": "计划 DAG 的 Wave 级执行状态"
+      },
+      "children": [
+        "\n                    ",
+        {
+          "tag": "g",
+          "props": {
+            "fill": "none",
+            "strokeWidth": "3"
+          },
+          "children": [
+            {
+              "tag": "path",
+              "props": {
+                "d": "M145 215H205",
+                "stroke": "#2f9f70"
+              },
+              "children": []
+            },
+            {
+              "tag": "path",
+              "props": {
+                "d": "M325 215H360V105H410",
+                "stroke": "#2f9f70"
+              },
+              "children": []
+            },
+            {
+              "tag": "path",
+              "props": {
+                "d": "M325 215H410",
+                "stroke": "#d49b32"
+              },
+              "children": []
+            },
+            {
+              "tag": "path",
+              "props": {
+                "d": "M540 105H575V215H625",
+                "stroke": "#53606e"
+              },
+              "children": []
+            },
+            {
+              "tag": "path",
+              "props": {
+                "d": "M540 215H625",
+                "stroke": "#53606e"
+              },
+              "children": []
+            },
+            {
+              "tag": "path",
+              "props": {
+                "d": "M750 215H790",
+                "stroke": "#53606e"
+              },
+              "children": []
+            },
+            {
+              "tag": "path",
+              "props": {
+                "d": "M688 249V350H475V249",
+                "stroke": "#66717f",
+                "strokeDasharray": "7 6"
+              },
+              "children": []
+            }
+          ]
+        },
+        "\n                    ",
+        {
+          "tag": "g",
+          "props": {
+            "data-section-id": "execution-plan-edge-arrows"
+          },
+          "children": [
+            {
+              "tag": "path",
+              "props": {
+                "d": "M205 215l-10-6v12Z",
+                "fill": "#2f9f70"
+              },
+              "children": []
+            },
+            {
+              "tag": "path",
+              "props": {
+                "d": "M410 105l-10-6v12Z",
+                "fill": "#2f9f70"
+              },
+              "children": []
+            },
+            {
+              "tag": "path",
+              "props": {
+                "d": "M410 215l-10-6v12Z",
+                "fill": "#d49b32"
+              },
+              "children": []
+            },
+            {
+              "tag": "path",
+              "props": {
+                "d": "M625 215l-10-6v12Z",
+                "fill": "#66717f"
+              },
+              "children": []
+            },
+            {
+              "tag": "path",
+              "props": {
+                "d": "M790 215l-10-6v12Z",
+                "fill": "#66717f"
+              },
+              "children": []
+            },
+            {
+              "tag": "path",
+              "props": {
+                "d": "M475 249l-6 11h12Z",
+                "fill": "#66717f"
+              },
+              "children": []
+            }
+          ]
+        },
+        "\n                    ",
+        {
+          "tag": "g",
+          "props": {
+            "fontFamily": "Inter, sans-serif"
+          },
+          "children": [
+            {
+              "tag": "g",
+              "props": {
+                "data-section-id": "execution-plan-node-goal"
+              },
+              "children": [
+                {
+                  "tag": "rect",
+                  "props": {
+                    "x": "25",
+                    "y": "181",
+                    "width": "120",
+                    "height": "68",
+                    "rx": "11",
+                    "fill": "#123029",
+                    "stroke": "#2f9f70",
+                    "strokeWidth": "2"
+                  },
+                  "children": []
+                },
+                {
+                  "tag": "text",
+                  "props": {
+                    "data-type": "graph-meta",
+                    "x": "43",
+                    "y": "205",
+                    "fill": "#79d19a",
+                    "fontSize": "11"
+                  },
+                  "children": ["计划入口 · 完成"]
+                },
+                {
+                  "tag": "text",
+                  "props": {
+                    "data-type": "graph-title",
+                    "x": "43",
+                    "y": "230",
+                    "fill": "#f1f5f9",
+                    "fontSize": "14"
+                  },
+                  "children": ["目标已授权"]
+                }
+              ]
+            },
+            {
+              "tag": "g",
+              "props": {
+                "data-section-id": "execution-plan-wave-0"
+              },
+              "children": [
+                {
+                  "tag": "rect",
+                  "props": {
+                    "x": "205",
+                    "y": "181",
+                    "width": "120",
+                    "height": "68",
+                    "rx": "11",
+                    "fill": "#123029",
+                    "stroke": "#2f9f70",
+                    "strokeWidth": "2"
+                  },
+                  "children": []
+                },
+                {
+                  "tag": "text",
+                  "props": {
+                    "data-type": "graph-meta",
+                    "x": "223",
+                    "y": "205",
+                    "fill": "#79d19a",
+                    "fontSize": "11"
+                  },
+                  "children": ["Wave 0 · 完成"]
+                },
+                {
+                  "tag": "text",
+                  "props": {
+                    "data-type": "graph-title",
+                    "x": "223",
+                    "y": "230",
+                    "fill": "#f1f5f9",
+                    "fontSize": "14"
+                  },
+                  "children": ["固定规则"]
+                }
+              ]
+            },
+            {
+              "tag": "g",
+              "props": {
+                "data-section-id": "execution-plan-wave-1a"
+              },
+              "children": [
+                {
+                  "tag": "rect",
+                  "props": {
+                    "x": "410",
+                    "y": "71",
+                    "width": "130",
+                    "height": "68",
+                    "rx": "11",
+                    "fill": "#123029",
+                    "stroke": "#2f9f70",
+                    "strokeWidth": "2"
+                  },
+                  "children": []
+                },
+                {
+                  "tag": "text",
+                  "props": {
+                    "data-type": "graph-meta",
+                    "x": "428",
+                    "y": "95",
+                    "fill": "#79d19a",
+                    "fontSize": "11"
+                  },
+                  "children": ["Wave 1A · 完成"]
+                },
+                {
+                  "tag": "text",
+                  "props": {
+                    "data-type": "graph-title",
+                    "x": "428",
+                    "y": "120",
+                    "fill": "#f1f5f9",
+                    "fontSize": "14"
+                  },
+                  "children": ["安全检查"]
+                }
+              ]
+            },
+            {
+              "tag": "g",
+              "props": {
+                "data-section-id": "execution-plan-wave-1b",
+                "aria-label": "查看批次 1B 的工作流运行"
+              },
+              "children": [
+                {
+                  "tag": "rect",
+                  "props": {
+                    "x": "410",
+                    "y": "181",
+                    "width": "130",
+                    "height": "68",
+                    "rx": "11",
+                    "fill": "#2c2518",
+                    "stroke": "#d49b32",
+                    "strokeWidth": "3"
+                  },
+                  "children": []
+                },
+                {
+                  "tag": "rect",
+                  "props": {
+                    "x": "402",
+                    "y": "173",
+                    "width": "146",
+                    "height": "84",
+                    "rx": "16",
+                    "fill": "none",
+                    "stroke": "#d49b32",
+                    "strokeWidth": "5",
+                    "opacity": ".18"
+                  },
+                  "children": []
+                },
+                {
+                  "tag": "text",
+                  "props": {
+                    "data-type": "graph-meta",
+                    "x": "428",
+                    "y": "205",
+                    "fill": "#f1bf55",
+                    "fontSize": "11"
+                  },
+                  "children": ["Wave 1B · 执行中"]
+                },
+                {
+                  "tag": "text",
+                  "props": {
+                    "data-type": "graph-title",
+                    "x": "428",
+                    "y": "230",
+                    "fill": "#f1f5f9",
+                    "fontSize": "14"
+                  },
+                  "children": ["构建与签名"]
+                }
+              ]
+            },
+            {
+              "tag": "g",
+              "props": {
+                "data-section-id": "execution-plan-wave-2"
+              },
+              "children": [
+                {
+                  "tag": "rect",
+                  "props": {
+                    "x": "625",
+                    "y": "181",
+                    "width": "125",
+                    "height": "68",
+                    "rx": "11",
+                    "fill": "#1d2229",
+                    "stroke": "#586271"
+                  },
+                  "children": []
+                },
+                {
+                  "tag": "text",
+                  "props": {
+                    "data-type": "graph-meta",
+                    "x": "643",
+                    "y": "205",
+                    "fill": "#8a94a3",
+                    "fontSize": "11"
+                  },
+                  "children": ["Wave 2 · 未开始"]
+                },
+                {
+                  "tag": "text",
+                  "props": {
+                    "data-type": "graph-title",
+                    "x": "643",
+                    "y": "230",
+                    "fill": "#d4d8de",
+                    "fontSize": "14"
+                  },
+                  "children": ["沙盒验证"]
+                }
+              ]
+            },
+            {
+              "tag": "g",
+              "props": {
+                "data-section-id": "execution-plan-gate"
+              },
+              "children": [
+                {
+                  "tag": "rect",
+                  "props": {
+                    "x": "790",
+                    "y": "181",
+                    "width": "88",
+                    "height": "68",
+                    "rx": "11",
+                    "fill": "#282132",
+                    "stroke": "#9c6ade"
+                  },
+                  "children": []
+                },
+                {
+                  "tag": "text",
+                  "props": {
+                    "data-type": "graph-meta",
+                    "x": "806",
+                    "y": "205",
+                    "fill": "#b7a0e8",
+                    "fontSize": "11"
+                  },
+                  "children": ["Gate · 未开始"]
+                },
+                {
+                  "tag": "text",
+                  "props": {
+                    "data-type": "graph-title",
+                    "x": "806",
+                    "y": "230",
+                    "fill": "#f1f5f9",
+                    "fontSize": "14"
+                  },
+                  "children": ["发布"]
+                }
+              ]
+            }
+          ]
+        },
+        "\n                    ",
+        {
+          "tag": "text",
+          "props": {
+            "data-type": "graph-meta",
+            "x": "566",
+            "y": "343",
+            "fill": "#8a94a3",
+            "fontSize": "11"
+          },
+          "children": ["[验证失败] 返回 Wave 1B"]
+        },
+        "\n                  "
+      ]
+    },
+    "workflow": {
+      "tag": "svg",
+      "props": {
+        "data-color-scope": "chart",
+        "data-section-id": "execution-run-map-canvas",
+        "viewBox": "0 0 920 500",
+        "aria-label": "按状态区分连接线并带有扫光动效的工作流运行路径"
+      },
+      "children": [
+        "\n\n                      ",
+        {
+          "tag": "g",
+          "props": {
+            "data-section-id": "execution-observed-path"
+          },
+          "children": [
+            "\n                      ",
+            {
+              "tag": "g",
+              "props": {
+                "data-section-id": "execution-edge-success",
+                "fill": "none",
+                "stroke": "#2f9f70",
+                "strokeWidth": "3"
+              },
+              "children": [
+                {
+                  "tag": "path",
+                  "props": {
+                    "d": "M128 242H190"
+                  },
+                  "children": []
+                },
+                {
+                  "tag": "path",
+                  "props": {
+                    "d": "M310 242H345V90H380"
+                  },
+                  "children": []
+                }
+              ]
+            },
+            "\n                      ",
+            {
+              "tag": "g",
+              "props": {
+                "data-section-id": "execution-edge-running",
+                "fill": "none",
+                "stroke": "#3487e8",
+                "strokeWidth": "3"
+              },
+              "children": [
+                {
+                  "tag": "path",
+                  "props": {
+                    "d": "M310 242H380"
+                  },
+                  "children": []
+                }
+              ]
+            },
+            "\n                      ",
+            {
+              "tag": "g",
+              "props": {
+                "fill": "none",
+                "strokeWidth": "3"
+              },
+              "children": [
+                {
+                  "tag": "path",
+                  "props": {
+                    "data-section-id": "execution-edge-degraded",
+                    "d": "M310 242H380"
+                  },
+                  "children": []
+                }
+              ]
+            },
+            "\n                      ",
+            {
+              "tag": "g",
+              "props": {
+                "data-section-id": "execution-edge-failed",
+                "fill": "none",
+                "stroke": "#e25b5b",
+                "strokeWidth": "3",
+                "strokeDasharray": "8 5"
+              },
+              "children": [
+                {
+                  "tag": "path",
+                  "props": {
+                    "d": "M310 242H345V330H380"
+                  },
+                  "children": []
+                }
+              ]
+            },
+            "\n                      ",
+            {
+              "tag": "g",
+              "props": {
+                "data-section-id": "execution-edge-paused",
+                "fill": "none",
+                "stroke": "#66717f",
+                "strokeWidth": "2",
+                "strokeDasharray": "4 7"
+              },
+              "children": [
+                {
+                  "tag": "path",
+                  "props": {
+                    "d": "M310 242H330V420H380"
+                  },
+                  "children": []
+                }
+              ]
+            },
+            "\n                      "
+          ]
+        },
+        "\n                      ",
+        {
+          "tag": "g",
+          "props": {
+            "data-section-id": "execution-next-action-frontier",
+            "fill": "none",
+            "stroke": "#66717f",
+            "strokeWidth": "2",
+            "strokeDasharray": "4 7",
+            "opacity": ".72"
+          },
+          "children": [
+            {
+              "tag": "path",
+              "props": {
+                "d": "M505 90H560V225H585"
+              },
+              "children": []
+            },
+            {
+              "tag": "path",
+              "props": {
+                "d": "M505 210H545V242H585"
+              },
+              "children": []
+            },
+            {
+              "tag": "path",
+              "props": {
+                "d": "M710 242H750"
+              },
+              "children": []
+            },
+            {
+              "tag": "path",
+              "props": {
+                "d": "M790 242H825"
+              },
+              "children": []
+            }
+          ]
+        },
+        "\n\n                      ",
+        {
+          "tag": "g",
+          "props": {
+            "data-section-id": "execution-flow-particles",
+            "fill": "none",
+            "strokeLinecap": "round",
+            "strokeDashoffset": "0"
+          },
+          "children": [
+            "\n                        ",
+            {
+              "tag": "g",
+              "props": {
+                "data-section-id": "execution-running-sweep",
+                "stroke": "#73c6ff"
+              },
+              "children": [
+                {
+                  "tag": "path",
+                  "props": {
+                    "d": "M310 242H380",
+                    "strokeWidth": "16",
+                    "strokeDasharray": "110 310",
+                    "opacity": ".13"
+                  },
+                  "children": []
+                },
+                {
+                  "tag": "path",
+                  "props": {
+                    "d": "M310 242H380",
+                    "strokeWidth": "7",
+                    "strokeDasharray": "66 354",
+                    "opacity": ".68"
+                  },
+                  "children": []
+                },
+                {
+                  "tag": "path",
+                  "props": {
+                    "d": "M310 242H380",
+                    "stroke": "#d9f4ff",
+                    "strokeWidth": "2.5",
+                    "strokeDasharray": "18 402"
+                  },
+                  "children": []
+                }
+              ]
+            },
+            "\n                        ",
+            {
+              "tag": "g",
+              "props": {
+                "data-section-id": "execution-degraded-sweep"
+              },
+              "children": [
+                {
+                  "tag": "path",
+                  "props": {
+                    "d": "M310 242H380",
+                    "strokeWidth": "18",
+                    "strokeDasharray": "110 310",
+                    "opacity": ".12"
+                  },
+                  "children": []
+                },
+                {
+                  "tag": "path",
+                  "props": {
+                    "d": "M310 242H380",
+                    "strokeWidth": "8",
+                    "strokeDasharray": "66 354",
+                    "opacity": ".7"
+                  },
+                  "children": []
+                },
+                {
+                  "tag": "path",
+                  "props": {
+                    "d": "M310 242H380",
+                    "stroke": "#fff1b2",
+                    "strokeWidth": "2.5",
+                    "strokeDasharray": "18 402"
+                  },
+                  "children": []
+                }
+              ]
+            },
+            "\n                      "
+          ]
+        },
+        "\n\n                      ",
+        {
+          "tag": "g",
+          "props": {
+            "data-section-id": "execution-edge-arrowheads"
+          },
+          "children": [
+            {
+              "tag": "path",
+              "props": {
+                "d": "M190 242l-10-6v12Z",
+                "fill": "#2f9f70"
+              },
+              "children": []
+            },
+            {
+              "tag": "path",
+              "props": {
+                "d": "M380 90l-10-6v12Z",
+                "fill": "#2f9f70"
+              },
+              "children": []
+            },
+            {
+              "tag": "path",
+              "props": {
+                "d": "M585 225l-10-6v12Z",
+                "fill": "#2f9f70"
+              },
+              "children": []
+            },
+            {
+              "tag": "path",
+              "props": {
+                "d": "M585 242l-10-6v12Z",
+                "fill": "#3487e8"
+              },
+              "children": []
+            },
+            {
+              "tag": "path",
+              "props": {
+                "data-section-id": "execution-pace-arrowhead",
+                "d": "M380 242l-10-6v12Z"
+              },
+              "children": []
+            },
+            {
+              "tag": "path",
+              "props": {
+                "d": "M380 330l-10-6v12Z",
+                "fill": "#e25b5b"
+              },
+              "children": []
+            },
+            {
+              "tag": "path",
+              "props": {
+                "d": "M380 420l-10-6v12Z",
+                "fill": "#66717f"
+              },
+              "children": []
+            },
+            {
+              "tag": "path",
+              "props": {
+                "d": "M750 242l-9-5v10Z",
+                "fill": "#66717f"
+              },
+              "children": []
+            },
+            {
+              "tag": "path",
+              "props": {
+                "d": "M825 242l-9-5v10Z",
+                "fill": "#66717f"
+              },
+              "children": []
+            }
+          ]
+        },
+        "\n\n                      ",
+        {
+          "tag": "g",
+          "props": {
+            "data-section-id": "execution-node-goal"
+          },
+          "children": [
+            {
+              "tag": "rect",
+              "props": {
+                "x": "18",
+                "y": "210",
+                "width": "110",
+                "height": "64",
+                "rx": "10",
+                "fill": "#123029",
+                "stroke": "#2f9f70",
+                "strokeWidth": "2"
+              },
+              "children": []
+            },
+            {
+              "tag": "text",
+              "props": {
+                "data-type": "graph-meta",
+                "x": "34",
+                "y": "232",
+                "fill": "#8a94a3",
+                "fontSize": "10"
+              },
+              "children": ["目标 · 成功"]
+            },
+            {
+              "tag": "text",
+              "props": {
+                "data-type": "graph-title",
+                "x": "34",
+                "y": "255",
+                "fill": "#e5e7eb",
+                "fontSize": "13"
+              },
+              "children": ["候选可验证"]
+            }
+          ]
+        },
+        "\n                      ",
+        {
+          "tag": "g",
+          "props": {
+            "data-section-id": "execution-node-rules"
+          },
+          "children": [
+            {
+              "tag": "rect",
+              "props": {
+                "x": "190",
+                "y": "210",
+                "width": "120",
+                "height": "64",
+                "rx": "10",
+                "fill": "#123029",
+                "stroke": "#2f9f70",
+                "strokeWidth": "2"
+              },
+              "children": []
+            },
+            {
+              "tag": "text",
+              "props": {
+                "data-type": "graph-meta",
+                "x": "206",
+                "y": "232",
+                "fill": "#79d19a",
+                "fontSize": "10"
+              },
+              "children": ["批次 0 · 成功"]
+            },
+            {
+              "tag": "text",
+              "props": {
+                "data-type": "graph-title",
+                "x": "206",
+                "y": "255",
+                "fill": "#e5e7eb",
+                "fontSize": "13"
+              },
+              "children": ["市场规则固定"]
+            }
+          ]
+        },
+        "\n                      ",
+        {
+          "tag": "g",
+          "props": {
+            "data-section-id": "execution-node-security"
+          },
+          "children": [
+            {
+              "tag": "rect",
+              "props": {
+                "x": "380",
+                "y": "58",
+                "width": "125",
+                "height": "64",
+                "rx": "10",
+                "fill": "#123029",
+                "stroke": "#2f9f70"
+              },
+              "children": []
+            },
+            {
+              "tag": "text",
+              "props": {
+                "data-type": "graph-meta",
+                "x": "396",
+                "y": "80",
+                "fill": "#79d19a",
+                "fontSize": "10"
+              },
+              "children": ["批次 1A · 成功"]
+            },
+            {
+              "tag": "text",
+              "props": {
+                "data-type": "graph-title",
+                "x": "396",
+                "y": "103",
+                "fill": "#e5e7eb",
+                "fontSize": "13"
+              },
+              "children": ["安全检查"]
+            }
+          ]
+        },
+        "\n                      ",
+        {
+          "tag": "g",
+          "props": {
+            "data-section-id": "execution-node-build"
+          },
+          "children": [
+            {
+              "tag": "rect",
+              "props": {
+                "data-section-id": "execution-running-halo",
+                "x": "372",
+                "y": "170",
+                "width": "141",
+                "height": "80",
+                "rx": "15",
+                "fill": "none",
+                "strokeWidth": "6",
+                "opacity": ".5"
+              },
+              "children": []
+            },
+            {
+              "tag": "rect",
+              "props": {
+                "data-section-id": "execution-current-node-body",
+                "x": "380",
+                "y": "178",
+                "width": "125",
+                "height": "64",
+                "rx": "10",
+                "fill": "#2c2518",
+                "stroke": "#d49b32",
+                "strokeWidth": "2"
+              },
+              "children": []
+            },
+            {
+              "tag": "text",
+              "props": {
+                "data-type": "graph-meta",
+                "data-section-id": "execution-current-node-map-status",
+                "x": "396",
+                "y": "200",
+                "fill": "#f1bf55",
+                "fontSize": "10"
+              },
+              "children": ["批次 1B · 运行偏慢"]
+            },
+            {
+              "tag": "text",
+              "props": {
+                "data-type": "graph-title",
+                "x": "396",
+                "y": "223",
+                "fill": "#f1f5f9",
+                "fontSize": "13"
+              },
+              "children": ["构建与签名"]
+            }
+          ]
+        },
+        "\n                      ",
+        {
+          "tag": "g",
+          "props": {
+            "data-section-id": "execution-node-docs"
+          },
+          "children": [
+            {
+              "tag": "rect",
+              "props": {
+                "data-section-id": "execution-error-halo",
+                "x": "372",
+                "y": "290",
+                "width": "141",
+                "height": "80",
+                "rx": "15",
+                "fill": "#e25b5b",
+                "stroke": "#ff7474",
+                "opacity": ".25"
+              },
+              "children": []
+            },
+            {
+              "tag": "rect",
+              "props": {
+                "x": "380",
+                "y": "298",
+                "width": "125",
+                "height": "64",
+                "rx": "10",
+                "fill": "#30191c",
+                "stroke": "#e25b5b",
+                "strokeWidth": "2"
+              },
+              "children": []
+            },
+            {
+              "tag": "text",
+              "props": {
+                "data-type": "graph-meta",
+                "x": "396",
+                "y": "320",
+                "fill": "#ff8f8f",
+                "fontSize": "10"
+              },
+              "children": ["批次 1C · 失败"]
+            },
+            {
+              "tag": "text",
+              "props": {
+                "data-type": "graph-title",
+                "x": "396",
+                "y": "343",
+                "fill": "#f1f5f9",
+                "fontSize": "13"
+              },
+              "children": ["发布说明"]
+            }
+          ]
+        },
+        "\n                      ",
+        {
+          "tag": "g",
+          "props": {
+            "data-section-id": "execution-node-paused"
+          },
+          "children": [
+            {
+              "tag": "rect",
+              "props": {
+                "x": "380",
+                "y": "388",
+                "width": "125",
+                "height": "64",
+                "rx": "10",
+                "fill": "#1b1f25",
+                "stroke": "#66717f",
+                "strokeDasharray": "5 4"
+              },
+              "children": []
+            },
+            {
+              "tag": "text",
+              "props": {
+                "data-type": "graph-meta",
+                "x": "396",
+                "y": "410",
+                "fill": "#8a94a3",
+                "fontSize": "10"
+              },
+              "children": ["批次 1D · 暂停"]
+            },
+            {
+              "tag": "text",
+              "props": {
+                "data-type": "graph-title",
+                "x": "396",
+                "y": "433",
+                "fill": "#cbd1d9",
+                "fontSize": "13"
+              },
+              "children": ["兼容性抽样"]
+            }
+          ]
+        },
+        "\n                      ",
+        {
+          "tag": "g",
+          "props": {
+            "data-section-id": "execution-node-sandbox"
+          },
+          "children": [
+            {
+              "tag": "rect",
+              "props": {
+                "x": "585",
+                "y": "210",
+                "width": "125",
+                "height": "64",
+                "rx": "10",
+                "fill": "#1d2229",
+                "stroke": "#586271"
+              },
+              "children": []
+            },
+            {
+              "tag": "text",
+              "props": {
+                "data-type": "graph-meta",
+                "x": "601",
+                "y": "232",
+                "fill": "#8a94a3",
+                "fontSize": "10"
+              },
+              "children": ["候选 Action"]
+            },
+            {
+              "tag": "text",
+              "props": {
+                "data-type": "graph-title",
+                "x": "601",
+                "y": "255",
+                "fill": "#d4d8de",
+                "fontSize": "13"
+              },
+              "children": ["沙盒验证"]
+            }
+          ]
+        },
+        "\n\n                      ",
+        {
+          "tag": "g",
+          "props": {
+            "data-section-id": "execution-loop-control"
+          },
+          "children": [
+            "\n                        ",
+            {
+              "tag": "g",
+              "props": {
+                "data-section-id": "execution-loop-decision"
+              },
+              "children": [
+                {
+                  "tag": "path",
+                  "props": {
+                    "d": "M770 220L792 242L770 264L748 242Z",
+                    "fill": "#2d2819",
+                    "stroke": "#d49b32",
+                    "strokeWidth": "2"
+                  },
+                  "children": []
+                },
+                {
+                  "tag": "text",
+                  "props": {
+                    "data-type": "graph-meta",
+                    "x": "754",
+                    "y": "291",
+                    "fill": "#d49b32",
+                    "fontSize": "10"
+                  },
+                  "children": ["验证通过？"]
+                }
+              ]
+            },
+            "\n                        ",
+            {
+              "tag": "path",
+              "props": {
+                "data-section-id": "execution-loop-return",
+                "d": "M770 264V468H350V210H380",
+                "fill": "none",
+                "stroke": "#d49b32",
+                "strokeWidth": "2.5",
+                "strokeDasharray": "7 6"
+              },
+              "children": []
+            },
+            {
+              "tag": "path",
+              "props": {
+                "d": "M380 210l-10-6v12Z",
+                "fill": "#d49b32"
+              },
+              "children": []
+            },
+            {
+              "tag": "text",
+              "props": {
+                "data-type": "graph-meta",
+                "x": "565",
+                "y": "461",
+                "fill": "#d49b32",
+                "fontSize": "10"
+              },
+              "children": ["[失败且可重试] 第 2 / 3 次"]
+            },
+            {
+              "tag": "text",
+              "props": {
+                "data-type": "graph-meta",
+                "x": "797",
+                "y": "234",
+                "fill": "#8a94a3",
+                "fontSize": "10"
+              },
+              "children": ["[通过]"]
+            },
+            "\n                      "
+          ]
+        },
+        "\n                      ",
+        {
+          "tag": "g",
+          "props": {
+            "data-section-id": "execution-node-gate",
+            "opacity": ".72"
+          },
+          "children": [
+            {
+              "tag": "rect",
+              "props": {
+                "x": "825",
+                "y": "210",
+                "width": "78",
+                "height": "64",
+                "rx": "10",
+                "fill": "#282132",
+                "stroke": "#9c6ade",
+                "strokeDasharray": "5 4"
+              },
+              "children": []
+            },
+            {
+              "tag": "text",
+              "props": {
+                "data-type": "graph-meta",
+                "x": "841",
+                "y": "232",
+                "fill": "#b7a0e8",
+                "fontSize": "10"
+              },
+              "children": ["候选边界"]
+            },
+            {
+              "tag": "text",
+              "props": {
+                "data-type": "graph-title",
+                "x": "841",
+                "y": "255",
+                "fill": "#f1f5f9",
+                "fontSize": "13"
+              },
+              "children": ["发布"]
+            }
+          ]
+        },
+        "\n\n                      ",
+        {
+          "tag": "g",
+          "props": {
+            "data-section-id": "execution-run-frontier"
+          },
+          "children": [
+            {
+              "tag": "path",
+              "props": {
+                "d": "M442 252V272",
+                "stroke": "#d49b32",
+                "strokeWidth": "2",
+                "strokeDasharray": "4 4"
+              },
+              "children": []
+            },
+            {
+              "tag": "rect",
+              "props": {
+                "x": "374",
+                "y": "260",
+                "width": "136",
+                "height": "28",
+                "rx": "14",
+                "fill": "#2a2418",
+                "stroke": "#8d681e"
+              },
+              "children": []
+            },
+            {
+              "tag": "text",
+              "props": {
+                "data-type": "graph-meta",
+                "x": "391",
+                "y": "279",
+                "fill": "#f1bf55",
+                "fontSize": "10"
+              },
+              "children": ["当前执行前沿 · 待选择"]
+            }
+          ]
+        },
+        "\n                    "
+      ]
+    }
+  }
+}

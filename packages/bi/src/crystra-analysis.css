@@ -1,0 +1,39 @@
+.crystra-analysis-host {
+  height: 100%;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+.crystra-analysis-host > .obs-trace-layout {
+  flex: 1;
+  min-height: 0;
+}
+.crystra-analysis-host [data-header-slot="context"] {
+  flex-wrap: wrap;
+}
+.crystra-analysis-query {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 16px;
+}
+.crystra-analysis-query input {
+  min-width: 32ch;
+}
+.crystra-analysis-metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+  gap: 16px;
+  padding: 16px;
+}
+.crystra-analysis-host .wb-identity {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.crystra-analysis-host .wb-context-icon {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}

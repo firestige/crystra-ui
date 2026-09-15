@@ -1,3 +1,4 @@
+import qualifiedRootPage from "./qualified-delivery-root-page.json";
 import { describe, expect, it, vi } from "vitest";
 
 import { EvidenceClient, decodeEvidencePage } from "./client";
@@ -36,7 +37,10 @@ function traceResponse() {
           span_status: "OK",
           span_flags: 1,
           trace_state: null,
-          fields: [],
+          fields: [] as Array<{
+            field: string;
+            value: string | number | boolean;
+          }>,
         },
         edge: null,
       },
@@ -189,8 +193,8 @@ describe("closed Evidence decoder", () => {
 
     const duplicateFields = factResponse();
     duplicateFields.items[0]!.fields = [
-      { field: "agentops.delivery.id", value: "delivery-a" },
-      { field: "agentops.delivery.id", value: "delivery-a" },
+      { field: "C01", value: "delivery-a" },
+      { field: "C01", value: "delivery-a" },
     ] as never;
     expect(decodeEvidencePage("facts", duplicateFields, 100)).toMatchObject({
       ok: false,
@@ -198,8 +202,8 @@ describe("closed Evidence decoder", () => {
 
     const unorderedFields = factResponse();
     unorderedFields.items[0]!.fields = [
-      { field: "agentops.task.id", value: "task-a" },
-      { field: "agentops.delivery.id", value: "delivery-a" },
+      { field: "C02", value: "task-a" },
+      { field: "C01", value: "delivery-a" },
     ] as never;
     expect(decodeEvidencePage("facts", unorderedFields, 100)).toMatchObject({
       ok: false,
@@ -486,4 +490,46 @@ describe("bounded Evidence transport", () => {
     });
     expect(cancel).toHaveBeenCalledOnce();
   });
+});
+
+it("accepts formal Trace field IDs and rejects raw names, unknown IDs and reordered fields", () => {
+  const body = traceResponse();
+  body.items[0]!.node.fields = [
+    { field: "C01", value: "delivery-1" },
+    { field: "C02", value: "task-1" },
+    { field: "gen_ai.operation.name", value: "invoke_agent" },
+  ];
+  expect(decodeEvidencePage("traces", body, 100).ok).toBe(true);
+  for (const fields of [
+    [{ field: "agentops.delivery.id", value: "delivery-1" }],
+    [{ field: "C99", value: "unknown" }],
+    [
+      { field: "C02", value: "task-1" },
+      { field: "C01", value: "delivery-1" },
+    ],
+  ]) {
+    body.items[0]!.node.fields = fields;
+    expect(decodeEvidencePage("traces", body, 100).ok).toBe(false);
+  }
+});
+
+it("accepts recorded service roots with registry field IDs and rejects ingestion names", () => {
+  expect(decodeEvidencePage("facts", qualifiedRootPage, 200).ok).toBe(true);
+  const invalid = structuredClone(qualifiedRootPage);
+  invalid.items[0]!.fields[0]!.field = "agentops.delivery.id";
+  expect(decodeEvidencePage("facts", invalid, 200).ok).toBe(false);
+});
+it("uses registry identifiers for fact compatibility dimensions", () => {
+  const body = factResponse();
+  body.items[0]!.compatibility.dimensions = [
+    { field: "C42", value: "tokens" },
+    { field: "C43", value: "token" },
+  ] as never;
+  body.items[0]!.fields = [
+    { field: "C42", value: "tokens" },
+    { field: "C43", value: "token" },
+  ] as never;
+  expect(decodeEvidencePage("facts", body, 200).ok).toBe(true);
+  body.items[0]!.compatibility.dimensions.reverse();
+  expect(decodeEvidencePage("facts", body, 200).ok).toBe(false);
 });

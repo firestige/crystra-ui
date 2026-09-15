@@ -1,3 +1,4 @@
+import { createPortal } from "react-dom";
 import {
   useEffect,
   useId,
@@ -123,6 +124,8 @@ export interface TabsProps {
   value: string;
   onValueChange: (value: string) => void;
   items: readonly TabItem[];
+  /** Explicit host-owned panel location; null waits for that host to commit. */
+  panelContainer?: HTMLElement | null;
   size?: ComponentSize;
   appearance?: "soft" | "underline";
   className?: string;
@@ -136,6 +139,7 @@ export function Tabs({
   size = "regular",
   appearance = "soft",
   className,
+  panelContainer,
 }: TabsProps) {
   const id = useId();
   const refs = useRef<(HTMLButtonElement | null)[]>([]);
@@ -163,6 +167,19 @@ export function Tabs({
             ];
     refs.current[target]?.focus();
   };
+  const panels = items.map((item, index) => (
+    <div
+      key={item.value}
+      id={`${id}-panel-${index}`}
+      role="tabpanel"
+      aria-labelledby={`${id}-tab-${index}`}
+      hidden={item.value !== value}
+      tabIndex={0}
+      className="crystra-tab-panel"
+    >
+      {item.panel}
+    </div>
+  ));
   return (
     <div
       className={["crystra-tabs", className].filter(Boolean).join(" ")}
@@ -191,19 +208,11 @@ export function Tabs({
           </button>
         ))}
       </div>
-      {items.map((item, index) => (
-        <div
-          key={item.value}
-          id={`${id}-panel-${index}`}
-          role="tabpanel"
-          aria-labelledby={`${id}-tab-${index}`}
-          hidden={item.value !== value}
-          tabIndex={0}
-          className="crystra-tab-panel"
-        >
-          {item.panel}
-        </div>
-      ))}
+      {panelContainer === undefined
+        ? panels
+        : panelContainer
+          ? createPortal(panels, panelContainer)
+          : null}
     </div>
   );
 }
@@ -212,11 +221,14 @@ export interface MenuItem {
   label: string;
   icon?: ReactNode;
   disabled?: boolean;
+  checked?: boolean;
   tone?: SemanticTone;
   onSelect: () => void;
 }
 export interface MenuProps {
   label: string;
+  triggerContent?: ReactNode;
+  side?: "top" | "bottom" | "auto";
   items: readonly MenuItem[];
   size?: ComponentSize;
   align?: "start" | "end";
@@ -225,6 +237,8 @@ export interface MenuProps {
 /** Anchored action menu, kept in the theme subtree. No domain mutations are inferred. */
 export function Menu({
   label,
+  triggerContent,
+  side = "bottom",
   items,
   size = "compact",
   align = "end",
@@ -239,7 +253,7 @@ export function Menu({
   const buttons = () =>
     Array.from(
       panel.current?.querySelectorAll<HTMLButtonElement>(
-        '[role="menuitem"]:not(:disabled)',
+        '[role^="menuitem"]:not(:disabled)',
       ) ?? [],
     );
   const close = (restore = false) => {
@@ -250,7 +264,7 @@ export function Menu({
     if (!open) return;
     const enabled = Array.from(
       panel.current?.querySelectorAll<HTMLButtonElement>(
-        '[role="menuitem"]:not(:disabled)',
+        '[role^="menuitem"]:not(:disabled)',
       ) ?? [],
     );
     (initial.current === "last" ? enabled.at(-1) : enabled[0])?.focus();
@@ -267,11 +281,15 @@ export function Menu({
     const box = panel.current.getBoundingClientRect();
     const margin = 8;
     const below = window.innerHeight - anchor.bottom - margin - 4;
-    const room = Math.max(0, below);
+    const above = anchor.top - margin - 4;
+    const placeAbove =
+      side === "top" ||
+      (side === "auto" && below < box.height && above > below);
+    const room = Math.max(0, placeAbove ? above : below);
     panel.current.style.maxHeight = `${room}px`;
     panel.current.style.left = `${Math.max(margin, Math.min(align === "end" ? anchor.right - box.width : anchor.left, window.innerWidth - box.width - margin))}px`;
-    panel.current.style.top = `${anchor.bottom + 4}px`;
-  }, [open, align]);
+    panel.current.style.top = `${placeAbove ? Math.max(margin, anchor.top - 4 - Math.min(box.height, room)) : anchor.bottom + 4}px`;
+  }, [open, align, side]);
   useEffect(() => {
     if (!open) return;
     const dismiss = () => setOpen(false);
@@ -320,6 +338,8 @@ export function Menu({
         ref={trigger}
         size={size}
         disabled={disabled}
+        aria-label={label}
+        title={label}
         aria-haspopup="menu"
         aria-expanded={open}
         aria-controls={open ? id : undefined}
@@ -334,9 +354,9 @@ export function Menu({
             setOpen(true);
           }
         }}
-        endIcon={<Icon name="chevron-down" />}
+        endIcon={triggerContent ? undefined : <Icon name="chevron-down" />}
       >
-        {label}
+        {triggerContent ?? label}
       </Button>
       {open && (
         <div
@@ -351,7 +371,8 @@ export function Menu({
           {items.map((item) => (
             <button
               type="button"
-              role="menuitem"
+              role={item.checked === undefined ? "menuitem" : "menuitemradio"}
+              aria-checked={item.checked}
               tabIndex={-1}
               key={item.id}
               disabled={item.disabled}

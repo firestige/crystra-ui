@@ -1,0 +1,68 @@
+.crystra-task-execution {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.crystra-execution-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 16px;
+  border: 1px solid var(--color-border-default);
+  border-radius: 12px;
+  background: var(--color-background-card);
+}
+.crystra-execution-header p {
+  margin-top: 6px;
+}
+.crystra-execution-header > span {
+  flex: 1;
+}
+.crystra-execution-metrics {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 0;
+  padding: 16px;
+  border: 1px solid var(--color-border-default);
+  border-radius: 12px;
+  background: var(--color-background-card);
+}
+.crystra-task-execution dt {
+  font-size: 12px;
+  color: var(--color-text-muted);
+}
+.crystra-task-execution dd {
+  font-size: 13px;
+  margin: 8px 0 0;
+}
+.crystra-task-execution svg {
+  width: 100%;
+  min-height: 390px;
+  border-radius: 8px;
+  background: #0e151d;
+  margin-top: 16px;
+}
+.crystra-execution-bottom {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.crystra-execution-metadata {
+  padding: 12px 16px;
+  background: var(--color-background-inset);
+  border: 1px solid var(--color-border-default);
+  border-radius: 10px;
+}
+.crystra-execution-metadata summary {
+  cursor: pointer;
+  font-size: 12px;
+}
+.crystra-execution-metadata dl {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+.crystra-execution-metadata dd {
+  overflow-wrap: anywhere;
+}
