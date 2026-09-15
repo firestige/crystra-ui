@@ -2,6 +2,38 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import { expect, it, vi } from "vitest";
 import { CrystraShell } from "../public";
 
+it("replaces the complete header while searching and restores view controls", () => {
+  const { container } = render(
+    <CrystraShell
+      route="tasks"
+      tasks={[]}
+      workflows={[]}
+      onNavigate={vi.fn()}
+      onOpenHarness={vi.fn()}
+      onNewTask={vi.fn()}
+      onOpenSettings={vi.fn()}
+    >
+      Content
+    </CrystraShell>,
+  );
+  expect(screen.getByRole("button", { name: "任务视图" })).toBeVisible();
+  expect(
+    container.querySelector('[data-section-id="all-tasks-action"] svg'),
+  ).toHaveAttribute("data-iconify", "tabler:player-play-filled");
+  fireEvent.click(screen.getByRole("button", { name: "搜索任务" }));
+  expect(
+    screen.queryByRole("button", { name: "全部任务" }),
+  ).not.toBeInTheDocument();
+  expect(
+    screen.queryByRole("button", { name: "任务视图" }),
+  ).not.toBeInTheDocument();
+  fireEvent.keyDown(screen.getByRole("searchbox", { name: "搜索任务" }), {
+    key: "Escape",
+  });
+  fireEvent.click(screen.getByRole("button", { name: "任务视图" }));
+  expect(screen.getByRole("menu", { name: "任务视图" })).toBeVisible();
+});
+
 it("routes v8 navigation with exact identities and leaves host actions to callbacks", () => {
   const navigate = vi.fn(),
     host = vi.fn(),

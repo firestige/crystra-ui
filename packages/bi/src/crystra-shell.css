@@ -137,16 +137,7 @@
   font-size: 12px;
   padding: 0 10px;
 }
-.crystra-bi[data-theme]
-  .crystra-product-shell[data-product-surface]
-  [data-section-id="all-tasks-action"]
-  svg,
-.crystra-bi
-  .crystra-product-shell
-  [data-section-id="all-workflows-action"]
-  svg {
-  transform: rotate(-90deg);
-}
+
 .crystra-bi
   .crystra-product-shell
   [data-section-id="analysis-navigation"]
@@ -364,4 +355,80 @@
   .crystra-product-shell[data-product-surface][data-sidebar-collapsed="true"]
   [data-section-id="surface-banner"] {
   justify-content: center !important;
+}
+
+/* Header actions own their hover; the remaining title hit area fills the row. */
+.crystra-bi[data-theme] .crystra-product-shell .crystra-sidebar-header {
+  position: relative;
+  border-radius: 8px;
+  gap: 0;
+}
+.crystra-bi[data-theme] .crystra-product-shell .crystra-sidebar-title {
+  width: 100%;
+  height: 36px;
+  justify-content: flex-start;
+}
+.crystra-bi[data-theme]
+  .crystra-product-shell
+  .crystra-sidebar-header:has(.crystra-sidebar-title:hover) {
+  background: var(--color-background-hover, #ffffff0d);
+}
+.crystra-bi[data-theme]
+  .crystra-product-shell
+  .crystra-sidebar-header
+  .crystra-sidebar-title:hover {
+  background: transparent;
+}
+.crystra-bi[data-theme]
+  .crystra-product-shell
+  .crystra-sidebar-header
+  > button {
+  width: 28px;
+  min-width: 28px;
+  height: 28px;
+  padding: 0;
+  justify-content: center;
+}
+.crystra-sidebar-title svg {
+  transition: transform 180ms ease;
+}
+.crystra-sidebar-title[aria-expanded="false"] svg {
+  transform: rotate(-90deg);
+}
+.crystra-bi[data-theme]
+  .crystra-product-shell
+  [data-section-id="host-settings"] {
+  width: 100%;
+}
+.crystra-sidebar-view-menu {
+  position: absolute;
+  z-index: 100;
+  top: 100%;
+  right: 0;
+  min-width: 180px;
+  padding: 6px;
+  border: 1px solid var(--color-border-default);
+  border-radius: 10px;
+  background: var(--color-background-sidebar);
+  box-shadow: 0 8px 24px #0006;
+}
+.crystra-sidebar-view-menu button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 8px;
+  border: 0;
+  border-radius: 6px;
+  color: inherit;
+  background: transparent;
+  cursor: pointer;
+}
+.crystra-sidebar-view-menu button:hover,
+.crystra-sidebar-view-menu [aria-checked="true"] {
+  background: #ffffff12;
+}
+@media (prefers-reduced-motion: reduce) {
+  .crystra-sidebar-title svg {
+    transition: none;
+  }
 }

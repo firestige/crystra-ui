@@ -4,6 +4,8 @@ This branch records the reviewed UI implementation and its reproducible review s
 
 ## Accepted reusable surface
 
+Sidebar acceptance follows `components/shell-and-sidebar.md` in the 20260907 v8 source package. Task, Workflow and Analysis titles fill their row; disclosure arrows animate rotation; search replaces every header control. Search, View and All remain independent actions, with a filled play triangle for All. Task view defaults to descending creation time and optionally sorts by effective activity or hides explicitly inactive records. Missing timestamps retain input order and unknown activity remains visible; the host must provide authoritative metadata before these preferences can change ordering or filtering. Workflow view controls name order and version visibility without changing revision identity. Settings is a full-width host callback and does not own a separate settings domain.
+
 - Semantic colors/typography/icons and geometry: `design/crystra.tokens.json`, `design/crystra.geometry.json`; generated opt-in `data-crystra-theme="dark"` styles.
 - Card: grayscale surface, rounded corners, low-contrast border and shadow. Widgets own grid-span/size semantics; Card is not implicitly a Widget.
 - Button/IconButton/Icon/Tooltip: shared recipes, labels, disabled states and host-input isolation.

@@ -19,6 +19,9 @@ export interface CrystraNavigationRecord {
   id: string;
   title: string;
   revision?: string;
+  createdAt?: string;
+  lastActivityAt?: string;
+  inactive?: boolean;
 }
 export interface CrystraShellProps {
   route: CrystraPage;
@@ -63,6 +66,12 @@ export function CrystraShell(props: CrystraShellProps) {
     document.addEventListener("pointerdown", close);
     return () => document.removeEventListener("pointerdown", close);
   }, [flyout]);
+  const [taskSort, setTaskSort] = useState<"createdAt" | "lastActivityAt">(
+    "createdAt",
+  );
+  const [activeOnly, setActiveOnly] = useState(false);
+  const [workflowDescending, setWorkflowDescending] = useState(false);
+  const [showVersion, setShowVersion] = useState(true);
   const [taskQuery, setTaskQuery] = useState("");
   const [workflowQuery, setWorkflowQuery] = useState("");
   const [expanded, setExpanded] = useState({
@@ -87,7 +96,11 @@ export function CrystraShell(props: CrystraShellProps) {
         .map((item) => (
           <ListItem
             key={item.id}
-            primary={item.title}
+            primary={
+              page === "workflow" && showVersion && item.revision
+                ? `${item.title} · ${item.revision}`
+                : item.title
+            }
             selected={props.route === page && props.selectedId === item.id}
             data-object-id={item.id}
             onActivate={() => navigate(page, item.id, item.revision)}
@@ -175,37 +188,53 @@ export function CrystraShell(props: CrystraShellProps) {
           }
           data-expanded={expanded.task}
         >
-          <header data-section-id="task-section-header">
-            <ExpandableSearchField
-              title={
-                <Button
-                  appearance="ghost"
-                  aria-expanded={expanded.task}
-                  onClick={() => toggle("task")}
+          <SidebarHeader
+            kind="task"
+            label="任务"
+            expanded={expanded.task}
+            onToggle={() => toggle("task")}
+            onExpand={() => setExpanded((old) => ({ ...old, task: true }))}
+            query={taskQuery}
+            onQuery={setTaskQuery}
+            onAll={() => navigate("tasks")}
+            selected={props.route === "tasks"}
+            view={
+              <>
+                <button
+                  role="menuitemradio"
+                  aria-checked={taskSort === "createdAt"}
+                  onClick={() => setTaskSort("createdAt")}
                 >
-                  <Icon name="chevron-down" size="disclosure" />
-                  任务
-                </Button>
-              }
-              label="搜索任务"
-              placeholder="搜索任务"
-              value={taskQuery}
-              onValueChange={setTaskQuery}
-              triggerProps={{ "data-section-id": "task-search-action" }}
-              cancelProps={{ "data-section-id": "task-search-clear" }}
-            />
-            <IconButton
-              appearance="ghost"
-              aria-label="全部任务"
-              data-section-id="all-tasks-action"
-              onClick={() => navigate("tasks")}
-            >
-              <Icon name="chevron-down" size="inline-action" />
-            </IconButton>
-          </header>
+                  创建时间（降序）
+                </button>
+                <button
+                  role="menuitemradio"
+                  aria-checked={taskSort === "lastActivityAt"}
+                  onClick={() => setTaskSort("lastActivityAt")}
+                >
+                  最近活动（降序）
+                </button>
+                <button
+                  role="menuitemcheckbox"
+                  aria-checked={activeOnly}
+                  onClick={() => setActiveOnly(!activeOnly)}
+                >
+                  仅显示活跃任务
+                </button>
+              </>
+            }
+          />
           {expanded.task && (
             <div data-section-id="task-section-content">
-              {records(props.tasks, taskQuery, "task")}
+              {records(
+                [...props.tasks]
+                  .filter((task) => !activeOnly || task.inactive !== true)
+                  .sort((a, b) =>
+                    (b[taskSort] ?? "").localeCompare(a[taskSort] ?? ""),
+                  ),
+                taskQuery,
+                "task",
+              )}
             </div>
           )}
         </section>
@@ -218,37 +247,53 @@ export function CrystraShell(props: CrystraShellProps) {
           data-expanded={expanded.workflow}
           aria-label="工作流"
         >
-          <header data-section-id="workflow-section-header">
-            <ExpandableSearchField
-              title={
-                <Button
-                  appearance="ghost"
-                  aria-expanded={expanded.workflow}
-                  onClick={() => toggle("workflow")}
+          <SidebarHeader
+            kind="workflow"
+            label="工作流"
+            expanded={expanded.workflow}
+            onToggle={() => toggle("workflow")}
+            onExpand={() => setExpanded((old) => ({ ...old, workflow: true }))}
+            query={workflowQuery}
+            onQuery={setWorkflowQuery}
+            onAll={() => navigate("workflows")}
+            selected={props.route === "workflows"}
+            view={
+              <>
+                <button
+                  role="menuitemradio"
+                  aria-checked={!workflowDescending}
+                  onClick={() => setWorkflowDescending(false)}
                 >
-                  <Icon name="chevron-down" size="disclosure" />
-                  工作流
-                </Button>
-              }
-              label="搜索工作流"
-              placeholder="搜索工作流"
-              value={workflowQuery}
-              onValueChange={setWorkflowQuery}
-              triggerProps={{ "data-section-id": "workflow-search-action" }}
-              cancelProps={{ "data-section-id": "workflow-search-clear" }}
-            />
-            <IconButton
-              appearance="ghost"
-              aria-label="全部工作流"
-              data-section-id="all-workflows-action"
-              onClick={() => navigate("workflows")}
-            >
-              <Icon name="chevron-down" size="inline-action" />
-            </IconButton>
-          </header>
+                  名称升序
+                </button>
+                <button
+                  role="menuitemradio"
+                  aria-checked={workflowDescending}
+                  onClick={() => setWorkflowDescending(true)}
+                >
+                  名称降序
+                </button>
+                <button
+                  role="menuitemcheckbox"
+                  aria-checked={showVersion}
+                  onClick={() => setShowVersion(!showVersion)}
+                >
+                  显示版本
+                </button>
+              </>
+            }
+          />
           {expanded.workflow && (
             <div data-section-id="workflow-section-content">
-              {records(props.workflows, workflowQuery, "workflow")}
+              {records(
+                [...props.workflows].sort(
+                  (a, b) =>
+                    a.title.localeCompare(b.title) *
+                    (workflowDescending ? -1 : 1),
+                ),
+                workflowQuery,
+                "workflow",
+              )}
             </div>
           )}
         </nav>
@@ -264,6 +309,8 @@ export function CrystraShell(props: CrystraShellProps) {
           <Button
             appearance="ghost"
             aria-expanded={expanded.analysis}
+            data-section-id="analysis-section-header"
+            className="crystra-sidebar-title"
             onClick={() => toggle("analysis")}
           >
             <Icon name="chevron-down" size="disclosure" />
@@ -322,5 +369,125 @@ export function CrystraShell(props: CrystraShellProps) {
         {props.children}
       </main>
     </div>
+  );
+}
+
+function SidebarHeader({
+  kind,
+  label,
+  expanded,
+  onToggle,
+  onExpand,
+  query,
+  onQuery,
+  onAll,
+  selected,
+  view,
+}: {
+  kind: "task" | "workflow";
+  label: string;
+  expanded: boolean;
+  onToggle: () => void;
+  onExpand: () => void;
+  query: string;
+  onQuery: (value: string) => void;
+  onAll: () => void;
+  selected: boolean;
+  view: ReactNode;
+}) {
+  const [search, setSearch] = useState(false);
+  const [menu, setMenu] = useState(false);
+  const root = useRef<HTMLElement>(null);
+  const close = () => {
+    setSearch(false);
+    setMenu(false);
+    onQuery("");
+  };
+  useEffect(() => {
+    if (!search && !menu) return;
+    const outside = (event: PointerEvent) => {
+      if (!root.current?.contains(event.target as Node)) {
+        setSearch(false);
+        setMenu(false);
+        onQuery("");
+      }
+    };
+    document.addEventListener("pointerdown", outside);
+    return () => document.removeEventListener("pointerdown", outside);
+  }, [search, menu, onQuery]);
+  return (
+    <header
+      ref={root}
+      data-section-id={kind + "-section-header"}
+      className="crystra-sidebar-header"
+      data-searching={search}
+      onKeyDown={(event) => {
+        if (event.key === "Escape") close();
+      }}
+    >
+      <ExpandableSearchField
+        title={
+          <Button
+            appearance="ghost"
+            className="crystra-sidebar-title"
+            aria-expanded={expanded}
+            onClick={() => {
+              close();
+              onToggle();
+            }}
+          >
+            <Icon name="chevron-down" size="disclosure" />
+            {label}
+          </Button>
+        }
+        expanded={search}
+        onExpandedChange={(open) => {
+          setSearch(open);
+          setMenu(false);
+          if (open) onExpand();
+        }}
+        label={"搜索" + label}
+        placeholder={"搜索" + label}
+        value={query}
+        onValueChange={onQuery}
+        triggerProps={{ "data-section-id": kind + "-search-action" }}
+        cancelProps={{ "data-section-id": kind + "-search-clear" }}
+      />
+      {!search && (
+        <>
+          <IconButton
+            appearance="ghost"
+            aria-label={label + "视图"}
+            aria-haspopup="menu"
+            aria-expanded={menu}
+            data-section-id={kind + "-view-options-action"}
+            onClick={() => setMenu(!menu)}
+          >
+            <Icon name="adjustments-horizontal" size="inline-action" />
+          </IconButton>
+          <IconButton
+            appearance="ghost"
+            aria-label={"全部" + label}
+            aria-current={selected ? "page" : undefined}
+            data-section-id={
+              kind === "task" ? "all-tasks-action" : "all-workflows-action"
+            }
+            onClick={onAll}
+          >
+            <Icon name="player-play-filled" size="inline-action" />
+          </IconButton>
+        </>
+      )}
+      {menu && (
+        <div
+          role="menu"
+          aria-label={label + "视图"}
+          data-section-id={kind + "-view-options-menu"}
+          className="crystra-sidebar-view-menu"
+        >
+          {view}
+        </div>
+      )}
+    </header>
   );
 }
