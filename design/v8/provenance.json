@@ -1,6 +1,12 @@
 {
-  "source": "/Users/firestige/Projects/workflow-self-recursive/tmp/20260907/Crystra-ui-design/assets/crystra-task-work-v8-sidebar.html",
+  "source": "design/v8/sidebar.source.html",
   "sha256": "b5eefc9739ab1d995e4c10cbb0e90c8dcb2fa099cc4b707ec47a574a46b2af87",
   "authority": "Accepted v8 implementation; only host and mock adapters may substitute behavior",
-  "status": "extraction-in-progress"
+  "status": "extraction-in-progress",
+  "sourceBase": "crystra-ui repository root",
+  "upstream": {
+    "package": "Crystra-ui-design",
+    "path": "assets/crystra-task-work-v8-sidebar.html",
+    "purpose": "Accepted design source lineage; builds use the committed snapshot."
+  }
 }
