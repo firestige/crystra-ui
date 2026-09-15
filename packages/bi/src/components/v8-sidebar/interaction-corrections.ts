@@ -7,5 +7,6 @@ export const sidebarInteractionCorrections = `
  :scope[data-palette][data-crystra-theme] :is([data-section-id="task-section-header"], [data-section-id="workflow-section-header"]):has([data-section-id$="-search-control"]:hover, [data-section-id$="-section-actions"]:hover, [data-section-id$="-view-options-menu"]:hover) {
   background-color: transparent !important;
  }
+ :scope[data-palette][data-crystra-theme] [data-section-id="analysis-section-header"] > [data-section-id="analysis-section-toggle"]:is(:hover, :focus-visible) { background-color: transparent !important; }
 }
 `;
