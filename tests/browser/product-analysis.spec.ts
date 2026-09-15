@@ -35,14 +35,17 @@ test("product sidebar matches v8 compact geometry and inline section search", as
   await page.goto("/product-test.html");
   const sidebar = page.getByRole("complementary", { name: "Crystra 导航" });
   expect((await sidebar.boundingBox())!.width).toBe(220);
-  await expect(
-    sidebar.getByRole("button", { name: "切换到 DeepSeek Harness" }),
-  ).toHaveCSS("justify-content", "flex-start");
-  await expect(
-    sidebar.getByRole("button", { name: "切换到 DeepSeek Harness" }),
-  ).toHaveCSS("font-size", "19px");
+  const brand = sidebar.locator('[data-section-id="surface-banner"]');
+  const mark = sidebar.locator("[data-brand-crystra]");
+  expect((await mark.boundingBox())!.x).toBe((await brand.boundingBox())!.x);
+  const brandName = sidebar.locator('[data-section-id="sidebar-brand-name"]');
+  const brandSize = await brandName.evaluate((el) =>
+    getComputedStyle(el).getPropertyValue("--type-brand-size").trim(),
+  );
+  expect(brandSize).not.toBe("");
+  await expect(brandName).toHaveCSS("font-size", brandSize);
   const title = await sidebar
-    .getByRole("button", { name: "任务", exact: true })
+    .locator('[data-section-id="task-section-toggle"]')
     .boundingBox();
   const search = await sidebar
     .getByRole("button", { name: "搜索任务", exact: true })
@@ -51,6 +54,6 @@ test("product sidebar matches v8 compact geometry and inline section search", as
     Math.abs(title!.y + title!.height / 2 - search!.y - search!.height / 2),
   ).toBeLessThan(4);
   await expect(
-    sidebar.getByRole("button", { name: "调用追踪", exact: true }),
+    sidebar.getByRole("link", { name: "调用追踪", exact: true }),
   ).toHaveAttribute("aria-current", "page");
 });

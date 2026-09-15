@@ -191,6 +191,9 @@
     },
     "x": {
       "body": "<path fill=\"none\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M18 6L6 18M6 6l12 12\"/>"
+    },
+    "player-play-filled": {
+      "body": "<path fill=\"currentColor\" d=\"M6 4v16a1 1 0 0 0 1.524.852l13-8a1 1 0 0 0 0-1.704l-13-8A1 1 0 0 0 6 4\"/>"
     }
   }
 }

@@ -119,9 +119,10 @@ test("v8 compact rail preserves the input and opens navigation without widening 
   const input = page.getByRole("textbox", { name: "宿主输入替身" });
   await input.fill("折叠后保留");
   await page.getByRole("button", { name: "收起侧边栏", exact: true }).click();
-  expect(
-    (await page.locator('[data-section-id="sidebar"]').boundingBox())!.width,
-  ).toBe(64);
+  await expect(page.locator('[data-section-id="sidebar"]')).toHaveCSS(
+    "width",
+    "64px",
+  );
   expect(
     (await page.locator("[data-brand-crystra]").boundingBox())!.width,
   ).toBe(24);
@@ -130,19 +131,21 @@ test("v8 compact rail preserves the input and opens navigation without widening 
   ).toBeHidden();
   await page.getByRole("button", { name: "分析", exact: true }).click();
   await expect(
-    page.getByRole("button", { name: "调用追踪", exact: true }),
+    page.getByRole("link", { name: "调用追踪", exact: true }),
   ).toBeVisible();
-  expect(
-    (await page.locator('[data-section-id="sidebar"]').boundingBox())!.width,
-  ).toBe(64);
+  await expect(page.locator('[data-section-id="sidebar"]')).toHaveCSS(
+    "width",
+    "64px",
+  );
   await page.keyboard.press("Escape");
   await expect(
-    page.getByRole("button", { name: "调用追踪", exact: true }),
+    page.getByRole("link", { name: "调用追踪", exact: true }),
   ).toBeHidden();
   await page.getByRole("button", { name: "展开侧边栏", exact: true }).click();
-  expect(
-    (await page.locator('[data-section-id="sidebar"]').boundingBox())!.width,
-  ).toBe(260);
+  await expect(page.locator('[data-section-id="sidebar"]')).toHaveCSS(
+    "width",
+    "260px",
+  );
   await expect(input).toHaveValue("折叠后保留");
 });
 
