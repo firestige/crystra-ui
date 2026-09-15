@@ -10,9 +10,9 @@ test("Sidebar rows, disclosure motion, full-width search and view controls match
     const header = page.locator(`[data-section-id="${kind}-section-header"]`);
     const title = header.getByRole("button", { name: label, exact: true });
     await title.hover();
-    expect(
-      await header.evaluate((el) => getComputedStyle(el).backgroundColor),
-    ).not.toBe("rgba(0, 0, 0, 0)");
+    await expect
+      .poll(() => header.evaluate((el) => getComputedStyle(el).backgroundColor))
+      .not.toBe("rgba(0, 0, 0, 0)");
     const arrow = title.locator("svg");
     await title.click();
     await expect(title).toHaveAttribute("aria-expanded", "false");
@@ -48,9 +48,9 @@ test("Sidebar rows, disclosure motion, full-width search and view controls match
   for (const id of ["analysis-section-header", "host-settings"]) {
     const button = page.locator(`[data-section-id="${id}"]`);
     await button.hover();
-    expect(
-      await button.evaluate((el) => getComputedStyle(el).backgroundColor),
-    ).not.toBe("rgba(0, 0, 0, 0)");
+    await expect
+      .poll(() => button.evaluate((el) => getComputedStyle(el).backgroundColor))
+      .not.toBe("rgba(0, 0, 0, 0)");
     const width = await button.evaluate(
       (el) => el.getBoundingClientRect().width,
     );
