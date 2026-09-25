@@ -1,13 +1,20 @@
+:root {
+  --crystra-layout-header-height: 88px;
+}
+
 /* Shared workbench Header: identity, baseline navigation and page-owned context. */
 .wb-header.wb-page-header {
   display: grid;
   grid-template-columns: 268px auto minmax(0, 1fr);
-  grid-template-rows: 34px 34px;
+  grid-template-rows: repeat(2, minmax(0, 1fr));
   grid-template-areas: "identity navigation time" "identity navigation context";
   gap: 4px 24px;
   padding: 8px 32px;
-  min-height: 0;
-  height: auto;
+  box-sizing: border-box;
+  flex: 0 0 var(--crystra-layout-header-height);
+  min-height: var(--crystra-layout-header-height);
+  height: var(--crystra-layout-header-height);
+  max-height: var(--crystra-layout-header-height);
   position: relative;
   z-index: 30;
   align-items: center;

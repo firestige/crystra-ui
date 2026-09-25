@@ -1,0 +1,41 @@
+.map-readonly {
+  min-width: 0;
+}
+.map-readonly-controls {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  margin-bottom: 8px;
+}
+.map-readonly .map-readonly-viewport {
+  overflow: hidden;
+  touch-action: none;
+}
+.map-readonly .map-readonly-viewport > svg {
+  margin: 0;
+  overflow: hidden;
+}
+.map-readonly .map-node[data-runtime-tone="success"] {
+  --workflow-fill: var(--workflow-end-fill);
+  --workflow-accent: var(--workflow-end-accent);
+}
+.map-readonly .map-node[data-runtime-tone="warning"] {
+  --workflow-fill: var(--workflow-decision-fill);
+  --workflow-accent: var(--workflow-decision-accent);
+}
+.map-readonly .map-node[data-runtime-tone="neutral"] {
+  --workflow-fill: var(--color-background-card);
+  --workflow-accent: var(--color-text-muted);
+}
+.map-readonly .map-node[data-runtime-tone="danger"] {
+  --workflow-fill: var(--workflow-terminated-fill);
+  --workflow-accent: var(--workflow-terminated-accent);
+}
+.map-readonly .map-node[data-runtime-tone="primary"] {
+  --workflow-fill: var(--workflow-group-fill);
+  --workflow-accent: var(--workflow-group-accent);
+}
+.map-readonly .map-edge[data-runtime-tone="success"] > path:first-child {
+  stroke: var(--workflow-end-accent);
+  stroke-width: 2.5;
+}

@@ -1,0 +1,122 @@
+.crystra-plan,
+.crystra-plan-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 0;
+}
+.crystra-plan [hidden] {
+  display: none !important;
+}
+.crystra-plan p,
+.crystra-plan h4 {
+  margin: 0;
+}
+.crystra-plan-main-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.78fr) minmax(0, 1.42fr);
+  gap: 12px;
+}
+.crystra-plan-readiness {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+.crystra-plan-review-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+  gap: 12px;
+  min-height: 0;
+}
+.crystra-plan .crystra-card {
+  min-width: 0;
+  max-height: 100cqh;
+  overflow: hidden;
+}
+.crystra-plan-list {
+  padding-left: 18px;
+  margin: 8px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow-wrap: anywhere;
+}
+.crystra-plan-outcomes {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 16px;
+}
+.crystra-plan-facts {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 12px;
+}
+.crystra-plan-facts > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+.crystra-plan-facts dt {
+  color: var(--color-text-muted);
+}
+.crystra-plan-facts dd {
+  margin: 0;
+  text-align: right;
+}
+.crystra-plan[data-full="true"],
+.crystra-plan-full,
+.crystra-plan[data-full="true"] > .crystra-plan-summary {
+  height: 100%;
+}
+.crystra-plan-review-grid[data-expanded] {
+  grid-template-columns: minmax(0, 1fr);
+  flex: 1;
+}
+.crystra-plan-full > .crystra-card {
+  height: 100%;
+}
+.crystra-plan-full .crystra-card-header {
+  flex: none;
+}
+.crystra-plan-full .crystra-card-content {
+  min-height: 0;
+  flex: 1;
+  overflow: auto;
+}
+.crystra-plan-document {
+  display: grid;
+  grid-template-columns: 160px minmax(0, 1fr);
+  gap: 24px;
+  height: 100%;
+}
+.crystra-plan-document nav {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow: auto;
+}
+.crystra-plan-document article {
+  overflow: auto;
+  min-height: 0;
+}
+.crystra-plan-prose {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.crystra-plan-markdown {
+  font-size: 14px;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+.crystra-plan .crystra-plan-markdown p {
+  margin: 12px 0;
+}
+.crystra-plan-markdown pre {
+  overflow: auto;
+}
+.crystra-plan-markdown a {
+  color: var(--color-primary);
+}

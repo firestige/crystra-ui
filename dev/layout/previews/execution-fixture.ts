@@ -1,0 +1,116 @@
+import type { ExecutionProjection } from "../components/crystra-ui/task-workbench/execution";
+/** Isolated UI example, never a fallback for Execution task data. */
+export const executionPreview: ExecutionProjection = {
+  planRevision: "v4",
+  planRunId: "preview-plan-run-08",
+  summary: "运行 #08 · 正常推进",
+  tone: "primary",
+  facts: [
+    { label: "完成", value: "2 / 5 Wave" },
+    { label: "当前前沿", value: "批次 1B" },
+    { label: "阻塞", value: "0" },
+    { label: "累计消耗", value: "18 分钟 · ¥12.40" },
+  ],
+  graph: {
+    version: "0.2",
+    title: "计划 DAG 的 Wave 级执行状态",
+    nodes: [
+      { id: "w0", kind: "activity", title: "需求与方法确认" },
+      { id: "w1", kind: "activity", title: "批次 1A" },
+      { id: "w2", kind: "activity", title: "批次 1B" },
+      { id: "g", kind: "decision", title: "发布授权" },
+      { id: "w3", kind: "activity", title: "发布候选" },
+      { id: "w4", kind: "activity", title: "交付验证" },
+    ],
+    edges: [
+      { id: "e1", from: "w0", to: "w1" },
+      { id: "e2", from: "w0", to: "w2" },
+      { id: "e3", from: "w1", to: "g" },
+      { id: "e4", from: "w2", to: "g" },
+      { id: "e5", from: "g", to: "w3" },
+      { id: "e6", from: "w3", to: "w4" },
+    ],
+  },
+  waves: [
+    {
+      id: "w0",
+      title: "需求与方法确认",
+      status: "已完成",
+      tone: "success",
+      outcome: "目标、约束与方法已确认",
+    },
+    {
+      id: "w1",
+      title: "批次 1A",
+      status: "已完成",
+      tone: "success",
+      outcome: "签名候选已生成",
+    },
+    {
+      id: "w2",
+      title: "批次 1B",
+      status: "执行中",
+      tone: "warning",
+      outcome: "正在验证沙盒安装",
+      run: {
+        identity: {
+          taskId: "preview-task",
+          planRunId: "preview-plan-run-08",
+          waveId: "w2",
+          runId: "preview-workflow-run-1b",
+        },
+        graph: {
+          version: "0.2",
+          title: "批次 1B · Workflow Run",
+          nodes: [
+            { id: "prepare", kind: "activity", title: "准备候选" },
+            { id: "install", kind: "activity", title: "沙盒安装" },
+            { id: "check", kind: "activity", title: "安装检查" },
+          ],
+          edges: [
+            { id: "r1", from: "prepare", to: "install" },
+            { id: "r2", from: "install", to: "check" },
+          ],
+        },
+        observed: ["prepare"],
+        frontier: ["install"],
+        candidates: ["check"],
+        nodes: [
+          {
+            id: "prepare",
+            title: "准备候选",
+            status: "已完成",
+            tone: "success",
+            output: "候选包已就绪",
+          },
+          {
+            id: "install",
+            title: "沙盒安装",
+            status: "执行中",
+            tone: "warning",
+            elapsed: "2 分 18 秒",
+            progress: 62,
+            output: "安装日志持续写入",
+            checks: ["签名验证通过", "依赖安装进行中"],
+            nextBoundary: "安装完成后进入检查",
+          },
+          { id: "check", title: "安装检查", status: "未开始" },
+        ],
+      },
+    },
+    {
+      id: "w3",
+      title: "发布候选",
+      status: "未开始",
+      tone: "neutral",
+      outcome: "等待发布授权",
+    },
+    {
+      id: "w4",
+      title: "交付验证",
+      status: "未开始",
+      tone: "neutral",
+      outcome: "尚无产出",
+    },
+  ],
+};

@@ -1,3 +1,4 @@
+import { createPortal } from "react-dom";
 import {
   useEffect,
   useId,
@@ -125,6 +126,8 @@ export interface TabsProps {
   items: readonly TabItem[];
   size?: ComponentSize;
   appearance?: "soft" | "underline";
+  /** Optional host-owned Header slot; panel IDs and state remain owned by Tabs. */
+  navigationContainer?: HTMLElement | null;
   className?: string;
 }
 /** Controlled page-local tabs; arrows move focus, Enter/Space activate. Routes belong to the host. */
@@ -135,6 +138,7 @@ export function Tabs({
   items,
   size = "regular",
   appearance = "soft",
+  navigationContainer,
   className,
 }: TabsProps) {
   const id = useId();
@@ -163,34 +167,39 @@ export function Tabs({
             ];
     refs.current[target]?.focus();
   };
+  const navigation = (
+    <div role="tablist" aria-label={label} className="crystra-tab-list">
+      {items.map((item, index) => (
+        <button
+          type="button"
+          key={item.value}
+          ref={(node) => {
+            refs.current[index] = node;
+          }}
+          id={`${id}-tab-${index}`}
+          role="tab"
+          aria-selected={item.value === value}
+          aria-controls={`${id}-panel-${index}`}
+          tabIndex={index === entry ? 0 : -1}
+          disabled={item.disabled}
+          onKeyDown={(e) => move(e, index)}
+          onClick={() => onValueChange(item.value)}
+          className="crystra-tab"
+        >
+          {item.label}
+        </button>
+      ))}
+    </div>
+  );
   return (
     <div
       className={["crystra-tabs", className].filter(Boolean).join(" ")}
       data-appearance={appearance}
       data-size={size}
     >
-      <div role="tablist" aria-label={label} className="crystra-tab-list">
-        {items.map((item, index) => (
-          <button
-            type="button"
-            key={item.value}
-            ref={(node) => {
-              refs.current[index] = node;
-            }}
-            id={`${id}-tab-${index}`}
-            role="tab"
-            aria-selected={item.value === value}
-            aria-controls={`${id}-panel-${index}`}
-            tabIndex={index === entry ? 0 : -1}
-            disabled={item.disabled}
-            onKeyDown={(e) => move(e, index)}
-            onClick={() => onValueChange(item.value)}
-            className="crystra-tab"
-          >
-            {item.label}
-          </button>
-        ))}
-      </div>
+      {navigationContainer
+        ? createPortal(navigation, navigationContainer)
+        : navigation}
       {items.map((item, index) => (
         <div
           key={item.value}

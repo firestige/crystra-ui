@@ -1,0 +1,69 @@
+.crystra-page-content,
+.crystra-page-columns {
+  flex: 1;
+  min-height: 0;
+  min-width: 0;
+}
+.crystra-page-content {
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+}
+.crystra-page-columns {
+  display: grid;
+  overflow-x: auto;
+}
+.crystra-page-chat,
+.crystra-page-bench {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  overflow: auto;
+}
+
+.crystra-page-header {
+  border-bottom: 1px solid var(--color-border-default, #ffffff1f);
+}
+.crystra-page-header > [data-header-slot="context"] {
+  grid-row: 1 / -1;
+  min-width: 0;
+  max-height: 100%;
+  overflow: auto;
+  justify-content: flex-end;
+}
+.crystra-page-glyph {
+  display: grid;
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+  place-items: center;
+  border-radius: 8px;
+  border: 1px solid var(--color-border-default, #ffffff1f);
+  background: var(--color-background-card, #232324);
+  font-size: 20px;
+}
+.crystra-page-description {
+  margin-top: 4px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--color-text-secondary, #cfd3d6);
+}
+.crystra-page-context {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 0;
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--color-text-muted, #adb2b8);
+}
+
+/* Page frames ship their own geometry; a host need not load Tailwind utilities. */
+.crystra-page-identity { display: flex; align-items: center; gap: 16px; min-width: 0; }
+.crystra-page-identity-text { min-width: 0; }
+.crystra-page-title { margin: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 24px; line-height: 32px; font-weight: 600; letter-spacing: -0.025em; }

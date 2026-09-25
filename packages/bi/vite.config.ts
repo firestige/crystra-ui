@@ -3,6 +3,8 @@ import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 
 export default defineConfig({
+  // Keep the shared library importable by Node tooling and DSH browser hosts.
+  resolve: { conditions: ["module", "import", "default"] },
   build: {
     lib: {
       cssFileName: "styles",

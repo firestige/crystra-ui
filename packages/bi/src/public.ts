@@ -2,6 +2,7 @@ import "./crystra-components.css";
 import "./crystra-theme.css";
 import "./primitives.css";
 import "./shared.css";
+import "./page-header.css";
 
 export {
   Button,
@@ -189,3 +190,26 @@ export {
   type ToggleSwitchProps,
 } from "./components/toggle-switch";
 export { WidgetTooltip } from "./components/widget-tooltip";
+
+export { ChatSplitDivider } from "./components/chat-split";
+export { useChatSplit } from "./components/use-chat-split";
+
+export { Badge } from "./components/badge";
+
+export {
+  WorkbenchSummaryCard,
+  type WorkbenchSummaryCardProps,
+} from "./components/workbench-summary-card";
+
+export { WorkflowMapReadonly } from "./components/workflow-map-readonly";
+export type { WorkflowMapIR } from "./domain/workflow-map-ir";
+
+export * from "./task-workbench/task-workbench";
+export * from "./task-workbench/grilling";
+export * from "./task-workbench/plan";
+export * from "./task-workbench/plan-graph";
+export * from "./task-workbench/execution";
+export * from "./task-workbench/gate";
+export * from "./task-workbench/delivery";
+export * from "./task-workbench/review-resource";
+export * from "./task-layout/index";

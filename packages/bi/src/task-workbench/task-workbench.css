@@ -1,0 +1,75 @@
+.crystra-task-workbench {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+  min-width: 0;
+  padding: 16px 20px 20px;
+  overflow: hidden;
+}
+.crystra-workbench-status {
+  flex: none;
+  margin-bottom: 12px;
+}
+.crystra-workbench-status p {
+  margin: 0;
+}
+.crystra-task-workbench > .crystra-tabs {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+  min-width: 0;
+  gap: 12px;
+}
+.crystra-task-workbench .crystra-tab-list {
+  flex: none;
+}
+.crystra-task-workbench .crystra-tab-panel {
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  container-type: size;
+  flex: 1;
+}
+.crystra-workbench-tab-label {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+.crystra-workbench-accessible-status {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.crystra-workbench-cards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+.crystra-workbench-card {
+  min-width: 0;
+  min-height: min(120px, 100cqh);
+  max-height: 100cqh;
+  overflow: hidden;
+}
+.crystra-workbench-card-wide {
+  grid-column: 1 / -1;
+}
+.crystra-workbench-card .crystra-empty {
+  min-height: 72px;
+}
+.crystra-workbench-cards[data-control-surface="execution"] {
+  grid-template-columns: minmax(0, 1.45fr) minmax(240px, 0.55fr);
+}
+.crystra-workbench-cards[data-control-surface="delivery"] {
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+}

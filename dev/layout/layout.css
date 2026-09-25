@@ -1,0 +1,58 @@
+/* Only placeholder geometry; visual tokens and Shell styling come from the design assets. */
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+[data-section-id="task-layout-region"] {
+  grid-template-columns: minmax(360px, 38fr) minmax(680px, 62fr);
+}
+.layout-placeholder {
+  display: grid;
+  place-items: center;
+  min-height: 0;
+  overflow: auto;
+  color: var(--color-text-muted, #adb2b8);
+}
+.layout-placeholder > span {
+  font: 400 14px/1.5 system-ui;
+  opacity: 0.65;
+}
+
+[data-section-id="task-workspace"] > .layout-placeholder {
+  flex: 1;
+  border-left: 0;
+}
+
+.crystra-page-content > .layout-placeholder,
+.crystra-page-chat > .layout-placeholder,
+.crystra-page-bench > .layout-placeholder {
+  flex: 1;
+}
+.crystra-page-bench > [data-section-id="control-workspace"] {
+  border-left: 0;
+}
+
+@property --crystra-sidebar-width {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 260px;
+}
+[data-section-id="app-shell"] {
+  --crystra-sidebar-width: 260px;
+  grid-template-columns: var(--crystra-sidebar-width) minmax(0, 1fr);
+  transition: --crystra-sidebar-width 340ms cubic-bezier(0.22, 0.68, 0.2, 1);
+}
+[data-section-id="app-shell"][data-sidebar-collapsed="true"] {
+  --crystra-sidebar-width: 64px;
+}
+[data-section-id="task-workspace"] {
+  grid-column: 2;
+  grid-row: 1;
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-section-id="app-shell"] {
+    transition: none;
+  }
+}

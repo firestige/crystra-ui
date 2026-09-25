@@ -1,4 +1,4 @@
-{"schema":"crystra-ui.dependency-inventory@0.1.0","packageLockSha256":"f54e2e37832731e57b74ae409db80c493a01df0cae995ed8031f33a345c5ff5b","dependencyCount":534}
+{"schema":"crystra-ui.dependency-inventory@0.1.0","packageLockSha256":"7a26eb5793f68f04b8f28d3e3f1293ba3a8710908645d9b154d2c3c25f0eb3ea","dependencyCount":538}
 {"path":"node_modules/@adobe/css-tools","version":"4.5.0","license":"MIT","development":true,"optional":false}
 {"path":"node_modules/@antfu/install-pkg","version":"1.1.0","license":"MIT","development":true,"optional":false}
 {"path":"node_modules/@asamuzakjp/css-color","version":"5.1.11","license":"MIT","development":true,"optional":false}
@@ -46,6 +46,7 @@
 {"path":"node_modules/@cyberalien/svg-utils","version":"1.2.19","license":"MIT","development":true,"optional":false}
 {"path":"node_modules/@deepseek-ai/cordis","version":"4.0.2","license":"MIT","development":true,"optional":false}
 {"path":"node_modules/@deepseek-ai/cosmokit","version":"1.8.3","license":"MIT","development":true,"optional":false}
+{"path":"node_modules/@deepseek-ai/dsh-client-store","version":"0.1.5-rc.2","license":"MIT","development":true,"optional":false}
 {"path":"node_modules/@deepseek-ai/dsh-client-ui-primitives","version":"0.1.5-rc.2","license":"MIT","development":true,"optional":false}
 {"path":"node_modules/@emnapi/wasi-threads","version":"1.2.3","license":"MIT","development":true,"optional":false}
 {"path":"node_modules/@eslint-community/eslint-utils","version":"4.10.1","license":"MIT","development":true,"optional":false}
@@ -323,6 +324,7 @@
 {"path":"node_modules/html-void-elements","version":"3.0.0","license":"MIT","development":true,"optional":false}
 {"path":"node_modules/iconv-lite","version":"0.6.3","license":"MIT","development":false,"optional":false}
 {"path":"node_modules/ignore","version":"5.3.2","license":"MIT","development":true,"optional":false}
+{"path":"node_modules/immer","version":"10.1.1","license":"MIT","development":true,"optional":false}
 {"path":"node_modules/import-meta-resolve","version":"4.2.0","license":"MIT","development":true,"optional":false}
 {"path":"node_modules/imurmurhash","version":"0.1.4","license":"MIT","development":true,"optional":false}
 {"path":"node_modules/indent-string","version":"4.0.0","license":"MIT","development":true,"optional":false}
@@ -532,4 +534,6 @@
 {"path":"node_modules/yocto-queue","version":"0.1.0","license":"MIT","development":true,"optional":false}
 {"path":"node_modules/zod","version":"4.4.3","license":"MIT","development":true,"optional":false}
 {"path":"node_modules/zod-validation-error","version":"4.0.2","license":"MIT","development":true,"optional":false}
+{"path":"node_modules/zustand","version":"4.4.7","license":"MIT","development":true,"optional":false}
+{"path":"node_modules/zustand/node_modules/use-sync-external-store","version":"1.2.0","license":"MIT","development":true,"optional":false}
 {"path":"node_modules/zwitch","version":"2.0.4","license":"MIT","development":true,"optional":false}

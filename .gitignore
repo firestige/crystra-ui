@@ -12,3 +12,7 @@ packages/bi/dist-components/
 
 # Generated review builds (sources and reviewed artifacts live in docs)
 packages/bi/dist-*/
+
+# Local development host configuration
+dev/layout/.env.local
+dev/layout/workflow-directories.local.json

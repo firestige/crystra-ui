@@ -1,5 +1,7 @@
+import { useChatSplit } from "./components/use-chat-split";
+import { ChatSplitDivider } from "./components/chat-split";
 /* eslint-disable react-refresh/only-export-components -- Standalone preview entry mounts React roots; components are not imported as HMR boundaries. */
-import { memo, useEffect, useRef, useState, type ReactNode } from "react";
+import { memo, useState, type ReactNode } from "react";
 import { createRoot } from "react-dom/client";
 import { AnalysisObservationStudy } from "./components/analysis-observation-study";
 import { Tabs } from "./components/collection-components";
@@ -289,23 +291,12 @@ const HostInput = memo(function HostInput({ markup }: { markup: string }) {
   );
 });
 function App() {
-  const split = useRef<HTMLDivElement>(null),
-    [available, setAvailable] = useState(1200),
-    [chatWidth, setChatWidth] = useState(380),
-    [resizing, setResizing] = useState(false);
-  const limit = (w: number, total: number) =>
-    Math.min(Math.max(360, total / 2), Math.max(360, w));
-  useEffect(() => {
-    const el = split.current;
-    if (!el) return;
-    const observer = new ResizeObserver(() => {
-      const w = el.clientWidth;
-      setAvailable(w);
-      setChatWidth((old) => limit(old, w));
-    });
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
+  const {
+    ref: splitRef,
+    style: splitStyle,
+    resizing,
+    dividerProps,
+  } = useChatSplit();
   const context = workflowStudioContext(params);
   const tabs = studio
     ? [
@@ -422,61 +413,12 @@ function App() {
       {studio ? (
         <div
           className="wb-studio-layout"
-          ref={split}
+          ref={splitRef}
           data-resizing={resizing}
-          style={{ gridTemplateColumns: `${chatWidth}px 6px minmax(0,1fr)` }}
+          style={splitStyle}
         >
           <HostInput markup={inputMarkup} />
-          <div
-            className="wb-chat-divider"
-            role="separator"
-            aria-label="调整对话栏宽度"
-            aria-orientation="vertical"
-            tabIndex={0}
-            aria-valuemin={360}
-            aria-valuemax={Math.max(360, Math.floor(available / 2))}
-            aria-valuenow={Math.round(chatWidth)}
-            onPointerDown={(e) => {
-              if (e.button !== 0) return;
-              e.preventDefault();
-              e.currentTarget.setPointerCapture(e.pointerId);
-              setResizing(true);
-            }}
-            onPointerMove={(e) => {
-              if (
-                e.currentTarget.hasPointerCapture(e.pointerId) &&
-                split.current
-              )
-                setChatWidth(
-                  limit(
-                    e.clientX - split.current.getBoundingClientRect().left - 3,
-                    available,
-                  ),
-                );
-            }}
-            onPointerUp={(e) => {
-              if (e.currentTarget.hasPointerCapture(e.pointerId))
-                e.currentTarget.releasePointerCapture(e.pointerId);
-              setResizing(false);
-            }}
-            onPointerCancel={() => setResizing(false)}
-            onLostPointerCapture={() => setResizing(false)}
-            onKeyDown={(e) => {
-              if (["ArrowLeft", "ArrowRight", "Home", "End"].includes(e.key)) {
-                e.preventDefault();
-                setChatWidth((old) =>
-                  limit(
-                    e.key === "Home"
-                      ? 360
-                      : e.key === "End"
-                        ? available / 2
-                        : old + (e.key === "ArrowLeft" ? -16 : 16),
-                    available,
-                  ),
-                );
-              }
-            }}
-          />
+          <ChatSplitDivider {...dividerProps} />
           <div className="wb-display">
             <section
               hidden={tab === "resources"}

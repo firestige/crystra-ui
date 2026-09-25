@@ -1,0 +1,23 @@
+.crystra-chat-divider {
+  position: relative;
+  align-self: stretch;
+  cursor: col-resize;
+  touch-action: none;
+  user-select: none;
+  outline-offset: -1px;
+}
+.crystra-chat-divider::after {
+  content: "";
+  position: absolute;
+  inset: 0 2px;
+  background: var(--color-border-default, #ffffff1f);
+}
+.crystra-chat-divider:hover::after,
+.crystra-chat-divider:focus-visible::after,
+[data-resizing="true"] > .crystra-chat-divider::after {
+  background: var(--color-interaction-primary, #679efe);
+}
+[data-resizing="true"] {
+  cursor: col-resize;
+  user-select: none;
+}

@@ -1,0 +1,23 @@
+.crystra-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  box-sizing: border-box;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  border-radius: 999px;
+  background: var(--color-interaction-primary, #679efe);
+  color: var(--color-text-inverse, #101216);
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 18px;
+  font-variant-numeric: tabular-nums;
+}
+.crystra-badge[data-dot="true"] {
+  min-width: 6px;
+  width: 6px;
+  height: 6px;
+  padding: 0;
+}

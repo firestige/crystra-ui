@@ -12,6 +12,7 @@ import "../search-field.css";
 import "../select-dropdown.css";
 import {
   Button,
+  Card,
   IconButton,
   Typography,
   type ComponentSize,
@@ -259,12 +260,12 @@ export function FullBenchViewer({
     wasExpanded.current = expanded;
   }, [expanded]);
   return (
-    <section className="crystra-bench-viewer" data-expanded={expanded}>
-      <header className="crystra-viewer-header">
-        <Typography as="h3" variant="card-title">
-          {title}
-        </Typography>
-        {expanded ? (
+    <Card
+      className="crystra-bench-viewer"
+      data-expanded={expanded}
+      heading={title}
+      actions={
+        expanded ? (
           <Button
             ref={back}
             aria-label={`返回${title}`}
@@ -282,8 +283,9 @@ export function FullBenchViewer({
           >
             展开
           </Button>
-        )}
-      </header>
+        )
+      }
+    >
       <div hidden={expanded} className="crystra-viewer-preview">
         {preview}
       </div>
@@ -296,7 +298,7 @@ export function FullBenchViewer({
           {children}
         </div>
       )}
-    </section>
+    </Card>
   );
 }
 export interface ProgressNoticeProps {

@@ -1,0 +1,76 @@
+.crystra-workbench-summary {
+  container-type: inline-size;
+}
+.crystra-summary-layout {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-width: 0;
+}
+.crystra-summary-icon {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  flex: none;
+  border-radius: 50%;
+  color: var(--recipe-tone, var(--color-text-muted));
+  background: var(--recipe-soft, var(--color-background-inset));
+}
+.crystra-summary-copy {
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.crystra-summary-copy h2,
+.crystra-summary-copy p {
+  margin: 0;
+}
+.crystra-summary-copy p {
+  margin-top: 4px;
+}
+.crystra-summary-context {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 12px;
+  max-width: 55%;
+}
+.crystra-summary-facts {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 0;
+  font-size: 12px;
+}
+.crystra-summary-facts > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+.crystra-summary-facts dt {
+  color: var(--color-text-muted);
+}
+.crystra-summary-facts dd {
+  margin: 0;
+  color: var(--recipe-tone, var(--color-text-primary));
+}
+.crystra-summary-notices,
+.crystra-summary-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+@container (max-width:600px) {
+  .crystra-summary-layout {
+    flex-wrap: wrap;
+  }
+  .crystra-summary-context {
+    max-width: 100%;
+    width: 100%;
+    padding-left: 52px;
+    box-sizing: border-box;
+  }
+}

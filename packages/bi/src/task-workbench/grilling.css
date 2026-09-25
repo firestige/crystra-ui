@@ -1,0 +1,113 @@
+.crystra-grilling {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 0;
+}
+.crystra-grilling p,
+.crystra-grilling h2,
+.crystra-grilling h4 {
+  margin: 0;
+}
+.crystra-grilling-columns {
+  display: grid;
+  flex: 1;
+  grid-template-rows: minmax(0, 1fr);
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.35fr);
+  gap: 12px;
+  min-height: 0;
+}
+.crystra-grilling-card {
+  display: flex;
+  min-width: 0;
+  min-height: 0;
+  max-height: 100%;
+  overflow: hidden;
+}
+.crystra-grilling-card > .crystra-bench-viewer {
+  flex: 1;
+  min-height: 0;
+}
+.crystra-bi[data-crystra-theme="dark"]
+  .crystra-grilling-card
+  .crystra-viewer-preview {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+  scrollbar-width: thin;
+}
+.crystra-grilling [hidden] {
+  display: none !important;
+}
+.crystra-grilling-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.crystra-grilling-row,
+.crystra-grilling-field {
+  border-radius: 8px;
+  padding: 12px;
+  background: var(--color-background-inset, #2c2c2e);
+}
+.crystra-grilling-row,
+.crystra-grilling-field-heading,
+.crystra-grilling-row-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.crystra-grilling-field p {
+  margin-top: 4px;
+  overflow-wrap: anywhere;
+}
+.crystra-grilling-row[data-state="active"] {
+  box-shadow: inset 0 0 0 1px var(--color-interaction-primary, #679efe);
+}
+.crystra-grilling-reason,
+.crystra-grilling-changes {
+  border: 1px solid var(--color-border-default, #ffffff1f);
+  border-radius: 8px;
+  padding: 12px;
+  margin-top: 8px;
+}
+.crystra-grilling-reason {
+  border-color: var(--color-status-warning-border);
+  background: var(--color-status-warning-surface);
+}
+.crystra-grilling-reason p + p {
+  margin-top: 4px;
+}
+.crystra-grilling-change {
+  display: flex;
+  gap: 8px;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-top: 8px;
+}
+.crystra-grilling-change[data-kind="added"] {
+  color: var(--color-status-success-text);
+}
+.crystra-grilling-change[data-kind="removed"] {
+  color: var(--color-status-danger-text);
+}
+.crystra-grilling-change[data-kind="removed"] > .crystra-typography {
+  text-decoration: line-through;
+}
+.crystra-grilling-change[data-kind="conflict"] {
+  color: var(--color-status-warning-text);
+}
+.crystra-grilling[data-expanded] {
+  height: 100%;
+}
+.crystra-grilling[data-expanded] .crystra-grilling-columns {
+  grid-template-columns: minmax(0, 1fr);
+  flex: 1;
+}
+.crystra-grilling[data-expanded] .crystra-card-content {
+  min-height: 0;
+}
