@@ -1,0 +1,10 @@
+:root {
+  --crystra-layout-header-height: 88px;
+}
+.crystra-layout-header {
+  box-sizing: border-box;
+  flex: 0 0 var(--crystra-layout-header-height);
+  height: var(--crystra-layout-header-height);
+  min-height: var(--crystra-layout-header-height);
+  max-height: var(--crystra-layout-header-height);
+}

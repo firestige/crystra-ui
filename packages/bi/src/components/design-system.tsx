@@ -1,3 +1,4 @@
+import "./button-group.css";
 import type {
   ButtonHTMLAttributes,
   ElementType,
@@ -89,6 +90,7 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   tone?: SemanticTone;
   size?: ComponentSize;
   selected?: boolean;
+  raised?: boolean;
   startIcon?: ReactNode;
   endIcon?: ReactNode;
 }
@@ -100,6 +102,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       tone = COMPONENT_DEFAULTS.button.tone,
       size = COMPONENT_DEFAULTS.button.size,
       selected,
+      raised,
       startIcon,
       endIcon,
       children,
@@ -119,6 +122,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         }
         className={["crystra-button", className].filter(Boolean).join(" ")}
         data-appearance={appearance}
+        data-raised={raised || undefined}
         data-size={size}
         data-tone={tone}
       >
@@ -159,14 +163,22 @@ export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(
 
 export function ButtonGroup({
   segmented = false,
+  joined = false,
+  divided = false,
   className,
   ...props
-}: HTMLAttributes<HTMLDivElement> & { segmented?: boolean }) {
+}: HTMLAttributes<HTMLDivElement> & {
+  segmented?: boolean;
+  joined?: boolean;
+  divided?: boolean;
+}) {
   return (
     <div
       className={["crystra-button-group", className].filter(Boolean).join(" ")}
       data-segmented={segmented || undefined}
-      role={segmented ? "group" : props.role}
+      data-joined={joined || undefined}
+      data-divided={divided || undefined}
+      role={segmented || joined ? "group" : props.role}
       {...props}
     />
   );

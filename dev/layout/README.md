@@ -160,3 +160,19 @@ fixtures, simulated execution and standalone React root remain here.
 Crystra-dsh mainline targets DSH 0.1.5-rc.2. The production Session Workbench is
 registered through DSH slots; detailed owner projections are not replaced by demo
 fixtures. See `wsr-dsh/docs/crystra-ui-adoption.md` for the mounting and API boundaries.
+
+## Task Browser calibration
+
+Open `/tasks` on port 3086. The React surface is in
+`packages/bi/src/task-browser/`; its Crystra-dsh adapter is staged in
+`dev/layout/components/crystra-dsh/tasks/task-browser.tsx`. Sidebar and Browser
+subscribe to the same Execution Task resource. Gallery/List selection, search,
+filters, sorting, grouping, incremental Gallery rendering and List pagination
+are controlled by the surface. Task links enter the existing Task Workbench;
+New Task enters `/tasks/new`.
+
+The current owner snapshot only supplies Task identity, title and timestamps.
+Workspace, lifecycle, progress, attention and cost remain unknown when absent;
+unknown active/attention facts do not qualify for those filters. Archive remains
+disabled until an owner write action is connected. This calibration route does
+not deploy or replace the frozen port 3085 host.

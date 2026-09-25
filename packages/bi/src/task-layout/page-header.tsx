@@ -1,3 +1,4 @@
+import { LayoutHeader } from "./layout-header";
 import type { ReactNode } from "react";
 // Structure and SVGs transcribed from the authoritative Task v8 HTML.
 export interface PageHeaderProps {
@@ -13,7 +14,7 @@ export function PageHeader({
   navigation,
 }: PageHeaderProps) {
   return (
-    <header
+    <LayoutHeader
       data-section-id="workspace-header"
       className="crystra-page-header crystra-bi wb-header wb-page-header"
       data-crystra-theme="dark"
@@ -41,10 +42,7 @@ export function PageHeader({
             </svg>
           </span>
           <div className="crystra-page-identity-text">
-            <h1
-              data-type="page-title"
-              className="crystra-page-title"
-            >
+            <h1 data-type="page-title" className="crystra-page-title">
               {title}
             </h1>
             {description && (
@@ -66,6 +64,6 @@ export function PageHeader({
       >
         {context}
       </div>
-    </header>
+    </LayoutHeader>
   );
 }

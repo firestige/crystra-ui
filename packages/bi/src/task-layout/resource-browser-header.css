@@ -1,0 +1,110 @@
+.browser-header {
+  display: grid;
+  grid-template-columns: minmax(150px, 1fr) minmax(240px, 320px) auto auto;
+  align-items: center;
+  padding: 18px 32px;
+  border-bottom: 1px solid var(--color-border-subtle);
+  gap: 16px;
+}
+
+.browser-header [data-header-slot] {
+  min-width: 0;
+}
+
+.browser-header [data-header-slot="actions"] {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.browser-header p {
+  margin-top: 4px;
+  color: var(--color-text-muted);
+}
+
+.browser-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 0;
+}
+
+.browser-toolbar > .browser-select {
+  margin-left: 0;
+}
+
+.browser-search {
+  min-width: 240px;
+  flex: 1;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--shape-control);
+  padding: 8px 12px;
+  color: var(--color-text-muted);
+  background: var(--color-background-card);
+}
+
+.browser-search:focus-within {
+  border-color: var(--color-interaction-primary);
+}
+
+.browser-search input {
+  width: 100%;
+  min-width: 0;
+  background: none;
+  border: 0;
+  outline: none;
+  color: var(--color-text-primary);
+  font-size: 14px;
+}
+
+.browser-header .browser-button {
+  height: 36px;
+}
+
+.browser-header {
+  flex-shrink: 0;
+  padding: 16px 24px;
+  grid-template-columns: minmax(120px, 1fr) minmax(180px, 300px) auto auto;
+}
+
+.browser-header p {
+  font-size: 12px;
+  margin-bottom: 0;
+}
+
+.crystra-bi[data-crystra-theme="dark"] .browser-header .crystra-toggle-switch {
+  height: 36px;
+  min-height: 36px;
+  padding: 0;
+  --switch-height: 36px;
+}
+@media (max-width: 1250px) {
+  .browser-header {
+    grid-template-columns: minmax(90px, 1fr) minmax(120px, 180px) auto auto;
+    gap: 8px;
+    padding-inline: 16px;
+  }
+  .browser-header [data-header-slot="identity"] p {
+    display: none;
+  }
+}
+.browser-header[data-unified-tools] {
+  grid-template-columns: minmax(120px, 1fr) minmax(180px, 300px) auto;
+}
+/* Let search yield space to collapsed tools instead of pushing actions offscreen. */
+.browser-header[data-unified-tools] {
+  grid-template-columns: minmax(90px, 1fr) minmax(0, 300px) max-content;
+}
+.browser-header[data-unified-tools] .browser-search {
+  min-width: 0;
+}
+.browser-header {
+  --crystra-toolbar-control-height: 40px;
+}
+.browser-header .browser-search {
+  height: var(--crystra-toolbar-control-height);
+  padding-block: 0;
+}

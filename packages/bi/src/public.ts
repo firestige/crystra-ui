@@ -213,3 +213,22 @@ export * from "./task-workbench/gate";
 export * from "./task-workbench/delivery";
 export * from "./task-workbench/review-resource";
 export * from "./task-layout/index";
+export {
+  TaskBrowserSurface,
+  type BrowserTask,
+  type TaskBrowserSurfaceProps,
+} from "./task-browser/task-browser";
+
+export {
+  ResourceGalleryCard,
+  ResourceTableRow,
+} from "./components/resource-items";
+export type {
+  ResourceGalleryCardProps,
+  ResourceTableRowProps,
+} from "./components/resource-items";
+export { LayoutHeader } from "./task-layout/layout-header";
+export { ResourceBrowserHeader } from "./task-layout/resource-browser-header";
+
+export { AdaptiveChoice } from "./components/adaptive-choice";
+export type { AdaptiveChoiceProps } from "./components/adaptive-choice";

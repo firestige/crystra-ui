@@ -1,0 +1,21 @@
+.crystra-bi .crystra-action-menu {
+  width: 180px;
+  min-width: 180px;
+  max-height: min(240px, calc(100vh - 16px));
+}
+
+.crystra-bi .crystra-action-menu .crystra-menu-item[aria-disabled="true"] {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.crystra-bi .crystra-action-menu .crystra-menu-item[aria-checked="true"] {
+  background: var(--color-interaction-selected);
+  color: var(--color-interaction-primary);
+}
+
+.crystra-bi .crystra-action-menu svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}

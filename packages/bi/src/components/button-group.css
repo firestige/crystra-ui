@@ -1,0 +1,178 @@
+/* v8 clusters: one shared container and separators, not individual outlines. */
+.crystra-bi[data-crystra-theme="dark"] .crystra-button-group[data-joined] {
+  height: 36px;
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--shape-control);
+  background: var(--color-background-card);
+  gap: 0;
+  padding: 0;
+}
+
+.crystra-bi[data-crystra-theme="dark"]
+  .crystra-button-group[data-joined]
+  > .crystra-button {
+  height: 34px;
+  min-height: 34px;
+  border-radius: 0;
+}
+
+.crystra-bi[data-crystra-theme="dark"]
+  .crystra-button-group[data-joined]
+  > .crystra-button
+  + .crystra-button {
+  border-left: 1px solid var(--color-border-default);
+}
+
+.crystra-bi[data-crystra-theme="dark"]
+  .crystra-button-group[data-joined]
+  > .crystra-button:first-child {
+  border-radius: calc(var(--shape-control) - 1px) 0 0
+    calc(var(--shape-control) - 1px);
+}
+
+.crystra-bi[data-crystra-theme="dark"]
+  .crystra-button-group[data-joined]
+  > .crystra-button:last-child {
+  border-radius: 0 calc(var(--shape-control) - 1px)
+    calc(var(--shape-control) - 1px) 0;
+}
+.crystra-bi[data-crystra-theme="dark"] .crystra-button-group[data-joined] {
+  display: inline-flex;
+  flex-wrap: nowrap;
+  align-items: center;
+}
+.crystra-bi[data-crystra-theme="dark"]
+  .crystra-button-group[data-joined]
+  > .crystra-button {
+  border: 0;
+  box-shadow: none;
+  padding-block: 0;
+  white-space: nowrap;
+}
+.crystra-bi[data-crystra-theme="dark"]
+  .crystra-button-group[data-joined]
+  > .crystra-button
+  + .crystra-button {
+  border-left: 1px solid var(--color-border-default);
+}
+.crystra-bi[data-crystra-theme="dark"]
+  .crystra-button-group[data-joined]
+  > .crystra-button[data-icon-button="true"] {
+  width: 36px;
+  min-width: 36px;
+}
+.crystra-bi[data-crystra-theme="dark"]
+  .crystra-button-group[data-joined]
+  > .crystra-button
+  svg {
+  width: 18px;
+  height: 18px;
+}
+/* View toggles may join a resource toolbar without losing their sliding thumb. */
+.crystra-bi[data-crystra-theme="dark"]
+  .crystra-button-group[data-joined]
+  > .crystra-toggle-switch {
+  --switch-height: 34px;
+  height: 34px;
+  min-height: 34px;
+  padding: 0;
+  border-radius: 0;
+  border-left: 1px solid var(--color-border-default);
+  border-right: 1px solid var(--color-border-default);
+}
+.crystra-bi[data-crystra-theme="dark"]
+  .crystra-button-group[data-joined]
+  > .crystra-toggle-switch
+  .crystra-switch-track {
+  border-radius: 0;
+  box-shadow: none;
+}
+/* Raised semantic actions share the selected thumb's solid surface. */
+.crystra-bi[data-crystra-theme="dark"] .crystra-button[data-raised="true"],
+.crystra-bi[data-crystra-theme="dark"]
+  .crystra-button-group[data-joined]
+  > .crystra-button[data-raised="true"] {
+  box-shadow:
+    inset 0 1px 0 #ffffff50,
+    inset 0 -2px 3px #0004,
+    0 1px 3px #0003;
+}
+.crystra-bi[data-crystra-theme="dark"]
+  .crystra-button[data-raised="true"]:enabled:active {
+  box-shadow: inset 0 2px 4px #0004;
+}
+/* A unified toolbar separates functions with inset Dividers, not boxed groups. */
+.crystra-bi[data-crystra-theme="dark"]
+  .crystra-button-group[data-joined][data-divided] {
+  height: var(--crystra-toolbar-control-height, 40px);
+  border: 0;
+  padding: 3px;
+  gap: 3px;
+  border-radius: var(--shape-control);
+  background: var(--color-background-neutral-action);
+}
+.crystra-bi[data-crystra-theme="dark"]
+  .crystra-button-group[data-joined][data-divided]
+  > .crystra-adaptive-choice {
+  height: 100%;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  box-shadow: none;
+}
+.crystra-bi[data-crystra-theme="dark"]
+  .crystra-button-group[data-joined][data-divided]
+  > .crystra-adaptive-choice
+  > .crystra-button,
+.crystra-bi[data-crystra-theme="dark"]
+  .crystra-button-group[data-joined][data-divided]
+  > .crystra-button {
+  height: 100%;
+  min-height: 0;
+  border: 0;
+  border-radius: 3px;
+}
+.crystra-bi[data-crystra-theme="dark"]
+  .crystra-button-group[data-joined][data-divided]
+  > .crystra-divider {
+  flex: 0 0 1px;
+  width: 1px;
+  height: 20px;
+  min-height: 0;
+  margin: 0 3px;
+  border: 0;
+  background: var(--color-border-strong);
+}
+.crystra-bi[data-crystra-theme="dark"]
+  .crystra-button-group[data-joined][data-divided]
+  > .crystra-adaptive-choice
+  > .crystra-button
+  + .crystra-button {
+  border: 0;
+}
+.crystra-bi[data-crystra-theme="dark"]
+  .crystra-button-group[data-joined][data-divided]
+  > .crystra-divider {
+  align-self: center;
+}
+/* Icon-only controls retain a square hit area inside the inset toolbar. */
+.crystra-bi[data-crystra-theme="dark"]
+  .crystra-button-group[data-joined][data-divided]
+  > .crystra-adaptive-choice
+  > .crystra-button {
+  min-width: calc(var(--crystra-toolbar-control-height, 40px) - 6px);
+}
+.crystra-bi[data-crystra-theme="dark"]
+  .crystra-button-group[data-joined][data-divided]
+  > .crystra-button[data-icon-button="true"] {
+  width: calc(var(--crystra-toolbar-control-height, 40px) - 6px);
+  min-width: calc(var(--crystra-toolbar-control-height, 40px) - 6px);
+  flex-shrink: 0;
+}
+.crystra-bi[data-crystra-theme="dark"]
+  .crystra-button-group[data-joined][data-divided]
+  > .crystra-adaptive-choice[data-compact="true"]
+  > .crystra-button {
+  width: calc(var(--crystra-toolbar-control-height, 40px) - 6px);
+  min-width: calc(var(--crystra-toolbar-control-height, 40px) - 6px);
+}

@@ -1,10 +1,9 @@
-import {ProductPages} from "../../../wsr-dsh/src/client/shell/product-pages";
+import { TaskBrowser } from "./components/crystra-dsh/tasks/task-browser";
+import { ProductPages } from "../../../wsr-dsh/src/client/shell/product-pages";
 import { SettingsDialog } from "./components/crystra-dsh/settings/settings-dialog";
 import { executionRpc } from "./execution-rpc";
 import { useWorkflows } from "./components/crystra-dsh/workflows/use-workflows";
-import {
-  WorkflowsFeedback,
-} from "./components/crystra-dsh/workflows/workflow-views";
+import { WorkflowsFeedback } from "./components/crystra-dsh/workflows/workflow-views";
 import { useState, type MouseEvent } from "react";
 import { Sidebar } from "./components/crystra-dsh/sidebar/sidebar";
 import { navigate, useRoute } from "./useRoute";
@@ -13,9 +12,7 @@ import { sidebarFixtures } from "./fixtures";
 import { defaultSidebarPreferences } from "./components/crystra-dsh/sidebar/model";
 import { projectSidebar } from "../../../wsr-dsh/src/client/navigation/sidebar-model.js";
 import { useTasks } from "./components/crystra-dsh/tasks/use-tasks";
-import {
-  TasksFeedback,
-} from "./components/crystra-dsh/tasks/task-views";
+import { TasksFeedback } from "./components/crystra-dsh/tasks/task-views";
 import "./layout.css";
 
 function followLink(event: MouseEvent<HTMLDivElement>) {
@@ -49,7 +46,16 @@ export function App() {
     { ...sidebarFixtures, tasks: tasks.items, workflows: workflows.items },
     route,
   );
-  const page = <ProductPages route={route} chat={<ChatPlaceholder/>} bench={<BenchPlaceholder/>}/>;
+  const page =
+    route.page === "tasks" ? (
+      <TaskBrowser onNavigate={navigate} />
+    ) : (
+      <ProductPages
+        route={route}
+        chat={<ChatPlaceholder />}
+        bench={<BenchPlaceholder />}
+      />
+    );
   return (
     <div
       data-section-id="app-shell"
