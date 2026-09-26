@@ -232,3 +232,4 @@ export { ResourceBrowserHeader } from "./task-layout/resource-browser-header";
 
 export { AdaptiveChoice } from "./components/adaptive-choice";
 export type { AdaptiveChoiceProps } from "./components/adaptive-choice";
+export { ResourceDialog } from "./components/resource-dialog";

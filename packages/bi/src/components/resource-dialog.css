@@ -1,0 +1,27 @@
+.crystra-resource-dialog {
+  width: min(460px, calc(100vw - 32px));
+  max-height: 85vh;
+  overflow: auto;
+  border: 1px solid var(--color-border-default);
+  border-radius: 12px;
+  background: var(--color-background-floating);
+  color: var(--color-text-primary);
+  padding: 24px;
+}
+.crystra-resource-dialog::backdrop {
+  background: #0008;
+}
+.crystra-resource-dialog h2 {
+  font-size: 18px;
+  margin: 0 0 16px;
+}
+.crystra-resource-dialog-body {
+  display: grid;
+  gap: 12px;
+}
+.crystra-resource-dialog footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 20px;
+}

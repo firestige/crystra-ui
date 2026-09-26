@@ -83,3 +83,14 @@ The accepted monitoring design is the default Library Preview group. `Monitoring
 `node scripts/import-widget-monitoring-preview.ts` captures the accepted local static design into `design/widget-monitoring-preview.json` and generates scoped CSS. Runtime imports only checked-in files. Library Preview is built with `CRYSTRA_PREVIEW_ENTRY=library.html` and exported with the shared exporter.
 
 The four BI gallery pages now use `MonitoringMetricPanel`, `DashboardComposer monitoring`, and `CompareResultFrame monitoring`. See [monitoring integration](widget-monitoring.md) for the complete-value inspector and grid contract.
+
+## Resource interaction reuse
+
+`Menu` and `ActionMenu` share `useMenuBehavior` for positioning, initial focus,
+keyboard navigation, focus return, outside dismissal and anchor-container scrolling.
+Their inline/portal rendering and item contracts remain separate; behavior fixes
+belong in the shared hook. Unrelated input scrolling must not dismiss either menu.
+
+`ResourceDialog` owns only the modal frame, content slot and footer controls.
+Callers compose `TextInput` for text fields and own content-specific preview styles;
+the dialog must not style arbitrary descendant inputs or images.

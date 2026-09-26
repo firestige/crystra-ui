@@ -5,7 +5,7 @@ async function body(request: IncomingMessage): Promise<string> {
   let text = "";
   for await (const chunk of request) {
     text += chunk;
-    if (text.length > 4096) throw new Error("Request too large");
+    if (text.length > 400000) throw new Error("Request too large");
   }
   return text;
 }
@@ -58,7 +58,7 @@ export function taskQueryDevHost(
       });
       server.middlewares.use(async (request, response, next) => {
         const match = request.url?.match(
-          /^\/(crystra-tasks|crystra-workflows)\/(list|changes|settings\/read|settings\/save)$/,
+          /^\/(crystra-tasks|crystra-workflows)\/(list|changes|update|settings\/read|settings\/save)$/,
         );
         if (!match || !gateways[match[1]]) return next();
         const gateway = gateways[match[1]],

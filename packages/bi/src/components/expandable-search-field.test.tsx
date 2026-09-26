@@ -33,3 +33,14 @@ it("does not open when disabled", async () => {
   await user.click(screen.getByRole("button", { name: "Disabled lookup" }));
   expect(screen.getByRole("button")).toHaveAttribute("aria-expanded", "false");
 });
+
+it("makes the collapsed search inert and releases it only while expanded", async () => {
+  const user = userEvent.setup();
+  const view = render(<ExpandableSearchField label="Find tasks" />);
+  const content = view.container.querySelector(".crystra-expandable-search-content");
+  expect(content).toHaveAttribute("inert");
+  await user.click(screen.getByRole("button", { name: "Find tasks" }));
+  expect(content).not.toHaveAttribute("inert");
+  await user.click(screen.getByRole("button", { name: "关闭搜索" }));
+  expect(content).toHaveAttribute("inert");
+});

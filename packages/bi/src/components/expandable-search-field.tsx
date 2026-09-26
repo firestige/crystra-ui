@@ -53,10 +53,13 @@ export function ExpandableSearchField({
   };
   const [query, setQuery] = useState(String(defaultValue));
   const root = useRef<HTMLDivElement>(null);
+  const content = useRef<HTMLDivElement>(null);
   const trigger = useRef<HTMLButtonElement>(null);
   const wasOpen = useRef(false);
   const id = useId();
   useLayoutEffect(() => {
+    // DSH uses React 18, which drops boolean inert JSX attributes.
+    content.current?.toggleAttribute("inert", !open);
     if (open) root.current?.querySelector("input")?.focus();
     else if (wasOpen.current) {
       trigger.current?.focus();
@@ -82,7 +85,7 @@ export function ExpandableSearchField({
       <div
         id={id}
         className="crystra-expandable-search-content"
-        inert={!open}
+        ref={content}
         aria-hidden={!open}
       >
         <SearchField

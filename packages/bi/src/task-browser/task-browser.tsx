@@ -4,7 +4,7 @@ import {
   ResourceGalleryCard,
   ResourceTableRow,
 } from "../components/resource-items";
-import { IconButton, ButtonGroup, Divider } from "../components/design-system";
+import { Button, IconButton, ButtonGroup, Divider } from "../components/design-system";
 import { BrowserMenu, type BrowserMenuItem } from "./browser-menu";
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { Icon } from "../components/icon";
@@ -22,11 +22,15 @@ export interface BrowserTask {
   lastActivityAt: number;
   cost?: number;
   thumbnail?: string;
+  pinnedAt?: number | null;
   progress?: { completed: number; total: number; scope: string };
 }
 export interface TaskBrowserSurfaceProps {
   items: BrowserTask[];
   feedback?: ReactNode;
+  busy?: boolean;
+  archiveView?: boolean;
+  onArchiveViewChange?: (archived: boolean) => void;
   taskHref: (id: string) => string;
   onNewTask: () => void;
   onRename?: (id: string) => void;
@@ -46,6 +50,9 @@ const stamp = (n?: number) =>
 export function TaskBrowserSurface({
   items,
   feedback,
+  busy = false,
+  archiveView = false,
+  onArchiveViewChange,
   taskHref,
   onNewTask,
   onArchive,
@@ -84,12 +91,14 @@ export function TaskBrowserSurface({
               s?.toLocaleLowerCase().includes(query.toLocaleLowerCase()),
             ),
         )
-        .sort((a, b) =>
-          sort === "cost"
-            ? (b.cost ?? -1) - (a.cost ?? -1)
-            : sort === "created"
-              ? (b.createdAt ?? -1) - (a.createdAt ?? -1)
-              : b.lastActivityAt - a.lastActivityAt,
+        .sort(
+          (a, b) =>
+            Number(!!b.pinnedAt) - Number(!!a.pinnedAt) ||
+            (sort === "cost"
+              ? (b.cost ?? -1) - (a.cost ?? -1)
+              : sort === "created"
+                ? (b.createdAt ?? -1) - (a.createdAt ?? -1)
+                : b.lastActivityAt - a.lastActivityAt),
         ),
     [items, query, filter, sort],
   );
@@ -141,6 +150,7 @@ export function TaskBrowserSurface({
   const check = (t: BrowserTask) => (
     <input
       type="checkbox"
+      disabled={busy}
       aria-label={`选择 ${t.title}`}
       checked={selected.includes(t.id)}
       onChange={() => toggle(t.id)}
@@ -171,6 +181,7 @@ export function TaskBrowserSurface({
       size="compact"
       className="browser-item-actions"
       data-ui-owner="components"
+      disabled={busy}
       aria-label={`任务操作：${t.title}`}
       aria-haspopup="menu"
       aria-expanded={menu?.label === `任务操作：${t.title}`}
@@ -194,12 +205,12 @@ export function TaskBrowserSurface({
                     onChoose: onRename ? () => onRename(t.id) : undefined,
                   },
                   {
-                    label: "Pin",
+                    label: t.pinnedAt ? "取消 Pin" : "Pin",
                     icon: <Icon name="pin" />,
                     onChoose: onPin ? () => onPin(t.id) : undefined,
                   },
                   {
-                    label: "归档",
+                    label: archiveView ? "恢复" : "归档",
                     icon: <Icon name="archive" />,
                     onChoose: onArchive ? () => onArchive([t.id]) : undefined,
                   },
@@ -325,9 +336,15 @@ export function TaskBrowserSurface({
                 appearance="solid"
                 raised
                 tone="danger"
-                aria-label="归档所选"
-                title={onArchive ? "归档所选" : "归档接口尚未接通"}
-                disabled={!selected.length || !onArchive}
+                aria-label={archiveView ? "恢复所选" : "归档所选"}
+                title={
+                  onArchive
+                    ? archiveView
+                      ? "恢复所选"
+                      : "归档所选"
+                    : "归档接口尚未接通"
+                }
+                disabled={busy || !selected.length || !onArchive}
                 onClick={() => onArchive?.(selected)}
               >
                 <Icon name="archive" />
@@ -354,6 +371,22 @@ export function TaskBrowserSurface({
         {feedback}
         <div className="browser-results">
           <div className="browser-selection-summary">
+            {onArchiveViewChange && (
+              <Button
+                appearance="ghost"
+                size="compact"
+                type="button"
+                disabled={busy}
+                onClick={() => {
+                  onArchiveViewChange(!archiveView);
+                  resetResults();
+                }}
+              >
+                <Icon name="archive" />
+                {archiveView ? "返回未归档" : "已归档"}
+              </Button>
+            )}
+
             <label>
               <input
                 type="checkbox"
@@ -481,7 +514,14 @@ export function TaskBrowserSurface({
                       subtitle={t.subtitle ?? t.id}
                       href={taskHref(t.id)}
                       selected={selected.includes(t.id)}
-                      selection={check(t)}
+                      selection={
+                        <>
+                          {check(t)}
+                          {t.pinnedAt && (
+                            <Icon name="pin" aria-label="已置顶" />
+                          )}
+                        </>
+                      }
                       thumbnail={
                         t.thumbnail ? (
                           <img src={t.thumbnail} alt="" />

@@ -116,3 +116,22 @@ describe("collection components", () => {
     expect(screen.queryByRole("menu")).not.toBeInTheDocument();
   });
 });
+
+it("shares scroll dismissal with the portalled action menu", async () => {
+  const user = userEvent.setup();
+  const view = render(
+    <div data-testid="menu-scroller">
+      <input aria-label="Unrelated search" />
+      <Menu
+        label="Shared actions"
+        items={[{ id: "one", label: "One", onSelect: vi.fn() }]}
+      />
+    </div>,
+  );
+  await user.click(screen.getByRole("button", { name: "Shared actions" }));
+  fireEvent.scroll(screen.getByRole("textbox", { name: "Unrelated search" }));
+  expect(screen.getByRole("menu")).toBeVisible();
+  fireEvent.scroll(screen.getByTestId("menu-scroller"));
+  expect(screen.queryByRole("menu")).toBeNull();
+  view.unmount();
+});

@@ -1,8 +1,7 @@
+import { useMenuBehavior } from "./menu-behavior";
 import { createPortal } from "react-dom";
 import {
-  useEffect,
   useId,
-  useLayoutEffect,
   useRef,
   useState,
   type HTMLAttributes,
@@ -245,86 +244,16 @@ export function Menu({
   const panel = useRef<HTMLDivElement>(null);
   const initial = useRef<"first" | "last">("first");
   const id = useId();
-  const buttons = () =>
-    Array.from(
-      panel.current?.querySelectorAll<HTMLButtonElement>(
-        '[role="menuitem"]:not(:disabled)',
-      ) ?? [],
-    );
-  const close = (restore = false) => {
-    setOpen(false);
-    if (restore) trigger.current?.focus();
-  };
-  useEffect(() => {
-    if (!open) return;
-    const enabled = Array.from(
-      panel.current?.querySelectorAll<HTMLButtonElement>(
-        '[role="menuitem"]:not(:disabled)',
-      ) ?? [],
-    );
-    (initial.current === "last" ? enabled.at(-1) : enabled[0])?.focus();
-    if (!enabled.length) panel.current?.focus();
-    const outside = (e: PointerEvent) => {
-      if (!root.current?.contains(e.target as Node)) setOpen(false);
-    };
-    document.addEventListener("pointerdown", outside);
-    return () => document.removeEventListener("pointerdown", outside);
-  }, [open]);
-  useLayoutEffect(() => {
-    if (!open || !panel.current || !trigger.current) return;
-    const anchor = trigger.current.getBoundingClientRect();
-    const box = panel.current.getBoundingClientRect();
-    const margin = 8;
-    const below = window.innerHeight - anchor.bottom - margin - 4;
-    const room = Math.max(0, below);
-    panel.current.style.maxHeight = `${room}px`;
-    panel.current.style.left = `${Math.max(margin, Math.min(align === "end" ? anchor.right - box.width : anchor.left, window.innerWidth - box.width - margin))}px`;
-    panel.current.style.top = `${anchor.bottom + 4}px`;
-  }, [open, align]);
-  useEffect(() => {
-    if (!open) return;
-    const dismiss = () => setOpen(false);
-    const scroll = (e: Event) => {
-      if (!panel.current?.contains(e.target as Node)) setOpen(false);
-    };
-    window.addEventListener("resize", dismiss);
-    window.addEventListener("scroll", scroll, true);
-    return () => {
-      window.removeEventListener("resize", dismiss);
-      window.removeEventListener("scroll", scroll, true);
-    };
-  }, [open]);
-  const keydown = (e: KeyboardEvent) => {
-    if (e.key === "Escape") {
-      e.preventDefault();
-      e.stopPropagation();
-      close(true);
-      return;
-    }
-    if (!["ArrowDown", "ArrowUp", "Home", "End"].includes(e.key)) return;
-    e.preventDefault();
-    const enabled = buttons();
-    if (!enabled.length) return;
-    const index = enabled.indexOf(document.activeElement as HTMLButtonElement);
-    const next =
-      e.key === "Home"
-        ? 0
-        : e.key === "End"
-          ? enabled.length - 1
-          : (index + (e.key === "ArrowDown" ? 1 : -1) + enabled.length) %
-            enabled.length;
-    enabled[next]?.focus();
-  };
+  const { close, onKeyDown: keydown } = useMenuBehavior({
+    open,
+    panel,
+    trigger,
+    onClose: () => setOpen(false),
+    align,
+    initial,
+  });
   return (
-    <div
-      ref={root}
-      className="crystra-menu"
-      data-align={align}
-      onBlur={(e) => {
-        if (!e.currentTarget.contains(e.relatedTarget as Node | null))
-          setOpen(false);
-      }}
-    >
+    <div ref={root} className="crystra-menu" data-align={align}>
       <Button
         ref={trigger}
         size={size}

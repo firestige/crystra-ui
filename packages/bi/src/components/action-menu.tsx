@@ -1,5 +1,6 @@
+import { useMenuBehavior } from "./menu-behavior";
 import "./action-menu.css";
-import { useLayoutEffect, useEffect, useRef, type ReactNode } from "react";
+import { useRef, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 export interface ActionMenuItem {
   label: string;
@@ -22,42 +23,15 @@ export function ActionMenu({
   onClose: () => void;
 }) {
   const root = useRef<HTMLDivElement>(null);
-  useLayoutEffect(() => {
-    const el = root.current;
-    if (!el) return;
-    const anchor = trigger.getBoundingClientRect();
-    el.style.left = `${Math.max(8, Math.min(anchor.right - el.offsetWidth, window.innerWidth - el.offsetWidth - 8))}px`;
-    el.style.top = `${Math.max(8, inward ? anchor.bottom - el.offsetHeight : Math.min(anchor.bottom + 4, window.innerHeight - el.offsetHeight - 8))}px`;
-    el.querySelector<HTMLButtonElement>('[role^="menuitem"]')?.focus({
-      preventScroll: true,
-    });
-  }, [trigger, inward]);
-  useEffect(() => {
-    const outside = (e: Event) => {
-      if (
-        !root.current?.contains(e.target as Node) &&
-        !trigger.contains(e.target as Node)
-      )
-        onClose();
-    };
-    const scroll = (e: Event) => {
-      if (!root.current?.contains(e.target as Node)) onClose();
-    };
-    document.addEventListener("pointerdown", outside);
-    document.addEventListener("focusin", outside);
-    window.addEventListener("scroll", scroll, true);
-    window.addEventListener("resize", onClose);
-    return () => {
-      document.removeEventListener("pointerdown", outside);
-      document.removeEventListener("focusin", outside);
-      window.removeEventListener("scroll", scroll, true);
-      window.removeEventListener("resize", onClose);
-    };
-  }, [trigger, onClose]);
-  const close = () => {
-    onClose();
-    trigger.focus({ preventScroll: true });
-  };
+  const anchor = useRef<HTMLElement>(trigger);
+  anchor.current = trigger;
+  const { close, onKeyDown } = useMenuBehavior({
+    open: true,
+    panel: root,
+    trigger: anchor,
+    inward,
+    onClose,
+  });
   return createPortal(
     <div className="crystra-bi" data-crystra-theme="dark">
       <div
@@ -65,36 +39,8 @@ export function ActionMenu({
         className="crystra-menu-panel crystra-action-menu"
         role="menu"
         aria-label={label}
-        onKeyDown={(e) => {
-          if (e.key === "Escape") {
-            e.preventDefault();
-            e.stopPropagation();
-            close();
-            return;
-          }
-          if (e.key === "Tab") {
-            onClose();
-            return;
-          }
-          if (!["ArrowDown", "ArrowUp", "Home", "End"].includes(e.key)) return;
-          e.preventDefault();
-          const buttons = Array.from(
-            root.current!.querySelectorAll<HTMLButtonElement>(
-              '[role^="menuitem"]',
-            ),
-          );
-          const index = buttons.indexOf(
-            document.activeElement as HTMLButtonElement,
-          );
-          buttons[
-            e.key === "Home"
-              ? 0
-              : e.key === "End"
-                ? buttons.length - 1
-                : (index + (e.key === "ArrowDown" ? 1 : -1) + buttons.length) %
-                  buttons.length
-          ]?.focus();
-        }}
+        tabIndex={-1}
+        onKeyDown={onKeyDown}
       >
         {items.map((item) => (
           <button
@@ -107,7 +53,7 @@ export function ActionMenu({
             title={!item.onChoose ? "此操作尚未接通资源接口" : undefined}
             onClick={() => {
               if (item.onChoose) {
-                close();
+                close(true);
                 item.onChoose();
               }
             }}
