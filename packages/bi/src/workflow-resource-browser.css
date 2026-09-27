@@ -390,6 +390,9 @@
   overflow-x: auto;
   border-bottom: 1px solid var(--color-border-subtle);
 }
+.wrb-file-header.wb-page-header {
+  grid-template-columns: minmax(160px, 1fr) max-content max-content;
+}
 .wrb-file-identity {
   min-width: 0;
 }

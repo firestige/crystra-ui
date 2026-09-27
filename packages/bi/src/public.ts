@@ -233,3 +233,24 @@ export { ResourceBrowserHeader } from "./task-layout/resource-browser-header";
 export { AdaptiveChoice } from "./components/adaptive-choice";
 export type { AdaptiveChoiceProps } from "./components/adaptive-choice";
 export { ResourceDialog } from "./components/resource-dialog";
+
+export {
+  WorkflowMapWorkbench,
+  type WorkflowMapWorkbenchProps,
+  type WorkflowLayoutResolver,
+} from "./components/workflow-map-workbench";
+export {
+  WorkflowResourceBrowser,
+  type WorkflowResourceBrowserProps,
+  type WorkflowResourceWorkspace,
+} from "./components/workflow-resource-browser";
+export {
+  WorkflowCrystallization,
+  type WorkflowCrystallizationData,
+} from "./components/workflow-crystallization";
+
+export type { ResourceMutation } from "./components/resource-mutations";
+export {
+  DiscussionTopicBar,
+  type DiscussionTopicBarProps,
+} from "./components/discussion-topic-bar";

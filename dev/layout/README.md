@@ -24,12 +24,43 @@ This is a standalone React SPA preview, not a DSH host integration or production
 - `/tasks`: TaskBrowserPage, full-width Bench placeholder.
 - `/tasks/:taskId`: TaskDetailPage, Chat placeholder + five-surface Task workbench.
 - `/workflows`: WorkflowExplorerPage, full-width Bench placeholder.
-- `/workflows/:definitionId?revision=v3&from_task_id=...`: WorkflowStudioPage, Chat + Bench placeholders; preserves exact revision and source task in URL.
+- `/workflows/:definitionId?revision=v3&from_task_id=...&view=studio|resources|crystallization`: WorkflowStudioPage with the original v8 workflow workbench; preserves exact revision and source task in URL.
 - `/analysis?view=dashboard|traces|reports`: AnalysisAuditPage, full-width Bench placeholder.
 
 `/` retains the initial task preview. `/tasks/new` is the new-task empty state and does not create a Task or Session. Unknown paths show a not-found page. These are local preview routes, not a published DSH routing contract. Browser history, direct links and refresh are supported; session/draft restoration is not implemented.
 
 ## Delivery ownership
+
+### Workflow v8 assembly
+
+`WorkflowV8Assembly.tsx` is the dev host adapter. It composes the existing
+`WorkflowMapWorkbench`, `WorkflowResourceBrowser`, and `WorkflowCrystallization`
+with the shared `WorkflowStudioPage`, Header, Tabs, and draggable Chat split.
+The original `WorkflowMapIR` remains the semantic contract. No replacement drawing
+engine or parallel workbench implementation is introduced.
+
+`index.html` loads `workflow-map-candidate.js` and
+`workflow-resource-workspaces.js` from the authoritative design asset directory
+before the React entry point. These are the layout and resource snapshots used by
+`crystra-workflow-studio-v8.html`. The selected local workflow route is preserved,
+but the displayed graph/resources are explicitly v8 design samples, not that
+local workflow's data. Candidate layouts only cover the bundled samples.
+
+Chat commands, resource editing, draft saving, and publish checks retain the
+original local demo behavior; they do not call an Agent, write workflow-package
+files, or publish real revisions. Markdown rendering reuses the DSH primitive.
+Both workbench sections stay mounted so tab changes preserve resource selection,
+editor state, and the Chat draft. This assembly does not change the 3085 host.
+
+Verify against the running dev server:
+
+```sh
+node dev/layout/tests/workflow-v8-assembly.mjs
+```
+
+The browser check covers graph scope navigation, design/publish dialogs, resource
+Markdown and relation graph, crystallization checks, URL context preservation,
+fixed Header height, and retained Chat/resource state.
 
 All deliverables from this session target production except the explicitly isolated development host. New components are staged under dev by their final owner, for later directory-based relocation:
 
@@ -176,3 +207,47 @@ Workspace, lifecycle, progress, attention and cost remain unknown when absent;
 unknown active/attention facts do not qualify for those filters. Archive remains
 disabled until an owner write action is connected. This calibration route does
 not deploy or replace the frozen port 3085 host.
+
+### Workflow split after visual calibration
+
+- `crystra-ui-core` publicly exports `WorkflowMapWorkbench`,
+  `WorkflowResourceBrowser`, and `WorkflowCrystallization`. They receive IR,
+  resource snapshots, comparison data, render capabilities, and intent callbacks.
+  Canvas selection, zoom, disclosure, tabs, dialogs, and editor drafts remain
+  local visual state. There is no graph authoring/edge creation UI.
+- Crystra-dsh `useWorkflowResourceActions` owns asynchronous resource actions,
+  snapshot replacement after success, and the unsaved unload guard. Its port
+  isolates filesystem/RPC adapters from the visual components.
+- `dev/layout/workflow` owns all preview fixtures, in-memory resource mutations,
+  Chat simulation, localStorage drafts, and validation/publish demonstrations.
+  Those tools enter the map through the `actions` slot; they are not part of the
+  production component. The standalone HTML preview uses `LegacyPreview` as its
+  compatibility adapter.
+- Resource direct editing remains supported. Writes are callbacks; pending writes
+  lock editing, rejection preserves the draft, and success replaces the snapshot.
+  Production persistence and actual Agent/file observation are not connected yet.
+
+The UI app typecheck includes the preview adapter and its one DSH hook so both
+preview entry points are checked. Library declaration/build entry remains
+`src/public.ts` and does not export or bundle preview adapters.
+
+### Workflow header width adaptation
+
+The shared header stays 88px high and all three navigation tabs remain expanded.
+The map header uses a shrinkable identity column and 12px column gaps. Its controlled
+WorkflowMapToolbar observes the allocated context slot (not the device model):
+760px and above shows full commands; 460–759px retains zoom plus grouped menus;
+below 460px uses View, Display and Check icon actions. Buttons are 36px high,
+menus open below the header, and Display keeps path, direction and hierarchy
+choices together. Menu's optional icon-only trigger preserves its accessible label.
+
+Run `node dev/layout/tests/workflow-header-responsive.mjs` against dev, or set
+`CRYSTRA_HEADER_URL` to an authenticated production URL. It checks height,
+scroll overflow, navigation separation, menu bounds and command interactions.
+
+Header ownership convergence: `PageHeader layout="actions"` owns the grid and
+action-slot width. WorkflowMapToolbar observes its own element through the same
+width observer used by AdaptiveChoice, without inspecting ancestor selectors.
+Groups and separators use ButtonGroup and Divider. The optional `status` input
+is display-only; absence means no status label, never an inferred draft state.
+The formal host currently omits status until a contract supplies it.

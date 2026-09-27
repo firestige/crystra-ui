@@ -1,6 +1,5 @@
-import { saveResourceContent } from "./resource-content";
+import { ResourceDialog } from "./resource-dialog";
 import { useEffect, useId, useRef, useState, type ReactNode } from "react";
-import type { WorkflowMapIR } from "../domain/workflow-map-ir";
 import "../dsh-document-theme.css";
 import "../page-header.css";
 import "../workflow-resource-browser.css";
@@ -9,11 +8,11 @@ import { Button, IconButton, Typography } from "./design-system";
 import { Icon, type IconName } from "./icon";
 import {
   resourceCatalog,
-  resourceGroups,
+  resourceGroupDefinitions,
+  type ResourceCatalogEntry,
   type ResourcePresentation,
 } from "./resource-catalog";
 import {
-  applyResourceMutation,
   resourceDependents,
   type ResourceMutation,
 } from "./resource-mutations";
@@ -42,25 +41,33 @@ type RefNode = {
   detail?: string;
 };
 type Edge = { from: string; to: string; label: string };
-type Workspace = {
+export type WorkflowResourceWorkspace = {
   title: string;
   root: string;
   version: string;
   files: FileEntry[];
   nodes: RefNode[];
   edges: Edge[];
+  catalog?: ResourceCatalogEntry[];
 };
-declare global {
-  interface Window {
-    crystraResourceWorkspaces?: Workspace[];
-    crystraRenderResourceMarkdown?: (text: string) => ReactNode;
-  }
-}
 type Draft = { base: string; text: string };
-const retainedDrafts = new Map<
-  string,
-  { selected: string; draft: Draft | null }
->();
+export interface WorkflowResourceBrowserProps {
+  workspace: WorkflowResourceWorkspace | null;
+  initialPath?: string;
+  onQuote: (text: string) => void;
+  renderMarkdown?: (text: string) => ReactNode;
+  onSave: (path: string, base: string, content: string) => Promise<void> | void;
+  onMutation: (
+    mutation: ResourceMutation,
+    name: string,
+    content: string,
+  ) => Promise<{ path: string }> | { path: string };
+  onDirtyChange?: (dirty: boolean) => void;
+  saveNotice?: string;
+  mutationNotice?: string;
+  sourceNotice?: string;
+  managementEnabled?: boolean;
+}
 function FileAction({
   label,
   icon,
@@ -94,12 +101,14 @@ function ResourceGroup({
   initialOpen,
   children,
   onAdd,
+  disabled,
 }: {
   name: string;
   query: string;
   initialOpen: boolean;
   children: ReactNode;
   onAdd: () => void;
+  disabled?: boolean;
 }) {
   const [open, setOpen] = useState(initialOpen),
     id = useId();
@@ -122,7 +131,12 @@ function ResourceGroup({
           />
           <span>{name}</span>
         </button>
-        <FileAction label={"添加" + name} icon="plus" onClick={onAdd} />
+        <FileAction
+          label={"添加" + name}
+          icon="plus"
+          disabled={disabled}
+          onClick={onAdd}
+        />
       </h3>
       <div
         id={id}
@@ -136,23 +150,23 @@ function ResourceGroup({
   );
 }
 export function WorkflowResourceBrowser({
-  workflow,
-}: {
-  workflow: WorkflowMapIR;
-}) {
-  const workspace = window.crystraResourceWorkspaces?.find(
-      (w) => w.title === workflow.title,
-    ),
-    [query, setQuery] = useState(""),
-    [selected, setSelected] = useState(
-      () =>
-        retainedDrafts.get(workflow.title)?.selected ||
-        "roles/implementer.role.md",
-    ),
-    [tab, setTab] = useState("content"),
+  workspace,
+  initialPath = "",
+  onQuote,
+  renderMarkdown,
+  onSave,
+  onMutation,
+  onDirtyChange,
+  saveNotice = "已保存",
+  mutationNotice = "资源已更新",
+  sourceNotice,
+  managementEnabled = true,
+}: WorkflowResourceBrowserProps) {
+  const [query, setQuery] = useState(""),
+    [selected, setSelected] = useState(initialPath);
+  const [tab, setTab] = useState("content"),
     help = useRef<HTMLDialogElement>(null);
   const file = workspace?.files.find((f) => f.path === selected) ||
-    workspace?.files.find((f) => f.path.startsWith("roles/")) ||
     workspace?.files[0] || {
       path: "",
       content: "",
@@ -163,6 +177,7 @@ export function WorkflowResourceBrowser({
     workspace?.files || [],
     workspace?.nodes,
     workspace?.edges,
+    workspace?.catalog,
   );
   const resources = catalog.filter((r) =>
     [r.name, r.purpose, ...r.files.map((f) => f.path)]
@@ -173,9 +188,7 @@ export function WorkflowResourceBrowser({
   const resource = catalog.find((r) =>
     r.files.some((f) => f.path === file?.path),
   );
-  const [draft, setDraft] = useState<Draft | null>(
-      () => retainedDrafts.get(workflow.title)?.draft || null,
-    ),
+  const [draft, setDraft] = useState<Draft | null>(null),
     [notice, setNotice] = useState(""),
     [conflict, setConflict] = useState(false),
     [editorSession, setEditorSession] = useState(0);
@@ -193,49 +206,26 @@ export function WorkflowResourceBrowser({
     [resourceName, setResourceName] = useState(""),
     [newContent, setNewContent] = useState(""),
     [mutationError, setMutationError] = useState("");
-  const management = useRef<HTMLDialogElement>(null);
-  useEffect(() => {
-    if (mutation) management.current?.showModal();
-  }, [mutation]);
+
+  const [busy, setBusy] = useState(false);
+  const writing = useRef(false);
   const baseline = useRef("");
   const editorActions = useRef<ResourceEditorActions>(null);
   const pending = useRef<(() => void) | null>(null),
     unsaved = useRef<HTMLDialogElement>(null),
     dirty = !!draft && draft.text !== draft.base;
   useEffect(() => {
-    retainedDrafts.set(workflow.title, { selected, draft });
-  }, [workflow.title, selected, draft]);
-  useEffect(() => {
-    const guard = (e: BeforeUnloadEvent) => {
-      if (
-        [...retainedDrafts.values()].some(
-          (v) => v.draft && v.draft.text !== v.draft.base,
-        )
-      ) {
-        e.preventDefault();
-        e.returnValue = "";
-      }
-    };
-    window.addEventListener("beforeunload", guard);
-    return () => window.removeEventListener("beforeunload", guard);
-  }, []);
-  const discuss = () => {
-    const input = document.querySelector<HTMLTextAreaElement>(
-      '[data-host-owned="dsh-input"] textarea',
+    onDirtyChange?.(dirty);
+    return () => onDirtyChange?.(false);
+  }, [dirty, onDirtyChange]);
+  const discuss = () =>
+    onQuote(
+      "请查看资源「" + (resource?.name || file.path.split("/").at(-1)) + "」，",
     );
-    if (input && file) {
-      input.value +=
-        (input.value ? "\n\n" : "") +
-        "请查看资源「" +
-        (resource?.name || file.path.split("/").at(-1)) +
-        "」，";
-      input.dispatchEvent(new Event("input", { bubbles: true }));
-      input.focus();
-    }
-  };
   if (!workspace)
     return <div className="wrb-empty">当前工作流尚未关联资源包。</div>;
-  const save = () => {
+  const save = async () => {
+    if (writing.current) return false;
     if (!draft || !dirty) return true;
     if (file.truncated) {
       setNotice("内容不完整，不能保存截断文件。");
@@ -249,20 +239,28 @@ export function WorkflowResourceBrowser({
       return false;
     }
     try {
-      saveResourceContent(workspace, file.path, draft.base, draft.text);
+      writing.current = true;
+      setBusy(true);
+      await onSave(file.path, draft.base, draft.text);
     } catch {
       setConflict(true);
       setNotice(
         "文件已被其他来源修改，当前草稿已保留；请查看最新内容后重新调整。",
       );
       return false;
+    } finally {
+      writing.current = false;
+      setBusy(false);
     }
-    setDraft({ base: draft.text, text: draft.text });
+    setDraft((current) =>
+      current ? { base: draft.text, text: current.text } : current,
+    );
     setConflict(false);
-    setNotice("已保存到页面样本 · 未写入磁盘");
+    setNotice(saveNotice);
     return true;
   };
   const selectFile = (path: string) => {
+    if (writing.current) return;
     if (path === file.path) return;
     const change = () => {
       setSelected(path);
@@ -277,6 +275,7 @@ export function WorkflowResourceBrowser({
     } else change();
   };
   const manage = (next: ResourceMutation) => {
+    if (writing.current) return;
     const start = () => {
       setDraft(null);
       setConflict(false);
@@ -291,15 +290,12 @@ export function WorkflowResourceBrowser({
       unsaved.current?.showModal();
     } else start();
   };
-  const commitMutation = () => {
-    if (!mutation) return;
+  const commitMutation = async () => {
+    if (!mutation || writing.current) return;
+    writing.current = true;
+    setBusy(true);
     try {
-      const event = applyResourceMutation(
-        workspace,
-        mutation,
-        resourceName,
-        newContent,
-      );
+      const event = await onMutation(mutation, resourceName, newContent);
       setResourceRevision((v) => v + 1);
       if (mutation.kind === "add") {
         setSelected(event.path);
@@ -309,20 +305,24 @@ export function WorkflowResourceBrowser({
         mutation.resource?.files.some((f) => f.path === file.path)
       ) {
         setSelected(
-          resourceCatalog(workspace.files, workspace.nodes, workspace.edges)[0]
-            ?.path || "",
+          resourceCatalog(
+            workspace.files,
+            workspace.nodes,
+            workspace.edges,
+            workspace.catalog,
+          )[0]?.path || "",
         );
         setQuery("");
       }
       setDraft(null);
       setEditingOpen(false);
-      setNotice(
-        "资源变更已更新页面样本；已生成 Agent 通知事件，尚未连接运行时。",
-      );
+      setNotice(mutationNotice);
       setMutation(null);
-      management.current?.close();
     } catch (e) {
       setMutationError((e as Error).message);
+    } finally {
+      writing.current = false;
+      setBusy(false);
     }
   };
   const changeTab = (next: string) => setTab(next);
@@ -335,7 +335,7 @@ export function WorkflowResourceBrowser({
   const text = draft?.text ?? file.content;
   const markdown = /\.(md|markdown)$/i.test(file.path),
     image = /\.(png|jpe?g|gif|webp|svg|avif|bmp)$/i.test(file.path),
-    canEdit = !image && !file.truncated;
+    canEdit = !image && !file.truncated && !busy;
   const effectiveMode = image
       ? "preview"
       : markdown
@@ -375,50 +375,54 @@ export function WorkflowResourceBrowser({
           onChange={(e) => setQuery(e.target.value)}
         />
         <nav aria-label="工作流资源列表">
-          {resourceGroups.map((group) => {
-            const entries = resources.filter((r) => r.group === group);
-            return entries.length || !query.trim() ? (
-              <ResourceGroup
-                key={group}
-                name={group}
-                query={query}
-                initialOpen={resource?.group === group}
-                onAdd={() => manage({ kind: "add", group })}
-              >
-                <ul className="wrb-tree">
-                  {entries.map((r) => (
-                    <li
-                      key={r.path}
-                      className="wrb-resource-item"
-                      data-selected={resource?.path === r.path}
-                    >
-                      <button
-                        className="wrb-file-row"
-                        aria-label={"打开文件 " + r.path}
-                        aria-current={
-                          resource?.path === r.path ? "true" : undefined
-                        }
-                        onClick={() => selectFile(r.path)}
+          {resourceGroupDefinitions.map(
+            ({ id: resourceKind, label: group }) => {
+              const entries = resources.filter((r) => r.group === group);
+              return entries.length || !query.trim() ? (
+                <ResourceGroup
+                  key={group}
+                  name={group}
+                  query={query}
+                  initialOpen={resource?.group === group}
+                  disabled={!managementEnabled}
+                  onAdd={() => manage({ kind: "add", group, resourceKind })}
+                >
+                  <ul className="wrb-tree">
+                    {entries.map((r) => (
+                      <li
+                        key={r.path}
+                        className="wrb-resource-item"
+                        data-selected={resource?.path === r.path}
                       >
-                        <span>{r.name}</span>
-                      </button>
-                      <FileAction
-                        label={"删除" + r.name}
-                        icon="trash"
-                        onClick={() =>
-                          manage({
-                            kind: "delete",
-                            group: r.group,
-                            resource: r,
-                          })
-                        }
-                      />
-                    </li>
-                  ))}
-                </ul>
-              </ResourceGroup>
-            ) : null;
-          })}
+                        <button
+                          className="wrb-file-row"
+                          aria-label={"打开文件 " + r.path}
+                          aria-current={
+                            resource?.path === r.path ? "true" : undefined
+                          }
+                          onClick={() => selectFile(r.path)}
+                        >
+                          <span>{r.name}</span>
+                        </button>
+                        <FileAction
+                          disabled={!managementEnabled}
+                          label={"删除" + r.name}
+                          icon="trash"
+                          onClick={() =>
+                            manage({
+                              kind: "delete",
+                              group: r.group,
+                              resource: r,
+                            })
+                          }
+                        />
+                      </li>
+                    ))}
+                  </ul>
+                </ResourceGroup>
+              ) : null;
+            },
+          )}
           {!resources.length && <p className="wrb-empty">没有匹配的资源</p>}
         </nav>
       </aside>
@@ -466,6 +470,7 @@ export function WorkflowResourceBrowser({
                   aria-label="资源名称"
                 >
                   <FileAction
+                    disabled={!managementEnabled}
                     label="重命名资源"
                     icon="pencil"
                     onClick={() =>
@@ -626,7 +631,9 @@ export function WorkflowResourceBrowser({
                       text,
                     }))
                   }
-                  onSave={() => save()}
+                  onSave={() => {
+                    void save();
+                  }}
                 />
               </section>
             )}
@@ -664,9 +671,7 @@ export function WorkflowResourceBrowser({
                   )
                 ) : (
                   <div data-document-markdown>
-                    {window.crystraRenderResourceMarkdown?.(text) ?? (
-                      <pre>{text}</pre>
-                    )}
+                    {renderMarkdown?.(text) ?? <pre>{text}</pre>}
                   </div>
                 )}
               </section>
@@ -703,109 +708,92 @@ export function WorkflowResourceBrowser({
           )}
         </div>
       </main>
-      <dialog
-        ref={management}
-        className="wrb-help wrb-management"
-        aria-label="管理资源"
-        onCancel={() => setMutation(null)}
-      >
-        {mutation && (
-          <>
-            <Typography as="h2" variant="section-title">
-              {mutation.kind === "add"
-                ? "添加" + mutation.group
-                : mutation.kind === "rename"
-                  ? "重命名资源"
-                  : "删除资源"}
-            </Typography>
-            {mutation.kind === "delete" ? (
-              <>
-                <p>
-                  删除「{mutation.resource?.name}」
-                  {mutation.resource && mutation.resource.files.length > 1
-                    ? "及其全部包内文件"
-                    : ""}
-                  ？
-                </p>
-                {mutation.resource &&
-                resourceDependents(workspace, mutation.resource).refs.length >
-                  0 ? (
-                  <div role="alert">
-                    <p>
-                      存在引用，暂不能删除。请先在对应活动中解除或替换绑定。
-                    </p>
-                    <ul>
-                      {resourceDependents(
-                        workspace,
-                        mutation.resource,
-                      ).refs.map((e, i) => (
+      {mutation && (
+        <ResourceDialog
+          title={
+            mutation.kind === "add"
+              ? "添加" + mutation.group
+              : mutation.kind === "rename"
+                ? "重命名资源"
+                : "删除资源"
+          }
+          className="wrb-help wrb-management"
+          busy={busy}
+          submitDisabled={
+            mutation.kind === "delete"
+              ? !!mutation.resource &&
+                resourceDependents(workspace, mutation.resource).refs.length > 0
+              : !resourceName.trim()
+          }
+          submitLabel={
+            mutation.kind === "delete"
+              ? "确认删除"
+              : mutation.kind === "add"
+                ? "创建资源"
+                : "保存名称"
+          }
+          onCancel={() => setMutation(null)}
+          onSubmit={() => void commitMutation()}
+        >
+          {mutation.kind === "delete" ? (
+            <>
+              <p>
+                删除「{mutation.resource?.name}」
+                {mutation.resource && mutation.resource.files.length > 1
+                  ? "及其全部包内文件"
+                  : ""}
+                ？
+              </p>
+              {mutation.resource &&
+              resourceDependents(workspace, mutation.resource).refs.length >
+                0 ? (
+                <div role="alert">
+                  <p>存在引用，暂不能删除。请先在对应活动中解除或替换绑定。</p>
+                  <ul>
+                    {resourceDependents(workspace, mutation.resource).refs.map(
+                      (e, i) => (
                         <li key={i}>
                           {workspace.nodes.find((n) => n.id === e.from)
                             ?.label || e.from}{" "}
                           · {e.label}
                         </li>
-                      ))}
-                    </ul>
-                  </div>
-                ) : (
-                  <p>当前声明索引未发现外部引用。</p>
-                )}
-              </>
-            ) : (
-              <label>
-                资源名称
-                <input
-                  aria-label="资源名称"
-                  value={resourceName}
-                  onChange={(e) => setResourceName(e.target.value)}
-                />
-              </label>
-            )}
-            {mutation.kind === "add" && (
-              <label>
-                初始内容
-                <textarea
-                  aria-label="初始内容"
-                  rows={7}
-                  value={newContent}
-                  onChange={(e) => setNewContent(e.target.value)}
-                />
-              </label>
-            )}
-            {mutation.kind === "rename" && (
-              <p>修改显示名称，保留资源标识、文件路径和已有引用。</p>
-            )}
-            {mutationError && <p role="alert">{mutationError}</p>}
-            <div className="wrb-dialog-actions">
-              <Button
-                appearance="ghost"
-                onClick={() => {
-                  setMutation(null);
-                  management.current?.close();
-                }}
-              >
-                取消
-              </Button>
-              <Button
-                disabled={
-                  mutation.kind === "delete"
-                    ? !!mutation.resource &&
-                      resourceDependents(workspace, mutation.resource).refs
-                        .length > 0
-                    : !resourceName.trim()
-                }
-                onClick={commitMutation}
-              >
-                {mutation.kind === "delete"
-                  ? "确认删除"
-                  : mutation.kind === "add"
-                    ? "创建资源"
-                    : "保存名称"}
-              </Button>
-            </div>
-          </>
-        )}
-      </dialog>
+                      ),
+                    )}
+                  </ul>
+                </div>
+              ) : (
+                <p>当前声明索引未发现外部引用。</p>
+              )}
+            </>
+          ) : (
+            <label>
+              资源名称
+              <input
+                aria-label="资源名称"
+                disabled={busy}
+                value={resourceName}
+                onChange={(e) => setResourceName(e.target.value)}
+              />
+            </label>
+          )}
+          {mutation.kind === "add" && (
+            <label>
+              初始内容
+              <textarea
+                aria-label="初始内容"
+                disabled={busy}
+                rows={7}
+                value={newContent}
+                onChange={(e) => setNewContent(e.target.value)}
+              />
+            </label>
+          )}
+          {mutation.kind === "rename" && (
+            <p>修改显示名称，保留资源标识、文件路径和已有引用。</p>
+          )}
+          {mutationError && <p role="alert">{mutationError}</p>}
+        </ResourceDialog>
+      )}
       <dialog
         ref={unsaved}
         className="wrb-help"
@@ -836,8 +824,8 @@ export function WorkflowResourceBrowser({
             放弃修改
           </Button>
           <Button
-            onClick={() => {
-              if (save()) {
+            onClick={async () => {
+              if (await save()) {
                 pending.current?.();
                 pending.current = null;
                 unsaved.current?.close();
@@ -858,11 +846,7 @@ export function WorkflowResourceBrowser({
         <p>
           “可用执行配置”表示定义允许使用，不代表某次运行实际采用。“随能力包提供”表示目录归属，不代表该文件被单独执行。调用边表示配置允许的调用关系，引用边表示静态资源依赖；均不是运行记录。
         </p>
-        <p>
-          当前预览使用生成时的文件快照。编辑保存只更新页面样本，不写入磁盘；刷新将恢复快照。尚未连接
-          Agent
-          下载、真实文件保存与实时刷新。流程图是简化样本，此处展示静态声明的活动资源关系。
-        </p>
+        {sourceNotice && <p>{sourceNotice}</p>}
         <Button onClick={() => help.current?.close()}>知道了</Button>
       </dialog>
     </section>

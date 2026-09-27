@@ -15,7 +15,16 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "paths": {
+      "crystra-ui-core": ["./src/public.ts"]
+    }
   },
-  "include": ["src", "preview-host", "vite.config.ts"]
+  "include": [
+    "src",
+    "preview-host",
+    "vite.config.ts",
+    "../../dev/layout/workflow",
+    "../../../wsr-dsh/src/client/workflows/use-workflow-resource-actions.ts"
+  ]
 }

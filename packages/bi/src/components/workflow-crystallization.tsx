@@ -1,6 +1,4 @@
 import { useRef, useState } from "react";
-import fixtures from "../domain/workflow-crystallization-ir.json";
-import generated from "../domain/workflow-crystallization-layouts.json";
 import type { MapLayout } from "../domain/workflow-map-engine";
 import type { WorkflowMapIR } from "../domain/workflow-map-ir";
 import "../workflow-crystallization.css";
@@ -8,50 +6,44 @@ import { Button, Card, Chip, IconButton, Typography } from "./design-system";
 import { Icon } from "./icon";
 import { ToggleSwitch } from "./toggle-switch";
 import { WidgetTooltip } from "./widget-tooltip";
-const { before, after } = fixtures as {
+export interface WorkflowCrystallizationData {
   before: WorkflowMapIR;
   after: WorkflowMapIR;
-};
-const details: Record<
-  string,
-  { change: string; body: string; input: string; output: string }
-> = {
-  extract: {
-    change: "新增 · 确定性处理",
-    body: "将字段提取、类型检查与缺失字段识别交给脚本。脚本不解释异常，也不作后续业务判断。",
-    input: "原始报告、格式定义",
-    output: "校验后的字段、缺口或不支持的格式",
-  },
-  valid: {
-    change: "新增 · 适用性判断",
-    body: "输入满足脚本约定时继续；不支持的格式和缺失材料转交 Agent，不把提取失败当作空结果。",
-    input: "提取结果与校验状态",
-    output: "继续判断 / 请求补齐",
-  },
-  review: {
-    change: "调整 · 保留 Agent 判断",
-    body: "保留异常解释、风险判断与后续行动选择。缩小 Agent 需要阅读和整理的内容，不删除判断职责。",
-    input: "结构化字段或人工补齐材料",
-    output: "异常解释、下一步建议",
-  },
-  repair: {
-    change: "新增 · 恢复路径",
-    body: "遇到未支持的格式，由 Agent 解释报告并补齐判断材料。此路径保留模型成本，不计为已消除的调用。",
-    input: "原始报告、失败原因",
-    output: "可用于判断的材料",
-  },
-  render: {
-    change: "新增 · 结果成形",
-    body: "通过模板排版已确认的判断与数据。模板只负责表达，不能补写尚未作出的结论。",
-    input: "确认后的判断与字段",
-    output: "结构化复核结果",
-  },
-};
+  generated: Record<
+    "before" | "after",
+    { ir: WorkflowMapIR; layout: MapLayout }
+  >;
+  details: Record<
+    string,
+    { change: string; body: string; input: string; output: string }
+  >;
+  context: string;
+  title: string;
+  status: string;
+  notice: string;
+  benefitsNotice: string;
+  summaries: Record<"before" | "after", string>;
+  changes: Record<string, "new" | "adjusted" | "retained">;
+  metrics: {
+    title: string;
+    subtitle: string;
+    rows: [string, string][];
+    description: string;
+    footnote?: string;
+    action?: string;
+    quote?: string;
+  }[];
+  checks: string[];
+  continuePrompt: string;
+}
 export function WorkflowCrystallization({
+  data,
   quote,
 }: {
+  data: WorkflowCrystallizationData;
   quote: (text: string) => void;
 }) {
+  const { before, after, generated, details } = data;
   const [view, setView] = useState<"before" | "after">("after"),
     [selected, setSelected] = useState<string | null>(null),
     [benefits, setBenefits] = useState(true);
@@ -72,14 +64,14 @@ export function WorkflowCrystallization({
       <header className="crystal-header">
         <div>
           <Typography variant="meta" tone="muted">
-            复核与交付 / 报告处理
+            {data.context}
           </Typography>
           <Typography as="h2" variant="section-title">
-            拆出确定性处理，保留异常判断
+            {data.title}
           </Typography>
         </div>
         <div className="crystal-actions">
-          <Chip>候选方案</Chip>
+          <Chip>{data.status}</Chip>
           <Button
             appearance="ghost"
             onClick={() => dialog.current?.showModal()}
@@ -115,9 +107,7 @@ export function WorkflowCrystallization({
           </Typography>
         </div>
         <Typography variant="meta" tone="muted">
-          {view === "before"
-            ? "当前职责由 Agent 整体承担"
-            : "新增脚本与模板 · 保留判断 · 补充恢复路径"}
+          {data.summaries[view]}
         </Typography>
         <WidgetTooltip text="查看样本与验证边界" focusable={false}>
           <IconButton
@@ -144,7 +134,7 @@ export function WorkflowCrystallization({
             保留
           </span>
           <Typography variant="meta" tone="muted">
-            基于设计样本 · 未修改当前工作流
+            {data.notice}
           </Typography>
         </div>
         {layout ? (
@@ -206,9 +196,7 @@ export function WorkflowCrystallization({
                   data-change={
                     view === "before" || terminal
                       ? "retained"
-                      : n.id === "review"
-                        ? "adjusted"
-                        : "new"
+                      : data.changes[n.id] || "retained"
                   }
                   data-selected={selected === n.id}
                   onClick={() => !terminal && setSelected(n.id)}
@@ -292,9 +280,7 @@ export function WorkflowCrystallization({
                 after.nodes.find((n) => n.id === selected)?.title}
             </Typography>
             <Typography as="p" variant="description" tone="secondary">
-              {view === "before" && selected === "review"
-                ? "当前 Agent 同时负责读取、提取、解释和输出；候选将确定性部分拆出，保留判断。"
-                : detail.body}
+              {detail.body}
             </Typography>
             <Typography as="p" variant="meta">
               输入：{detail.input}
@@ -332,78 +318,44 @@ export function WorkflowCrystallization({
             收益与验证
           </Button>
           <Typography variant="meta" tone="muted">
-            演示数据 · 基线版本 → 候选版本
+            {data.benefitsNotice}
           </Typography>
         </div>
         {benefits && (
           <div className="crystal-metrics">
-            <Card heading="历史依据">
-              <Typography variant="meta" tone="muted">
-                基线样本 · 120 个 Delivery
-              </Typography>
-              <div className="crystal-data-row">
-                <Typography variant="description">
-                  拟替代部分的模型费用占比
+            {data.metrics.map((metric) => (
+              <Card key={metric.title} heading={metric.title}>
+                <Typography variant="meta" tone="muted">
+                  {metric.subtitle}
                 </Typography>
-                <Typography variant="item-title">38%</Typography>
-              </div>
-              <div className="crystal-data-row">
-                <Typography variant="description">关键路径时间占比</Typography>
-                <Typography variant="item-title">24%</Typography>
-              </div>
-              <Typography as="p" variant="meta" tone="secondary">
-                重复处理集中在报告提取与排版。
-              </Typography>
-              <Button
-                appearance="ghost"
-                onClick={() =>
-                  quote(
-                    "请解释报告提取与排版的历史占用，列出样本范围、覆盖率与重复模式。",
-                  )
-                }
-              >
-                在 Chat 中查看依据
-              </Button>
-            </Card>
-            <Card heading="收益预测">
-              <Typography variant="meta" tone="muted">
-                预测展示样本 · 非实测结果
-              </Typography>
-              <div className="crystal-data-row">
-                <Typography variant="description">单次运行费用</Typography>
-                <Typography variant="item-title">↓ 18–26%</Typography>
-              </div>
-              <div className="crystal-data-row">
-                <Typography variant="description">端到端延迟</Typography>
-                <Typography variant="item-title">↓ 8–14%</Typography>
-              </div>
-              <Typography as="p" variant="meta" tone="secondary">
-                考虑适用比例、保留判断、脚本开销与恢复路径。
-              </Typography>
-              <Button
-                appearance="ghost"
-                onClick={() => dialog.current?.showModal()}
-              >
-                查看预测假设
-              </Button>
-            </Card>
-            <Card heading="实测对比">
-              <Typography variant="meta" tone="muted">
-                候选版本尚无运行数据
-              </Typography>
-              <div className="crystal-data-row">
-                <Typography variant="description">
-                  费用 / Token / 延迟
+                {metric.rows.map(([label, value]) => (
+                  <div key={label} className="crystal-data-row">
+                    <Typography variant="description">{label}</Typography>
+                    <Typography variant="item-title">{value}</Typography>
+                  </div>
+                ))}
+                <Typography as="p" variant="meta" tone="secondary">
+                  {metric.description}
                 </Typography>
-                <Typography variant="item-title">—</Typography>
-              </div>
-              <Typography as="p" variant="description" tone="secondary">
-                形成新版本并积累运行数据后，用 Evaluation 的正常指标与基线比较。
-              </Typography>
-              <Typography variant="meta" tone="muted">
-                保留原预测，后续对照实测偏差
-              </Typography>
-            </Card>
+                {metric.footnote && (
+                  <Typography variant="meta" tone="muted">
+                    {metric.footnote}
+                  </Typography>
+                )}
+                {metric.action && (
+                  <Button
+                    appearance="ghost"
+                    onClick={() =>
+                      metric.quote
+                        ? quote(metric.quote)
+                        : dialog.current?.showModal()
+                    }
+                  >
+                    {metric.action}
+                  </Button>
+                )}
+              </Card>
+            ))}
           </div>
         )}
       </section>
@@ -418,28 +370,16 @@ export function WorkflowCrystallization({
             <Icon name="x" />
           </IconButton>
         </div>
-        <Typography as="p" variant="description">
-          这是用于评审布局与交互的拆分方案，不是对当前工作流的真实分析结论。
-        </Typography>
-        <Typography as="p" variant="description" tone="secondary">
-          下方120个
-          Delivery、38%、24%和预测区间均为静态设计数据，不来自真实观测，也不是算法计算结果。正式预测需保留样本、费用来源、关键路径、适用比例、恢复频率、脚本开销和算法版本；费用占比不能直接当作节省比例。
-        </Typography>
-        <ul>
-          <li>待生成并验证 report-extract 脚本。</li>
-          <li>待绑定真实活动、输入输出接口与模板。</li>
-          <li>待选择真实历史 Delivery，并验证正常和恢复路径。</li>
-        </ul>
-        <Typography as="p" variant="description" tone="secondary">
-          检查完成后才能应用到工作流草稿；发布仍需通过版本门禁。当前不会写入包文件。
-        </Typography>
+        {data.checks.map((check) => (
+          <Typography key={check} as="p" variant="description" tone="secondary">
+            {check}
+          </Typography>
+        ))}
         <Button
           appearance="ghost"
           onClick={() => {
             dialog.current?.close();
-            quote(
-              "请继续完善报告处理结晶方案，先确认脚本接口、历史依据与版本对比范围。",
-            );
+            quote(data.continuePrompt);
           }}
         >
           在 Chat 中继续完善

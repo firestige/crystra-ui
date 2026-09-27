@@ -64,6 +64,43 @@
 }
 
 /* Page frames ship their own geometry; a host need not load Tailwind utilities. */
-.crystra-page-identity { display: flex; align-items: center; gap: 16px; min-width: 0; }
-.crystra-page-identity-text { min-width: 0; }
-.crystra-page-title { margin: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 24px; line-height: 32px; font-weight: 600; letter-spacing: -0.025em; }
+.crystra-page-identity {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-width: 0;
+}
+.crystra-page-identity-text {
+  min-width: 0;
+}
+.crystra-page-title {
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 24px;
+  line-height: 32px;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+}
+
+/* Header commands stay within their grid allocation; menus open below the shell. */
+.crystra-page-header[data-header-layout="actions"] {
+  grid-template-columns: minmax(150px, min(22%, 268px)) auto minmax(0, 1fr);
+  column-gap: 12px;
+  padding-inline: clamp(16px, 2vw, 32px);
+}
+.crystra-page-header[data-header-layout="actions"]
+  > [data-header-slot="context"] {
+  width: 100%;
+  max-width: 100%;
+  overflow: visible;
+  flex-wrap: nowrap;
+}
+
+.crystra-page-header[data-header-layout="actions"]
+  [data-header-slot="context"]
+  > div {
+  width: 100%;
+  min-width: 0;
+}

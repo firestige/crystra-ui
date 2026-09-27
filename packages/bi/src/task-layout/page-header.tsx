@@ -3,12 +3,14 @@ import type { ReactNode } from "react";
 // Structure and SVGs transcribed from the authoritative Task v8 HTML.
 export interface PageHeaderProps {
   title: string;
+  layout?: "standard" | "actions";
   description?: string;
   context?: ReactNode;
   navigation?: ReactNode;
 }
 export function PageHeader({
   title,
+  layout = "standard",
   description,
   context,
   navigation,
@@ -18,6 +20,7 @@ export function PageHeader({
       data-section-id="workspace-header"
       className="crystra-page-header crystra-bi wb-header wb-page-header"
       data-crystra-theme="dark"
+      data-header-layout={layout}
     >
       <div className="crystra-page-identity-text" data-header-slot="identity">
         <div className="crystra-page-identity">

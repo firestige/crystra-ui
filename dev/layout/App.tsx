@@ -1,3 +1,4 @@
+import { WorkflowV8Assembly } from "./WorkflowV8Assembly";
 import { TaskBrowser } from "./components/crystra-dsh/tasks/task-browser";
 import { ProductPages } from "../../../wsr-dsh/src/client/shell/product-pages";
 import { SettingsDialog } from "./components/crystra-dsh/settings/settings-dialog";
@@ -49,6 +50,11 @@ export function App() {
   const page =
     route.page === "tasks" ? (
       <TaskBrowser onNavigate={navigate} />
+    ) : route.page === "workflow" ? (
+      <WorkflowV8Assembly
+        key={`${route.definitionId}:${route.revision}`}
+        route={route}
+      />
     ) : (
       <ProductPages
         route={route}

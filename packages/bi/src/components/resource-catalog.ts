@@ -1,3 +1,19 @@
+export const resourceGroupDefinitions = [
+  { id: "role-prompt", label: "角色（Role）" },
+  { id: "skill", label: "技能（Skill）" },
+  { id: "tool", label: "脚本／工具" },
+  { id: "template", label: "模板（Template）" },
+  { id: "action-prompt", label: "活动指令" },
+  { id: "documentation", label: "参考资料" },
+] as const;
+export type ResourceCatalogEntry = {
+  id: string;
+  resourceKind: string;
+  path: string;
+  name: string;
+  filePaths: string[];
+  refs: { from: string; label: string }[];
+};
 export const resourceGroups = [
   "角色（Role）",
   "技能（Skill）",
@@ -29,12 +45,36 @@ export type CatalogResource = {
   path: string;
   group: string;
   files: CatalogFile[];
+  resourceKind?: string;
+  refs?: { from: string; label: string }[];
 };
 export function resourceCatalog(
   files: CatalogFile[],
   nodes: { id: string; kind: string; label: string; detail?: string }[] = [],
   edges: { from: string; to: string }[] = [],
+  semanticCatalog?: ResourceCatalogEntry[],
 ): CatalogResource[] {
+  if (semanticCatalog)
+    return semanticCatalog.flatMap((entry) => {
+      const group = resourceGroupDefinitions.find(
+        (g) =>
+          g.id === (entry.resourceKind === "cli" ? "tool" : entry.resourceKind),
+      );
+      if (!group) return [];
+      return [
+        {
+          id: entry.id,
+          aliases: [entry.id, ...entry.filePaths.map((p) => "file:" + p)],
+          name: entry.name,
+          purpose: "",
+          path: entry.path,
+          group: group.label,
+          resourceKind: entry.resourceKind,
+          refs: entry.refs,
+          files: files.filter((f) => entry.filePaths.includes(f.path)),
+        },
+      ];
+    });
   const name = (f: CatalogFile) =>
     f.content.match(/^name:\s*["']?(.+?)["']?\s*$/m)?.[1] ||
     f.content.match(/^#\s+(.+)$/m)?.[1] ||

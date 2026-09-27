@@ -8,8 +8,10 @@ import { Tabs } from "./components/collection-components";
 import { Button, Card, Chip, Typography } from "./components/design-system";
 import { Icon, type IconName } from "./components/icon";
 import { WorkflowActivityStudy } from "./components/workflow-activity-study";
-import { WorkflowMapWorkbench } from "./components/workflow-map-workbench";
-import { WorkflowResourceBrowser } from "./components/workflow-resource-browser";
+import {
+  LegacyWorkflowMap as WorkflowMapWorkbench,
+  LegacyWorkflowResources as WorkflowResourceBrowser,
+} from "../../../dev/layout/workflow/LegacyPreview";
 import "./crystra-components.css";
 import "./crystra-theme.css";
 import type { WorkflowMapIR } from "./domain/workflow-map-ir";

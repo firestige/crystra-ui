@@ -1,0 +1,49 @@
+.crystra-discussion-topics {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  box-sizing: border-box;
+  min-width: 0;
+  min-height: 42px;
+  padding: 4px 12px;
+  border-bottom: 1px solid var(--color-border-subtle);
+  flex-shrink: 0;
+}
+.crystra-discussion-group {
+  min-width: 0;
+  max-width: 30%;
+  flex: 0 1 auto;
+}
+.crystra-discussion-selector {
+  min-width: 0;
+  flex: 1;
+}
+.crystra-discussion-topics .crystra-menu,
+.crystra-discussion-topics .crystra-menu > button {
+  width: 100%;
+  min-width: 0;
+}
+.crystra-discussion-topics .crystra-menu > button {
+  justify-content: space-between;
+}
+.crystra-discussion-topics .crystra-menu-trigger-label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: left;
+}
+.crystra-discussion-notice {
+  margin: 0;
+  padding: 6px 12px;
+  font-size: 12px;
+  color: var(--color-text-secondary);
+}
+
+.crystra-discussion-group > :not(.crystra-menu) {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

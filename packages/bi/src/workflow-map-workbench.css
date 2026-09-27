@@ -544,6 +544,9 @@
   align-items: center;
   flex: none;
 }
+.map-action-tooltip button svg {
+  pointer-events: none;
+}
 /* Kind colors are semantic diagram assets, independent of runtime status. */
 .map-node.kind-activity {
   --workflow-fill: var(--workflow-activity-fill);
@@ -669,4 +672,41 @@
 .map-message.system p {
   font-size: 12px;
   line-height: 1.6;
+}
+
+.map-header-actions {
+  width: 100%;
+  min-width: 0;
+  height: 36px;
+  flex-wrap: nowrap;
+  gap: 8px;
+}
+.map-command-group {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex: none;
+}
+.map-header-actions > .crystra-divider {
+  height: 18px;
+  flex: none;
+  margin: 0 4px;
+}
+.map-header-actions .crystra-button {
+  box-sizing: border-box;
+  height: 36px;
+  min-height: 36px;
+  min-width: 36px;
+  white-space: nowrap;
+  padding: 6px 8px;
+}
+.map-header-actions .crystra-button[data-icon-only] {
+  width: 36px;
+  padding: 6px;
+}
+.map-header-actions [data-density="compact"] {
+  flex-wrap: nowrap;
+}
+.map-header-actions .map-issues-count {
+  font-size: 12px;
 }

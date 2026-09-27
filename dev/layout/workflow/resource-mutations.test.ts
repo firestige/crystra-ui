@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it } from "vitest";
-import { resourceCatalog } from "./resource-catalog";
+import { resourceCatalog } from "../../../packages/bi/src/components/resource-catalog";
 import {
   applyResourceMutation,
   resourceDependents,

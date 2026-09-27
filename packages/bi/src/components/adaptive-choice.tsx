@@ -1,3 +1,4 @@
+import { observeElementWidth } from "./observe-element-width";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Button } from "./design-system";
 import { Icon } from "./icon";
@@ -33,17 +34,13 @@ export function AdaptiveChoice({
     const el = root.current,
       container = el?.closest("[data-adaptive-container]") ?? el?.parentElement;
     if (!el || !container || typeof ResizeObserver === "undefined") return;
-    const observer = new ResizeObserver((entries) => {
-      const width = entries[0]?.contentRect.width;
-      if (width === undefined) return;
+    return observeElementWidth(container as HTMLElement, (width) => {
       restoreFocus.current =
         el.contains(document.activeElement) ||
         !!document.activeElement?.closest(".crystra-action-menu");
       setCompact(width < collapseBelow);
       setTrigger(null);
     });
-    observer.observe(container);
-    return () => observer.disconnect();
   }, [collapseBelow]);
   useEffect(() => {
     if (restoreFocus.current) {

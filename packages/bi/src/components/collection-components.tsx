@@ -225,6 +225,8 @@ export interface MenuItem {
 }
 export interface MenuProps {
   label: string;
+  icon?: ReactNode;
+  iconOnly?: boolean;
   items: readonly MenuItem[];
   size?: ComponentSize;
   align?: "start" | "end";
@@ -233,6 +235,8 @@ export interface MenuProps {
 /** Anchored action menu, kept in the theme subtree. No domain mutations are inferred. */
 export function Menu({
   label,
+  icon,
+  iconOnly = false,
   items,
   size = "compact",
   align = "end",
@@ -258,6 +262,10 @@ export function Menu({
         ref={trigger}
         size={size}
         disabled={disabled}
+        aria-label={label}
+        title={iconOnly ? label : undefined}
+        data-icon-only={iconOnly || undefined}
+        startIcon={icon}
         aria-haspopup="menu"
         aria-expanded={open}
         aria-controls={open ? id : undefined}
@@ -272,9 +280,11 @@ export function Menu({
             setOpen(true);
           }
         }}
-        endIcon={<Icon name="chevron-down" />}
+        endIcon={iconOnly ? undefined : <Icon name="chevron-down" />}
       >
-        {label}
+        {!iconOnly && (
+          <span className="crystra-menu-trigger-label">{label}</span>
+        )}
       </Button>
       {open && (
         <div

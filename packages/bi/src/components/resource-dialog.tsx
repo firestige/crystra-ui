@@ -5,6 +5,8 @@ export function ResourceDialog({
   title,
   children,
   busy,
+  submitDisabled,
+  className = "",
   onCancel,
   onSubmit,
   submitLabel = "保存",
@@ -12,6 +14,8 @@ export function ResourceDialog({
   title: string;
   children: ReactNode;
   busy?: boolean;
+  submitDisabled?: boolean;
+  className?: string;
   onCancel: () => void;
   onSubmit: () => void;
   submitLabel?: string;
@@ -23,7 +27,7 @@ export function ResourceDialog({
   return (
     <dialog
       ref={dialog}
-      className="crystra-bi crystra-resource-dialog"
+      className={"crystra-bi crystra-resource-dialog " + className}
       data-crystra-theme="dark"
       aria-label={title}
       onCancel={(e) => {
@@ -34,7 +38,7 @@ export function ResourceDialog({
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          if (!busy) onSubmit();
+          if (!busy && !submitDisabled) onSubmit();
         }}
       >
         <h2>{title}</h2>
@@ -52,7 +56,7 @@ export function ResourceDialog({
             type="submit"
             appearance="solid"
             tone="primary"
-            disabled={busy}
+            disabled={busy || submitDisabled}
           >
             {busy ? "保存中…" : submitLabel}
           </Button>
