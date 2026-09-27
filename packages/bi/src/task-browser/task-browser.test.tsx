@@ -20,13 +20,13 @@ it("shares selection across views, navigates exact identities and resets selecti
     "href",
     "/tasks/task-a",
   );
-  await user.click(screen.getByRole("button", { name: "List" }));
+  await user.click(screen.getByRole("button", { name: /Gallery.*List/ }));
   expect(screen.getByRole("checkbox", { name: "选择 Alpha" })).toBeChecked();
   expect(
     within(screen.getByRole("table")).getAllByText("进度未知"),
   ).toHaveLength(2);
   expect(screen.getByRole("button", { name: "归档所选" })).toBeDisabled();
-  await user.type(screen.getByRole("textbox", { name: "搜索任务" }), "Beta");
+  await user.type(screen.getByRole("searchbox", { name: "搜索任务" }), "Beta");
   expect(screen.queryByRole("checkbox", { name: "选择 Alpha" })).toBeNull();
   expect(screen.getByRole("checkbox", { name: "选择 Beta" })).not.toBeChecked();
   await user.click(screen.getByRole("button", { name: "新建任务" }));
@@ -58,9 +58,45 @@ it("exposes isolated item menus in both views and returns focus on Escape", asyn
   await user.keyboard("{Escape}");
   expect(trigger).toHaveFocus();
   expect(screen.queryByRole("menu")).toBeNull();
-  await user.click(screen.getByRole("button", { name: "List" }));
+  await user.click(screen.getByRole("button", { name: /Gallery.*List/ }));
   await user.click(screen.getByRole("button", { name: "任务操作：Menu task" }));
   await user.click(screen.getByRole("menuitem", { name: "归档" }));
   expect(archive).toHaveBeenCalledWith(["menu-a"]);
   expect(screen.queryByRole("menu")).toBeNull();
+});
+it("keeps task progress accessible in the shared gallery card", () => {
+  render(
+    <TaskBrowserSurface
+      items={[
+        {
+          id: "progress",
+          title: "Progress",
+          lastActivityAt: 1,
+          progress: { completed: 1, total: 3, scope: "waves" },
+        },
+      ]}
+      taskHref={(id) => `/tasks/${id}`}
+      onNewTask={() => {}}
+    />,
+  );
+  expect(
+    screen.getByRole("progressbar", { name: "Progress · waves" }),
+  ).toHaveAttribute("aria-valuenow", "1");
+});
+it("does not use duplicate task titles as menu identity", async () => {
+  const user = userEvent.setup();
+  render(
+    <TaskBrowserSurface
+      items={[
+        { id: "a", title: "Same", lastActivityAt: 2 },
+        { id: "b", title: "Same", lastActivityAt: 1 },
+      ]}
+      taskHref={(id) => `/tasks/${id}`}
+      onNewTask={() => {}}
+    />,
+  );
+  const triggers = screen.getAllByRole("button", { name: "任务操作：Same" });
+  await user.click(triggers[0]);
+  expect(triggers[0]).toHaveAttribute("aria-expanded", "true");
+  expect(triggers[1]).toHaveAttribute("aria-expanded", "false");
 });

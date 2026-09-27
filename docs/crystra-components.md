@@ -94,3 +94,21 @@ belong in the shared hook. Unrelated input scrolling must not dismiss either men
 `ResourceDialog` owns only the modal frame, content slot and footer controls.
 Callers compose `TextInput` for text fields and own content-specific preview styles;
 the dialog must not style arbitrary descendant inputs or images.
+
+## Browser compositions
+
+Task and Workflow browsers share `ResourceGalleryCard`, `ResourceTableRow`,
+`ResourceStatus`, `ResourceViewToggle`, `ResourceBrowserHeader` and
+`ResourceBrowserPagination`. The view switch composes `ToggleSwitch`; menus use
+`ActionMenu` and its shared keyboard/focus behavior. An open item menu is keyed by
+resource identity, never its display title. Card progress remains exposed to
+assistive technology independently of the decorative thumbnail link.
+
+Browser search uses `SearchField appearance="outline"` to retain the accepted
+40px bordered search surface. Group and page-size selectors use
+`SelectField appearance="inline"`; the primitive owns their typography and
+appearance. Browser layout CSS owns grids, spacing and table layout, while
+Task-only progress and load-more styles remain in `task-browser.css`. Legacy
+HTML card/menu/dialog and button-group recipes are not included in this shared
+stylesheet. Host adapters continue to own routing, clipboard access and resource
+loading; page components only own local filtering, sorting, selection and paging.

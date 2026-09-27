@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
-import { Icon } from "./components/icon";
-import { ToggleSwitch } from "./components/toggle-switch";
+
+import { ResourceViewToggle } from "./components/resource-view-toggle";
 import "./crystra-theme.css";
 import "./select-dropdown.css";
 
@@ -15,19 +15,13 @@ export function BrowserViewSwitch() {
     return () => document.removeEventListener("browser-view-changed", update);
   }, []);
   return (
-    <ToggleSwitch
-      mode="choice"
-      shape="square"
-      size="regular"
+    <ResourceViewToggle
       label={seat?.dataset.label || "资源视图"}
-      labels={["Gallery", "List"]}
-      icons={[<Icon name="table" />, <Icon name="clipboard-list" />]}
-      iconPlacement="track"
-      checked={checked}
-      onCheckedChange={(value) =>
+      value={checked ? "list" : "gallery"}
+      onValueChange={(value) =>
         document.dispatchEvent(
           new CustomEvent("browser-view-request", {
-            detail: value ? "list" : "gallery",
+            detail: value,
           }),
         )
       }

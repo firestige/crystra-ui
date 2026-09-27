@@ -23,7 +23,7 @@ This is a standalone React SPA preview, not a DSH host integration or production
 
 - `/tasks`: TaskBrowserPage, full-width Bench placeholder.
 - `/tasks/:taskId`: TaskDetailPage, Chat placeholder + five-surface Task workbench.
-- `/workflows`: WorkflowExplorerPage, full-width Bench placeholder.
+- `/workflows`: WorkflowBrowserSurface using the host-owned local catalogue and exact revision links.
 - `/workflows/:definitionId?revision=v3&from_task_id=...&view=studio|resources|crystallization`: WorkflowStudioPage with the original v8 workflow workbench; preserves exact revision and source task in URL.
 - `/analysis?view=dashboard|traces|reports`: AnalysisAuditPage, full-width Bench placeholder.
 
@@ -251,3 +251,19 @@ width observer used by AdaptiveChoice, without inspecting ancestor selectors.
 Groups and separators use ButtonGroup and Divider. The optional `status` input
 is display-only; absence means no status label, never an inferred draft state.
 The formal host currently omits status until a contract supplies it.
+
+Workflow Browser uses the authoritative `crystra-workflow-explorer-v8.html` as
+its layout reference, with Task Browser's accepted shared controls. ResourceBrowserHeader,
+ResourceGalleryCard, ResourceTableRow, AdaptiveChoice, ActionMenu and the shared
+resource-browser.css own the visual building blocks. Host adapters own navigation
+and clipboard effects. Current local catalogues expose one revision per definition;
+historical versions, creation and archive controls remain explicitly unavailable.
+Package status is displayed from semantic CONFIRMED/DRAFT values. Node counts and
+latest file modification times come from local package reads; creation dates are
+not inferred. No remote package writes or fixture rows are introduced.
+
+Resource browser visual convergence: Task and Workflow share ResourceViewToggle
+(controlled Gallery/List icon-only ToggleSwitch) and ResourceStatus (dot plus text).
+ResourceGalleryCard and ResourceTableRow mark their component ownership so dev's
+legacy palette rewriting cannot override primitive borders. The card subtitle row
+reserves space for its action hit target, keeping status and hover areas separate.

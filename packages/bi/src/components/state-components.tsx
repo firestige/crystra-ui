@@ -9,6 +9,7 @@ import {
   type SelectHTMLAttributes,
 } from "react";
 import "../search-field.css";
+import "./compact-fields.css";
 import "../select-dropdown.css";
 import {
   Button,
@@ -24,7 +25,7 @@ export type SearchFieldProps = Omit<
 > & {
   label: string;
   size?: ComponentSize;
-  appearance?: "default" | "surface";
+  appearance?: "default" | "surface" | "outline";
   hideLabel?: boolean;
   leading?: ReactNode;
   trailing?: ReactNode;
@@ -40,10 +41,12 @@ export function SearchField({
   ...props
 }: SearchFieldProps) {
   const generated = useId();
-  if (appearance === "surface")
+  if (appearance !== "default")
     return (
       <div
         className="crystra-search-field"
+        data-appearance={appearance}
+        data-ui-owner={appearance === "outline" ? "components" : undefined}
         data-size={size}
         data-disabled={props.disabled || undefined}
       >
@@ -83,7 +86,7 @@ export type SelectFieldProps = Omit<
 > & {
   label: string;
   size?: ComponentSize;
-  appearance?: "default" | "embedded";
+  appearance?: "default" | "embedded" | "inline";
   hideLabel?: boolean;
   menuPlacement?: "top" | "bottom";
   options: readonly { value: string; label: string; disabled?: boolean }[];
@@ -102,6 +105,7 @@ export function SelectField({
   return (
     <label
       className="crystra-field"
+      data-ui-owner={appearance === "inline" ? "components" : undefined}
       data-size={size}
       data-appearance={appearance}
       htmlFor={id ?? generated}

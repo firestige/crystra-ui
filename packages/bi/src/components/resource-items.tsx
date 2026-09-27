@@ -28,22 +28,34 @@ export function ResourceGalleryCard({
     <Card
       as="article"
       padding="none"
+      data-ui-owner="components"
       className="crystra-resource-card"
       data-selected={selected}
     >
       <label className="crystra-resource-selection">{selection}</label>
-      <a className="crystra-resource-link" href={href}>
+      <a
+        className="crystra-resource-link"
+        href={href}
+        tabIndex={-1}
+        aria-hidden="true"
+      >
         <div className="crystra-resource-thumbnail">{thumbnail}</div>
-        {progress}
-        <div className="crystra-resource-copy">
-          <div className="crystra-resource-heading">
-            <h3 title={title}>{title}</h3>
-            {status}
-          </div>
-          <p title={subtitle}>{subtitle}</p>
-        </div>
       </a>
-      <div className="crystra-resource-actions">{actions}</div>
+      {progress}
+      <div className="crystra-resource-copy">
+        <div className="crystra-resource-heading">
+          <h3 title={title}>
+            <a className="crystra-resource-link" href={href}>
+              {title}
+            </a>
+          </h3>
+          {status}
+        </div>
+        <div className="crystra-resource-footer">
+          <p title={subtitle}>{subtitle}</p>
+          <div className="crystra-resource-actions">{actions}</div>
+        </div>
+      </div>
     </Card>
   );
 }
@@ -65,7 +77,11 @@ export function ResourceTableRow({
   actions,
 }: ResourceTableRowProps) {
   return (
-    <tr className="crystra-resource-row" data-selected={selected}>
+    <tr
+      data-ui-owner="components"
+      className="crystra-resource-row"
+      data-selected={selected}
+    >
       <td>{selection}</td>
       <td>
         <a href={href} title={title}>
@@ -77,5 +93,20 @@ export function ResourceTableRow({
       ))}
       <td>{actions}</td>
     </tr>
+  );
+}
+
+/** Resource status uses the common dot-and-label recipe, not a filled capsule. */
+export function ResourceStatus({
+  label,
+  tone = "neutral",
+}: {
+  label: string;
+  tone?: "neutral" | "success" | "warning";
+}) {
+  return (
+    <span className="crystra-resource-status" data-tone={tone}>
+      {label}
+    </span>
   );
 }

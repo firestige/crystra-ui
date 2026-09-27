@@ -1,0 +1,56 @@
+/* Controlled field variants: appearance belongs to primitives, not pages. */
+.crystra-bi
+  .crystra-search-field[data-appearance="outline"]
+  .crystra-search-surface {
+  height: 40px;
+  min-height: 40px;
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--shape-control);
+  background: var(--color-background-card);
+  color: var(--color-text-muted);
+  box-shadow: none;
+}
+.crystra-bi
+  .crystra-search-field[data-appearance="outline"]
+  .crystra-search-surface:focus-within {
+  border-color: var(--color-interaction-primary);
+}
+.crystra-bi .crystra-search-field[data-appearance="outline"] input {
+  color: var(--color-text-primary);
+}
+.crystra-bi[data-crystra-theme="dark"]
+  .crystra-field[data-appearance="inline"][data-ui-owner="components"] {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: 12px;
+  white-space: nowrap;
+}
+.crystra-bi[data-crystra-theme="dark"]
+  .crystra-field[data-appearance="inline"][data-ui-owner="components"]
+  select {
+  width: auto;
+  min-height: 0;
+  height: auto;
+  padding: 6px 10px;
+  border: 1px solid var(--color-border-default);
+  border-radius: 8px;
+  background: var(--color-background-card);
+  color: var(--color-text-secondary);
+  font: inherit;
+}
+
+.crystra-bi[data-crystra-theme="dark"]
+  .crystra-field[data-appearance="inline"][data-ui-owner="components"]
+  select {
+  line-height: normal;
+}
+.crystra-bi[data-crystra-theme="dark"]
+  .crystra-field[data-appearance="inline"][data-ui-owner="components"]
+  > .crystra-typography {
+  font: inherit;
+  color: inherit;
+}

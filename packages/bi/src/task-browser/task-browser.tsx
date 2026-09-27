@@ -1,10 +1,19 @@
+import { SearchField, SelectField } from "../components/state-components";
+import { ResourceBrowserPagination } from "../task-layout/resource-browser-pagination";
+import { ResourceViewToggle } from "../components/resource-view-toggle";
+import { ResourceStatus } from "../components/resource-items";
 import { AdaptiveChoice } from "../components/adaptive-choice";
 import { ResourceBrowserHeader } from "../task-layout/resource-browser-header";
 import {
   ResourceGalleryCard,
   ResourceTableRow,
 } from "../components/resource-items";
-import { Button, IconButton, ButtonGroup, Divider } from "../components/design-system";
+import {
+  Button,
+  IconButton,
+  ButtonGroup,
+  Divider,
+} from "../components/design-system";
 import { BrowserMenu, type BrowserMenuItem } from "./browser-menu";
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { Icon } from "../components/icon";
@@ -71,6 +80,7 @@ export function TaskBrowserSurface({
     [size, setSize] = useState(12),
     [limit, setLimit] = useState(24);
   const [menu, setMenu] = useState<{
+    resourceKey: string;
     trigger: HTMLElement;
     label: string;
     items: BrowserMenuItem[];
@@ -184,12 +194,13 @@ export function TaskBrowserSurface({
       disabled={busy}
       aria-label={`任务操作：${t.title}`}
       aria-haspopup="menu"
-      aria-expanded={menu?.label === `任务操作：${t.title}`}
+      aria-expanded={menu?.resourceKey === t.id}
       onClick={(e) =>
         setMenu(
           menu?.trigger === e.currentTarget
             ? null
             : {
+                resourceKey: t.id,
                 trigger: e.currentTarget,
                 label: `任务操作：${t.title}`,
                 inward: !list,
@@ -230,7 +241,7 @@ export function TaskBrowserSurface({
   );
   return (
     <section
-      className="browser-host crystra-bi crystra-task-browser"
+      className="browser-host crystra-bi crystra-resource-browser crystra-task-browser"
       data-crystra-theme="dark"
       data-section-id="task-browser"
     >
@@ -242,10 +253,13 @@ export function TaskBrowserSurface({
           </div>
         }
         search={
-          <label className="browser-search" data-header-slot="search">
-            <Icon name="search" />
-            <input
-              aria-label="搜索任务"
+          <div data-header-slot="search">
+            <SearchField
+              appearance="outline"
+              hideLabel
+              label="搜索任务"
+              leading={<Icon name="search" size="navigation" />}
+
               placeholder="搜索任务、目标、Workspace"
               value={query}
               onChange={(e) => {
@@ -253,7 +267,7 @@ export function TaskBrowserSurface({
                 resetResults();
               }}
             />
-          </label>
+          </div>
         }
         toolbar={
           <div data-header-slot="toolbar" className="browser-toolbar">
@@ -307,25 +321,10 @@ export function TaskBrowserSurface({
                 }}
               />
               <Divider orientation="vertical" />
-              <AdaptiveChoice
+              <ResourceViewToggle
                 label="任务视图"
-                functionIcon={<Icon name="layout-grid" />}
                 value={list ? "list" : "gallery"}
-                collapseBelow={760}
-                compactIconOnly
-                options={[
-                  {
-                    value: "gallery",
-                    label: "Gallery",
-                    icon: <Icon name="table" />,
-                  },
-                  {
-                    value: "list",
-                    label: "List",
-                    icon: <Icon name="clipboard-list" />,
-                  },
-                ]}
-                onChange={(value) => {
+                onValueChange={(value) => {
                   setMenu(null);
                   setList(value === "list");
                   scroll.current?.scrollTo?.(0, 0);
@@ -406,22 +405,24 @@ export function TaskBrowserSurface({
               {selected.length ? ` · 已选择 ${selected.length} 项` : ""}
             </span>
             {selected.length > 0 && (
-              <button onClick={() => setSelected([])}>取消选择</button>
+              <Button appearance="ghost" onClick={() => setSelected([])}>
+                取消选择
+              </Button>
             )}
           </div>
           {!list && (
-            <label className="browser-select">
-              分组
-              <select
-                aria-label="任务分组"
-                value={group}
-                onChange={(e) => setGroup(e.target.value)}
-              >
-                <option value="workspace">Workspace</option>
-                <option value="status">状态</option>
-                <option value="none">不分组</option>
-              </select>
-            </label>
+            <SelectField
+              appearance="inline"
+              label="分组"
+              options={[
+                { value: "workspace", label: "Workspace" },
+                { value: "status", label: "状态" },
+                { value: "none", label: "不分组" },
+              ]}
+              aria-label="任务分组"
+              value={group}
+              onChange={(e) => setGroup(e.target.value)}
+            />
           )}
         </div>
         {!results.length ? (
@@ -502,7 +503,7 @@ export function TaskBrowserSurface({
                     )
                   }
                 >
-                  <Icon name="chevron-down" />
+                  <Icon name="chevron-down" size="navigation" />
                   {name}
                   <span className="group-count">{tasks?.length}</span>
                 </button>
@@ -530,11 +531,7 @@ export function TaskBrowserSurface({
                         )
                       }
                       progress={progress(t)}
-                      status={
-                        <span className="browser-chip">
-                          {t.status ?? "状态未知"}
-                        </span>
-                      }
+                      status={<ResourceStatus label={t.status ?? "状态未知"} />}
                       actions={itemActions(t)}
                     />
                   ))}
@@ -544,45 +541,20 @@ export function TaskBrowserSurface({
           </div>
         )}
         {list ? (
-          <footer id="browser-pagination">
-            <label className="browser-select">
-              每页
-              <select
-                aria-label="每页条数"
-                value={size}
-                onChange={(e) => {
-                  setSize(Number(e.target.value));
-                  setPage(1);
-                }}
-              >
-                {[12, 24, 48].map((n) => (
-                  <option key={n}>{n}</option>
-                ))}
-              </select>
-              条
-            </label>
-            <span>
-              {currentPage} / {lastPage}
-            </span>
-            <button
-              className="browser-button"
-              disabled={currentPage === 1}
-              onClick={() => setPage(currentPage - 1)}
-            >
-              上一页
-            </button>
-            <button
-              className="browser-button"
-              disabled={currentPage === lastPage}
-              onClick={() => setPage(currentPage + 1)}
-            >
-              下一页
-            </button>
-          </footer>
+          <ResourceBrowserPagination
+            page={currentPage}
+            pages={lastPage}
+            pageSize={size}
+            onPageChange={setPage}
+            onPageSizeChange={(value) => {
+              setSize(value);
+              setPage(1);
+            }}
+          />
         ) : (
           <div ref={sentinel} data-load-more>
             {limit < results.length ? (
-              <button onClick={() => setLimit((n) => n + 24)}>加载更多</button>
+              <Button onClick={() => setLimit((n) => n + 24)}>加载更多</Button>
             ) : (
               "已显示全部任务"
             )}

@@ -254,3 +254,10 @@ export {
   DiscussionTopicBar,
   type DiscussionTopicBarProps,
 } from "./components/discussion-topic-bar";
+
+export {WorkflowBrowserSurface} from "./workflow-browser/workflow-browser";
+export type {BrowserWorkflow,WorkflowBrowserSurfaceProps} from "./workflow-browser/workflow-browser";
+
+export {ResourceViewToggle} from "./components/resource-view-toggle";
+export type {ResourceViewToggleProps} from "./components/resource-view-toggle";
+export {ResourceStatus} from "./components/resource-items";
