@@ -1,5 +1,5 @@
 import { ObservationSources } from "../components/observation-layout-codec";
-import { inObservationRange } from "../components/observation-time";
+import { inObservationRange } from "./observation-clock";
 import type { MatrixData, View, WidgetData } from "../domain/widget-families";
 
 // Illustrative usage and pricing only; no provider tariffs or billing claims.
@@ -45,12 +45,8 @@ export const overviewRecords = Array.from({ length: 30 }, (_, day) =>
 ).flat();
 const sum = (ns: number[]) => ns.reduce((a, b) => a + b, 0),
   round = (n: number) => Math.round(n * 100) / 100;
-export interface OverviewFilters {
-  group: "provider" | "model";
-  workflow: string;
-  role: string;
-  tokens: "total" | "input" | "output";
-}
+import type { OverviewFilters } from "../domain/analysis-overview";
+export type { OverviewFilters } from "../domain/analysis-overview";
 export function overviewSources(
   period: string,
   filters: OverviewFilters,

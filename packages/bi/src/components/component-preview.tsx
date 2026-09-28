@@ -21,7 +21,7 @@ import {
 } from "../public";
 import "../shared.css";
 import { DeliveryDirectoryPreview } from "./delivery-directory-preview";
-import { ResultAnalysisPreview } from "./result-analysis-preview";
+import { ResultAnalysisPreview } from "../test-harness/analysis-preview";
 import { SearchPreview } from "./search-preview";
 import { StatePreview } from "./state-preview";
 import { ToggleSwitchPreview } from "./toggle-switch-preview";

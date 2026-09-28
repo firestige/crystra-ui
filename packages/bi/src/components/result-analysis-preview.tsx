@@ -1,3 +1,4 @@
+import { ModalFrame, ModalCloseButton } from "./modal-frame";
 function ModalClose({
   onClose,
   title,
@@ -5,17 +6,8 @@ function ModalClose({
   onClose: () => void;
   title: string;
 }) {
-  return (
-    <IconButton
-      appearance="ghost"
-      aria-label={`关闭${title}`}
-      onClick={onClose}
-    >
-      <Icon name="x" />
-    </IconButton>
-  );
+  return <ModalCloseButton onClose={onClose} label={`关闭${title}`} />;
 }
-
 import { useRef, useState } from "react";
 import { useContainerWidth } from "react-grid-layout";
 import {
@@ -24,25 +16,22 @@ import {
 } from "../domain/delivery-search";
 import type { MatrixData } from "../domain/widget-families";
 import "../result-analysis-preview.css";
-import { deliveryDirectorySearchFields } from "../test-harness/delivery-directory-fixture";
+import { useAnalysisData } from "./analysis-context";
 import {
   compatibleChartItem,
   exportObservationSetting,
   importObservationSetting,
-  initialObservationSettings,
   observationChartTypes,
-  observationMatrix,
   type ObservationChart,
   type ObservationSetting,
-} from "../test-harness/observation-settings";
+} from "../domain/observation-settings";
 import {
-  analysisDeliveries,
   analysisDimensions,
   analysisMetrics,
   type AnalysisDimension,
   type AnalysisItem,
   type AnalysisMetric,
-} from "../test-harness/result-analysis-fixture";
+} from "../domain/analysis-catalog";
 import "../widget-expression-study.css";
 import { List, ListItem } from "./collection-components";
 import { downloadConfiguration } from "./configuration-download";
@@ -85,23 +74,29 @@ function ResultChart({
 const definition = (key: AnalysisMetric) =>
   analysisMetrics.find((metric) => metric.key === key)!;
 const unique = () => `setting-${crypto.randomUUID()}`;
-export function ResultAnalysisPreview({
-  timeRange = ["2026-09-03T00:00:00+08:00", "2026-09-09T23:59:59+08:00"],
+export function ResultAnalysisSurface({
+  timeRange,
   rangeLabel = "最近 7 天",
   embedded = false,
+  settings = [],
+  onSettingsChange,
 }: {
-  timeRange?: readonly [string, string];
+  timeRange: readonly [string, string];
   rangeLabel?: string;
   embedded?: boolean;
-} = {}) {
+  settings?: readonly ObservationSetting[];
+  onSettingsChange?: (settings: ObservationSetting[]) => void;
+}) {
+  const {
+    provenance,
+    deliveries: analysisDeliveries,
+    searchFields: deliveryDirectorySearchFields,
+  } = useAnalysisData();
   const help = useRef<HTMLDialogElement>(null),
     catalog = useRef<HTMLDialogElement>(null),
     dataset = useRef<HTMLDialogElement>(null);
-  const [settings, setSettings] = useState(() =>
-    structuredClone(initialObservationSettings),
-  );
-  const [settingId, setSettingId] = useState("versions");
-  const [chartId, setChartId] = useState("cost");
+  const [settingId, setSettingId] = useState(settings[0]?.id ?? "");
+  const [chartId, setChartId] = useState(settings[0]?.charts[0]?.id ?? "");
   const [settingsOpen, setSettingsOpen] = useState(true);
   const [draggingChart, setDraggingChart] = useState<string | null>(null);
   const [dropTarget, setDropTarget] = useState<string | null>(null);
@@ -119,7 +114,8 @@ export function ResultAnalysisPreview({
     .filter((row) => subset === null || subset.includes(row.deliveryId))
     .map((row) => row.deliveryId);
   const [draftSelection, setDraftSelection] = useState(deliveries);
-  const activeSetting = settings.find((value) => value.id === settingId);
+  const activeSetting =
+    settings.find((value) => value.id === settingId) ?? settings[0];
   const setting: ObservationSetting = draft ??
     activeSetting ?? { id: "", name: "", charts: [] };
   const chart =
@@ -185,9 +181,9 @@ export function ResultAnalysisPreview({
     editor.current?.showModal();
   };
   const save = () => {
-    if (!draft) return;
-    setSettings((current) => [
-      ...current.filter((value) => value.id !== draft.id),
+    if (!draft || !onSettingsChange) return;
+    onSettingsChange([
+      ...settings.filter((value) => value.id !== draft.id),
       structuredClone(draft),
     ]);
     setSettingId(draft.id);
@@ -198,9 +194,9 @@ export function ResultAnalysisPreview({
   const deleteSetting = (id: string) => {
     const index = settings.findIndex((value) => value.id === id),
       target = settings[index];
-    if (!target) return;
+    if (!target || !onSettingsChange) return;
     const remaining = settings.filter((value) => value.id !== id);
-    setSettings(remaining);
+    onSettingsChange?.(remaining);
     if (settingId === id) {
       setSettingId(remaining[Math.min(index, remaining.length - 1)]?.id ?? "");
       setChartId("");
@@ -229,7 +225,7 @@ export function ResultAnalysisPreview({
     submitted.value
       ? [{ id: "query", field: submitted.field, value: submitted.value }]
       : [],
-    ["2026-08-01T00:00:00Z", "2026-09-10T00:00:00Z"],
+    timeRange,
     deliveryDirectorySearchFields,
   ).filter(
     (row) =>
@@ -338,6 +334,7 @@ export function ResultAnalysisPreview({
                       <IconButton
                         appearance="ghost"
                         aria-label="导入设置"
+                        disabled={!onSettingsChange}
                         onClick={() => fileInput.current?.click()}
                       >
                         <Icon name="upload" size="inline-action" />
@@ -347,6 +344,7 @@ export function ResultAnalysisPreview({
                       <IconButton
                         appearance="ghost"
                         aria-label="新建"
+                        disabled={!onSettingsChange}
                         onClick={() =>
                           openEditor({
                             id: unique(),
@@ -382,6 +380,7 @@ export function ResultAnalysisPreview({
                             <IconButton
                               appearance="ghost"
                               aria-label={`删除设置 ${value.name}`}
+                              disabled={!onSettingsChange}
                               onClick={() => deleteSetting(value.id)}
                             >
                               <Icon name="trash" size="inline-action" />
@@ -408,7 +407,7 @@ export function ResultAnalysisPreview({
                       await file.text(),
                     );
                     imported.id = unique();
-                    setSettings((current) => [...current, imported]);
+                    onSettingsChange?.([...settings, imported]);
                     setSettingId(imported.id);
                     setChartId("");
                     setNotice("已导入观察设置");
@@ -490,7 +489,7 @@ export function ResultAnalysisPreview({
           </div>
         </div>
       </Card>
-      <dialog
+      <ModalFrame
         ref={editor}
         className="result-analysis-help observation-setting-editor"
         aria-label="编辑观察设置"
@@ -878,7 +877,9 @@ export function ResultAnalysisPreview({
                     <Typography as="h3" variant="section-title">
                       {draft.name || "观察视图"}
                     </Typography>
-                    <Chip appearance="soft">演示数据</Chip>
+                    {provenance && (
+                      <Chip appearance="soft">{provenance.label}</Chip>
+                    )}
                   </div>
                   <FixedColumnChartLayout>
                     {draft.charts.map((value) => (
@@ -924,15 +925,18 @@ export function ResultAnalysisPreview({
                 >
                   取消
                 </Button>
-                <Button onClick={save} disabled={!dirty || !draft.name.trim()}>
+                <Button
+                  onClick={save}
+                  disabled={!onSettingsChange || !dirty || !draft.name.trim()}
+                >
                   保存设置
                 </Button>
               </div>
             </div>
           )}
         </Card>
-      </dialog>
-      <dialog
+      </ModalFrame>
+      <ModalFrame
         ref={catalog}
         className="result-analysis-help"
         aria-label="添加数据列"
@@ -1016,8 +1020,8 @@ export function ResultAnalysisPreview({
             )}
           </div>
         </Card>
-      </dialog>
-      <dialog
+      </ModalFrame>
+      <ModalFrame
         ref={dataset}
         className="result-analysis-help result-analysis-dataset"
         aria-label="选择 Delivery"
@@ -1102,8 +1106,11 @@ export function ResultAnalysisPreview({
                   onChange={(event) => setVersion(event.target.value)}
                   options={[
                     { value: "", label: "全部版本" },
-                    { value: "v2", label: "v2" },
-                    { value: "v3", label: "v3" },
+                    ...Array.from(
+                      new Set(
+                        analysisDeliveries.map((row) => row.workflowVersion),
+                      ),
+                    ).map((value) => ({ value, label: value })),
                   ]}
                 />
               </div>
@@ -1182,8 +1189,12 @@ export function ResultAnalysisPreview({
             </Button>
           </div>
         </Card>
-      </dialog>
-      <dialog ref={help} className="result-analysis-help" aria-label="分析帮助">
+      </ModalFrame>
+      <ModalFrame
+        ref={help}
+        className="result-analysis-help"
+        aria-label="分析帮助"
+      >
         <Card
           heading="分析帮助"
           actions={
@@ -1211,15 +1222,14 @@ export function ResultAnalysisPreview({
               Escape 放弃本次选择修改，应用后才更新结果。
             </Typography>
             <Typography variant="description">
-              本样本提供 48 个 Delivery
-              的合成调用记录，不代表真实费率、性能或独立随机样本。生产能力由数据接口声明，缺失数据不能补零；缓存率按原始
-              Token 汇总，延时分位数按有效调用计算。
+              {provenance?.description ??
+                "数据及计算口径由来源接口提供，缺失数据不能补零。"}
             </Typography>
             <Typography variant="description">
               观察设置保存每张图表的指标、口径、轴与系列映射和排列尺寸。切换设置保留本次数据范围；范围变化不将设置标为未保存。导入／导出仅包含设置，不包含临时
               Delivery
               集合，导入失败不覆盖现有设置。新建／修改在模态框完成，取消或
-              Escape 丢弃草稿，不改变当前视图。样本保存仅限本页会话。
+              Escape 丢弃草稿，不改变当前视图。保存范围由当前宿主管理。
             </Typography>
             <Typography variant="description">
               先满足当前用户的真实比较需求，再根据 issue
@@ -1228,7 +1238,7 @@ export function ResultAnalysisPreview({
             <Button onClick={() => help.current?.close()}>知道了</Button>
           </div>
         </Card>
-      </dialog>
+      </ModalFrame>
     </section>
   );
 }
@@ -1247,7 +1257,7 @@ function ObservationChartResult({
         !sourceChart.valueItemIds || sourceChart.valueItemIds.includes(item.id),
     ),
   };
-  const matrix = observationMatrix(chart, deliveries);
+  const matrix = useAnalysisData().matrix(chart, deliveries);
   const dimensionLabel = (key: AnalysisDimension) =>
     analysisDimensions.find((d) => d.key === key)!.label;
   const metricLabels = [

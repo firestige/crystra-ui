@@ -1,4 +1,7 @@
-import { useEffect, useRef, useState } from "react";
+import { useDismissibleLayer } from "./use-dismissible-layer";
+import { SelectField } from "./state-components";
+import { TextInput } from "./design-system";
+import { useRef, useState } from "react";
 import { Button, ButtonGroup } from "./design-system";
 import { Icon } from "./icon";
 import {
@@ -10,45 +13,32 @@ import {
 } from "./observation-time";
 export function ObservationTimeControls({
   period,
+  referenceDate,
   onChange,
   refreshCount,
   onRefresh,
+  refreshDisabled = false,
+  cadence = "0",
+  onCadenceChange,
 }: {
   period: string;
+  referenceDate: string;
   onChange: (period: string) => void;
   refreshCount: number;
-  onRefresh: () => void;
+  onRefresh?: () => void;
+  refreshDisabled?: boolean;
+  cadence?: string;
+  onCadenceChange?: (cadence: string) => void;
 }) {
   const [open, setOpen] = useState(false),
-    [draft, setDraft] = useState<[string, string]>(observationRange(period));
-  const [month, setMonth] = useState("2026-08-01"),
+    [draft, setDraft] = useState<[string, string]>(
+      observationRange(period, referenceDate),
+    );
+  const [month, setMonth] = useState(referenceDate.slice(0, 7) + "-01"),
     [pickingEnd, setPickingEnd] = useState(false);
-  const [cadence, setCadence] = useState("0");
   const root = useRef<HTMLDivElement>(null),
     trigger = useRef<HTMLButtonElement>(null);
-  useEffect(() => {
-    if (cadence === "0") return;
-    const timer = setInterval(onRefresh, Number(cadence) * 1000);
-    return () => clearInterval(timer);
-  }, [cadence, onRefresh]);
-  useEffect(() => {
-    if (!open) return;
-    const outside = (e: PointerEvent) => {
-      if (!root.current?.contains(e.target as Node)) setOpen(false);
-    };
-    const key = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        setOpen(false);
-        trigger.current?.focus();
-      }
-    };
-    document.addEventListener("pointerdown", outside);
-    document.addEventListener("keydown", key);
-    return () => {
-      document.removeEventListener("pointerdown", outside);
-      document.removeEventListener("keydown", key);
-    };
-  }, [open]);
+  useDismissibleLayer({ open, root, trigger, onDismiss: () => setOpen(false) });
   const move = (n: number) => {
     const next = new Date(month);
     next.setUTCMonth(next.getUTCMonth() + n);
@@ -82,21 +72,23 @@ export function ObservationTimeControls({
           appearance="outline"
           aria-label="选择日期范围"
           title={
-            observationRange(period)
+            observationRange(period, referenceDate)
               .map((d) => d.replace("T", " "))
               .join(" — ") + " (UTC+08:00)"
           }
           aria-haspopup="dialog"
           aria-expanded={open}
           onClick={() => {
-            setDraft(observationRange(period));
+            setDraft(observationRange(period, referenceDate));
             setPickingEnd(false);
-            setMonth(observationRange(period)[0].slice(0, 7) + "-01");
+            setMonth(
+              observationRange(period, referenceDate)[0].slice(0, 7) + "-01",
+            );
             setOpen(!open);
           }}
         >
           <Icon name="calendar" />
-          {observationRangeLabel(period)}
+          {observationRangeLabel(period, referenceDate)}
           <Icon name="chevron-down" />
         </Button>
         {open && (
@@ -104,7 +96,7 @@ export function ObservationTimeControls({
             <div className="obs-calendar-inputs">
               <label>
                 开始时间
-                <input
+                <TextInput
                   type="datetime-local"
                   step="1"
                   aria-label="开始时间"
@@ -115,7 +107,7 @@ export function ObservationTimeControls({
               <span>—</span>
               <label>
                 结束时间
-                <input
+                <TextInput
                   type="datetime-local"
                   step="1"
                   aria-label="结束时间"
@@ -256,24 +248,28 @@ export function ObservationTimeControls({
         <Button
           appearance="ghost"
           aria-label="立即刷新"
-          title="立即刷新示例数据"
+          title="立即刷新"
+          disabled={refreshDisabled || !onRefresh}
           onClick={onRefresh}
         >
           <Icon name="refresh" />
         </Button>
         <label>
           <span>更新周期</span>
-          <select
+          <SelectField
+            unframed
+            label="更新周期"
+            disabled={refreshDisabled || !onCadenceChange}
             aria-label="更新周期"
             value={cadence}
-            onChange={(e) => setCadence(e.target.value)}
+            onChange={(e) => onCadenceChange?.(e.target.value)}
           >
             <option value="0">手动</option>
             <option value="15">15 秒</option>
             <option value="30">30 秒</option>
             <option value="60">1 分钟</option>
             <option value="300">5 分钟</option>
-          </select>
+          </SelectField>
           <Icon name="chevron-down" />
         </label>
       </div>

@@ -65,7 +65,7 @@ export type WidgetData =
   | {
       family: "scalar";
       title: string;
-      value: number;
+      value: number | null;
       unit: string;
       identityIcon?:
         | "clock"

@@ -255,9 +255,45 @@ export {
   type DiscussionTopicBarProps,
 } from "./components/discussion-topic-bar";
 
-export {WorkflowBrowserSurface} from "./workflow-browser/workflow-browser";
-export type {BrowserWorkflow,WorkflowBrowserSurfaceProps} from "./workflow-browser/workflow-browser";
+export { WorkflowBrowserSurface } from "./workflow-browser/workflow-browser";
+export type {
+  BrowserWorkflow,
+  WorkflowBrowserSurfaceProps,
+} from "./workflow-browser/workflow-browser";
 
-export {ResourceViewToggle} from "./components/resource-view-toggle";
-export type {ResourceViewToggleProps} from "./components/resource-view-toggle";
-export {ResourceStatus} from "./components/resource-items";
+export { ResourceViewToggle } from "./components/resource-view-toggle";
+export type { ResourceViewToggleProps } from "./components/resource-view-toggle";
+export { ResourceStatus } from "./components/resource-items";
+
+export {
+  AnalysisSurface,
+  type AnalysisPage,
+} from "./components/analysis-observation-study";
+export {
+  AnalysisDataProvider,
+  type AnalysisData,
+} from "./components/analysis-data";
+export { ResultAnalysisSurface } from "./components/result-analysis-preview";
+export { ModalFrame, ModalCloseButton } from "./components/modal-frame";
+
+export { createPagedQuery, projectRows } from "./support/data/paged-query";
+export type {
+  PagedQuery,
+  PagedQueryState,
+  PagedQueryAdapter,
+  TypeResolver,
+  ResolvedPage,
+  PageRequest,
+} from "./support/data/paged-query";
+export {
+  usePagedQuery,
+  useQueryProjection,
+} from "./support/data/use-paged-query";
+export { QueryError } from "./support/data/query-error";
+
+export { createAnalysisClient } from "./domain/analysis-query";
+export type {
+  AnalysisClient,
+  AnalysisTransport,
+} from "./domain/analysis-query";
+export type { NumberChartData } from "./domain/analysis-projection";

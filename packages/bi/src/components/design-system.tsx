@@ -229,13 +229,25 @@ export function Divider({
 
 export function TextInput({
   inputKind = "search",
+  fieldAppearance,
   className,
   type,
   ...props
-}: InputHTMLAttributes<HTMLInputElement> & { inputKind?: "search" }) {
+}: InputHTMLAttributes<HTMLInputElement> & {
+  inputKind?: "search";
+  fieldAppearance?: "workspace";
+}) {
   return (
     <input
-      className={["crystra-input", className].filter(Boolean).join(" ")}
+      className={[
+        "crystra-input",
+        fieldAppearance ? "crystra-field-control" : "",
+        className,
+      ]
+        .filter(Boolean)
+        .join(" ")}
+      data-appearance={fieldAppearance}
+      data-ui-owner={fieldAppearance ? "components" : undefined}
       data-input-kind={inputKind}
       type={type ?? inputKind}
       {...props}

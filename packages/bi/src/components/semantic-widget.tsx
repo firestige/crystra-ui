@@ -34,6 +34,7 @@ function Gauge({
   data: Extract<WidgetData, { family: "scalar" }>;
   compact: boolean;
 }) {
+  if (data.value === null) return <span>暂无数据</span>;
   const [min, max] = data.domain!;
   const ratio = Math.max(0, Math.min(1, (data.value - min) / (max - min)));
   const angle = -Math.PI + ratio * Math.PI;
@@ -356,6 +357,7 @@ export function SemanticWidget({
   else if (data.family === "series") body = <Series data={data} view={view} />;
   else if (data.family === "composition")
     body = <Composition data={data} view={view} />;
+  else if (data.value === null) body = <span>暂无数据</span>;
   else if (gauge) body = <Gauge data={data} compact={compact} />;
   else if (view === "number" || view === "range") {
     const direction = data.normal

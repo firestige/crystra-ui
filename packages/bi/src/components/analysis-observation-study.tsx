@@ -1,11 +1,10 @@
-import {
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useMemo,
-  useState,
-  type ReactNode,
-} from "react";
+import type { ObservationSetting } from "../domain/observation-settings";
+import { SelectField } from "./state-components";
+import { useAnalysisData } from "./analysis-context";
+import type { OverviewFilters } from "../domain/analysis-overview";
+import { createAnalysisLayout } from "../domain/analysis-default-layout";
+import { LayoutHeader } from "../task-layout/layout-header";
+import { useMemo, useState, type ReactNode } from "react";
 import "../analysis-observation-study.css";
 import {
   defaultChartRange,
@@ -27,28 +26,18 @@ import {
 import "../monitoring-bi.css";
 import "../monitoring-widget-base.css";
 import "../monitoring-widget.css";
-import { dashboardLayout } from "../test-harness/dashboard-fixture";
-import {
-  deliveryDirectoryRecords,
-  deliveryDirectorySearchFields,
-} from "../test-harness/delivery-directory-fixture";
-import {
-  observationSamples,
-  observationTasks,
-  observationTrace,
-  roles,
-} from "../test-harness/observation-fixture";
-import {
-  overviewSources,
-  type OverviewFilters,
-} from "../test-harness/observation-overview-fixture";
-import { createObservationQueryCatalog } from "../test-harness/observation-query-fixture";
 import "../widget-expression-study.css";
 import "../widget-tooltip.css";
 import { Tabs } from "./collection-components";
 import { DashboardGrid } from "./dashboard-grid";
 import { DeliveryDirectory } from "./delivery-directory";
-import { Button, ButtonGroup, Card, Typography } from "./design-system";
+import {
+  IconButton,
+  Button,
+  ButtonGroup,
+  Card,
+  Typography,
+} from "./design-system";
 import { Icon } from "./icon";
 import {
   resolveObservationSource,
@@ -60,30 +49,21 @@ import {
   ObservationWidget,
 } from "./observation-layout-editor";
 import {
-  inObservationRange,
   observationRange,
   observationRangeLabel,
   observationTimeZone,
 } from "./observation-time";
 import { ObservationTimeControls } from "./observation-time-controls";
-import { ResultAnalysisPreview } from "./result-analysis-preview";
+import { ResultAnalysisSurface } from "./result-analysis-preview";
 import { TraceTree, TraceWaterfall } from "./trace-views";
 
-type Page = "dashboard" | "traces" | "reports";
-const headings: Record<Page, string> = {
+export type AnalysisPage = "dashboard" | "traces" | "reports";
+const headings: Record<AnalysisPage, string> = {
   dashboard: "总览",
   traces: "调用追踪",
   reports: "对比分析",
 };
-const initial = new URLSearchParams(location.search);
-const viewAliases: Record<string, Page> = {
-  analysis: "traces",
-  audit: "traces",
-  compare: "reports",
-  dashboard: "dashboard",
-  traces: "traces",
-  reports: "reports",
-};
+
 function Text({ children }: { children: ReactNode }) {
   return (
     <Typography variant="description" tone="secondary">
@@ -103,19 +83,17 @@ function Select({
   children: ReactNode;
 }) {
   return (
-    <label className="obs-select">
-      <span>{label}</span>
-      <select
-        aria-label={label}
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-      >
-        {children}
-      </select>
-      <Icon name="chevron-down" />
-    </label>
+    <SelectField
+      appearance="inline"
+      label={label}
+      value={value}
+      onChange={(event) => onChange(event.target.value)}
+    >
+      {children}
+    </SelectField>
   );
 }
+
 function Placeholder({
   title,
   children,
@@ -131,35 +109,59 @@ function Placeholder({
     </div>
   );
 }
-export function AnalysisObservationStudy() {
-  const sourceKeys = [
-    "plan_run_id",
-    "wave_id",
-    "workflow_run_id",
-    "trace_root_id",
-    "from_gate_id",
-    "attempt",
-    "span_id",
-    "event_id",
-    "task_id",
-    "delivery_id",
-    "trace_id",
-  ];
-  const unresolved = sourceKeys.some((key) => initial.has(key));
-  const [page, setPage] = useState<Page>(
-    viewAliases[initial.get("view") ?? ""] ??
-      (unresolved ? "traces" : "dashboard"),
-  );
-  const [period, setPeriod] = useState(initial.get("period") ?? "7d");
-  const [refreshCount, setRefreshCount] = useState(0);
-  const refresh = useCallback(() => {
-    setRefreshCount((n) => n + 1);
-  }, []);
-  const [selectedScope, setScope] = useState(
-    observationTasks.some((t) => t.id === initial.get("scope"))
-      ? initial.get("scope")!
-      : "all",
-  );
+/** Host-neutral analysis surface. URL and data adapters live outside the UI. */
+export function AnalysisSurface({
+  view: page,
+  onViewChange,
+  onReturnToGate,
+  sourceContext = {},
+  initialPeriod = "7d",
+  period: controlledPeriod,
+  onPeriodChange,
+  initialScope = "all",
+  sourceNotice,
+  settings = [],
+  onSettingsChange,
+  layout: confirmedLayout,
+  onLayoutChange,
+  onRefresh,
+  refreshCount = 0,
+  refreshCadence = "0",
+  onRefreshCadenceChange,
+  dataNotice,
+}: {
+  view: AnalysisPage;
+  onViewChange: (view: AnalysisPage) => void;
+  onReturnToGate?: () => void;
+  sourceContext?: Record<string, string>;
+  initialPeriod?: string;
+  period?: string;
+  onPeriodChange?: (period: string) => void;
+  initialScope?: string;
+  sourceNotice?: string;
+  dataNotice?: string;
+  settings?: readonly ObservationSetting[];
+  onSettingsChange?: (settings: ObservationSetting[]) => void;
+  layout?: DashboardLayout;
+  onLayoutChange?: (layout: DashboardLayout) => void;
+  onRefresh?: () => void;
+  refreshCount?: number;
+  refreshCadence?: string;
+  onRefreshCadenceChange?: (cadence: string) => void;
+}) {
+  const data = useAnalysisData();
+  const {
+    referenceDate,
+    tasks: observationTasks,
+    roles,
+    deliveries: deliveryDirectoryRecords,
+    searchFields: deliveryDirectorySearchFields,
+  } = data;
+  const unresolved = !!sourceNotice;
+  const sourceKeys = Object.keys(sourceContext);
+  const [localPeriod, setPeriod] = useState(initialPeriod);
+  const period = controlledPeriod ?? localPeriod;
+  const [selectedScope, setScope] = useState(initialScope);
   const scope = page === "traces" ? selectedScope : "all";
   const [notice, setNotice] = useState("");
   const [traceView, setTraceView] = useState("waterfall");
@@ -168,143 +170,38 @@ export function AnalysisObservationStudy() {
   const [runDirectoryOpen, setRunDirectoryOpen] = useState(false);
   const [editing, setEditing] = useState(false);
   const [rangePanelId, setRangePanelId] = useState<string | null>(null);
-  const records = useMemo(
-    () =>
-      observationSamples.filter(
-        (r) =>
-          (scope === "all" || r.task === scope) &&
-          inObservationRange(r.date, period),
-      ),
-    [scope, period],
-  );
-  const go = (next: Page) => {
-    setPage(next);
+  const go = (next: AnalysisPage) => {
+    onViewChange(next);
     setNotice("");
   };
-  useEffect(() => {
-    const links = [
-      ...document.querySelectorAll<HTMLAnchorElement>(
-        '[data-section-id="analysis-dashboard-action"], [data-section-id="analysis-traces-action"], [data-section-id="analysis-reports-action"]',
-      ),
-    ];
-    const navigate = (event: MouseEvent) => {
-      if (
-        event.ctrlKey ||
-        event.metaKey ||
-        event.shiftKey ||
-        event.altKey ||
-        event.button !== 0
-      )
-        return;
-      event.preventDefault();
-      const view = new URL(
-        (event.currentTarget as HTMLAnchorElement).href,
-      ).searchParams.get("view")!;
-      setPage(viewAliases[view]);
-      setNotice("");
-    };
-    links.forEach((link) => link.addEventListener("click", navigate));
-    return () =>
-      links.forEach((link) => link.removeEventListener("click", navigate));
-  }, []);
-  useLayoutEffect(() => {
-    const query = new URLSearchParams(location.search);
-    query.set("view", page);
-    query.set("period", period);
-    if (page !== "traces") query.delete("scope");
-    else query.set("scope", scope);
-    history.replaceState(null, "", "?" + query.toString());
-    document
-      .querySelectorAll(
-        '[data-section-id^="analysis-"][data-section-id$="-action"]',
-      )
-      .forEach((el) => el.removeAttribute("aria-current"));
-    document
-      .querySelector(
-        `[data-section-id="analysis-${page === "reports" ? "reports" : page}-action"]`,
-      )
-      ?.setAttribute("aria-current", "page");
-  }, [page, period, scope]);
   const [overviewFilters, setOverviewFilters] = useState<OverviewFilters>({
     group: "provider",
     workflow: "all",
     role: "all",
     tokens: "total",
   });
-  const widgets = overviewSources(period, overviewFilters);
-  const queries = createObservationQueryCatalog(period, overviewFilters);
-  const initialLayout = (): DashboardLayout => {
-    const panels: DashboardLayout["panels"] = [];
-    for (const topic of ["resources", "quality"]) {
-      let x = 0,
-        y = 0,
-        rowHeight = 0;
-      const entries = Object.entries(widgets).filter(
-        ([, item]) => item.topic === topic,
-      );
-      if (topic === "resources") {
-        const order = [
-          "spend",
-          "equivalent",
-          "calls",
-          "input",
-          "costTrend",
-          "callTrend",
-          "tokenTrend",
-          "cache0",
-          "cache1",
-          "cache2",
-          "subscription",
-        ];
-        entries.sort(([a], [b]) => order.indexOf(a) - order.indexOf(b));
-      }
-      for (const [id, item] of entries) {
-        const [h, w] = item.size.split("x").map(Number);
-        // Keep summaries, daily trends, and cache/subscription context on separate rows.
-        const startsResourceRow =
-          topic === "resources" && ["cache0", "costTrend"].includes(id);
-        if (x + w > 9 || (startsResourceRow && x > 0)) {
-          y += rowHeight;
-          x = 0;
-          rowHeight = 0;
-        }
-        const grid = { x, y, w, h };
-        panels.push({
-          ...dashboardLayout.panels[0],
-          panel_id: id,
-          grid,
-          size: panelSizeForGrid(grid),
-          channels: { source: id },
-        });
-        x += w;
-        rowHeight = Math.max(rowHeight, h);
-      }
-    }
-    return { ...dashboardLayout, name: "系统观测", panels };
-  };
-  const [layout, setLayout] = useState(initialLayout);
-  const [savedLayout, setSavedLayout] = useState(layout);
+  const widgets = data.overview(period, overviewFilters);
+  const queries = data.queries(period, overviewFilters);
+  const [draftLayout, setDraftLayout] = useState<DashboardLayout | null>(null);
+  const layout =
+    draftLayout ?? confirmedLayout ?? createAnalysisLayout(widgets);
+  const setLayout = (
+    next: DashboardLayout | ((current: DashboardLayout) => DashboardLayout),
+  ) => setDraftLayout(typeof next === "function" ? next(layout) : next);
   const deliveryRange = useMemo<readonly [string, string]>(() => {
-    const [start, end] = observationRange(period);
+    const [start, end] = observationRange(period, referenceDate);
     return [start + observationTimeZone, end + observationTimeZone];
-  }, [period]);
+  }, [period, referenceDate]);
   const deliveryRecords = useMemo(
     () =>
       deliveryDirectoryRecords.filter(
         (record) => scope === "all" || record.taskId === scope,
       ),
-    [scope],
+    [scope, deliveryDirectoryRecords],
   );
   const trace = useMemo(
-    () =>
-      selectedDelivery
-        ? observationTrace(
-            selectedDelivery.taskId,
-            selectedDelivery.workflowVersion,
-            selectedDelivery,
-          )
-        : null,
-    [selectedDelivery],
+    () => (selectedDelivery ? data.trace(selectedDelivery) : null),
+    [selectedDelivery, data],
   );
   const traceNavigation = (
     <ButtonGroup aria-label="Trace 表达方式">
@@ -337,8 +234,12 @@ export function AnalysisObservationStudy() {
     ? ((rangePanel.channels.expressionView ?? rangeResult?.view) as View)
     : undefined;
   return (
-    <section className="wb-host obs-host" data-section-id="main-surface-host">
-      <header
+    <section
+      className="wb-host obs-host crystra-bi"
+      data-crystra-theme="dark"
+      data-section-id="main-surface-host"
+    >
+      <LayoutHeader
         className="wb-header wb-page-header obs-header"
         data-section-id="workspace-header"
       >
@@ -358,8 +259,8 @@ export function AnalysisObservationStudy() {
             appearance="underline"
             aria-label="观测工作面"
             value={page}
-            onValueChange={(value) => go(value as Page)}
-            items={(Object.keys(headings) as Page[]).map((value) => ({
+            onValueChange={(value) => go(value as AnalysisPage)}
+            items={(Object.keys(headings) as AnalysisPage[]).map((value) => ({
               value,
               label: headings[value],
               panel: null,
@@ -367,34 +268,45 @@ export function AnalysisObservationStudy() {
           />
         </div>
         <ObservationTimeControls
+          referenceDate={referenceDate}
           period={period}
-          onChange={setPeriod}
+          onChange={(next) => {
+            setPeriod(next);
+            onPeriodChange?.(next);
+          }}
+          refreshDisabled={!!data.unavailableReason}
           refreshCount={refreshCount}
-          onRefresh={refresh}
+          onRefresh={onRefresh}
+          cadence={refreshCadence}
+          onCadenceChange={onRefreshCadenceChange}
         />
         <div className="obs-header-scope" data-header-slot="context">
-          {page === "dashboard" && !unresolved && (
-            <ObservationLayoutEditor
-              editing={editing}
-              layout={layout}
-              sources={widgets}
-              queries={queries}
-              onChange={setLayout}
-              onNotice={setNotice}
-              onBegin={() => {
-                setSavedLayout(layout);
-                setEditing(true);
-              }}
-              onConfirm={() => {
-                setSavedLayout(layout);
-                setEditing(false);
-              }}
-              onCancel={() => {
-                setLayout(savedLayout);
-                setEditing(false);
-              }}
-            />
-          )}
+          {page === "dashboard" &&
+            !unresolved &&
+            queries.metrics.length > 0 &&
+            !!onLayoutChange && (
+              <ObservationLayoutEditor
+                editing={editing}
+                layout={layout}
+                sources={widgets}
+                queries={queries}
+                onChange={setLayout}
+                onNotice={setNotice}
+                onBegin={() => {
+                  setDraftLayout(structuredClone(layout));
+                  setEditing(true);
+                }}
+                onConfirm={() => {
+                  onLayoutChange?.(layout);
+                  setDraftLayout(null);
+                  setEditing(false);
+                }}
+                onCancel={() => {
+                  setDraftLayout(null);
+                  setEditing(false);
+                }}
+              />
+            )}
           {page === "traces" && (
             <Select label="观察范围" value={scope} onChange={setScope}>
               <option value="all">全部 Task</option>
@@ -406,267 +318,244 @@ export function AnalysisObservationStudy() {
             </Select>
           )}
         </div>
-      </header>
+      </LayoutHeader>
+      {(dataNotice || data.unavailableReason) && (
+        <p role="status" className="obs-data-status">
+          {dataNotice || data.unavailableReason}
+        </p>
+      )}
       {unresolved ? (
         <div className="obs-scroll" data-section-id="unresolved-context">
           <Card heading="当前来源尚未解析">
-            <Placeholder title="没有匹配的运行记录">
-              保留指定的 Task、Delivery 和 Trace 身份，接入真实查询后读取。
-            </Placeholder>
+            <Placeholder title="没有匹配的运行记录">{sourceNotice}</Placeholder>
             <dl className="wb-fields">
-              {sourceKeys
-                .filter((k) => initial.has(k))
-                .map((k) => (
-                  <div key={k}>
-                    <dt>{k}</dt>
-                    <dd>{initial.get(k)}</dd>
-                  </div>
-                ))}
+              {sourceKeys.map((k) => (
+                <div key={k}>
+                  <dt>{k}</dt>
+                  <dd>{sourceContext[k]}</dd>
+                </div>
+              ))}
             </dl>
-            {initial.has("from_gate_id") && (
-              <a
-                className="wb-return"
-                href={
-                  "crystra-task-work-v8-sidebar.html?" +
-                  new URLSearchParams([
-                    ...initial.entries(),
-                    ["surface", "gate"],
-                    ["gate_id", initial.get("from_gate_id")!],
-                  ])
-                }
-              >
-                返回审核关口
-              </a>
+            {onReturnToGate && (
+              <Button onClick={onReturnToGate}>返回审核关口</Button>
             )}
           </Card>
         </div>
       ) : (
         <div className="obs-body" data-section-id="control-bench">
-          {records.length === 0 && page === "dashboard" ? (
-            <Placeholder title="所选时间范围没有记录">
-              请调整日期范围。
-            </Placeholder>
-          ) : (
-            page === "dashboard" && (
-              <div
-                className="obs-scroll"
-                data-section-id="observation-dashboard"
-              >
-                {(["resources", "quality"] as const).map((topic) => (
-                  <section
-                    className="obs-overview-topic"
-                    data-overview-topic={topic}
-                    key={topic}
-                  >
-                    <div className="obs-topic-heading">
-                      <div>
-                        <Typography as="h2" variant="section-title">
-                          {topic === "resources"
-                            ? "资源消耗"
-                            : "Workflow 运行质量"}
-                        </Typography>
-                        <Text>
-                          {topic === "resources"
-                            ? "周期消耗、来源分布与订阅使用价值"
-                            : "执行效率、返工与人工介入"}
-                        </Text>
-                      </div>
-                      <div className="obs-topic-controls">
-                        {topic === "resources" ? (
-                          <>
-                            <Select
-                              label="Tokens"
-                              value={overviewFilters.tokens}
-                              onChange={(value) =>
-                                setOverviewFilters((f) => ({
-                                  ...f,
-                                  tokens: value as OverviewFilters["tokens"],
-                                }))
-                              }
-                            >
-                              <option value="total">合计</option>
-                              <option value="input">输入</option>
-                              <option value="output">输出</option>
-                            </Select>
-                            <ButtonGroup aria-label="资源分组">
-                              {(["provider", "model"] as const).map((value) => (
-                                <Button
-                                  key={value}
-                                  appearance="segment"
-                                  selected={overviewFilters.group === value}
-                                  onClick={() =>
-                                    setOverviewFilters((f) => ({
-                                      ...f,
-                                      group: value,
-                                    }))
-                                  }
-                                >
-                                  {value === "provider" ? "Provider" : "Model"}
-                                </Button>
-                              ))}
-                            </ButtonGroup>
-                          </>
-                        ) : (
-                          <>
-                            <Select
-                              label="Workflow"
-                              value={overviewFilters.workflow}
-                              onChange={(workflow) =>
-                                setOverviewFilters((f) => ({ ...f, workflow }))
-                              }
-                            >
-                              <option value="all">全部工作流</option>
-                              <option value="implementation">
-                                Implementation
-                              </option>
-                              <option value="research">Research</option>
-                            </Select>
-                            <Select
-                              label="Role"
-                              value={overviewFilters.role}
-                              onChange={(role) =>
-                                setOverviewFilters((f) => ({ ...f, role }))
-                              }
-                            >
-                              <option value="all">全部角色</option>
-                              {roles.map((role) => (
-                                <option key={role} value={role}>
-                                  {role}
-                                </option>
-                              ))}
-                            </Select>
-                          </>
-                        )}
-                      </div>
+          {page === "dashboard" && (
+            <div className="obs-scroll" data-section-id="observation-dashboard">
+              {(["resources", "quality"] as const).map((topic) => (
+                <section
+                  className="obs-overview-topic"
+                  data-overview-topic={topic}
+                  key={topic}
+                >
+                  <div className="obs-topic-heading">
+                    <div>
+                      <Typography as="h2" variant="section-title">
+                        {topic === "resources"
+                          ? "资源消耗"
+                          : "Workflow 运行质量"}
+                      </Typography>
+                      <Text>
+                        {topic === "resources"
+                          ? "周期消耗、来源分布与订阅使用价值"
+                          : "执行效率、返工与人工介入"}
+                      </Text>
                     </div>
-                    <DashboardGrid
-                      exactWidgets
-                      layout={{
-                        ...layout,
-                        panels: layout.panels.filter(
-                          (p) =>
-                            resolveObservationWidget(p, widgets, queries)
-                              .topic === topic,
-                        ),
-                      }}
-                      editing={editing}
-                      onLayoutChange={(next) =>
-                        setLayout((current) => ({
-                          ...current,
-                          panels: [
-                            ...current.panels.filter(
-                              (p) =>
-                                resolveObservationWidget(p, widgets, queries)
-                                  .topic !== topic,
-                            ),
-                            ...next.panels,
-                          ],
-                        }))
-                      }
-                      getWidgetSizes={(p) =>
-                        familyViews(
-                          resolveObservationWidget(p, widgets, queries).data,
-                        ).find(
-                          (v) =>
-                            v.id ===
-                            (p.channels.expressionView ??
-                              resolveObservationWidget(p, widgets, queries)
-                                .view),
-                        )!.sizes
-                      }
-                      getWidgetMinimumSize={(p) => {
-                        const resolved = resolveObservationWidget(
-                          p,
-                          widgets,
-                          queries,
-                        );
-                        const view = (p.channels.expressionView ??
-                          resolved.view) as View;
-                        return chartMinimumSize(resolved.data, view);
-                      }}
-                      canConfigureWidgetRange={(p) => {
-                        const resolved = resolveObservationWidget(
-                          p,
-                          widgets,
-                          queries,
-                        );
-                        const view = (p.channels.expressionView ??
-                          resolved.view) as View;
-                        return supportsChartRange(resolved.data, view);
-                      }}
-                      onConfigureWidgetRange={(p) => {
-                        const resolved = resolveObservationWidget(
-                          p,
-                          widgets,
-                          queries,
-                        );
-                        const view = (p.channels.expressionView ??
-                          resolved.view) as View;
-                        if (supportsChartRange(resolved.data, view))
-                          setRangePanelId(p.panel_id);
-                      }}
-                      getWidgetViews={(p) =>
-                        familyViews(
-                          resolveObservationWidget(p, widgets, queries).data,
-                        ).map((v) => ({
-                          id: v.id,
-                          label: v.label,
-                          selected:
-                            v.id ===
-                            (p.channels.expressionView ??
-                              resolveObservationWidget(p, widgets, queries)
-                                .view),
-                          onChoose: () =>
-                            setLayout((current) => ({
-                              ...current,
-                              panels: current.panels.map((row) => {
-                                if (row.panel_id !== p.panel_id) return row;
-                                const old =
-                                  `${row.grid.h}x${row.grid.w}` as MonitoringWidgetSize;
-                                const data = resolveObservationWidget(
-                                  p,
-                                  widgets,
-                                  queries,
-                                ).data;
-                                const [h, w] = (
-                                  isWidgetSizeAllowed(data, v.id, old)
-                                    ? old
-                                    : v.sizes[0]
-                                )
-                                  .split("x")
-                                  .map(Number);
-                                return {
-                                  ...row,
-                                  channels: {
-                                    ...row.channels,
-                                    expressionView: v.id,
-                                  },
-                                  grid: { ...row.grid, h, w },
-                                  size: panelSizeForGrid({ h, w }),
-                                };
-                              }),
-                            })),
-                        }))
-                      }
-                      renderPanel={(p) => (
-                        <ObservationWidget
-                          result={resolveObservationWidget(p, widgets, queries)}
-                          view={
-                            (p.channels.expressionView ??
-                              resolveObservationWidget(p, widgets, queries)
-                                .view) as View
-                          }
-                          size={
-                            `${p.grid.h}x${p.grid.w}` as MonitoringWidgetSize
-                          }
-                          exampleId={p.panel_id}
-                        />
+                    <div className="obs-topic-controls">
+                      {topic === "resources" ? (
+                        <>
+                          <Select
+                            label="Tokens"
+                            value={overviewFilters.tokens}
+                            onChange={(value) =>
+                              setOverviewFilters((f) => ({
+                                ...f,
+                                tokens: value as OverviewFilters["tokens"],
+                              }))
+                            }
+                          >
+                            <option value="total">合计</option>
+                            <option value="input">输入</option>
+                            <option value="output">输出</option>
+                          </Select>
+                          <ButtonGroup aria-label="资源分组">
+                            {(["provider", "model"] as const).map((value) => (
+                              <Button
+                                key={value}
+                                appearance="segment"
+                                selected={overviewFilters.group === value}
+                                onClick={() =>
+                                  setOverviewFilters((f) => ({
+                                    ...f,
+                                    group: value,
+                                  }))
+                                }
+                              >
+                                {value === "provider" ? "Provider" : "Model"}
+                              </Button>
+                            ))}
+                          </ButtonGroup>
+                        </>
+                      ) : (
+                        <>
+                          <Select
+                            label="Workflow"
+                            value={overviewFilters.workflow}
+                            onChange={(workflow) =>
+                              setOverviewFilters((f) => ({ ...f, workflow }))
+                            }
+                          >
+                            <option value="all">全部工作流</option>
+                            {data.workflows.map((w) => (
+                              <option key={w.id} value={w.id}>
+                                {w.label}
+                              </option>
+                            ))}
+                          </Select>
+                          <Select
+                            label="Role"
+                            value={overviewFilters.role}
+                            onChange={(role) =>
+                              setOverviewFilters((f) => ({ ...f, role }))
+                            }
+                          >
+                            <option value="all">全部角色</option>
+                            {roles.map((role) => (
+                              <option key={role} value={role}>
+                                {role}
+                              </option>
+                            ))}
+                          </Select>
+                        </>
                       )}
-                    />
-                  </section>
-                ))}
-              </div>
-            )
+                    </div>
+                  </div>
+                  <DashboardGrid
+                    exactWidgets
+                    layout={{
+                      ...layout,
+                      panels: layout.panels.filter(
+                        (p) =>
+                          resolveObservationWidget(p, widgets, queries)
+                            .topic === topic,
+                      ),
+                    }}
+                    editing={editing}
+                    onLayoutChange={(next) =>
+                      setLayout((current) => ({
+                        ...current,
+                        panels: [
+                          ...current.panels.filter(
+                            (p) =>
+                              resolveObservationWidget(p, widgets, queries)
+                                .topic !== topic,
+                          ),
+                          ...next.panels,
+                        ],
+                      }))
+                    }
+                    getWidgetSizes={(p) =>
+                      familyViews(
+                        resolveObservationWidget(p, widgets, queries).data,
+                      ).find(
+                        (v) =>
+                          v.id ===
+                          (p.channels.expressionView ??
+                            resolveObservationWidget(p, widgets, queries).view),
+                      )!.sizes
+                    }
+                    getWidgetMinimumSize={(p) => {
+                      const resolved = resolveObservationWidget(
+                        p,
+                        widgets,
+                        queries,
+                      );
+                      const view = (p.channels.expressionView ??
+                        resolved.view) as View;
+                      return chartMinimumSize(resolved.data, view);
+                    }}
+                    canConfigureWidgetRange={(p) => {
+                      const resolved = resolveObservationWidget(
+                        p,
+                        widgets,
+                        queries,
+                      );
+                      const view = (p.channels.expressionView ??
+                        resolved.view) as View;
+                      return supportsChartRange(resolved.data, view);
+                    }}
+                    onConfigureWidgetRange={(p) => {
+                      const resolved = resolveObservationWidget(
+                        p,
+                        widgets,
+                        queries,
+                      );
+                      const view = (p.channels.expressionView ??
+                        resolved.view) as View;
+                      if (supportsChartRange(resolved.data, view))
+                        setRangePanelId(p.panel_id);
+                    }}
+                    getWidgetViews={(p) =>
+                      familyViews(
+                        resolveObservationWidget(p, widgets, queries).data,
+                      ).map((v) => ({
+                        id: v.id,
+                        label: v.label,
+                        selected:
+                          v.id ===
+                          (p.channels.expressionView ??
+                            resolveObservationWidget(p, widgets, queries).view),
+                        onChoose: () =>
+                          setLayout((current) => ({
+                            ...current,
+                            panels: current.panels.map((row) => {
+                              if (row.panel_id !== p.panel_id) return row;
+                              const old =
+                                `${row.grid.h}x${row.grid.w}` as MonitoringWidgetSize;
+                              const data = resolveObservationWidget(
+                                p,
+                                widgets,
+                                queries,
+                              ).data;
+                              const [h, w] = (
+                                isWidgetSizeAllowed(data, v.id, old)
+                                  ? old
+                                  : v.sizes[0]
+                              )
+                                .split("x")
+                                .map(Number);
+                              return {
+                                ...row,
+                                channels: {
+                                  ...row.channels,
+                                  expressionView: v.id,
+                                },
+                                grid: { ...row.grid, h, w },
+                                size: panelSizeForGrid({ h, w }),
+                              };
+                            }),
+                          })),
+                      }))
+                    }
+                    renderPanel={(p) => (
+                      <ObservationWidget
+                        result={resolveObservationWidget(p, widgets, queries)}
+                        view={
+                          (p.channels.expressionView ??
+                            resolveObservationWidget(p, widgets, queries)
+                              .view) as View
+                        }
+                        size={`${p.grid.h}x${p.grid.w}` as MonitoringWidgetSize}
+                        exampleId={p.panel_id}
+                      />
+                    )}
+                  />
+                </section>
+              ))}
+            </div>
           )}
           {page === "traces" && (
             <div
@@ -739,10 +628,12 @@ export function AnalysisObservationStudy() {
             className="obs-comparison-workspace"
             data-section-id="comparison-analysis"
           >
-            <ResultAnalysisPreview
+            <ResultAnalysisSurface
               embedded
+              settings={settings}
+              onSettingsChange={onSettingsChange}
               timeRange={deliveryRange}
-              rangeLabel={observationRangeLabel(period)}
+              rangeLabel={observationRangeLabel(period, referenceDate)}
             />
           </div>
         </div>
@@ -751,9 +642,13 @@ export function AnalysisObservationStudy() {
         <div className="obs-toast" role="status">
           <Icon name="circle-check" />
           {notice}
-          <button aria-label="关闭通知" onClick={() => setNotice("")}>
+          <IconButton
+            appearance="ghost"
+            aria-label="关闭通知"
+            onClick={() => setNotice("")}
+          >
             <Icon name="x" />
-          </button>
+          </IconButton>
         </div>
       )}
       {rangePanel && rangeResult && rangeView && (

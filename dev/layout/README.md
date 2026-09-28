@@ -25,7 +25,7 @@ This is a standalone React SPA preview, not a DSH host integration or production
 - `/tasks/:taskId`: TaskDetailPage, Chat placeholder + five-surface Task workbench.
 - `/workflows`: WorkflowBrowserSurface using the host-owned local catalogue and exact revision links.
 - `/workflows/:definitionId?revision=v3&from_task_id=...&view=studio|resources|crystallization`: WorkflowStudioPage with the original v8 workflow workbench; preserves exact revision and source task in URL.
-- `/analysis?view=dashboard|traces|reports`: AnalysisAuditPage, full-width Bench placeholder.
+- `/analysis?view=dashboard|traces|reports`: AnalysisV8Assembly, existing v8 observation study with shared Header and dev-owned routing.
 
 `/` retains the initial task preview. `/tasks/new` is the new-task empty state and does not create a Task or Session. Unknown paths show a not-found page. These are local preview routes, not a published DSH routing contract. Browser history, direct links and refresh are supported; session/draft restoration is not implemented.
 
@@ -267,3 +267,45 @@ Resource browser visual convergence: Task and Workflow share ResourceViewToggle
 ResourceGalleryCard and ResourceTableRow mark their component ownership so dev's
 legacy palette rewriting cannot override primitive borders. The card subtitle row
 reserves space for its action hit target, keeping status and hover areas separate.
+
+## Analysis v8 dev assembly
+
+`AnalysisV8Assembly.tsx` mounts the exported `AnalysisSurface` inside
+`AnalysisDataProvider`. Design authority:
+`/Users/firestige/Projects/workflow-self-recursive/tmp/20260907/Crystra-ui-design/assets/crystra-analysis-audit-v8.html`
+and its `pages/analysis-audit.md` contract.
+
+The three routes expose Dashboard widgets/layout editing, Delivery directory with
+Waterfall/Tree traces, and comparison observation settings with the three-column
+editor. The dev adapter owns route changes and query parameters. Formal components
+receive view, source context and navigation callbacks; they never manipulate
+History or host Sidebar elements. The standalone HTML adapter lives in test-harness.
+Shared `LayoutHeader` preserves the 88px shell height.
+
+`AnalysisData` is a temporary presentation input for snapshots and synchronous preview
+projections, not an Evidence API or envelope. The production page can pass `{}`.
+UI retains presentation and draft editing only. Semantic catalog
+and observation-setting contracts live in domain modules; fixture records, metric
+aggregation and trace construction live exclusively in test-harness. The explicit
+reference date (2026-09-09 in dev) keeps relative ranges deterministic without a
+fixed date in the formal surface. A production host must supply Evidence-owned
+results and persistence; preview aggregation is not production metric logic.
+
+Editors reuse `SelectField`, `TextInput` and `Button`. SelectField supports native
+option groups and an unframed mode for fields already wrapped in a label. Shared
+`ModalFrame` supports controlled or native-ref modal lifecycle and content slots;
+Analysis editors and ResourceDialog use the same primitive.
+
+Check: `node dev/layout/tests/analysis-v8-assembly.mjs`. It exercises routing/back,
+layout editing, trace selection and view switching, comparison save/cancel, and
+88px header geometry at desktop and iPad landscape widths. Boundary tests guard
+against reintroducing fixture/navigation dependencies or handwritten form controls.
+Only dev is wired; 3085 is unchanged.
+
+Analysis ownership convergence: confirmed settings and layouts are controlled props.
+The dev `useAnalysisPreviewState` supplies preview configuration and synthetic refresh;
+DSH owns its application-session configuration separately. Refresh cadence/count/actions
+are host inputs; formal UI contains no refresh scheduler. Source notices are explicit
+host inputs rather than inferred from the existence of IDs. Calendar and Popover share
+`useDismissibleLayer`; toast dismissal uses IconButton. No Evidence loading hook or
+new data envelope is implemented in this step.

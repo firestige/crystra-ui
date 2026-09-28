@@ -54,3 +54,14 @@
   font: inherit;
   color: inherit;
 }
+
+.crystra-bi .crystra-field-control[data-appearance="workspace"] {
+  width: 100%;
+  height: 36px;
+  padding: 6px 10px;
+  border: 1px solid var(--color-border-default, #444);
+  border-radius: 8px;
+  background: var(--color-background-workspace, #191919);
+  color: var(--color-text-primary, #eee);
+  font: inherit;
+}

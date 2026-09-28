@@ -15,23 +15,11 @@ import {
   type ObservationQuery,
   type ObservationQueryCatalog,
 } from "../domain/observation-query";
-import type { MonitoringWidgetSize } from "../domain/widget-catalog";
-import {
-  isWidgetSizeAllowed,
-  type View,
-  type WidgetData,
-} from "../domain/widget-families";
-import { dashboardLayout } from "../test-harness/dashboard-fixture";
-export type ObservationSources = Record<
-  string,
-  {
-    topic?: "resources" | "quality";
-    data: WidgetData;
-    view: View;
-    size: MonitoringWidgetSize;
-    empty?: boolean;
-  }
->;
+import { isWidgetSizeAllowed, type View } from "../domain/widget-families";
+import { PRESET_LAYOUTS } from "../domain/layout/layout";
+const dashboardLayout = PRESET_LAYOUTS["default-overview@1"];
+import type { ObservationSources } from "../domain/analysis-overview";
+export type { ObservationSources } from "../domain/analysis-overview";
 export function resolveObservationSource(
   source: string,
   sources: ObservationSources,

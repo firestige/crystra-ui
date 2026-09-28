@@ -112,3 +112,12 @@ Task-only progress and load-more styles remain in `task-browser.css`. Legacy
 HTML card/menu/dialog and button-group recipes are not included in this shared
 stylesheet. Host adapters continue to own routing, clipboard access and resource
 loading; page components only own local filtering, sorting, selection and paging.
+
+## Analysis data and support ownership
+
+The [Analysis package boundary decision](./analysis-data-boundaries.md) records the
+2026-09-28 ownership correction. Crystra-ui includes DSH-independent business hooks,
+query support and Contract adapters as well as presentation components. Host-specific
+page composition, transport/authentication, configuration and lifecycle stay in DSH.
+A Panel must not load data itself; this does not prohibit reusable query hooks in the
+same package. Generic query modules and tests now live in Crystra-ui support/data; DSH consumes public exports.

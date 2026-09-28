@@ -3,7 +3,7 @@ import { ChatSplitDivider } from "./components/chat-split";
 /* eslint-disable react-refresh/only-export-components -- Standalone preview entry mounts React roots; components are not imported as HMR boundaries. */
 import { memo, useState, type ReactNode } from "react";
 import { createRoot } from "react-dom/client";
-import { AnalysisObservationStudy } from "./components/analysis-observation-study";
+import { AnalysisObservationStudy } from "./test-harness/analysis-preview";
 import { Tabs } from "./components/collection-components";
 import { Button, Card, Chip, Typography } from "./components/design-system";
 import { Icon, type IconName } from "./components/icon";

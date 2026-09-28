@@ -23,6 +23,7 @@ export interface ObservationQueryResult {
   view: View;
   size: MonitoringWidgetSize;
   empty?: boolean;
+  unavailableReason?: string;
 }
 export interface ObservationQueryCatalog {
   metrics: readonly ObservationMetric[];

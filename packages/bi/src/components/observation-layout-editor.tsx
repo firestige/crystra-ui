@@ -1,3 +1,6 @@
+import { ModalFrame } from "./modal-frame";
+import { SelectField } from "./state-components";
+import { TextInput } from "./design-system";
 import {
   decodeObservationLayout,
   encodeObservationLayout,
@@ -30,7 +33,8 @@ import {
   type View,
   type WidgetData,
 } from "../domain/widget-families";
-import { dashboardLayout } from "../test-harness/dashboard-fixture";
+import { PRESET_LAYOUTS } from "../domain/layout/layout";
+const dashboardLayout = PRESET_LAYOUTS["default-overview@1"];
 import { downloadConfiguration } from "./configuration-download";
 import { ConfigurationFileInput } from "./configuration-file";
 import { Button, ButtonGroup, IconButton } from "./design-system";
@@ -43,7 +47,7 @@ export function ObservationWidget({
   size,
   exampleId,
 }: {
-  result: { data: WidgetData; empty?: boolean };
+  result: { data: WidgetData; empty?: boolean; unavailableReason?: string };
   view: View;
   size: MonitoringWidgetSize;
   exampleId?: string;
@@ -71,7 +75,7 @@ export function ObservationWidget({
         </span>
       </header>
       <div className="crystra-monitoring-widget-content obs-query-empty">
-        所选范围暂无数据
+        {result.unavailableReason ?? "所选范围暂无数据"}
       </div>
     </article>
   );
@@ -304,8 +308,8 @@ function AddObservationWidget({
   ) => void;
   onClose: () => void;
 }) {
-  const [query, setQuery] = useState<ObservationQuery>({
-    metric: "calls",
+  const [queryDraft, setQuery] = useState<ObservationQuery>({
+    metric: queries.metrics[0]?.id ?? "",
     providers: "all",
     models: "all",
     groupBy: "none",
@@ -321,6 +325,12 @@ function AddObservationWidget({
   const [customRows, setCustomRows] = useState("3");
   const [customColumns, setCustomColumns] = useState("3");
   const [range, setRange] = useState<ChartRange | undefined>();
+  const query = {
+    ...queryDraft,
+    metric: queries.metrics.some((m) => m.id === queryDraft.metric)
+      ? queryDraft.metric
+      : (queries.metrics[0]?.id ?? ""),
+  };
   const metric = queries.metrics.find((m) => m.id === query.metric)!;
   const result = queries.resolve(query);
   const recipes = familyViews(result.data);
@@ -352,12 +362,6 @@ function AddObservationWidget({
   const title = customTitle ?? result.data.title;
   const update = (patch: Partial<ObservationQuery>) =>
     setQuery((current) => ({ ...current, ...patch }));
-  const dialog = useRef<HTMLDialogElement>(null);
-  useEffect(() => {
-    const element = dialog.current;
-    element?.showModal();
-    return () => element?.close();
-  }, []);
   const groups = {
     none: "不分组 · 合并统计",
     provider: "按 Provider 比较",
@@ -368,30 +372,19 @@ function AddObservationWidget({
     (m) => query.providers === "all" || query.providers.includes(m.provider),
   );
   return (
-    <dialog
-      ref={dialog}
+    <ModalFrame
+      open
+      heading="添加 Widget"
+      closeLabel="关闭添加窗口"
+      onDismiss={onClose}
       className="obs-widget-dialog obs-query-dialog"
       aria-label="添加 Widget"
-      onCancel={(e) => {
-        e.preventDefault();
-        onClose();
-      }}
+      description={
+        <p className="obs-query-intro">
+          选择要观察的指标，再决定如何比较与展示。
+        </p>
+      }
     >
-      <header>
-        <div>
-          <h2>添加 Widget</h2>
-          <p className="obs-query-intro">
-            选择要观察的指标，再决定如何比较与展示。
-          </p>
-        </div>
-        <IconButton
-          aria-label="关闭添加窗口"
-          appearance="ghost"
-          onClick={onClose}
-        >
-          <Icon name="x" />
-        </IconButton>
-      </header>
       <div className="obs-widget-form">
         <div className="obs-widget-fields">
           <section className="obs-query-section">
@@ -400,7 +393,10 @@ function AddObservationWidget({
             </h3>
             <label>
               指标
-              <select
+              <SelectField
+                appearance="workspace"
+                unframed
+                label="指标"
                 aria-label="指标"
                 value={query.metric}
                 onChange={(e) => {
@@ -445,7 +441,7 @@ function AddObservationWidget({
                       ))}
                   </optgroup>
                 ))}
-              </select>
+              </SelectField>
             </label>
             <p>{metric.description}</p>
           </section>
@@ -472,7 +468,10 @@ function AddObservationWidget({
             <div className="obs-query-pair">
               <label>
                 分组
-                <select
+                <SelectField
+                  appearance="workspace"
+                  unframed
+                  label="分组"
                   aria-label="分组"
                   value={query.groupBy}
                   onChange={(e) =>
@@ -486,11 +485,14 @@ function AddObservationWidget({
                       {groups[g]}
                     </option>
                   ))}
-                </select>
+                </SelectField>
               </label>
               <label>
                 时间组织
-                <select
+                <SelectField
+                  appearance="workspace"
+                  unframed
+                  label="时间组织"
                   aria-label="时间组织"
                   value={query.time}
                   onChange={(e) =>
@@ -502,13 +504,16 @@ function AddObservationWidget({
                       {t === "summary" ? "所选周期汇总" : "按日趋势"}
                     </option>
                   ))}
-                </select>
+                </SelectField>
               </label>
             </div>
             {query.metric === "tokens" && (
               <label>
                 Token 类型
-                <select
+                <SelectField
+                  appearance="workspace"
+                  unframed
+                  label="Token 类型"
                   aria-label="Token 类型"
                   value={query.tokens}
                   onChange={(e) =>
@@ -520,7 +525,7 @@ function AddObservationWidget({
                   <option value="total">合计</option>
                   <option value="input">输入</option>
                   <option value="output">输出</option>
-                </select>
+                </SelectField>
               </label>
             )}
             <p>
@@ -535,7 +540,10 @@ function AddObservationWidget({
             <div>
               <label>
                 Widget 表达方式
-                <select
+                <SelectField
+                  appearance="workspace"
+                  unframed
+                  label="Widget 表达方式"
                   aria-label="Widget 表达方式"
                   value={view}
                   onChange={(e) => setChosenView(e.target.value as View)}
@@ -545,7 +553,7 @@ function AddObservationWidget({
                       {v.label}
                     </option>
                   ))}
-                </select>
+                </SelectField>
               </label>
             </div>
             <fieldset className="obs-widget-sizes">
@@ -554,7 +562,8 @@ function AddObservationWidget({
                 {recipe.sizes.map((s) => {
                   const [h, w] = s.split("x").map(Number);
                   return (
-                    <button
+                    <Button
+                      appearance="ghost"
                       key={s}
                       type="button"
                       aria-label={s.replace("x", " × ")}
@@ -577,11 +586,12 @@ function AddObservationWidget({
                       <small>
                         {w * 160 + (w - 1) * 16} × {h * 160 + (h - 1) * 16}px
                       </small>
-                    </button>
+                    </Button>
                   );
                 })}
                 {minimum && (
-                  <button
+                  <Button
+                    appearance="ghost"
                     type="button"
                     aria-label="自定义"
                     aria-pressed={customSizing}
@@ -593,14 +603,15 @@ function AddObservationWidget({
                     }}
                   >
                     自定义<small>仅限制最小尺寸</small>
-                  </button>
+                  </Button>
                 )}
               </div>
               {minimum && customSizing && (
                 <div className="obs-query-pair obs-custom-size">
                   <label>
                     行数
-                    <input
+                    <TextInput
+                      fieldAppearance="workspace"
                       type="number"
                       aria-label="行数"
                       min={minimum.h}
@@ -611,7 +622,8 @@ function AddObservationWidget({
                   </label>
                   <label>
                     列数
-                    <input
+                    <TextInput
+                      fieldAppearance="workspace"
                       type="number"
                       aria-label="列数"
                       min={minimum.w}
@@ -645,7 +657,8 @@ function AddObservationWidget({
             )}
             <label>
               标题
-              <input
+              <TextInput
+                fieldAppearance="workspace"
                 aria-label="标题"
                 value={title}
                 onChange={(e) => setCustomTitle(e.target.value)}
@@ -662,7 +675,7 @@ function AddObservationWidget({
           </div>
           <div className="obs-widget-preview">
             {result.empty ? (
-              <div className="obs-query-empty">所选范围暂无数据</div>
+              <div className="obs-query-empty">{result.unavailableReason ?? "所选范围暂无数据"}</div>
             ) : (
               <SemanticWidget
                 data={{ ...previewData, title: title || result.data.title }}
@@ -709,7 +722,7 @@ function AddObservationWidget({
           添加到末尾
         </Button>
       </footer>
-    </dialog>
+    </ModalFrame>
   );
 }
 function DimensionSelection({
@@ -727,7 +740,10 @@ function DimensionSelection({
     <div className="obs-query-dimension">
       <label>
         {label}
-        <select
+        <SelectField
+          appearance="workspace"
+          unframed
+          label={label}
           aria-label={label}
           value={value === "all" ? "all" : "selected"}
           onChange={(e) =>
@@ -738,7 +754,7 @@ function DimensionSelection({
         >
           <option value="all">全部 {label}</option>
           <option value="selected">指定 {label}</option>
-        </select>
+        </SelectField>
       </label>
       {value !== "all" && (
         <div
@@ -748,7 +764,8 @@ function DimensionSelection({
         >
           {options.map((option) => (
             <label key={option.id} className="obs-query-check">
-              <input
+              <TextInput
+                fieldAppearance="workspace"
                 type="checkbox"
                 checked={value.includes(option.id)}
                 disabled={value.length === 1 && value.includes(option.id)}
@@ -787,7 +804,10 @@ export function ChartRangeFields({
     <div className="obs-chart-range-fields">
       <label>
         数值范围
-        <select
+        <SelectField
+          appearance="workspace"
+          unframed
+          label="数值范围"
           aria-label="数值范围"
           value={value.mode}
           onChange={(e) =>
@@ -806,13 +826,14 @@ export function ChartRangeFields({
           <option value="zero">从零开始</option>
           {percent && <option value="full">完整百分比 · 0—100%</option>}
           <option value="custom">自定义上下限</option>
-        </select>
+        </SelectField>
       </label>
       {value.mode === "custom" && (
         <div className="obs-query-pair">
           <label>
             下限
-            <input
+            <TextInput
+              fieldAppearance="workspace"
               type="number"
               step="any"
               aria-label="数值下限"
@@ -828,7 +849,8 @@ export function ChartRangeFields({
           </label>
           <label>
             上限
-            <input
+            <TextInput
+              fieldAppearance="workspace"
               type="number"
               step="any"
               aria-label="数值上限"
@@ -863,13 +885,7 @@ export function ObservationRangeDialog({
   onApply: (range: ChartRange) => void;
   onClose: () => void;
 }) {
-  const dialog = useRef<HTMLDialogElement>(null);
   const [range, setRange] = useState(initial ?? defaultChartRange(view));
-  useEffect(() => {
-    const element = dialog.current;
-    element?.showModal();
-    return () => element?.close();
-  }, []);
   let error = "",
     preview = data;
   try {
@@ -878,21 +894,14 @@ export function ObservationRangeDialog({
     error = (e as Error).message;
   }
   return (
-    <dialog
-      ref={dialog}
+    <ModalFrame
+      open
+      heading="图表数值范围"
+      closeLabel="关闭范围设置"
+      onDismiss={onClose}
       className="obs-widget-dialog"
       aria-label="图表数值范围"
-      onCancel={(e) => {
-        e.preventDefault();
-        onClose();
-      }}
     >
-      <header>
-        <h2>图表数值范围</h2>
-        <IconButton aria-label="关闭范围设置" onClick={onClose}>
-          <Icon name="x" />
-        </IconButton>
-      </header>
       <div className="obs-widget-form">
         <div className="obs-widget-fields">
           <ChartRangeFields data={data} value={range} onChange={setRange} />
@@ -910,6 +919,6 @@ export function ObservationRangeDialog({
           应用范围
         </Button>
       </footer>
-    </dialog>
+    </ModalFrame>
   );
 }

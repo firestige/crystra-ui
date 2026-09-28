@@ -121,3 +121,32 @@ it("allows pages to request a top anchored select without changing other selects
     "bottom",
   );
 });
+
+it("supports grouped options inside an existing field label without nesting labels", async () => {
+  const user = userEvent.setup();
+  const change = vi.fn();
+  const { container } = render(
+    <label>
+      指标
+      <SelectField
+        unframed
+        appearance="workspace"
+        label="指标"
+        defaultValue="cost"
+        onChange={change}
+      >
+        <optgroup label="资源">
+          <option value="cost">费用</option>
+          <option value="tokens">用量</option>
+        </optgroup>
+      </SelectField>
+    </label>,
+  );
+  expect(container.querySelector("label label")).toBeNull();
+  await user.selectOptions(
+    screen.getByRole("combobox", { name: "指标" }),
+    "tokens",
+  );
+  expect(change).toHaveBeenCalledOnce();
+  expect(screen.getByRole("combobox")).toHaveValue("tokens");
+});

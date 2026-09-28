@@ -1,6 +1,5 @@
-import { inObservationRange } from "../components/observation-time";
+import { inObservationRange } from "./observation-clock";
 import type {
-  ObservationMetric,
   ObservationQuery,
   ObservationQueryCatalog,
   ObservationQueryResult,
@@ -12,113 +11,7 @@ import {
   type OverviewFilters,
 } from "./observation-overview-fixture";
 
-const resourceGroups = ["none", "provider", "model"] as const;
-const qualityGroups = ["none", "provider", "model", "role"] as const;
-const times = ["summary", "daily"] as const;
-const metrics: readonly ObservationMetric[] = [
-  {
-    id: "spend",
-    label: "按量实际费用",
-    topic: "resources",
-    description: "所选周期内的实际按量费用，不含订阅估值。",
-    groups: resourceGroups,
-    times,
-    dimensions: true,
-  },
-  {
-    id: "equivalent",
-    label: "订阅用量等价估值",
-    topic: "resources",
-    description: "按用量折算的估值，用于与订阅费比较。",
-    groups: resourceGroups,
-    times,
-    dimensions: true,
-  },
-  {
-    id: "calls",
-    label: "API 请求次数",
-    topic: "resources",
-    description: "请求总量，支持按 Provider 或 Model 比较与查看趋势。",
-    groups: resourceGroups,
-    times,
-    dimensions: true,
-  },
-  {
-    id: "tokens",
-    label: "Tokens 用量",
-    topic: "resources",
-    description: "合计、输入或输出 Token，可按来源分组。",
-    groups: resourceGroups,
-    times,
-    dimensions: true,
-  },
-  {
-    id: "cache",
-    label: "缓存命中率",
-    topic: "resources",
-    description:
-      "缓存命中输入 Token / 输入 Token。合并时累计分子、分母后求比率。",
-    groups: resourceGroups,
-    times,
-    dimensions: true,
-  },
-  {
-    id: "subscription",
-    label: "订阅信息",
-    topic: "resources",
-    description: "展示订阅费、周期与用量等价估值；当前样本为 Copilot。",
-    groups: ["none"],
-    times: ["summary"],
-    dimensions: false,
-  },
-  {
-    id: "roleDuration",
-    label: "Role 平均执行时间",
-    topic: "quality",
-    description: "累计执行时间 / 执行次数，继承页面的 Workflow 与 Role 范围。",
-    groups: qualityGroups,
-    times,
-    dimensions: true,
-  },
-  {
-    id: "roleCost",
-    label: "Role 单位执行费用",
-    topic: "quality",
-    description: "累计费用 / 执行次数；订阅部分为用量估值。",
-    groups: qualityGroups,
-    times,
-    dimensions: true,
-  },
-  {
-    id: "roleRework",
-    label: "Role 返工发生率",
-    topic: "quality",
-    description:
-      "发生返工的执行次数 / 执行次数，继承页面的 Workflow 与 Role 范围。",
-    groups: qualityGroups,
-    times,
-    dimensions: true,
-  },
-  {
-    id: "autonomy",
-    label: "无人工介入运行时间",
-    topic: "quality",
-    description: "每日最长连续自主运行时长，继承页面的 Workflow 与 Role 范围。",
-    groups: ["none"],
-    times: ["daily"],
-    dimensions: false,
-  },
-  {
-    id: "interventions",
-    label: "人工介入次数",
-    topic: "quality",
-    description:
-      "按计划内裁决、纠偏与主动变更展示，继承页面的 Workflow 与 Role 范围。",
-    groups: ["none"],
-    times,
-    dimensions: false,
-  },
-];
+import { observationMetrics as metrics } from "../domain/observation-metrics";
 type RecordRow = (typeof overviewRecords)[number];
 const sum = (
   rows: RecordRow[],

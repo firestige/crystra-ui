@@ -1,3 +1,4 @@
+import { ModalFrame } from "./modal-frame";
 import { useEffect, useRef, type ReactNode } from "react";
 import { Button } from "./design-system";
 import "./resource-dialog.css";
@@ -25,7 +26,7 @@ export function ResourceDialog({
     dialog.current?.showModal();
   }, []);
   return (
-    <dialog
+    <ModalFrame
       ref={dialog}
       className={"crystra-bi crystra-resource-dialog " + className}
       data-crystra-theme="dark"
@@ -62,6 +63,6 @@ export function ResourceDialog({
           </Button>
         </footer>
       </form>
-    </dialog>
+    </ModalFrame>
   );
 }

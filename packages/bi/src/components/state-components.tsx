@@ -1,3 +1,4 @@
+import { useDismissibleLayer } from "./use-dismissible-layer";
 import {
   useEffect,
   useId,
@@ -86,10 +87,12 @@ export type SelectFieldProps = Omit<
 > & {
   label: string;
   size?: ComponentSize;
-  appearance?: "default" | "embedded" | "inline";
+  appearance?: "default" | "embedded" | "inline" | "workspace";
   hideLabel?: boolean;
   menuPlacement?: "top" | "bottom";
-  options: readonly { value: string; label: string; disabled?: boolean }[];
+  options?: readonly { value: string; label: string; disabled?: boolean }[];
+  children?: ReactNode;
+  unframed?: boolean;
 };
 export function SelectField({
   label,
@@ -99,9 +102,36 @@ export function SelectField({
   size = "regular",
   id,
   options,
+  children,
+  unframed = false,
   ...props
 }: SelectFieldProps) {
   const generated = useId();
+  const control = (
+    <select
+      {...props}
+      className={[
+        appearance === "workspace" ? "crystra-field-control" : "",
+        props.className,
+      ]
+        .filter(Boolean)
+        .join(" ")}
+      data-appearance={appearance}
+      data-ui-owner={appearance === "workspace" ? "components" : undefined}
+      data-menu-placement={menuPlacement}
+      aria-label={props["aria-label"] ?? label}
+      id={id ?? generated}
+    >
+      {options
+        ? options.map((x) => (
+            <option key={x.value} value={x.value} disabled={x.disabled}>
+              {x.label}
+            </option>
+          ))
+        : children}
+    </select>
+  );
+  if (unframed) return control;
   return (
     <label
       className="crystra-field"
@@ -111,21 +141,11 @@ export function SelectField({
       htmlFor={id ?? generated}
     >
       {!hideLabel && <Typography variant="label">{label}</Typography>}
-      <select
-        {...props}
-        data-menu-placement={menuPlacement}
-        aria-label={props["aria-label"] ?? label}
-        id={id ?? generated}
-      >
-        {options.map((x) => (
-          <option key={x.value} value={x.value} disabled={x.disabled}>
-            {x.label}
-          </option>
-        ))}
-      </select>
+      {control}
     </label>
   );
 }
+
 export type SelectionControlProps = Omit<
   InputHTMLAttributes<HTMLInputElement>,
   "size" | "type"
@@ -166,20 +186,16 @@ export function Popover({ label, children, size = "compact" }: PopoverProps) {
     });
     panel.current.focus();
   }, [open]);
+  useDismissibleLayer({ open, root, trigger, onDismiss: () => setOpen(false) });
   useEffect(() => {
     if (!open) return;
-    const outside = (e: PointerEvent) => {
-      if (!root.current?.contains(e.target as Node)) setOpen(false);
-    };
     const dismiss = () => setOpen(false);
     const scroll = (e: Event) => {
       if (!panel.current?.contains(e.target as Node)) setOpen(false);
     };
-    document.addEventListener("pointerdown", outside);
     window.addEventListener("resize", dismiss);
     window.addEventListener("scroll", scroll, true);
     return () => {
-      document.removeEventListener("pointerdown", outside);
       window.removeEventListener("resize", dismiss);
       window.removeEventListener("scroll", scroll, true);
     };
@@ -191,14 +207,6 @@ export function Popover({ label, children, size = "compact" }: PopoverProps) {
       onBlur={(e) => {
         if (!e.currentTarget.contains(e.relatedTarget as Node | null))
           setOpen(false);
-      }}
-      onKeyDown={(e) => {
-        if (open && e.key === "Escape") {
-          e.preventDefault();
-          e.stopPropagation();
-          setOpen(false);
-          trigger.current?.focus();
-        }
       }}
     >
       <Button
