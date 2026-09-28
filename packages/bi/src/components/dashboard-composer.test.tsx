@@ -113,3 +113,22 @@ describe("grid dashboard composer", () => {
     expect(screen.queryByLabelText("Layout JSON")).toBeNull();
   });
 });
+
+it("retains a retired metric panel with a local unavailable state", () => {
+  const layout: DashboardLayout = structuredClone(
+    PRESET_LAYOUTS["default-overview@1"],
+  );
+  layout.panels[0]!.metric_coordinate = "retired-metric@1.0.0";
+  render(
+    <DashboardComposer layout={layout} onApply={vi.fn()} results={results}>
+      {({ dashboard }) => dashboard}
+    </DashboardComposer>,
+  );
+  expect(screen.getByText("retired-metric@1.0.0")).toBeInTheDocument();
+  expect(
+    screen.getByText("该指标当前不可用，已保留面板配置。"),
+  ).toBeInTheDocument();
+  expect(
+    screen.getByText("Operational latency", { exact: false }),
+  ).toBeDefined();
+});

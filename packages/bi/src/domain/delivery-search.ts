@@ -7,6 +7,7 @@ export interface DeliverySearchRecord {
   workflowName: string;
   workflowVersion: string;
   startedAt: string;
+  recordedAt?: string;
 }
 /** Supplied by the query adapter's indexed-field catalogue, not inferred from row properties. */
 export interface DeliverySearchField {
@@ -34,7 +35,7 @@ export function searchDeliveries(
   const [start, end] = range.map(Date.parse);
   return records
     .filter((record) => {
-      const time = Date.parse(record.startedAt);
+      const time = Date.parse(record.recordedAt ?? record.startedAt);
       return (
         time >= start &&
         time <= end &&
@@ -44,7 +45,7 @@ export function searchDeliveries(
           const actual =
             field.key === "workflowRef"
               ? `${record.workflowName}@${record.workflowVersion}`
-              : record[field.key];
+              : (record[field.key] ?? "");
           const expected = condition.value.trim();
           if (field.match === "workflow")
             return expected.includes("@")
@@ -60,7 +61,8 @@ export function searchDeliveries(
     })
     .sort(
       (a, b) =>
-        Date.parse(b.startedAt) - Date.parse(a.startedAt) ||
+        Date.parse(b.recordedAt ?? b.startedAt) -
+          Date.parse(a.recordedAt ?? a.startedAt) ||
         a.deliveryId.localeCompare(b.deliveryId),
     );
 }

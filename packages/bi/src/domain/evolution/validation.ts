@@ -1,3 +1,4 @@
+import { validMetricId, validMetricVersion } from "./metric-identity";
 import type { MetricResult } from "./types";
 
 const truthStates = new Set([
@@ -39,9 +40,8 @@ const stringArray = (value: unknown): value is string[] =>
 export function isMetricResult(value: unknown): value is MetricResult {
   if (
     !record(value) ||
-    typeof value.metric_id !== "string" ||
-    value.metric_id.length === 0 ||
-    value.metric_version !== "2.0.0" ||
+    !validMetricId(value.metric_id) ||
+    !validMetricVersion(value.metric_version) ||
     !Array.isArray(value.slices)
   )
     return false;

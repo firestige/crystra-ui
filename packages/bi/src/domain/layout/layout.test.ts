@@ -214,3 +214,9 @@ describe("bounded dashboard layouts", () => {
     expect(decodeLayout(value)).toMatchObject({ ok: false });
   });
 });
+
+it("retains persisted panels for retired or newly released metric coordinates", () => {
+  const layout = structuredClone(PRESET_LAYOUTS["default-overview@1"]);
+  layout.panels[0]!.metric_coordinate = "retired-metric@1.0.0";
+  expect(decodeLayout(layout)).toEqual({ ok: true, value: layout });
+});

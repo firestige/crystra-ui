@@ -1,4 +1,4 @@
-import type { CATALOG_COORDINATES } from "../evolution/client";
+import type { CATALOG_COORDINATES } from "./coordinates";
 
 interface MetricCopy {
   definition: string;
@@ -136,3 +136,15 @@ export const METRIC_COPY: Record<Coordinate, MetricCopy> = {
       "Availability does not state Usage amount; do not turn missing Usage into zero.",
   },
 };
+
+export function metricCopy(coordinate: string): MetricCopy {
+  return Object.hasOwn(METRIC_COPY, coordinate)
+    ? METRIC_COPY[coordinate as Coordinate]
+    : {
+        definition: coordinate,
+        valueSemantics: "当前 UI 版本没有该指标的语义适配。",
+        eligibility: "由 Evaluation 对应版本的指标契约定义。",
+        exclusions: [],
+        limits: "保留原始指标引用，不自动替换为其他指标或版本。",
+      };
+}

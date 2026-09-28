@@ -196,9 +196,9 @@ describe("closed Evolution decoder", () => {
         Object.assign(body, { api_version: 2 }),
     ],
     [
-      "missing catalog coordinate",
+      "duplicate catalog coordinate",
       (body: ReturnType<typeof singleResponse>) =>
-        body.result.metric_results.pop(),
+        body.result.metric_results.push(body.result.metric_results[0]!),
     ],
     [
       "unknown nested field",
@@ -647,4 +647,14 @@ describe("bounded Evolution transport", () => {
       error: { kind: "RESPONSE_BOUND_EXCEEDED", maximumBytes: 16 },
     });
   });
+});
+
+it("decodes a changed metric catalog without binding the transport to its release", () => {
+  const body = singleResponse();
+  body.result.receipt.catalog.version = "3.0.0";
+  body.result.receipt.catalog.semantic_digest = "a".repeat(64);
+  body.result.metric_results = [body.result.metric_results[0]!];
+  body.result.metric_results[0]!.metric_id = "new-metric";
+  body.result.metric_results[0]!.metric_version = "1.0.0";
+  expect(decodeComputeResponse(body).ok).toBe(true);
 });

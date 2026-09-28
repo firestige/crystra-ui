@@ -20,3 +20,15 @@ export function oneOf<T extends string>(
 ): value is T {
   return typeof value === "string" && values.includes(value as T);
 }
+
+const encoder = new TextEncoder();
+export function bytewiseCompare(left: string, right: string): number {
+  const leftBytes = encoder.encode(left);
+  const rightBytes = encoder.encode(right);
+  const length = Math.min(leftBytes.length, rightBytes.length);
+  for (let index = 0; index < length; index += 1) {
+    const difference = leftBytes[index]! - rightBytes[index]!;
+    if (difference !== 0) return difference;
+  }
+  return leftBytes.length - rightBytes.length;
+}

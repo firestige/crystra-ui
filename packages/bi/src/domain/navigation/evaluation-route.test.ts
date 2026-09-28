@@ -130,3 +130,11 @@ describe("evaluation route identity", () => {
     ).toMatchObject({ tag: "INVALID" });
   });
 });
+
+it("preserves metric focus across catalog releases", () => {
+  expect(
+    parseEvaluationRoute(
+      "/evaluate?v=1&task=task-a&metric=new-metric%403.0.0&side=single",
+    ),
+  ).toMatchObject({ tag: "SINGLE", focus: { metric: "new-metric@3.0.0" } });
+});

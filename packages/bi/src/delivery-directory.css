@@ -157,3 +157,21 @@
   width: 96px;
   max-width: 100%;
 }
+
+/* The virtual directory uses uniform rows, with spacing inside each row. */
+.crystra-bi[data-crystra-theme="dark"]
+  .delivery-directory-results
+  .crystra-list {
+  gap: 0;
+}
+.delivery-directory-results
+  .crystra-list-copy
+  > .crystra-typography:first-child,
+.delivery-directory-results
+  .crystra-list-copy
+  .crystra-typography[data-variant="description"]
+  > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

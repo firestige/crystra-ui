@@ -80,12 +80,16 @@ export function ResultAnalysisSurface({
   embedded = false,
   settings = [],
   onSettingsChange,
+  subset: controlledSubset,
+  onSubsetChange,
 }: {
   timeRange: readonly [string, string];
   rangeLabel?: string;
   embedded?: boolean;
   settings?: readonly ObservationSetting[];
   onSettingsChange?: (settings: ObservationSetting[]) => void;
+  subset?: string[] | null;
+  onSubsetChange?: (ids: string[] | null) => void;
 }) {
   const {
     provenance,
@@ -106,10 +110,12 @@ export function ResultAnalysisSurface({
   const fileInput = useRef<HTMLInputElement>(null);
   const allowed = analysisDeliveries.filter(
     (row) =>
-      Date.parse(row.startedAt) >= Date.parse(timeRange[0]) &&
-      Date.parse(row.startedAt) <= Date.parse(timeRange[1]),
+      Date.parse(row.recordedAt ?? row.startedAt) >= Date.parse(timeRange[0]) &&
+      Date.parse(row.recordedAt ?? row.startedAt) <= Date.parse(timeRange[1]),
   );
-  const [subset, setSubset] = useState<string[] | null>(null);
+  const [localSubset, setSubset] = useState<string[] | null>(null);
+  const subset =
+    controlledSubset === undefined ? localSubset : controlledSubset;
   const deliveries = allowed
     .filter((row) => subset === null || subset.includes(row.deliveryId))
     .map((row) => row.deliveryId);
@@ -1181,11 +1187,22 @@ export function ResultAnalysisSurface({
                 const selected = draftSelection.filter((id) =>
                   allowed.some((row) => row.deliveryId === id),
                 );
-                setSubset(selected.length === allowed.length ? null : selected);
+                setSubset(selected);
+                onSubsetChange?.(selected);
                 dataset.current?.close();
               }}
             >
               应用数据范围
+            </Button>
+            <Button
+              appearance="ghost"
+              onClick={() => {
+                setSubset(null);
+                onSubsetChange?.(null);
+                dataset.current?.close();
+              }}
+            >
+              恢复时间范围内全部数据
             </Button>
           </div>
         </Card>
@@ -1276,13 +1293,14 @@ function ObservationChartResult({
     legendLabel: metricLabels,
   };
   const error =
-    !chart.items.length || !matrix.dimensions.length
+    matrix.unavailableReason ??
+    (!chart.items.length || !matrix.dimensions.length
       ? "请选择指标和数据范围。"
       : chart.chartType === "radar" && matrix.dimensions.length < 3
         ? "雷达图需要至少三个兼容数据列作为辐射轴。"
         : chart.chartType === "heatmap" && !chart.secondary
           ? "请选择热力图的行字段。"
-          : null;
+          : null);
   return (
     <Card
       className="observation-chart-card"

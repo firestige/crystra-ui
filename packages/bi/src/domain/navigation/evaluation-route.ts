@@ -1,4 +1,4 @@
-import { CATALOG_COORDINATES } from "../evolution/client";
+import { validMetricCoordinate } from "../evolution/metric-identity";
 
 const MAX_TASKS_PER_SIDE = 24;
 const MAX_RELATIVE_URL_BYTES = 8 * 1024;
@@ -6,7 +6,7 @@ const taskIdPattern = /^[A-Za-z0-9][A-Za-z0-9._:/@-]{0,127}$/;
 const encoder = new TextEncoder();
 
 type Focus = {
-  metric: (typeof CATALOG_COORDINATES)[number];
+  metric: string;
   side: "single" | "left" | "right";
 };
 
@@ -97,9 +97,7 @@ function focus(
   if (
     metric === null ||
     side === null ||
-    !CATALOG_COORDINATES.includes(
-      metric as (typeof CATALOG_COORDINATES)[number],
-    ) ||
+    !validMetricCoordinate(metric) ||
     !allowedSides.includes(side as Focus["side"])
   )
     return null;

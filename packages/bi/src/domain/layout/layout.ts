@@ -1,5 +1,6 @@
 import { closed, record } from "../evidence/validation";
-import { CATALOG_COORDINATES } from "../evolution/client";
+import { CATALOG_COORDINATES } from "../catalog/coordinates";
+import { validMetricCoordinate } from "../evolution/metric-identity";
 import {
   VISUALIZER_REGISTRY,
   type VisualizerId,
@@ -91,7 +92,7 @@ type PresentationTransform =
 
 export interface LayoutPanel {
   panel_id: string;
-  metric_coordinate: (typeof CATALOG_COORDINATES)[number];
+  metric_coordinate: string;
   visualizer: VisualizerId;
   size: PanelSize;
   channels: Record<string, string>;
@@ -112,7 +113,7 @@ const channelBinding: Record<string, string> = {
 
 export function bindLayoutPanel(
   panelId: string,
-  metricCoordinate: (typeof CATALOG_COORDINATES)[number],
+  metricCoordinate: string,
   visualizer: VisualizerId,
   size: PanelSize,
   grid: DashboardGridPlacement,
@@ -138,7 +139,7 @@ type LayoutResult =
   { ok: true; value: DashboardLayout } | { ok: false; reason: string };
 
 const tablePanel = (
-  coordinate: (typeof CATALOG_COORDINATES)[number],
+  coordinate: string,
   grid: DashboardGridPlacement,
 ): LayoutPanel => ({
   panel_id: coordinate.slice(0, coordinate.lastIndexOf("@")),
@@ -232,9 +233,7 @@ function panel(value: unknown): value is LayoutPanel {
     ]) ||
     typeof value.panel_id !== "string" ||
     !/^[a-z0-9][a-z0-9-]{0,63}$/.test(value.panel_id) ||
-    !CATALOG_COORDINATES.includes(
-      value.metric_coordinate as (typeof CATALOG_COORDINATES)[number],
-    ) ||
+    !validMetricCoordinate(value.metric_coordinate) ||
     !Object.hasOwn(VISUALIZER_REGISTRY, value.visualizer as string) ||
     !["SMALL", "MEDIUM", "WIDE"].includes(value.size as string) ||
     !record(value.channels) ||

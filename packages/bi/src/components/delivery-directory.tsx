@@ -47,7 +47,16 @@ export function DeliveryDirectory({
   selectedId,
   onSelectionChange,
   searchFields,
+  paging,
+  onSearchChange,
 }: {
+  paging?: {
+    total?: number;
+    hasMore: boolean;
+    loading: boolean;
+    onLoadMore: () => void;
+  };
+  onSearchChange?: (conditions: DeliverySearchCondition[]) => void;
   records: readonly DeliverySearchRecord[];
   range: readonly [string, string];
   selectedId: string | null;
@@ -59,9 +68,14 @@ export function DeliveryDirectory({
     searchFields.find((item) => item.key === fieldKey) ?? searchFields[0];
   const [draft, setDraft] = useState("");
   const [conditions, setConditions] = useState<DeliverySearchCondition[]>([]);
+  useEffect(() => {
+    onSearchChange?.(conditions);
+  }, [conditions, onSearchChange]);
   const [filters, setFilters] = useState<DeliveryFilters>({});
   const [filterOpen, setFilterOpen] = useState(false);
   const [limit, setLimit] = useState(10);
+  const [windowStart, setWindowStart] = useState(0);
+  const [rowHeight, setRowHeight] = useState(0);
   const scroll = useRef<HTMLDivElement>(null),
     sentinel = useRef<HTMLDivElement>(null);
   const filterId = useId();
@@ -105,22 +119,39 @@ export function DeliveryDirectory({
   if (previousQuery !== queryKey) {
     setPreviousQuery(queryKey);
     setLimit(10);
+    setWindowStart(0);
   }
   useEffect(() => {
     if (scroll.current) scroll.current.scrollTop = 0;
   }, [queryKey]);
   useEffect(() => {
-    if (!sentinel.current || limit >= matches.length) return;
+    if (
+      !sentinel.current ||
+      (limit >= matches.length && (!paging?.hasMore || paging.loading))
+    )
+      return;
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries.some((entry) => entry.isIntersecting))
-          setLimit((value) => Math.min(value + 10, matches.length));
+        if (entries.some((entry) => entry.isIntersecting)) {
+          if (limit < matches.length)
+            setLimit((value) => Math.min(value + 10, matches.length));
+          else if (paging?.hasMore && !paging.loading) paging.onLoadMore();
+        }
       },
       { root: scroll.current, rootMargin: "0px 0px 100px 0px" },
     );
     observer.observe(sentinel.current);
     return () => observer.disconnect();
-  }, [matches.length, limit]);
+  }, [matches.length, limit, paging]);
+  useLayoutEffect(() => {
+    const first =
+      scroll.current?.querySelector<HTMLElement>("[data-delivery-id]");
+    const measured = first?.getBoundingClientRect().height ?? 0;
+    if (measured > 0 && measured !== rowHeight) setRowHeight(measured);
+  }, [matches.length, limit, rowHeight]);
+  const visibleCount = Math.min(limit, matches.length);
+  const start = Math.min(windowStart, Math.max(0, visibleCount - 1));
+  const windowEnd = Math.min(visibleCount, start + 30);
   return (
     <section className="delivery-directory" aria-label="Delivery 检索目录">
       <div className="delivery-directory-header">
@@ -302,12 +333,35 @@ export function DeliveryDirectory({
             )}
           </div>
           <Typography variant="meta" role="status">
+            {paging?.total !== undefined
+              ? `查询命中 ${paging.total} 条，已加载结果中 `
+              : paging?.hasMore
+                ? "已加载结果中 "
+                : ""}
             {matches.length} 条命中
           </Typography>
         </div>
       </div>
       <div
         ref={scroll}
+        onScroll={(event) => {
+          const element = event.currentTarget;
+          const first =
+            element.querySelector<HTMLElement>("[data-delivery-id]");
+          const measured = first?.getBoundingClientRect().height ?? 0;
+          if (measured > 0) {
+            setRowHeight(measured);
+            setWindowStart(
+              Math.max(
+                0,
+                Math.min(
+                  visibleCount - 1,
+                  Math.floor(element.scrollTop / measured) - 5,
+                ),
+              ),
+            );
+          }
+        }}
         className="delivery-directory-results"
         data-testid="delivery-directory-scroll"
       >
@@ -316,9 +370,17 @@ export function DeliveryDirectory({
           selectionAppearance="surface"
           size="compact"
         >
-          {matches.slice(0, limit).map((delivery) => (
+          {start > 0 && (
+            <li
+              aria-hidden="true"
+              style={{ height: start * rowHeight, flexShrink: 0 }}
+            />
+          )}
+          {matches.slice(start, windowEnd).map((delivery, index) => (
             <ListItem
               key={delivery.deliveryId}
+              aria-setsize={matches.length}
+              aria-posinset={start + index + 1}
               data-delivery-id={delivery.deliveryId}
               data-trace-id={delivery.traceId}
               primary={delivery.deliveryId}
@@ -334,22 +396,32 @@ export function DeliveryDirectory({
                     {delivery.workflowId}
                   </span>
                   <time dateTime={delivery.startedAt}>
-                    {new Intl.DateTimeFormat("zh-CN", {
-                      timeZone: "Asia/Shanghai",
-                      month: "2-digit",
-                      day: "2-digit",
-                      hour: "2-digit",
-                      minute: "2-digit",
-                      hour12: false,
-                    }).format(new Date(delivery.startedAt))}{" "}
-                    UTC+08:00
+                    {delivery.startedAt
+                      ? new Intl.DateTimeFormat("zh-CN", {
+                          timeZone: "Asia/Shanghai",
+                          month: "2-digit",
+                          day: "2-digit",
+                          hour: "2-digit",
+                          minute: "2-digit",
+                          hour12: false,
+                        }).format(new Date(delivery.startedAt)) + " UTC+08:00"
+                      : "开始时间未提供"}
                   </time>
                 </>
               }
             />
           ))}
+          {windowEnd < visibleCount && (
+            <li
+              aria-hidden="true"
+              style={{
+                height: (visibleCount - windowEnd) * rowHeight,
+                flexShrink: 0,
+              }}
+            />
+          )}
         </List>
-        {matches.length === 0 ? (
+        {matches.length === 0 && !paging?.hasMore ? (
           <Typography as="p" variant="description" tone="secondary">
             没有匹配的 Delivery，请调整检索条件、结果筛选或时间范围。
           </Typography>
@@ -359,7 +431,11 @@ export function DeliveryDirectory({
             className="delivery-directory-sentinel"
             aria-hidden="true"
           >
-            {limit < matches.length ? "继续向下滚动" : "已显示全部结果"}
+            {paging?.loading
+              ? "正在加载…"
+              : limit < matches.length || paging?.hasMore
+                ? "继续向下滚动"
+                : "已显示全部结果"}
           </div>
         )}
       </div>

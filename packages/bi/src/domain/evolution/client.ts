@@ -1,3 +1,11 @@
+import { validRecordedRange } from "../recorded-range";
+import type {
+  RecordedSelection,
+  RecordedEvaluationContext,
+  RecordedComputeResponse,
+  EvidenceBinding,
+  InputReference,
+} from "./types";
 import { closed, oneOf, record } from "../evidence/validation";
 import type {
   CompareResponse,
@@ -20,23 +28,13 @@ export type {
   SingleResponse,
 } from "./types";
 
-export const CATALOG_COORDINATES = [
-  "role-template-rework-rate@2.0.0",
-  "role-template-trajectory-partial-cost@2.0.0",
-  "role-model-task-outcome-rate@2.0.0",
-  "operational-latency-ms@2.0.0",
-  "trajectory-partial-cost@2.0.0",
-  "task-cohort-comparison-eligibility@2.0.0",
-  "delivery-stage-reach@2.0.0",
-  "delivery-terminal-outcome-rate@2.0.0",
-  "delivery-cycle-time-ms@2.0.0",
-  "operational-token-usage@2.0.0",
-  "operational-attributable-cost@2.0.0",
-  "operational-usage-availability@2.0.0",
-] as const;
+export { CATALOG_COORDINATES } from "../catalog/coordinates";
+import {
+  validMetricCoordinate,
+  validMetricId,
+  validMetricVersion,
+} from "./metric-identity";
 
-const CATALOG_DIGEST =
-  "851692f9d4a549d21f3c741470737eabb0d40b5f03cf10ffae76e1892023741e";
 const MAXIMUM_BODY_BYTES = 8 * 1024 * 1024;
 const DEFAULT_TIMEOUT_MS = 125_000;
 const taskIdPattern = /^[A-Za-z0-9][A-Za-z0-9._:/@-]{0,127}$/;
@@ -50,7 +48,7 @@ const prefixedDigestPattern = /^sha256:[a-f0-9]{64}$/;
 const timestampPattern =
   /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/;
 
-function incompatible(reason: string): EvolutionResult {
+function incompatible(reason: string): Extract<EvolutionResult, { ok: false }> {
   return { ok: false, error: { kind: "INCOMPATIBLE", reason } };
 }
 
@@ -305,8 +303,8 @@ function metricResult(value: unknown): value is MetricResult {
   if (!(
     record(value) &&
     closed(value, ["metric_id", "metric_version", "slices"]) &&
-    typeof value.metric_id === "string" &&
-    value.metric_version === "2.0.0" &&
+    validMetricId(value.metric_id) &&
+    validMetricVersion(value.metric_version) &&
     Array.isArray(value.slices) &&
     value.slices.length > 0 &&
     value.slices.every(metricSlice)
@@ -577,7 +575,7 @@ function workflowResolution(value: unknown): boolean {
     : matched.every((item) => item === undefined);
 }
 
-function receipt(value: unknown): value is ResolvedEvaluationContext {
+function receiptBase(value: unknown): value is Record<string, unknown> {
   if (
     !record(value) ||
     !closed(value, [
@@ -595,8 +593,6 @@ function receipt(value: unknown): value is ResolvedEvaluationContext {
   )
     return false;
   if (
-    value.context_version !== 1 ||
-    !selection(value.selection) ||
     typeof value.as_of !== "string" ||
     !timestampPattern.test(value.as_of) ||
     typeof value.resolved_at !== "string" ||
@@ -623,8 +619,9 @@ function receipt(value: unknown): value is ResolvedEvaluationContext {
       "observation_profile",
     ]) ||
     value.catalog.catalog_id !== "agentops.evaluation.metric-catalog" ||
-    value.catalog.version !== "2.0.0" ||
-    value.catalog.semantic_digest !== CATALOG_DIGEST ||
+    !validMetricVersion(value.catalog.version) ||
+    typeof value.catalog.semantic_digest !== "string" ||
+    !digestPattern.test(value.catalog.semantic_digest) ||
     value.catalog.observation_profile !== "1.0.0"
   )
     return false;
@@ -636,6 +633,16 @@ function receipt(value: unknown): value is ResolvedEvaluationContext {
       "MIXED",
       "EXPIRED",
     ] as const)
+  )
+    return false;
+  return true;
+}
+
+function receipt(value: unknown): value is ResolvedEvaluationContext {
+  if (
+    !receiptBase(value) ||
+    value.context_version !== 1 ||
+    !selection(value.selection)
   )
     return false;
   const selectedTaskIds = (value.selection as { task_ids: string[] }).task_ids;
@@ -718,10 +725,7 @@ function sideResult(value: unknown): value is SideResult {
   const coordinates = value.metric_results.map(
     (item) => `${item.metric_id}@${item.metric_version}`,
   );
-  return (
-    coordinates.length === CATALOG_COORDINATES.length &&
-    coordinates.every((item, index) => item === CATALOG_COORDINATES[index])
-  );
+  return new Set(coordinates).size === coordinates.length;
 }
 
 function sideError(value: unknown): value is SideError {
@@ -746,9 +750,7 @@ function delta(value: unknown): value is DeltaEntry {
       ["value", "withholding_reason", "direction"],
     ) ||
     typeof value.metric_coordinate !== "string" ||
-    !CATALOG_COORDINATES.includes(
-      value.metric_coordinate as (typeof CATALOG_COORDINATES)[number],
-    ) ||
+    !validMetricCoordinate(value.metric_coordinate) ||
     !stringMap(value.slice_key) ||
     !oneOf(value.state, ["AVAILABLE", "WITHHELD", "SIDE_UNRESOLVED"] as const)
   )
@@ -1167,4 +1169,113 @@ export class EvolutionClient {
       clearTimeout(timeout);
     }
   }
+}
+
+export function validRecordedSelection(
+  value: unknown,
+): value is RecordedSelection {
+  if (
+    !record(value) ||
+    !closed(
+      value,
+      ["selection_version", "recorded_from", "recorded_to"],
+      ["delivery_ids"],
+    ) ||
+    value.selection_version !== 2
+  )
+    return false;
+  if (!validRecordedRange(value)) return false;
+  return (
+    value.delivery_ids === undefined ||
+    value.delivery_ids === null ||
+    (Array.isArray(value.delivery_ids) &&
+      value.delivery_ids.length <= 500 &&
+      value.delivery_ids.every(
+        (id) => typeof id === "string" && id.length > 0 && id.length <= 256,
+      ) &&
+      new Set(value.delivery_ids).size === value.delivery_ids.length)
+  );
+}
+function recordedReceipt(value: unknown): value is RecordedEvaluationContext {
+  if (
+    !receiptBase(value) ||
+    value.context_version !== 2 ||
+    !validRecordedSelection(value.selection)
+  )
+    return false;
+  if (
+    !Array.isArray(value.task_population) ||
+    value.task_population.length ||
+    !Array.isArray(value.workflow_resolutions) ||
+    value.workflow_resolutions.length
+  )
+    return false;
+  const range = value.selection;
+  const scopes = range.delivery_ids ?? [null];
+  const normalized = (time: string) => {
+    const match = /^(.*?)(?:\.(\d{1,6}))?Z$/.exec(time);
+    return match ? `${match[1]}.${(match[2] ?? "").padEnd(6, "0")}Z` : time;
+  };
+  const expected = new Set(
+    scopes.flatMap((id) =>
+      ["facts", "traces"].map(
+        (route) =>
+          `/v1/evidence/${route}\u0000${canonicalMap({ recorded_from: normalized(range.recorded_from), recorded_to: normalized(range.recorded_to), ...(id === null ? {} : { delivery_id: id }) })}`,
+      ),
+    ),
+  );
+  const bindings = value.evidence_bindings as EvidenceBinding[];
+  const keys = bindings.map(
+    (item) => `${item.route}\u0000${canonicalMap(item.canonical_filter)}`,
+  );
+  const refs = value.input_refs as InputReference[];
+  const attribution = new Set(
+    bindings
+      .filter(
+        (item) =>
+          range.delivery_ids == null &&
+          item.route === "/v1/evidence/facts" &&
+          Object.keys(item.canonical_filter).length === 3 &&
+          !!item.canonical_filter.delivery_id &&
+          item.canonical_filter.recorded_from ===
+            normalized(range.recorded_from) &&
+          item.canonical_filter.recorded_to === normalized(range.recorded_to),
+      )
+      .map(
+        (item) => `${item.route}\u0000${canonicalMap(item.canonical_filter)}`,
+      ),
+  );
+  return (
+    [...expected].every((key) => keys.includes(key)) &&
+    new Set(keys).size === keys.length &&
+    keys.every((key) => expected.has(key) || attribution.has(key)) &&
+    new Set(refs.map((r) => `${r.kind}/${r.identity}`)).size === refs.length
+  );
+}
+export function decodeRecordedComputeResponse(
+  value: unknown,
+): EvolutionResult<RecordedComputeResponse> {
+  if (
+    !record(value) ||
+    !closed(value, ["api_version", "mode", "result"]) ||
+    value.api_version !== 1 ||
+    value.mode !== "SINGLE"
+  )
+    return incompatible("recorded compute envelope is invalid");
+  const result = value.result;
+  if (
+    !record(result) ||
+    !closed(result, ["tag", "receipt", "metric_results"]) ||
+    result.tag !== "SIDE_RESULT" ||
+    !recordedReceipt(result.receipt) ||
+    !Array.isArray(result.metric_results) ||
+    !result.metric_results.every(metricResult)
+  )
+    return incompatible("recorded compute result is invalid");
+  const coordinates = result.metric_results.map(
+    (m) => `${m.metric_id}@${m.metric_version}`,
+  );
+  if (new Set(coordinates).size !== coordinates.length)
+    return incompatible("recorded compute catalog is invalid");
+  return { ok: true, value: value as unknown as RecordedComputeResponse };
 }

@@ -8,7 +8,7 @@ import { OwnedInspector } from "./components/inspector";
 import { MetricPanel } from "./components/result-visualizer";
 import { MetricNavigator } from "./components/metric-result";
 import { ScopedError } from "./components/status";
-import { METRIC_COPY } from "./domain/catalog/metric-copy";
+import { metricCopy } from "./domain/catalog/metric-copy";
 import {
   decodeLayout,
   PRESET_LAYOUTS,
@@ -166,15 +166,12 @@ function CompareResults({
   retrying: boolean;
   retryError?: { detail: string; retryable: boolean };
   onEvidence: (
-    coordinate: keyof typeof METRIC_COPY,
+    coordinate: string,
     side: "left" | "right",
     trigger: HTMLButtonElement,
   ) => void;
-  onExplain: (
-    coordinate: keyof typeof METRIC_COPY,
-    trigger: HTMLButtonElement,
-  ) => void;
-  onSelectMetric: (coordinate: keyof typeof METRIC_COPY) => void;
+  onExplain: (coordinate: string, trigger: HTMLButtonElement) => void;
+  onSelectMetric: (coordinate: string) => void;
   selectedCoordinate?: string;
   selectedSide?: "left" | "right";
 }) {
@@ -241,9 +238,7 @@ function CompareResults({
           deltaState: delta.state,
         }))}
         mode="compare"
-        onSelect={(coordinate) =>
-          onSelectMetric(coordinate as keyof typeof METRIC_COPY)
-        }
+        onSelect={(coordinate) => onSelectMetric(coordinate as string)}
         selectedCoordinate={selectedCoordinate}
       />
       {retrying ? (
@@ -274,17 +269,10 @@ function CompareResults({
           }
           key={`${panel.panel_id}:${delta.metric_coordinate}:${sliceKey(delta.slice_key)}`}
           onEvidence={(side, trigger) =>
-            onEvidence(
-              delta.metric_coordinate as keyof typeof METRIC_COPY,
-              side,
-              trigger,
-            )
+            onEvidence(delta.metric_coordinate as string, side, trigger)
           }
           onExplain={(_, trigger) =>
-            onExplain(
-              delta.metric_coordinate as keyof typeof METRIC_COPY,
-              trigger,
-            )
+            onExplain(delta.metric_coordinate as string, trigger)
           }
           onRetryFailedSide={
             failed === undefined || retrying ? undefined : onRetry
@@ -309,7 +297,7 @@ export function EvaluationWorkspace({
   const [state, setState] = useState<WorkspaceState>({ tag: "LOADING" });
   const [detail, setDetail] = useState<
     | { kind: "receipt"; side: "single" | "left" | "right" }
-    | { kind: "explanation"; coordinate: keyof typeof METRIC_COPY }
+    | { kind: "explanation"; coordinate: string }
     | null
   >(null);
   const [layoutState, setLayoutState] = useState<{
@@ -634,7 +622,7 @@ export function EvaluationWorkspace({
             <ReceiptView receipt={receipts[detail.side]!} side={detail.side} />
           ) : (
             <MetricExplanationView
-              {...METRIC_COPY[detail.coordinate]}
+              {...metricCopy(detail.coordinate)}
               metricCoordinate={detail.coordinate}
             />
           )}

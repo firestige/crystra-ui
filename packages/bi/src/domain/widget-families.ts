@@ -31,6 +31,7 @@ export interface DistributionData {
   domain?: [number, number];
 }
 interface MatrixValues {
+  unavailableReason?: string;
   xAxisLabel?: string;
   yAxisLabel?: string;
   legendPlacement?: "internal" | "external";

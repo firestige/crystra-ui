@@ -9,7 +9,12 @@ import { decodeTaskPage } from "./evidence/task-client";
 
 export interface AnalysisTransport {
   request(
-    endpoint: "tasks/list" | "evaluations/compute",
+    endpoint:
+      | "deliveries/list"
+      | "tasks/list"
+      | "evaluations/compute"
+      | "traces/read"
+      | "tasks/membership",
     payload: Record<string, unknown>,
     signal: AbortSignal,
   ): Promise<unknown>;

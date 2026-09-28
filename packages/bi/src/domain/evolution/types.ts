@@ -65,7 +65,7 @@ export interface MetricSlice {
 
 export interface MetricResult {
   metric_id: string;
-  metric_version: "2.0.0";
+  metric_version: string;
   slices: MetricSlice[];
 }
 
@@ -154,7 +154,7 @@ export interface ResolvedEvaluationContext {
   task_population: TaskPopulationEntry[];
   catalog: {
     catalog_id: "agentops.evaluation.metric-catalog";
-    version: "2.0.0";
+    version: string;
     semantic_digest: string;
     observation_profile: "1.0.0";
   };
@@ -218,3 +218,22 @@ export type EvolutionError =
 
 export type EvolutionResult<T = ComputeResponse> =
   { ok: true; value: T } | { ok: false; error: EvolutionError };
+
+export interface RecordedSelection {
+  selection_version: 2;
+  recorded_from: string;
+  recorded_to: string;
+  delivery_ids?: string[] | null;
+}
+export interface RecordedEvaluationContext extends Omit<
+  ResolvedEvaluationContext,
+  "context_version" | "selection"
+> {
+  context_version: 2;
+  selection: RecordedSelection;
+}
+export interface RecordedComputeResponse {
+  api_version: 1;
+  mode: "SINGLE";
+  result: Omit<SideResult, "receipt"> & { receipt: RecordedEvaluationContext };
+}

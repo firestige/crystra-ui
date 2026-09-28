@@ -230,7 +230,10 @@ export function DashboardComposer({
             resultCoordinate(candidate) === panel.metric_coordinate,
         );
         return metric === undefined ? (
-          <p className="status-reading">{panel.metric_coordinate}</p>
+          <div className="status-reading" role="status">
+            <p>{panel.metric_coordinate}</p>
+            <p>该指标当前不可用，已保留面板配置。</p>
+          </div>
         ) : monitoring ? (
           <MonitoringMetricPanel
             result={metric}

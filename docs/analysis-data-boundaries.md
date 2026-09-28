@@ -48,10 +48,12 @@ TypeResolver 不直接生成图表；业务 projector 不执行网络请求。
 
 ## 当前状态与待迁移项
 
-2026-09-28 实施更新：通用资源/hook/测试已迁入 Crystra-ui `support/data`，DSH 原副本已删除。
-`createAnalysisClient`、现有服务 decoder 复用与首批指标投影位于 Crystra-ui；DSH 仅注入
-RPC transport。临时 Task 指标总览已撤回，页面不再创建或调用该 client；后续按 v8 全局时间范围接入。
-Trace/报表数据、样本统计、多查询历史缓存与其他图形接口尚未实现。
+2026-09-28 实施更新：通用资源/hook/测试位于 Crystra-ui `support/data`，DSH 原副本已删除。
+时间范围 Evaluation、Delivery 元数据目录、选中 Trace 的独立查询与业务投影已接入；DSH 注入 RPC transport 并装配页面。
+总览不再使用 Task compute，调用追踪不触发 Evaluation。分页游标支持无限滚动与最多 30 行 DOM 窗口，当前查询已加载页仍缓存。
+DSH 使用 localStorage 保存已接受的布局/观察设置；UI 负责结构验证，不用指标可用性删除旧配置。
+新 Delivery 的采集闭环仍待正式执行入口验收；跨查询历史缓存、部分指标适配和原始表格/图表导出不在本轮交付中。
+当前绑定、接口候选与验证见 [接入记录](analysis-metric-bindings.md)。
 
 详细候选与接口差距：
 - [三层设计及 Chart envelope](../../wsr-dsh/src/client/analysis/data-design.md)

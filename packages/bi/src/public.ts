@@ -297,3 +297,42 @@ export type {
   AnalysisTransport,
 } from "./domain/analysis-query";
 export type { NumberChartData } from "./domain/analysis-projection";
+
+export {
+  createDeliveryTraceQuery,
+  type EvidenceQueryTransport,
+  type TraceQueryMetadata,
+} from "./domain/evidence/analysis-query";
+
+export {
+  createTaskMembershipQuery,
+  type TaskMembership,
+  type MembershipMetadata,
+  type MembershipTransport,
+} from "./domain/evidence/membership-query";
+export { useRecordedAnalysis } from "./hooks/use-recorded-analysis";
+export { createRecordedEvaluationQuery } from "./domain/evolution/recorded-query";
+export type {
+  RecordedEvaluationTransport,
+  RecordedRange,
+} from "./domain/evolution/recorded-query";
+export type {
+  RecordedSelection,
+  RecordedEvaluationContext,
+} from "./domain/evolution/types";
+export { useRecordedDeliveries } from "./hooks/use-recorded-deliveries";
+
+export { bindMetric } from "./domain/evolution/metric-binding";
+export type {
+  MetricAdapter,
+  MetricBinding,
+} from "./domain/evolution/metric-binding";
+
+export { useDeliveryTrace } from "./hooks/use-delivery-trace";
+
+export { decodeAnalysisPreferences } from "./domain/analysis-preferences";
+
+export type {
+  DeliverySearchRecord,
+  DeliverySearchCondition,
+} from "./domain/delivery-search";

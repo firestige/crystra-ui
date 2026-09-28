@@ -487,3 +487,24 @@ describe("bounded Evidence transport", () => {
     expect(cancel).toHaveBeenCalledOnce();
   });
 });
+it("accepts canonical C/I/S field IDs emitted by Evidence while preserving ordering", () => {
+  const base = traceResponse();
+  const wire = {
+    ...base,
+    items: base.items.map((item) => ({
+      ...item,
+      node: {
+        ...item.node,
+        fields: [
+          { field: "C01", value: "delivery-a" },
+          { field: "C57", value: "model-a" },
+          { field: "I01", value: 1 },
+          { field: "S01", value: "PASS" },
+        ],
+      },
+    })),
+  };
+  expect(decodeEvidencePage("traces", wire, 200).ok).toBe(true);
+  wire.items[0].node.fields.reverse();
+  expect(decodeEvidencePage("traces", wire, 200).ok).toBe(false);
+});

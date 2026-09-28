@@ -1,0 +1,413 @@
+{
+  "api_version": 1,
+  "mode": "SINGLE",
+  "result": {
+    "tag": "SIDE_RESULT",
+    "receipt": {
+      "context_version": 2,
+      "selection": {
+        "selection_version": 2,
+        "recorded_from": "2026-09-01T00:00:00Z",
+        "recorded_to": "2026-09-28T00:00:00Z"
+      },
+      "as_of": "2026-09-28T00:00:00Z",
+      "resolved_at": "2026-09-28T00:00:00Z",
+      "task_population": [],
+      "catalog": {
+        "catalog_id": "agentops.evaluation.metric-catalog",
+        "version": "2.0.0",
+        "semantic_digest": "851692f9d4a549d21f3c741470737eabb0d40b5f03cf10ffae76e1892023741e",
+        "observation_profile": "1.0.0"
+      },
+      "evidence_bindings": [
+        {
+          "route": "/v1/evidence/facts",
+          "canonical_filter": {
+            "recorded_from": "2026-09-01T00:00:00.000000Z",
+            "recorded_to": "2026-09-28T00:00:00.000000Z"
+          },
+          "contract_revision": "0.1.0",
+          "observation_profile": "1.0.0",
+          "read_model_revision": "1.0.0",
+          "route_snapshot": "facts-snapshot",
+          "completion_state": "COMPLETE"
+        },
+        {
+          "route": "/v1/evidence/traces",
+          "canonical_filter": {
+            "recorded_from": "2026-09-01T00:00:00.000000Z",
+            "recorded_to": "2026-09-28T00:00:00.000000Z"
+          },
+          "contract_revision": "0.1.0",
+          "observation_profile": "1.0.0",
+          "read_model_revision": "1.0.0",
+          "route_snapshot": "trace-snapshot",
+          "completion_state": "COMPLETE"
+        }
+      ],
+      "input_refs": [
+        {
+          "kind": "TRACE_NODE",
+          "identity": "node-a",
+          "provenance_ref": "span:a/b"
+        }
+      ],
+      "workflow_resolutions": [],
+      "population_state": "COMPLETE"
+    },
+    "metric_results": [
+      {
+        "metric_id": "role-template-rework-rate",
+        "metric_version": "2.0.0",
+        "slices": [
+          {
+            "slice_key": {},
+            "state": "UNAVAILABLE",
+            "withholding_reason": "MISSING_INPUT",
+            "measures": {},
+            "compatibility": {},
+            "exclusions": [],
+            "missing_inputs": [
+              "resolved_task_or_role_template_population"
+            ],
+            "provenance_refs": [],
+            "reading": "Recorded-range inputs do not establish a full Task or Role-template population.",
+            "coverage": null
+          }
+        ]
+      },
+      {
+        "metric_id": "role-template-trajectory-partial-cost",
+        "metric_version": "2.0.0",
+        "slices": [
+          {
+            "slice_key": {},
+            "state": "UNAVAILABLE",
+            "withholding_reason": "MISSING_INPUT",
+            "measures": {},
+            "compatibility": {},
+            "exclusions": [],
+            "missing_inputs": [
+              "resolved_task_or_role_template_population"
+            ],
+            "provenance_refs": [],
+            "reading": "Recorded-range inputs do not establish a full Task or Role-template population.",
+            "coverage": null
+          }
+        ]
+      },
+      {
+        "metric_id": "role-model-task-outcome-rate",
+        "metric_version": "2.0.0",
+        "slices": [
+          {
+            "slice_key": {},
+            "state": "UNAVAILABLE",
+            "withholding_reason": "MISSING_INPUT",
+            "measures": {},
+            "compatibility": {},
+            "exclusions": [],
+            "missing_inputs": [
+              "resolved_task_or_role_template_population"
+            ],
+            "provenance_refs": [],
+            "reading": "Recorded-range inputs do not establish a full Task or Role-template population.",
+            "coverage": null
+          }
+        ]
+      },
+      {
+        "metric_id": "operational-latency-ms",
+        "metric_version": "2.0.0",
+        "slices": [
+          {
+            "slice_key": {
+              "model": "model",
+              "provider": "provider",
+              "role": "writer",
+              "runtime": "runtime"
+            },
+            "state": "AVAILABLE",
+            "value": {
+              "kind": "DURATION_MS",
+              "value": "1/10000",
+              "unit": "milliseconds"
+            },
+            "measures": {
+              "sum_ns": "100"
+            },
+            "contributing_count": "1",
+            "coverage": {
+              "numerator": "1",
+              "denominator": "1",
+              "raw_ratio": "1",
+              "state": "FULL",
+              "alert": null
+            },
+            "compatibility": {
+              "model": "model",
+              "provider": "provider",
+              "role": "writer",
+              "runtime": "runtime"
+            },
+            "exclusions": [],
+            "missing_inputs": [],
+            "provenance_refs": [
+              "node-a"
+            ]
+          }
+        ]
+      },
+      {
+        "metric_id": "trajectory-partial-cost",
+        "metric_version": "2.0.0",
+        "slices": [
+          {
+            "slice_key": {},
+            "state": "UNAVAILABLE",
+            "withholding_reason": "MISSING_INPUT",
+            "measures": {},
+            "coverage": {
+              "numerator": "0",
+              "denominator": "1",
+              "raw_ratio": "0",
+              "state": "NO_COVERAGE",
+              "alert": "LOW_COVERAGE"
+            },
+            "compatibility": {},
+            "exclusions": [],
+            "missing_inputs": [],
+            "provenance_refs": []
+          }
+        ]
+      },
+      {
+        "metric_id": "task-cohort-comparison-eligibility",
+        "metric_version": "2.0.0",
+        "slices": [
+          {
+            "slice_key": {},
+            "state": "UNAVAILABLE",
+            "withholding_reason": "MISSING_INPUT",
+            "measures": {},
+            "compatibility": {},
+            "exclusions": [],
+            "missing_inputs": [
+              "resolved_task_or_role_template_population"
+            ],
+            "provenance_refs": [],
+            "reading": "Recorded-range inputs do not establish a full Task or Role-template population.",
+            "coverage": null
+          }
+        ]
+      },
+      {
+        "metric_id": "delivery-stage-reach",
+        "metric_version": "2.0.0",
+        "slices": [
+          {
+            "slice_key": {},
+            "state": "UNAVAILABLE",
+            "withholding_reason": "NO_APPLICABLE_POPULATION",
+            "measures": {},
+            "coverage": {
+              "numerator": "0",
+              "denominator": "0",
+              "state": "NO_POPULATION",
+              "raw_ratio": null,
+              "alert": null
+            },
+            "compatibility": {},
+            "exclusions": [],
+            "missing_inputs": [],
+            "provenance_refs": []
+          }
+        ]
+      },
+      {
+        "metric_id": "delivery-terminal-outcome-rate",
+        "metric_version": "2.0.0",
+        "slices": [
+          {
+            "slice_key": {},
+            "state": "UNAVAILABLE",
+            "withholding_reason": "MISSING_INPUT",
+            "measures": {},
+            "coverage": {
+              "numerator": "0",
+              "denominator": "1",
+              "raw_ratio": "0",
+              "state": "NO_COVERAGE",
+              "alert": "LOW_COVERAGE"
+            },
+            "compatibility": {},
+            "exclusions": [],
+            "missing_inputs": [],
+            "provenance_refs": []
+          }
+        ]
+      },
+      {
+        "metric_id": "delivery-cycle-time-ms",
+        "metric_version": "2.0.0",
+        "slices": [
+          {
+            "slice_key": {},
+            "state": "UNAVAILABLE",
+            "withholding_reason": "NO_APPLICABLE_POPULATION",
+            "measures": {},
+            "coverage": {
+              "numerator": "0",
+              "denominator": "0",
+              "state": "NO_POPULATION",
+              "raw_ratio": null,
+              "alert": null
+            },
+            "compatibility": {},
+            "exclusions": [],
+            "missing_inputs": [],
+            "provenance_refs": []
+          }
+        ]
+      },
+      {
+        "metric_id": "operational-token-usage",
+        "metric_version": "2.0.0",
+        "slices": [
+          {
+            "slice_key": {
+              "direction": "input",
+              "model": "model",
+              "provider": "provider",
+              "role": "writer",
+              "runtime": "runtime"
+            },
+            "state": "AVAILABLE",
+            "value": {
+              "kind": "QUANTITY",
+              "value": "11",
+              "unit": "tokens"
+            },
+            "measures": {},
+            "contributing_count": "1",
+            "coverage": {
+              "numerator": "1",
+              "denominator": "1",
+              "raw_ratio": "1",
+              "state": "FULL",
+              "alert": null
+            },
+            "compatibility": {
+              "direction": "input",
+              "model": "model",
+              "provider": "provider",
+              "role": "writer",
+              "runtime": "runtime"
+            },
+            "exclusions": [],
+            "missing_inputs": [],
+            "provenance_refs": [
+              "node-a"
+            ]
+          },
+          {
+            "slice_key": {
+              "direction": "output",
+              "model": "model",
+              "provider": "provider",
+              "role": "writer",
+              "runtime": "runtime"
+            },
+            "state": "AVAILABLE",
+            "value": {
+              "kind": "QUANTITY",
+              "value": "7",
+              "unit": "tokens"
+            },
+            "measures": {},
+            "contributing_count": "1",
+            "coverage": {
+              "numerator": "1",
+              "denominator": "1",
+              "raw_ratio": "1",
+              "state": "FULL",
+              "alert": null
+            },
+            "compatibility": {
+              "direction": "output",
+              "model": "model",
+              "provider": "provider",
+              "role": "writer",
+              "runtime": "runtime"
+            },
+            "exclusions": [],
+            "missing_inputs": [],
+            "provenance_refs": [
+              "node-a"
+            ]
+          }
+        ]
+      },
+      {
+        "metric_id": "operational-attributable-cost",
+        "metric_version": "2.0.0",
+        "slices": [
+          {
+            "slice_key": {},
+            "state": "UNAVAILABLE",
+            "withholding_reason": "MISSING_INPUT",
+            "measures": {},
+            "coverage": {
+              "numerator": "0",
+              "denominator": "1",
+              "raw_ratio": "0",
+              "state": "NO_COVERAGE",
+              "alert": "LOW_COVERAGE"
+            },
+            "compatibility": {},
+            "exclusions": [],
+            "missing_inputs": [],
+            "provenance_refs": []
+          }
+        ]
+      },
+      {
+        "metric_id": "operational-usage-availability",
+        "metric_version": "2.0.0",
+        "slices": [
+          {
+            "slice_key": {
+              "model": "model",
+              "provider": "provider",
+              "role": "writer",
+              "runtime": "runtime"
+            },
+            "state": "UNAVAILABLE",
+            "withholding_reason": "MISSING_INPUT",
+            "measures": {},
+            "numerator": "0",
+            "denominator": "0",
+            "coverage": {
+              "numerator": "0",
+              "denominator": "1",
+              "raw_ratio": "0",
+              "state": "NO_COVERAGE",
+              "alert": "LOW_COVERAGE"
+            },
+            "compatibility": {
+              "model": "model",
+              "provider": "provider",
+              "role": "writer",
+              "runtime": "runtime"
+            },
+            "exclusions": [],
+            "missing_inputs": [
+              "usage_source_classification:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/bbbbbbbbbbbbbbbb"
+            ],
+            "provenance_refs": []
+          }
+        ]
+      }
+    ]
+  }
+}

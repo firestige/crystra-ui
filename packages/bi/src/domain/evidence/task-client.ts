@@ -1,4 +1,4 @@
-import { closed, record } from "./validation";
+import { bytewiseCompare, closed, record } from "./validation";
 
 const taskIdPattern = /^[A-Za-z0-9][A-Za-z0-9._:/@-]{0,127}$/;
 const digestPattern = /^[a-f0-9]{64}$/;
@@ -37,17 +37,6 @@ const incompatible = (reason: string): TaskResult => ({
   error: { kind: "INCOMPATIBLE", reason },
 });
 
-function bytewiseCompare(left: string, right: string): number {
-  const leftBytes = encoder.encode(left);
-  const rightBytes = encoder.encode(right);
-  const length = Math.min(leftBytes.length, rightBytes.length);
-  for (let index = 0; index < length; index += 1) {
-    const difference = leftBytes[index]! - rightBytes[index]!;
-    if (difference !== 0) return difference;
-  }
-  return leftBytes.length - rightBytes.length;
-}
-
 function source(value: unknown): boolean {
   return (
     record(value) &&
@@ -55,6 +44,19 @@ function source(value: unknown): boolean {
     value.kind === "EVENT" &&
     typeof value.event_id === "string" &&
     value.event_id.length > 0
+  );
+}
+
+export function validTaskProvenance(
+  value: unknown,
+): value is TaskListItem["provenance"] {
+  return (
+    record(value) &&
+    closed(value, ["accepted_digest", "profile_version", "source"]) &&
+    typeof value.accepted_digest === "string" &&
+    digestPattern.test(value.accepted_digest) &&
+    value.profile_version === "2.0.0" &&
+    source(value.source)
   );
 }
 
@@ -68,16 +70,7 @@ function item(value: unknown): value is TaskListItem {
       (typeof value.display_name === "string" &&
         value.display_name.trim().length > 0 &&
         value.display_name.length <= 160)) &&
-    record(value.provenance) &&
-    closed(value.provenance, [
-      "accepted_digest",
-      "profile_version",
-      "source",
-    ]) &&
-    typeof value.provenance.accepted_digest === "string" &&
-    digestPattern.test(value.provenance.accepted_digest) &&
-    value.provenance.profile_version === "2.0.0" &&
-    source(value.provenance.source)
+    validTaskProvenance(value.provenance)
   );
 }
 

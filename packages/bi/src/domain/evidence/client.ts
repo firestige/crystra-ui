@@ -30,6 +30,13 @@ const profileFieldOrder = new Map(
     .split(" ")
     .map((name, index) => [name, index] as const),
 );
+// Evidence query projections use C/I/S field IDs; native names remain accepted
+// for the existing native-field adapter. Both share one semantic ordering.
+for (const index of [...profileFieldOrder.values()]) {
+  const prefix = index < 57 ? "C" : index < 67 ? "I" : "S";
+  const ordinal = index < 57 ? index + 1 : index < 67 ? index - 56 : index - 66;
+  profileFieldOrder.set(`${prefix}${String(ordinal).padStart(2, "0")}`, index);
+}
 const standardFields = new Set([
   "error.type",
   "gen_ai.agent.id",
@@ -119,7 +126,9 @@ function orderedFields(value: unknown): value is FieldValue[] {
     const difference = order(previous.field) - order(item.field);
     return (
       difference < 0 ||
-      (difference === 0 && bytewiseCompare(previous.field, item.field) < 0)
+      (difference === 0 &&
+        !profileFieldOrder.has(item.field) &&
+        bytewiseCompare(previous.field, item.field) < 0)
     );
   });
 }
@@ -453,6 +462,7 @@ export function decodeEvidencePage(
   route: EvidenceRoute,
   input: unknown,
   requestedLimit: number,
+  maximumTraceSummaries = 32,
 ): EvidenceResult {
   if (!record(input)) return incompatible("response must be an object");
   if (Object.hasOwn(input, "error")) {
@@ -552,7 +562,7 @@ export function decodeEvidencePage(
         "EXPIRED",
       ] as const) ||
       !Array.isArray(input.trace_summaries) ||
-      input.trace_summaries.length > 32 ||
+      input.trace_summaries.length > maximumTraceSummaries ||
       !input.trace_summaries.every(
         (summary) =>
           record(summary) &&

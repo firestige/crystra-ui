@@ -129,6 +129,14 @@ export function AnalysisSurface({
   refreshCadence = "0",
   onRefreshCadenceChange,
   dataNotice,
+  dataActions,
+  comparisonSubset,
+  onComparisonSubsetChange,
+  selectedDelivery: controlledDelivery,
+  onDeliveryChange,
+  directoryPaging,
+  onDirectorySearchChange,
+  traceNotice,
 }: {
   view: AnalysisPage;
   onViewChange: (view: AnalysisPage) => void;
@@ -140,6 +148,21 @@ export function AnalysisSurface({
   initialScope?: string;
   sourceNotice?: string;
   dataNotice?: string;
+  dataActions?: ReactNode;
+  selectedDelivery?: DeliverySearchRecord | null;
+  onDeliveryChange?: (delivery: DeliverySearchRecord | null) => void;
+  onDirectorySearchChange?: (
+    conditions: import("../domain/delivery-search").DeliverySearchCondition[],
+  ) => void;
+  directoryPaging?: {
+    total?: number;
+    hasMore: boolean;
+    loading: boolean;
+    onLoadMore: () => void;
+  };
+  traceNotice?: string;
+  comparisonSubset?: string[] | null;
+  onComparisonSubsetChange?: (ids: string[] | null) => void;
   settings?: readonly ObservationSetting[];
   onSettingsChange?: (settings: ObservationSetting[]) => void;
   layout?: DashboardLayout;
@@ -165,8 +188,11 @@ export function AnalysisSurface({
   const scope = page === "traces" ? selectedScope : "all";
   const [notice, setNotice] = useState("");
   const [traceView, setTraceView] = useState("waterfall");
-  const [selectedDelivery, setSelectedDelivery] =
+  const [localDelivery, setLocalDelivery] =
     useState<DeliverySearchRecord | null>(null);
+  const selectedDelivery =
+    controlledDelivery === undefined ? localDelivery : controlledDelivery;
+  const setSelectedDelivery = onDeliveryChange ?? setLocalDelivery;
   const [runDirectoryOpen, setRunDirectoryOpen] = useState(false);
   const [editing, setEditing] = useState(false);
   const [rangePanelId, setRangePanelId] = useState<string | null>(null);
@@ -322,6 +348,7 @@ export function AnalysisSurface({
       {(dataNotice || data.unavailableReason) && (
         <p role="status" className="obs-data-status">
           {dataNotice || data.unavailableReason}
+          {dataActions}
         </p>
       )}
       {unresolved ? (
@@ -570,6 +597,8 @@ export function AnalysisSurface({
                 inert={!runDirectoryOpen}
               >
                 <DeliveryDirectory
+                  paging={directoryPaging}
+                  onSearchChange={onDirectorySearchChange}
                   records={deliveryRecords}
                   searchFields={deliveryDirectorySearchFields}
                   range={deliveryRange}
@@ -601,6 +630,11 @@ export function AnalysisSurface({
                   data-delivery-id={selectedDelivery?.deliveryId}
                   data-trace-id={trace?.traceId}
                 >
+                  {traceNotice && (
+                    <p role="status" className="status-reading">
+                      {traceNotice}
+                    </p>
+                  )}
                   {!trace ? (
                     <Placeholder title="没有匹配的调用记录">
                       请调整检索、筛选或时间范围。
@@ -629,6 +663,8 @@ export function AnalysisSurface({
             data-section-id="comparison-analysis"
           >
             <ResultAnalysisSurface
+              subset={comparisonSubset}
+              onSubsetChange={onComparisonSubsetChange}
               embedded
               settings={settings}
               onSettingsChange={onSettingsChange}
